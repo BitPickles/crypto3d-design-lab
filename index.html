@@ -15,30 +15,34 @@
        DESIGN TOKENS — DARK (default)
        ============================================================ */
     :root {
-      --bg-base: #07070a;
-      --bg-elevated: #0d0d12;
-      --bg-surface: #111117;
-      --bg-surface-hover: #16161e;
+      /* Linear-level deep blacks */
+      --bg-base: #09090b;
+      --bg-elevated: #0f0f13;
+      --bg-surface: #141418;
+      --bg-surface-hover: #1a1a20;
 
-      --border-subtle: rgba(255,255,255,0.04);
-      --border-default: rgba(255,255,255,0.07);
-      --border-hover: rgba(255,255,255,0.12);
+      /* Barely-there borders — Raycast style */
+      --border-subtle: rgba(255,255,255,0.03);
+      --border-default: rgba(255,255,255,0.06);
+      --border-hover: rgba(255,255,255,0.10);
 
-      --text-primary: #f0f0f5;
-      --text-secondary: #8b8b9e;
-      --text-tertiary: #55556a;
-      --text-quaternary: #3a3a4a;
+      /* Sharp text hierarchy */
+      --text-primary: #ededf0;
+      --text-secondary: #7c7c8a;
+      --text-tertiary: #4e4e5c;
+      --text-quaternary: #333340;
 
-      --green: #2dd4a0;
-      --green-dim: rgba(45,212,160,0.08);
-      --blue: #5b8def;
-      --blue-dim: rgba(91,141,239,0.08);
+      /* Restrained palette — fewer, deeper colors */
+      --green: #34d399;
+      --green-dim: rgba(52,211,153,0.06);
+      --blue: #6d9ef5;
+      --blue-dim: rgba(109,158,245,0.06);
       --purple: #a78bfa;
-      --purple-dim: rgba(167,139,250,0.08);
+      --purple-dim: rgba(167,139,250,0.06);
       --amber: #f0a050;
-      --amber-dim: rgba(240,160,80,0.08);
+      --amber-dim: rgba(240,160,80,0.06);
       --cyan: #38bdf8;
-      --cyan-dim: rgba(56,189,248,0.08);
+      --cyan-dim: rgba(56,189,248,0.06);
       --red: #f87171;
 
       --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
@@ -56,46 +60,47 @@
       --max-width: 1200px;
       --header-height: 56px;
 
-      --header-bg: rgba(7,7,10,0.85);
-      --shadow-card: 0 2px 8px rgba(0,0,0,0.2);
-      --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.4);
-      --ambient-opacity: 0.35;
+      --header-bg: rgba(9,9,11,0.88);
+      --shadow-card: none;
+      --shadow-card-hover: 0 0 0 1px var(--border-hover);
+      --ambient-opacity: 0;
     }
 
     /* ============================================================
        LIGHT THEME
        ============================================================ */
     [data-theme="light"] {
-      --bg-base: #f6f6f9;
+      /* Notion/Vercel inspired warm white */
+      --bg-base: #fafafa;
       --bg-elevated: #ffffff;
-      --bg-surface: #eeeef3;
-      --bg-surface-hover: #e4e4eb;
+      --bg-surface: #f2f2f5;
+      --bg-surface-hover: #eaeaef;
 
       --border-subtle: rgba(0,0,0,0.04);
-      --border-default: rgba(0,0,0,0.08);
-      --border-hover: rgba(0,0,0,0.14);
+      --border-default: rgba(0,0,0,0.07);
+      --border-hover: rgba(0,0,0,0.12);
 
-      --text-primary: #111118;
-      --text-secondary: #5a5a6e;
-      --text-tertiary: #8888a0;
-      --text-quaternary: #b0b0c0;
+      --text-primary: #0f0f12;
+      --text-secondary: #52525e;
+      --text-tertiary: #8d8d9b;
+      --text-quaternary: #b5b5c0;
 
-      --green: #16a07a;
-      --green-dim: rgba(22,160,122,0.07);
-      --blue: #3b6fd9;
-      --blue-dim: rgba(59,111,217,0.07);
-      --purple: #7c5cbf;
-      --purple-dim: rgba(124,92,191,0.07);
-      --amber: #c47a20;
-      --amber-dim: rgba(196,122,32,0.07);
-      --cyan: #0d8ec4;
-      --cyan-dim: rgba(13,142,196,0.07);
-      --red: #dc3545;
+      --green: #0f8a66;
+      --green-dim: rgba(15,138,102,0.06);
+      --blue: #2a5bb8;
+      --blue-dim: rgba(42,91,184,0.06);
+      --purple: #6845a8;
+      --purple-dim: rgba(104,69,168,0.06);
+      --amber: #a86a15;
+      --amber-dim: rgba(168,106,21,0.06);
+      --cyan: #0a7aab;
+      --cyan-dim: rgba(10,122,171,0.06);
+      --red: #c53030;
 
-      --header-bg: rgba(246,246,249,0.88);
-      --shadow-card: 0 2px 8px rgba(0,0,0,0.04);
-      --shadow-card-hover: 0 16px 48px rgba(0,0,0,0.08);
-      --ambient-opacity: 0.2;
+      --header-bg: rgba(250,250,250,0.9);
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-card-hover: 0 4px 16px rgba(0,0,0,0.06);
+      --ambient-opacity: 0;
     }
 
     /* ============================================================
@@ -235,13 +240,14 @@
       margin-bottom: var(--s-3);
     }
     .hero-title .gradient {
-      background: linear-gradient(135deg, var(--green) 0%, var(--blue) 60%, var(--purple) 100%);
+      background: linear-gradient(135deg, var(--green), var(--blue));
       -webkit-background-clip: text; background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     [data-theme="light"] .hero-title .gradient {
-      background: linear-gradient(135deg, #0f8a66 0%, #2a5bb8 60%, #6b45a8 100%);
+      background: linear-gradient(135deg, #0f8a66, #2a5bb8);
       -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     .hero-subtitle {
       font-size: var(--fs-md); color: var(--text-secondary);
@@ -291,7 +297,7 @@
       gap: var(--s-7);
       background: var(--bg-elevated);
       border: 1px solid var(--border-default);
-      border-radius: 16px;
+      border-radius: 12px;
       padding: var(--s-6);
       transition: all var(--duration-normal) var(--ease-out);
       overflow: hidden;
@@ -379,7 +385,7 @@
     .ind-card {
       background: var(--bg-elevated);
       border: 1px solid var(--border-default);
-      border-radius: 14px;
+      border-radius: 10px;
       padding: var(--s-5);
       transition: all var(--duration-normal) var(--ease-out);
       display: flex; flex-direction: column;
@@ -387,7 +393,6 @@
     .ind-card:hover {
       border-color: var(--border-hover);
       box-shadow: var(--shadow-card-hover);
-      transform: translateY(-2px);
     }
 
     .ind-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s-4); }
@@ -452,7 +457,7 @@
       gap: var(--s-6); align-items: center;
       background: var(--bg-elevated);
       border: 1px solid var(--border-default);
-      border-radius: 14px;
+      border-radius: 10px;
       padding: var(--s-5) var(--s-6);
       transition: all var(--duration-normal) var(--ease-out);
     }
