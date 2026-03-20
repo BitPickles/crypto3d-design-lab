@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>治理动态 — Crypto3D</title>
+  <script>(function(){if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')})()</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-0: #050507;
+      --bg-1: #0a0a0e;
+      --bg-2: #101015;
+      --bg-3: #16161c;
+      --text-1: #e8e8ec;
+      --text-2: #7a7a88;
+      --text-3: #4a4a56;
+      --text-4: #2e2e38;
+      --border: rgba(255,255,255,0.06);
+      --border-h: rgba(255,255,255,0.12);
+      --green: #34d399;
+      --green-d: rgba(52,211,153,0.08);
+      --blue: #60a5fa;
+      --blue-d: rgba(96,165,250,0.08);
+      --purple: #a78bfa;
+      --purple-d: rgba(167,139,250,0.08);
+      --amber: #fbbf24;
+      --amber-d: rgba(251,191,36,0.08);
+      --red: #f87171;
+      --header-bg: rgba(5,5,7,0.9);
+    }
+    [data-theme="light"] {
+      --bg-0: #fafafa;
+      --bg-1: #ffffff;
+      --bg-2: #f3f3f6;
+      --bg-3: #eaeaef;
+      --text-1: #111118;
+      --text-2: #5a5a6e;
+      --text-3: #9090a0;
+      --text-4: #c0c0cc;
+      --border: rgba(0,0,0,0.06);
+      --border-h: rgba(0,0,0,0.12);
+      --green: #059669;
+      --green-d: rgba(5,150,105,0.06);
+      --blue: #2563eb;
+      --blue-d: rgba(37,99,235,0.06);
+      --purple: #7c3aed;
+      --purple-d: rgba(124,58,237,0.06);
+      --amber: #d97706;
+      --amber-d: rgba(217,119,6,0.06);
+      --red: #dc2626;
+      --header-bg: rgba(250,250,250,0.92);
+    }
+
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+    body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg-0);color:var(--text-1);line-height:1.5}
+    a{color:inherit;text-decoration:none}
+    .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+
+    header{position:sticky;top:0;z-index:100;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+    .hd{max-width:1280px;margin:0 auto;padding:0 32px;height:52px;display:flex;align-items:center;justify-content:space-between}
+    .logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700}
+    .logo-m{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#000}
+    .hd-r{display:flex;align-items:center;gap:16px}
+    .nav-back{font-size:13px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:6px;transition:color .15s}
+    .nav-back:hover{color:var(--text-1)}
+    .ib{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+    .ib:hover{border-color:var(--border-h);color:var(--text-1)}
+    .ib svg{width:15px;height:15px}
+    .tt .sun{display:none}.tt .moon{display:block}
+    [data-theme="light"] .tt .sun{display:block}
+    [data-theme="light"] .tt .moon{display:none}
+    @media(max-width:768px){.hd{padding:0 20px}}
+
+    .page-head{max-width:1280px;margin:0 auto;padding:48px 32px 32px}
+    .page-eyebrow{font-size:11px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px}
+    .page-title{font-size:42px;font-weight:900;letter-spacing:-0.03em;line-height:1.1;margin-bottom:12px}
+    .page-desc{font-size:16px;color:var(--text-2);max-width:600px;line-height:1.6}
+    @media(max-width:768px){.page-head{padding:32px 20px 24px}.page-title{font-size:28px}}
+
+    .filter-bar{max-width:1280px;margin:0 auto;padding:0 32px 24px;display:flex;gap:12px;flex-wrap:wrap}
+    .filter-btn{font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-2);cursor:pointer;transition:all .15s}
+    .filter-btn:hover{border-color:var(--border-h);color:var(--text-1)}
+    .filter-btn.active{background:var(--purple-d);border-color:var(--purple);color:var(--purple)}
+    @media(max-width:768px){.filter-bar{padding:0 20px 20px}}
+
+    .main{max-width:1280px;margin:0 auto;padding:0 32px 80px}
+    @media(max-width:768px){.main{padding:0 20px 56px}}
+
+    /* Proposal List */
+    .proposal-list{display:flex;flex-direction:column;gap:16px}
+    .proposal-card{background:var(--bg-1);border:1px solid var(--border);border-radius:12px;padding:24px;transition:border-color .2s,transform .2s}
+    .proposal-card:hover{border-color:var(--border-h);transform:translateY(-2px)}
+    .proposal-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
+    .proposal-status{font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap}
+    .proposal-status.active{color:var(--green);background:var(--green-d)}
+    .proposal-status.active .pulse-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 2s ease-in-out infinite}
+    .proposal-status.passed{color:var(--text-3);background:var(--bg-2)}
+    .proposal-status.tev{color:var(--purple);background:var(--purple-d)}
+    .proposal-status.pending{color:var(--amber);background:var(--amber-d)}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+    .proposal-title{font-size:17px;font-weight:700;line-height:1.4;margin-bottom:6px}
+    .proposal-proto{font-size:13px;color:var(--text-3)}
+    .proposal-desc{font-size:14px;color:var(--text-2);line-height:1.6;margin-bottom:16px}
+
+    .proposal-meta{display:flex;gap:32px;flex-wrap:wrap}
+    .meta-item{display:flex;flex-direction:column;gap:2px}
+    .meta-label{font-size:11px;color:var(--text-3);font-weight:500}
+    .meta-value{font-size:14px;font-weight:700}
+
+    .proposal-progress{margin-top:16px}
+    .progress-bar{height:6px;border-radius:3px;background:var(--bg-3);overflow:hidden}
+    .progress-fill{height:100%;border-radius:3px;transition:width .3s}
+    .progress-labels{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--text-3)}
+
+    footer{border-top:1px solid var(--border);padding:32px 0}
+    .ft{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text-3)}
+    .ft-links{display:flex;gap:16px}
+    .ft-links a{color:var(--text-3);transition:color .15s}
+    .ft-links a:hover{color:var(--text-1)}
+    @media(max-width:768px){.ft{flex-direction:column;gap:12px;text-align:center;padding:0 20px}}
+
+    .rv{opacity:0;transform:translateY(20px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
+    .rv.vis{opacity:1;transform:none}
+    @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <a href="../../" class="logo"><div class="logo-m">3D</div>Crypto3D</a>
+    <div class="hd-r">
+      <a href="../" class="nav-back">← TEV</a>
+      <button class="ib tt" id="tt" aria-label="切换主题">
+        <svg class="moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/></svg>
+        <svg class="sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="page-head rv">
+  <div class="page-eyebrow">Governance</div>
+  <h1 class="page-title">治理动态</h1>
+  <p class="page-desc">追踪协议治理提案，关注与 TEV（代币价值分配）相关的关键决策。</p>
+</div>
+
+<div class="filter-bar rv">
+  <button class="filter-btn active" data-filter="all">全部</button>
+  <button class="filter-btn" data-filter="active">进行中</button>
+  <button class="filter-btn" data-filter="tev">TEV 相关</button>
+  <button class="filter-btn" data-filter="passed">已通过</button>
+</div>
+
+<div class="main">
+  <div class="proposal-list rv" id="proposal-list"></div>
+</div>
+
+<footer>
+  <div class="ft">
+    <span>© 2026 Crypto3D</span>
+    <div class="ft-links">
+      <a href="https://x.com/22333D" target="_blank">Twitter</a>
+      <a href="https://www.youtube.com/@Crypto36D" target="_blank">YouTube</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('tt').addEventListener('click',()=>{
+  const l=document.documentElement.getAttribute('data-theme')==='light';
+  l?document.documentElement.removeAttribute('data-theme'):document.documentElement.setAttribute('data-theme','light');
+  localStorage.setItem('theme',l?'dark':'light');
+});
+
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.08});
+document.querySelectorAll('.rv').forEach((el,i)=>{el.style.transitionDelay=i*40+'ms';io.observe(el)});
+
+const proposals=[
+  {status:'active',statusClass:'active',title:'[ARFC] 激活 Aave Buyback 回购机制',proto:'Aave',tev:true,desc:'年度 4.5B USD 回购池，社区投票通过后开启链上买盘回购机制，直接从市场购买 G 代币。',meta:{deadline:'3月23日 20:00',support:'89.2%',quorum:'12.8%'},progress:89.2},
+  {status:'tev',statusClass:'tev',title:'Uniswap 费用开关 V2 提案',proto:'Uniswap',tev:true,desc:'提议开启 UNI 持有者费用分配机制，将部分交易手续费分配给质押者。目前处于温度检查阶段。',meta:{stage:'温度检查',replies:'142',duration:'14天'},progress:0},
+  {status:'passed',statusClass:'passed',title:'PancakeSwap veCAKE 收益分配调整',proto:'PancakeSwap',tev:true,desc:'调整 veCAKE 持有者的收益分配权重，增加长期质押者的奖励比例。',meta:{passed:'3月18日',votes:'72.5%',executed:'是'},progress:72.5},
+  {status:'active',statusClass:'active',title:'GMX GLP 费用分配优化提案',proto:'GMX',tev:true,desc:'优化 GLP 池的费用分配机制，提高流动性提供者的收益。',meta:{deadline:'3月25日',support:'76.3%',quorum:'8.5%'},progress:76.3},
+  {status:'pending',statusClass:'pending',title:'Curve CRV 锁仓激励调整',proto:'Curve',tev:false,desc:'提议调整 veCRV 锁仓激励参数，增加长期锁仓者的投票权重。',meta:{stage:'论坛讨论',replies:'89',duration:'待定'},progress:0},
+  {status:'passed',statusClass:'passed',title:'Compound COMP 治理参与奖励',proto:'Compound',tev:false,desc:'为积极参与治理投票的 COMP 持有者提供额外奖励。',meta:{passed:'3月12日',votes:'81.2%',executed:'是'},progress:81.2},
+];
+
+function render(filter){
+  const list=document.getElementById('proposal-list');
+  const filtered=filter==='all'?proposals:proposals.filter(p=>p.status===filter||p.statusClass===filter);
+  list.innerHTML=filtered.map(p=>`
+    <a href="#" class="proposal-card">
+      <div class="proposal-header">
+        <div>
+          <div class="proposal-title">${p.title}</div>
+          <div class="proposal-proto">${p.proto}${p.tev?' · TEV 相关':''}</div>
+        </div>
+        <div class="proposal-status ${p.statusClass}">${p.statusClass==='active'?'<span class="pulse-dot"></span>':''}${p.status==='tev'?'TEV 相关':p.status==='active'?'进行中':p.status==='passed'?'已通过':'讨论中'}</div>
+      </div>
+      <div class="proposal-desc">${p.desc}</div>
+      <div class="proposal-meta">
+        ${Object.entries(p.meta).map(([k,v])=>`<div class="meta-item"><div class="meta-label">${k==='deadline'?'投票截止':k==='stage'?'阶段':k==='replies'?'论坛回复':k==='passed'?'通过日期':k==='votes'?'支持率':k==='quorum'?'参与率':k==='executed'?'已执行':k==='duration'?'持续时间':k}</div><div class="meta-value ${k==='support'||k==='votes'?'mono':''}" style="${k==='support'||k==='votes'?`color:var(--green)`:''}">${v}</div></div>`).join('')}
+      </div>
+      ${p.progress>0?`<div class="proposal-progress"><div class="progress-bar"><div class="progress-fill" style="width:${p.progress}%;background:linear-gradient(90deg,var(--green),var(--purple))"></div></div><div class="progress-labels"><span>反对</span><span>支持 ${p.progress}%</span></div></div>`:''}
+    </a>
+  `).join('');
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    render(btn.dataset.filter);
+  });
+});
+
+render('all');
+</script>
+</body>
+</html>
