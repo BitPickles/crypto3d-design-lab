@@ -6,7 +6,7 @@
       "name": "全站 UI 升级优化",
       "assignee": "designer",
       "assigner": "main",
-      "status": "in_progress",
+      "status": "reviewing",
       "created_at": "2026-03-21T19:48:38.124368+08:00",
       "monitor_cron_id": "0ed93db1-41e9-42e8-ae51-ce1a92cb4b40",
       "check_interval": "15m",
@@ -126,6 +126,12 @@
           "actor": "main",
           "task_name": "全站 UI 升级优化",
           "note": "已按 Boss 最新要求重写验收标准：除首页外其他页面当前均不合格；业务页必须与主站功能保持一致；只允许做视觉层 UI 调整；整体进度按全站真实完成度评估。"
+        },
+        {
+          "time": "2026-03-21T22:18:00+08:00",
+          "actor": "main",
+          "task_name": "全站 UI 升级优化",
+          "note": "📊 监控验收：designer 完成子页面返工（22:22），用主站真实源文件替换 placeholder，仅叠加 CSS override + theme.js。所有子页面（TEV/AHR999/MVRV/BMRI/BTC.D/治理）功能结构与主站一致，视觉层统一。状态改为 reviewing，待 Boss 验收确认。"
         }
       ],
       "boss_channel": "telegram:1311453837"
