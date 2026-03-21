@@ -168,6 +168,12 @@
           "actor": "main",
           "task_name": "全站 UI 升级优化",
           "note": "按 Boss 最新要求撤回 reviewing：task-002 改回 in_progress。后续重点返工 TEV 协议详情页，必须补齐图表/文字/卡片/数据模块，并达到主站同等级效果。"
+        },
+        {
+          "time": "2026-03-21T23:24:00+08:00",
+          "actor": "main",
+          "task_name": "全站 UI 升级优化",
+          "note": "📊 监控检查：designer 正在用浏览器检查 TEV 协议详情页（aave），排查数据缺失问题。刚活动（23:24），积极工作中，无需催促。"
         }
       ],
       "boss_channel": "telegram:1311453837"
@@ -288,6 +294,12 @@
           "actor": "main",
           "task_name": "任务看板 Agent 状态像素风 GIF 设计",
           "note": "Boss 决定不再找现成 meme 图，改为自制一套像素风 GIF。已创建持续任务并派给设计师。"
+        },
+        {
+          "time": "2026-03-21T23:31:00+08:00",
+          "actor": "main",
+          "task_name": "任务看板 Agent 状态像素风 GIF 设计",
+          "note": "📊 监控检查：designer 最后活动 23:24（7分钟前），当前正在处理 task-002 的 TEV 详情页问题。task-004 创建仅 16 分钟，设计师尚未开始 GIF 设计。无需催促，等待 task-002 完成后再跟进。"
         }
       ],
       "boss_channel": "telegram:1311453837"
