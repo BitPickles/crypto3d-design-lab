@@ -8,104 +8,128 @@
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Inter',-apple-system,sans-serif;background:#f8f9fa;color:#1a1a2e;min-height:100vh}
     
-    /* Header */
-    .header{background:#fff;border-bottom:1px solid #e8e8ee;padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
+    .header{background:#fff;border-bottom:1px solid #e8e8ee;padding:16px 32px;display:flex;align-items:center;justify-content:space-between}
     .header h1{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
-    .header h1 span{font-size:22px}
     .header .refresh{padding:6px 14px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px;color:#666;transition:all .15s}
     .header .refresh:hover{border-color:#3b82f6;color:#3b82f6}
     .last-update{font-size:12px;color:#999;margin-top:2px}
-
-    /* Layout */
-    .container{max-width:1200px;margin:0 auto;padding:24px 32px}
+    .container{max-width:1400px;margin:0 auto;padding:20px 32px}
     
-    /* Stats Bar */
-    .stats{display:flex;gap:16px;margin-bottom:28px}
-    .stat-card{flex:1;background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:16px 20px}
-    .stat-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:4px}
-    .stat-value{font-size:28px;font-weight:800;letter-spacing:-.02em}
+    /* Stats */
+    .stats{display:flex;gap:12px;margin-bottom:20px}
+    .stat-card{flex:1;background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:12px 16px}
+    .stat-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:2px}
+    .stat-value{font-size:24px;font-weight:800;letter-spacing:-.02em}
     .stat-value.green{color:#059669}
     .stat-value.blue{color:#3b82f6}
     .stat-value.amber{color:#d97706}
     .stat-value.gray{color:#9ca3af}
 
-    /* Kanban Columns */
-    .kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
-    .column{background:#f1f3f5;border-radius:10px;padding:16px}
-    .col-header{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid}
+    /* Two column layout */
+    .main-grid{display:grid;grid-template-columns:260px 1fr;gap:16px;align-items:start}
+    
+    /* Left sidebar */
+    .sidebar{display:flex;flex-direction:column;gap:16px}
+    
+    /* Flow card */
+    .flow-card{background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:16px}
+    .flow-card h2{font-size:13px;font-weight:700;margin-bottom:12px}
+    .flow-node{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;text-align:center;display:inline-block}
+    .flow-node.boss{background:#fef3c7;color:#92400e;border:1px solid #fbbf24}
+    .flow-node.cmd{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd}
+    .flow-node.exec{background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd}
+    .flow-label{font-size:9px;color:#999;text-align:center;margin-top:2px}
+    .flow-arrow{font-size:12px;color:#ccc;text-align:center;margin:4px 0}
+
+    /* Agent status card */
+    .agent-card{background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:16px}
+    .agent-card h2{font-size:13px;font-weight:700;margin-bottom:12px}
+    .agent-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f5f8}
+    .agent-item:last-child{border-bottom:none}
+    .agent-avatar{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;overflow:hidden}
+    .agent-avatar.idle{background:#f3f4f6}
+    .agent-avatar.working{background:#eff6ff}
+    .agent-avatar.busy{background:#fef3c7}
+    .agent-avatar.commanding{background:#ede9fe}
+    /* Cartoon animations */
+    .agent-avatar .anim{position:absolute;bottom:0;right:0;font-size:10px;animation:bounce 1s infinite}
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+    @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+    .agent-avatar .anim.idle{animation:pulse 2s infinite}
+    .agent-avatar .anim.working{animation:bounce .6s infinite}
+    .agent-avatar .anim.commanding{animation:spin 2s linear infinite}
+    .agent-info{flex:1;min-width:0}
+    .agent-name{font-size:12px;font-weight:600}
+    .agent-status{font-size:10px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .agent-status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+    .agent-status-dot.idle{background:#d1d5db}
+    .agent-status-dot.working{background:#3b82f6;animation:pulse 1.5s infinite}
+    .agent-status-dot.busy{background:#f59e0b;animation:pulse 1s infinite}
+    .agent-status-dot.commanding{background:#8b5cf6;animation:pulse 1.2s infinite}
+
+    /* Kanban */
+    .kanban-wrap h2{font-size:15px;font-weight:700;margin-bottom:12px}
+    .kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+    .column{background:#f1f3f5;border-radius:10px;padding:12px}
+    .col-header{display:flex;align-items:center;gap:6px;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid}
     .col-header.pending{border-color:#9ca3af}
     .col-header.progress{border-color:#3b82f6}
     .col-header.review{border-color:#d97706}
     .col-header.done{border-color:#059669}
-    .col-title{font-size:13px;font-weight:700}
-    .col-count{font-size:11px;font-weight:600;background:rgba(0,0,0,.06);padding:2px 8px;border-radius:10px}
+    .col-title{font-size:12px;font-weight:700}
+    .col-count{font-size:10px;font-weight:600;background:rgba(0,0,0,.06);padding:2px 7px;border-radius:10px}
+    .col-subtitle{font-size:9px;color:#999;margin-left:auto}
 
     /* Task Card */
-    .task-card{background:#fff;border:1px solid #e8e8ee;border-radius:8px;padding:14px;margin-bottom:10px;cursor:default;transition:box-shadow .15s}
+    .task-card{background:#fff;border:1px solid #e8e8ee;border-radius:8px;padding:12px;margin-bottom:8px;transition:box-shadow .15s}
     .task-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06)}
-    .task-id{font-size:10px;font-weight:600;color:#999;font-family:'JetBrains Mono',monospace}
-    .task-name{font-size:14px;font-weight:600;margin:6px 0}
-    .task-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-    .tag{font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px}
+    .task-id{font-size:9px;font-weight:600;color:#999;font-family:'JetBrains Mono',monospace}
+    .task-name{font-size:13px;font-weight:600;margin:4px 0}
+    .task-meta{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+    .tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px}
     .tag.agent{background:#ede9fe;color:#7c3aed}
     .tag.assigner{background:#e0f2fe;color:#0369a1}
     .tag.time{background:#f3f4f6;color:#6b7280}
-    .task-desc{font-size:12px;color:#666;margin-top:8px;line-height:1.5}
-    .task-criteria{font-size:11px;color:#888;margin-top:6px;padding-top:6px;border-top:1px solid #f0f0f0}
+    .task-desc{font-size:11px;color:#666;margin-top:6px;line-height:1.5}
+    .task-criteria{font-size:10px;color:#888;margin-top:6px;padding-top:6px;border-top:1px solid #f0f0f0}
     .task-criteria strong{color:#555}
+    /* Progress bar */
+    .progress-bar{margin-top:8px;background:#f0f0f5;border-radius:4px;height:6px;overflow:hidden;position:relative}
+    .progress-fill{height:100%;border-radius:4px;transition:width .5s ease;position:relative}
+    .progress-fill.low{background:linear-gradient(90deg,#ef4444,#f59e0b)}
+    .progress-fill.mid{background:linear-gradient(90deg,#f59e0b,#3b82f6)}
+    .progress-fill.high{background:linear-gradient(90deg,#3b82f6,#059669)}
+    .progress-fill.full{background:#059669}
+    .progress-text{font-size:9px;font-weight:600;color:#888;margin-top:3px;text-align:right}
 
     /* Timeline */
-    .timeline-section{margin-top:32px}
-    .timeline-section h2{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .timeline-section{margin-top:24px}
+    .timeline-section h2{font-size:15px;font-weight:700;margin-bottom:12px}
     .timeline{position:relative;padding-left:24px}
     .timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:#e0e0e8}
-    .tl-item{position:relative;margin-bottom:16px;padding-left:16px}
+    .tl-item{position:relative;margin-bottom:12px;padding-left:16px}
     .tl-item::before{content:'';position:absolute;left:-20px;top:6px;width:10px;height:10px;border-radius:50%;border:2px solid}
     .tl-item.created::before{border-color:#9ca3af;background:#f9fafb}
     .tl-item.progress::before{border-color:#3b82f6;background:#eff6ff}
     .tl-item.check::before{border-color:#d97706;background:#fffbeb}
     .tl-item.done::before{border-color:#059669;background:#ecfdf5}
-    .tl-item.nudge::before{border-color:#ef4444;background:#fef2f2}
-    .tl-time{font-size:11px;color:#999;font-family:'JetBrains Mono',monospace}
-    .tl-text{font-size:13px;color:#333;margin-top:2px}
+    .tl-time{font-size:10px;color:#999;font-family:'JetBrains Mono',monospace}
+    .tl-text{font-size:12px;color:#333;margin-top:2px}
     .tl-agent{font-weight:600;color:#7c3aed}
 
-    /* Empty State */
-    .empty{text-align:center;padding:60px 20px;color:#aaa}
-    .empty-icon{font-size:48px;margin-bottom:12px}
-    .empty-text{font-size:15px}
+    .empty{text-align:center;padding:30px 10px;color:#ccc;font-size:12px}
 
-    /* Agent Flow */
-    .flow-section{margin-top:32px;background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:24px}
-    .flow-section h2{font-size:16px;font-weight:700;margin-bottom:16px}
-    .flow-diagram{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:20px 0}
-    .flow-node{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;text-align:center;min-width:100px}
-    .flow-node.boss{background:#fef3c7;color:#92400e;border:2px solid #f59e0b}
-    .flow-node.main{background:#dbeafe;color:#1e40af;border:2px solid #3b82f6}
-    .flow-node.worker{background:#ede9fe;color:#5b21b6;border:2px solid #8b5cf6}
-    .flow-arrow{font-size:18px;color:#ccc}
-    .flow-label{font-size:10px;color:#999;text-align:center;margin-top:4px}
-
-    /* Responsive */
     @media(max-width:900px){
+      .main-grid{grid-template-columns:1fr}
       .kanban{grid-template-columns:repeat(2,1fr)}
       .stats{flex-wrap:wrap}
-      .stat-card{min-width:calc(50% - 8px)}
+      .stat-card{min-width:calc(50% - 6px)}
     }
     @media(max-width:600px){
       .kanban{grid-template-columns:1fr}
-      .container{padding:16px}
-      .flow-diagram{flex-direction:column}
+      .container{padding:12px}
     }
-    @media(max-width:900px){
-      /* Stack flow + kanban on small screens */
-      .container > div[style*="grid-template-columns:280px"]{grid-template-columns:1fr!important}
-    }
-
-    /* No data notice */
-    .no-data{background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:40px;text-align:center;margin-bottom:24px}
-    .no-data p{color:#888;font-size:14px;margin-top:8px}
-    .data-url{font-family:'JetBrains Mono',monospace;font-size:12px;color:#3b82f6;word-break:break-all}
   </style>
 </head>
 <body>
@@ -118,110 +142,141 @@
   </div>
 
   <div class="container">
-    <!-- Stats -->
     <div class="stats">
       <div class="stat-card"><div class="stat-label">进行中</div><div class="stat-value blue" id="statProgress">-</div></div>
-      <div class="stat-card"><div class="stat-label">审核中</div><div class="stat-value amber" id="statReview">-</div></div>
+      <div class="stat-card"><div class="stat-label">待确认</div><div class="stat-value amber" id="statReview">-</div></div>
       <div class="stat-card"><div class="stat-label">已完成</div><div class="stat-value green" id="statDone">-</div></div>
       <div class="stat-card"><div class="stat-label">总任务</div><div class="stat-value gray" id="statTotal">-</div></div>
     </div>
 
-    <!-- Two column: Flow + Kanban -->
-    <div style="display:grid;grid-template-columns:280px 1fr;gap:16px;align-items:start">
-
-    <!-- Agent Flow Diagram (left) -->
-    <div class="flow-section" style="margin-top:0;position:sticky;top:80px">
-      <h2 style="font-size:14px">🔗 调度流程</h2>
-      <div style="text-align:center">
-        <div style="margin-bottom:12px">
-          <div class="flow-node boss" style="display:inline-block;padding:6px 14px;font-size:12px;min-width:auto">👤 Boss</div>
-          <div class="flow-label">可直接指挥任何人</div>
+    <div class="main-grid">
+      <!-- Left sidebar -->
+      <div class="sidebar">
+        <!-- Flow -->
+        <div class="flow-card">
+          <h2>🔗 调度流程</h2>
+          <div style="text-align:center">
+            <div><div class="flow-node boss">👤 Boss</div><div class="flow-label">可直接指挥任何人</div></div>
+            <div class="flow-arrow">↓</div>
+            <div style="font-size:9px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">指挥层</div>
+            <div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+              <div class="flow-node cmd">🎯 总管</div>
+              <div class="flow-node cmd">🔍 研究员</div>
+              <div class="flow-node cmd">📡 运营</div>
+            </div>
+            <div class="flow-arrow">↓ 派发</div>
+            <div style="font-size:9px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">中台</div>
+            <div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap">
+              <div class="flow-node exec">🎨 设计师</div>
+              <div class="flow-node exec">⚙️ 工程师</div>
+            </div>
+          </div>
         </div>
-        <div style="font-size:14px;color:#ccc;margin-bottom:10px">↓</div>
-        <div style="margin-bottom:4px;font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em">指挥层</div>
-        <div style="display:flex;justify-content:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-          <div><div class="flow-node main" style="padding:5px 10px;font-size:11px;min-width:auto">🎯 总管</div></div>
-          <div><div class="flow-node main" style="padding:5px 10px;font-size:11px;min-width:auto">🔍 研究员</div></div>
-          <div><div class="flow-node main" style="padding:5px 10px;font-size:11px;min-width:auto">📡 运营</div></div>
-        </div>
-        <div style="font-size:14px;color:#ccc;margin-bottom:10px">↓</div>
-        <div style="margin-bottom:4px;font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em">中台（执行层）</div>
-        <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
-          <div><div class="flow-node worker" style="padding:5px 10px;font-size:11px;min-width:auto">🎨 设计师</div></div>
-          <div><div class="flow-node worker" style="padding:5px 10px;font-size:11px;min-width:auto">⚙️ 工程师1</div></div>
-          <div><div class="flow-node worker" style="padding:5px 10px;font-size:11px;min-width:auto">⚙️ 工程师2</div></div>
+
+        <!-- Agent Status -->
+        <div class="agent-card">
+          <h2>🤖 Agent 状态</h2>
+          <div id="agentStatus"></div>
         </div>
       </div>
-    </div>
 
-    <!-- Kanban Board (right) -->
-    <div>
-    <h2 style="font-size:16px;font-weight:700;margin-bottom:16px">📌 任务看板</h2>
-    <div class="kanban" id="kanban">
-      <div class="column">
-        <div class="col-header pending"><div class="col-title">待处理</div><div class="col-count" id="countPending">0</div></div>
-        <div id="colPending"></div>
-      </div>
-      <div class="column">
-        <div class="col-header progress"><div class="col-title">进行中</div><div class="col-count" id="countProgress">0</div></div>
-        <div id="colProgress"></div>
-      </div>
-      <div class="column">
-        <div class="col-header review"><div class="col-title">审核中</div><div class="col-count" id="countReview">0</div></div>
-        <div id="colReview"></div>
-      </div>
-      <div class="column">
-        <div class="col-header done"><div class="col-title">已完成</div><div class="col-count" id="countDone">0</div></div>
-        <div id="colDone"></div>
-      </div>
-    </div>
-    </div><!-- close kanban right column -->
-    </div><!-- close two-column grid -->
+      <!-- Right: Kanban -->
+      <div class="kanban-wrap">
+        <h2>📌 任务看板</h2>
+        <div class="kanban" id="kanban">
+          <div class="column">
+            <div class="col-header pending"><div class="col-title">待处理</div><div class="col-count" id="countPending">0</div></div>
+            <div id="colPending"></div>
+          </div>
+          <div class="column">
+            <div class="col-header progress"><div class="col-title">进行中</div><div class="col-count" id="countProgress">0</div></div>
+            <div id="colProgress"></div>
+          </div>
+          <div class="column">
+            <div class="col-header review"><div class="col-title">待 Boss 确认</div><div class="col-count" id="countReview">0</div><div class="col-subtitle">⏳</div></div>
+            <div id="colReview"></div>
+          </div>
+          <div class="column">
+            <div class="col-header done"><div class="col-title">已完成</div><div class="col-count" id="countDone">0</div></div>
+            <div id="colDone"></div>
+          </div>
+        </div>
 
-    <!-- Timeline -->
-    <div class="timeline-section">
-      <h2>📜 活动时间线</h2>
-      <div class="timeline" id="timeline"></div>
+        <!-- Timeline -->
+        <div class="timeline-section">
+          <h2>📜 活动时间线</h2>
+          <div class="timeline" id="timeline"></div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    const AGENT_NAMES = {
-      main: '🎯 总管',
-      designer: '🎨 设计师',
-      engineer: '⚙️ 工程师',
-      engineer2: '⚙️ 工程师2号',
-      researcher: '🔍 研究员',
-      operator: '📡 运营',
-    };
+    const AGENTS = [
+      { id: 'main', name: '总管', emoji: '🎯', role: 'cmd' },
+      { id: 'researcher', name: '研究员', emoji: '🔍', role: 'cmd' },
+      { id: 'operator', name: '运营', emoji: '📡', role: 'cmd' },
+      { id: 'designer', name: '设计师', emoji: '🎨', role: 'exec' },
+      { id: 'engineer', name: '工程师1', emoji: '⚙️', role: 'exec' },
+      { id: 'engineer2', name: '工程师2', emoji: '⚙️', role: 'exec' },
+    ];
+
+    const AGENT_NAMES = {};
+    AGENTS.forEach(a => AGENT_NAMES[a.id] = a.emoji + ' ' + a.name);
 
     const STATUS_MAP = {
-      created: 'Pending',
-      in_progress: 'Progress',
-      reviewing: 'Review',
-      done: 'Done',
-      rejected: 'Progress',
-      cancelled: 'Done',
+      created: 'Pending', in_progress: 'Progress', reviewing: 'Review',
+      done: 'Done', rejected: 'Progress', cancelled: 'Done',
+    };
+
+    // Cartoon work animations
+    const ANIM = {
+      idle: '💤',
+      working_1: '🔨',
+      working_2: '🔥',
+      commanding_1: '📢',
+      commanding_2: '📡',
     };
 
     function timeAgo(dateStr) {
-      const d = new Date(dateStr);
-      const now = new Date();
-      const diff = Math.floor((now - d) / 1000);
+      const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
       if (diff < 60) return '刚才';
-      if (diff < 3600) return Math.floor(diff/60) + ' 分钟前';
-      if (diff < 86400) return Math.floor(diff/3600) + ' 小时前';
-      return Math.floor(diff/86400) + ' 天前';
+      if (diff < 3600) return Math.floor(diff/60) + '分钟前';
+      if (diff < 86400) return Math.floor(diff/3600) + '小时前';
+      return Math.floor(diff/86400) + '天前';
+    }
+
+    function getProgressClass(pct) {
+      if (pct >= 100) return 'full';
+      if (pct >= 60) return 'high';
+      if (pct >= 30) return 'mid';
+      return 'low';
+    }
+
+    function estimateProgress(task) {
+      if (task.status === 'done') return 100;
+      if (task.status === 'reviewing') return 90;
+      if (task.progress) return task.progress;
+      // Estimate from notes count
+      const notes = (task.progress_notes || []).length;
+      return Math.min(80, 20 + notes * 15);
     }
 
     function renderCard(task) {
       const agentName = AGENT_NAMES[task.assignee] || task.assignee;
       const assignerName = AGENT_NAMES[task.assigner] || task.assigner;
+      const progress = estimateProgress(task);
+      const showProgress = task.status === 'in_progress' || task.status === 'reviewing';
+      
       return `
         <div class="task-card">
           <div class="task-id">#${task.id}</div>
           <div class="task-name">${task.name}</div>
           <div class="task-desc">${task.description || ''}</div>
+          ${showProgress ? `
+          <div class="progress-bar"><div class="progress-fill ${getProgressClass(progress)}" style="width:${progress}%"></div></div>
+          <div class="progress-text">${progress}%</div>
+          ` : ''}
           <div class="task-meta">
             <span class="tag agent">${agentName}</span>
             <span class="tag assigner">← ${assignerName}</span>
@@ -232,91 +287,118 @@
       `;
     }
 
+    function renderAgentStatus(tasks) {
+      const agentTasks = {};
+      const agentCommanding = {};
+      
+      tasks.forEach(t => {
+        if (t.status === 'in_progress' || t.status === 'reviewing') {
+          // Assignee is working
+          if (!agentTasks[t.assignee]) agentTasks[t.assignee] = [];
+          agentTasks[t.assignee].push(t.name);
+          // Assigner is commanding
+          if (!agentCommanding[t.assigner]) agentCommanding[t.assigner] = [];
+          agentCommanding[t.assigner].push(t.name);
+        }
+      });
+
+      return AGENTS.map(agent => {
+        const working = agentTasks[agent.id] || [];
+        const commanding = agentCommanding[agent.id] || [];
+        let status, statusClass, animEmoji, animClass;
+
+        if (working.length >= 2) {
+          status = `执行 ${working.length} 个任务`;
+          statusClass = 'busy';
+          animEmoji = '🔥';
+          animClass = 'working';
+        } else if (working.length === 1) {
+          status = working[0].substring(0, 15) + (working[0].length > 15 ? '…' : '');
+          statusClass = 'working';
+          animEmoji = '🔨';
+          animClass = 'working';
+        } else if (commanding.length > 0) {
+          status = `指挥 ${commanding.length} 个任务`;
+          statusClass = 'commanding';
+          animEmoji = '📢';
+          animClass = 'commanding';
+        } else {
+          status = '空闲';
+          statusClass = 'idle';
+          animEmoji = '💤';
+          animClass = 'idle';
+        }
+
+        return `
+          <div class="agent-item">
+            <div class="agent-avatar ${statusClass}">
+              ${agent.emoji}
+              <span class="anim ${animClass}">${animEmoji}</span>
+            </div>
+            <div class="agent-info">
+              <div class="agent-name">${agent.name}</div>
+              <div class="agent-status">${status}</div>
+            </div>
+            <div class="agent-status-dot ${statusClass}"></div>
+          </div>
+        `;
+      }).join('');
+    }
+
     function renderTimeline(tasks) {
       const items = [];
       tasks.forEach(t => {
-        items.push({
-          time: t.created_at,
-          type: 'created',
-          text: `<span class="tl-agent">${AGENT_NAMES[t.assigner]||t.assigner}</span> 创建任务「${t.name}」→ 派给 <span class="tl-agent">${AGENT_NAMES[t.assignee]||t.assignee}</span>`
+        items.push({ time: t.created_at, type: 'created', text: `<span class="tl-agent">${AGENT_NAMES[t.assigner]||t.assigner}</span> 创建「${t.name}」→ <span class="tl-agent">${AGENT_NAMES[t.assignee]||t.assignee}</span>` });
+        (t.progress_notes||[]).forEach(n => {
+          items.push({ time: n.time||t.created_at, type: 'check', text: typeof n === 'string' ? n : n.note });
         });
-        if (t.progress_notes) {
-          t.progress_notes.forEach(n => {
-            items.push({
-              time: n.time || t.created_at,
-              type: 'check',
-              text: n.note || n
-            });
-          });
-        }
         if (t.status === 'done' && t.completed_at) {
-          items.push({
-            time: t.completed_at,
-            type: 'done',
-            text: `任务「${t.name}」✅ 验收通过`
-          });
+          items.push({ time: t.completed_at, type: 'done', text: `「${t.name}」✅ 完成` });
         }
       });
       items.sort((a, b) => new Date(b.time) - new Date(a.time));
-      
-      if (items.length === 0) {
-        return '<div class="empty"><div class="empty-icon">📜</div><div class="empty-text">暂无活动记录</div></div>';
-      }
-      
-      return items.map(item => `
-        <div class="tl-item ${item.type}">
-          <div class="tl-time">${new Date(item.time).toLocaleString('zh-CN')}</div>
-          <div class="tl-text">${item.text}</div>
+      if (!items.length) return '<div class="empty">暂无活动记录</div>';
+      return items.map(i => `
+        <div class="tl-item ${i.type}">
+          <div class="tl-time">${new Date(i.time).toLocaleString('zh-CN')}</div>
+          <div class="tl-text">${i.text}</div>
         </div>
       `).join('');
     }
 
-    function loadData() {
-      // Try to load from tasks-data.json (generated by task-orchestrator)
-      fetch('./tasks-data.json?t=' + Date.now())
-        .then(r => r.ok ? r.json() : Promise.reject('no data file'))
-        .then(data => render(data))
-        .catch(() => {
-          // Fallback: show demo/empty state with instructions
-          render({ version: 1, tasks: [], _fallback: true });
-        });
-    }
-
     function render(data) {
       const tasks = data.tasks || [];
+      const counts = { created:0, in_progress:0, reviewing:0, done:0 };
+      tasks.forEach(t => counts[t.status] = (counts[t.status]||0) + 1);
       
-      // Stats
-      const counts = { created: 0, in_progress: 0, reviewing: 0, done: 0 };
-      tasks.forEach(t => { counts[t.status] = (counts[t.status] || 0) + 1; });
       document.getElementById('statProgress').textContent = counts.in_progress + counts.created;
       document.getElementById('statReview').textContent = counts.reviewing;
       document.getElementById('statDone').textContent = counts.done;
       document.getElementById('statTotal').textContent = tasks.length;
       document.getElementById('lastUpdate').textContent = '更新于 ' + new Date().toLocaleString('zh-CN');
-
-      // Column counts
       document.getElementById('countPending').textContent = counts.created;
       document.getElementById('countProgress').textContent = counts.in_progress;
       document.getElementById('countReview').textContent = counts.reviewing;
       document.getElementById('countDone').textContent = counts.done;
 
-      // Cards
-      const cols = { Pending: [], Progress: [], Review: [], Done: [] };
-      tasks.forEach(t => {
-        const col = STATUS_MAP[t.status] || 'Pending';
-        cols[col].push(renderCard(t));
+      const cols = { Pending:[], Progress:[], Review:[], Done:[] };
+      tasks.forEach(t => cols[STATUS_MAP[t.status]||'Pending'].push(renderCard(t)));
+      ['Pending','Progress','Review','Done'].forEach(c => {
+        document.getElementById('col'+c).innerHTML = cols[c].join('') || '<div class="empty">空</div>';
       });
-      document.getElementById('colPending').innerHTML = cols.Pending.join('') || '<div class="empty"><div class="empty-text" style="font-size:12px;color:#ccc">空</div></div>';
-      document.getElementById('colProgress').innerHTML = cols.Progress.join('') || '<div class="empty"><div class="empty-text" style="font-size:12px;color:#ccc">空</div></div>';
-      document.getElementById('colReview').innerHTML = cols.Review.join('') || '<div class="empty"><div class="empty-text" style="font-size:12px;color:#ccc">空</div></div>';
-      document.getElementById('colDone').innerHTML = cols.Done.join('') || '<div class="empty"><div class="empty-text" style="font-size:12px;color:#ccc">空</div></div>';
 
-      // Timeline
+      document.getElementById('agentStatus').innerHTML = renderAgentStatus(tasks);
       document.getElementById('timeline').innerHTML = renderTimeline(tasks);
     }
 
+    function loadData() {
+      fetch('./tasks-data.json?t='+Date.now())
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(render)
+        .catch(() => render({ version:1, tasks:[] }));
+    }
+
     loadData();
-    // Auto refresh every 30 seconds
     setInterval(loadData, 30000);
   </script>
 </body>
