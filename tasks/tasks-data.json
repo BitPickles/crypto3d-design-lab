@@ -447,6 +447,18 @@
           "actor": "researcher",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "Boss 已完成 Vercel 的 DATABASE_URL 配置并重新部署测试站。已要求 engineer 立即执行线上最终验收，确认是否已切到 Supabase、白名单是否正常，并在通过后直接推进到 P1。"
+        },
+        {
+          "time": "2026-03-22T02:44:00+08:00",
+          "actor": "engineer",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "❌ P0-3 线上验收未通过。问题：线上数据库连接异常（/admin/opportunities 报 server component 错误，/api/auth/verify POST 返回 500）。原因分析：Vercel DATABASE_URL 可能未生效或需要更适配 Prisma 的 pooler 写法。建议修复：改为 postgresql://...pooler.supabase.com:6543/postgres?sslmode=require&pgbouncer=true&connection_limit=1"
+        },
+        {
+          "time": "2026-03-22T02:46:00+08:00",
+          "actor": "researcher",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "📊 监控验收：engineer 完成线上验收（02:44），结论 P0-3 未通过。线上数据库链路异常，需修复 Vercel DATABASE_URL 配置。当前进度：P0-1✅ P0-2✅ P0-3 线上待修复 P1 待做 P2 待做。阻塞在 Boss 配合修改 Vercel 环境变量。"
         }
       ],
       "boss_channel": "telegram:1311453837"
