@@ -2,272 +2,486 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TEV · Token Enabled Value — Crypto3D</title>
   <script>(function(){var t=localStorage.getItem('theme');if(t!=='dark')document.documentElement.setAttribute('data-theme','light')})()</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TEV Dashboard — 加密协议估值</title>
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../indicators/css/common.css">
   <style>
-    :root {
-      --bg-0: #050507;
-      --bg-1: #0a0a0e;
-      --bg-2: #101015;
-      --bg-3: #16161c;
-      --text-1: #e8e8ec;
-      --text-2: #7a7a88;
-      --text-3: #4a4a56;
-      --text-4: #2e2e38;
-      --border: rgba(255,255,255,0.06);
-      --border-h: rgba(255,255,255,0.12);
-      --green: #34d399;
-      --green-d: rgba(52,211,153,0.08);
-      --blue: #60a5fa;
-      --blue-d: rgba(96,165,250,0.08);
-      --purple: #a78bfa;
-      --purple-d: rgba(167,139,250,0.08);
-      --amber: #fbbf24;
-      --amber-d: rgba(251,191,36,0.08);
-      --red: #f87171;
-      --header-bg: rgba(5,5,7,0.9);
-    }
-    [data-theme="light"] {
-      --bg-0: #fafafa;
-      --bg-1: #ffffff;
-      --bg-2: #f3f3f6;
-      --bg-3: #eaeaef;
-      --text-1: #111118;
-      --text-2: #5a5a6e;
-      --text-3: #9090a0;
-      --text-4: #c0c0cc;
-      --border: rgba(0,0,0,0.06);
-      --border-h: rgba(0,0,0,0.12);
-      --green: #059669;
-      --green-d: rgba(5,150,105,0.06);
-      --blue: #2563eb;
-      --blue-d: rgba(37,99,235,0.06);
-      --purple: #7c3aed;
-      --purple-d: rgba(124,58,237,0.06);
-      --amber: #d97706;
-      --amber-d: rgba(217,119,6,0.06);
-      --red: #dc2626;
-      --header-bg: rgba(250,250,250,0.92);
-    }
+    /* TEV-specific overrides */
+    .container { max-width: 1200px; }
+    header { background: var(--bg-primary); }
+    nav { display: flex; gap: 32px; }
+    nav a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    nav a:hover, nav a.active { color: var(--text-primary); }
+    .header-right { display: flex; align-items: center; gap: 24px; }
+    @media (max-width: 768px) { nav { display: none; } }
+  
+    /* Global tooltip */
+    #g-tip { display: none; position: fixed; background: #1c1c1e; color: #e4e4e7; font-size: 12px; font-weight: 400; line-height: 1.6; padding: 10px 14px; border-radius: 10px; border: 1px solid #2a2a2e; max-width: 320px; text-align: left; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,0.5); pointer-events: none; }
+    [data-tip] { cursor: help; }
+    .tip-trigger { font-size: 11px; color: #52525b; margin-left: 2px; vertical-align: middle; cursor: help; }
 
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-    body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg-0);color:var(--text-1);line-height:1.5}
-    a{color:inherit;text-decoration:none}
-    .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
-
-    /* Header */
-    header{position:sticky;top:0;z-index:100;background:var(--header-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-    .hd{max-width:1400px;margin:0 auto;padding:0 32px;height:52px;display:flex;align-items:center;justify-content:space-between}
-    .logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700}
-    .logo-m{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#000}
-    .hd-r{display:flex;align-items:center;gap:20px}
-    .ib{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
-    .ib:hover{border-color:var(--border-h);color:var(--text-1)}
-    .ib svg{width:15px;height:15px}
-    .hd-nav{display:flex;gap:20px;list-style:none}
-    .hd-nav a{font-size:13px;font-weight:500;color:var(--text-2);transition:color .15s}
-    .hd-nav a:hover{color:var(--text-1)}
-    @media(max-width:768px){.hd-nav{display:none}}
-    .tt .sun{display:none}.tt .moon{display:block}
-    [data-theme="light"] .tt .sun{display:block}
-    [data-theme="light"] .tt .moon{display:none}
-    @media(max-width:768px){.hd{padding:0 20px}}
-
-    /* Page Header */
-    .page-head{max-width:1400px;margin:0 auto;padding:48px 32px 32px}
-    .page-eyebrow{font-size:11px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px}
-    .page-title{font-size:42px;font-weight:900;letter-spacing:-0.03em;line-height:1.1;margin-bottom:12px}
-    .page-desc{font-size:16px;color:var(--text-2);max-width:600px;line-height:1.6}
-    @media(max-width:768px){.page-head{padding:32px 20px 24px}.page-title{font-size:28px}}
-
-    /* Stats Summary */
-    .stats-row{max-width:1400px;margin:0 auto;padding:0 32px 32px;display:flex;gap:48px;flex-wrap:wrap}
-    .stat-item{display:flex;flex-direction:column;gap:4px}
-    .stat-val{font-size:28px;font-weight:800;letter-spacing:-0.02em}
-    .stat-lbl{font-size:12px;color:var(--text-3);font-weight:500}
-    @media(max-width:768px){.stats-row{padding:0 20px 24px;gap:32px}}
-
-    /* Filter Bar */
-    .filter-bar{max-width:1400px;margin:0 auto;padding:0 32px 24px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-    .filter-btn{font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text-2);cursor:pointer;transition:all .15s}
-    .filter-btn:hover{border-color:var(--border-h);color:var(--text-1)}
-    .filter-btn.active{background:var(--green-d);border-color:var(--green);color:var(--green)}
-    @media(max-width:768px){.filter-bar{padding:0 20px 20px}}
-
-    /* Main Content */
-    .main{max-width:1400px;margin:0 auto;padding:0 32px 80px}
-    @media(max-width:768px){.main{padding:0 20px 56px}}
-
-    /* Data Table */
-    .data-table{width:100%;border-collapse:collapse;font-size:14px}
-    .data-table th{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;text-align:left;padding:12px 16px;border-bottom:1px solid var(--border);position:sticky;top:52px;background:var(--bg-0)}
-    .data-table td{padding:16px;border-bottom:1px solid var(--border);vertical-align:middle}
-    .data-table tr:hover td{background:var(--bg-1)}
-    .data-table a{display:flex;align-items:center;gap:12px}
-    .data-table a:hover .proto-name{color:var(--green)}
-
-    .proto-rank{font-size:12px;font-weight:700;color:var(--text-4);width:28px}
-    .proto-icon{width:32px;height:32px;border-radius:8px;background:var(--bg-2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
-    .proto-name{font-weight:700;font-size:15px;transition:color .15s}
-    .proto-cat{font-size:11px;color:var(--text-3);margin-top:2px}
-    .yield-val{font-weight:800;font-size:16px;color:var(--green)}
-    .mech-tag{font-size:11px;font-weight:600;padding:4px 8px;border-radius:4px;background:var(--bg-2);color:var(--text-2)}
-    .mech-tag.burn{background:rgba(248,113,113,0.08);color:var(--red)}
-    .mech-tag.div{background:var(--purple-d);color:var(--purple)}
-    .mech-tag.buy{background:var(--green-d);color:var(--green)}
-    .trend-spark{width:80px;height:24px}
-
-    /* Footer */
-    footer{border-top:1px solid var(--border);padding:32px 0}
-    .ft{max-width:1400px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text-3)}
-    .ft-links{display:flex;gap:16px}
-    .ft-links a{color:var(--text-3);transition:color .15s}
-    .ft-links a:hover{color:var(--text-1)}
-    @media(max-width:768px){.ft{flex-direction:column;gap:12px;text-align:center;padding:0 20px}}
-
-    /* Reveal */
-    .rv{opacity:0;transform:translateY(20px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
-    .rv.vis{opacity:1;transform:none}
-    @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
   </style>
   <link rel="stylesheet" href="../css/theme-override.css">
 </head>
 <body>
-
-<header>
-  <div class="hd">
-    <a href="../" class="logo"><div class="logo-m">3D</div>Crypto3D</a>
-    <div class="hd-r">
-      <nav><ul class="hd-nav"><li><a href="../tev/">TEV</a></li><li><a href="../ahr999/">AHR999</a></li><li><a href="../mvrv/">MVRV</a></li><li><a href="../bmri/">BMRI</a></li><li><a href="../btc-dominance/">BTC.D</a></li></ul></nav>
-      <button class="ib tt" id="tt" aria-label="切换主题">
-        <svg class="moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/></svg>
-        <svg class="sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
-      </button>
-    </div>
-  </div>
-</header>
-
-<div class="page-head rv">
-  <div class="page-eyebrow">Protocol Valuation</div>
-  <h1 class="page-title">TEV · Token Enabled Value</h1>
-  <p class="page-desc">追踪协议收益如何流向代币持有者——回购、销毁、分红等价值分配机制，量化代币价值捕获能力。</p>
-</div>
-
-<div class="stats-row rv">
-  <div class="stat-item"><div class="stat-val mono" style="color:var(--green)">25+</div><div class="stat-lbl">覆盖协议</div></div>
-  <div class="stat-item"><div class="stat-val mono">5</div><div class="stat-lbl">分配机制</div></div>
-  <div class="stat-item"><div class="stat-val mono">$8.2B</div><div class="stat-lbl">年化价值分配</div></div>
-  <div class="stat-item"><div class="stat-val mono" style="color:var(--blue)">24h</div><div class="stat-lbl">更新频率</div></div>
-</div>
-
-<div class="filter-bar rv">
-  <button class="filter-btn active" data-filter="all">全部</button>
-  <button class="filter-btn" data-filter="perps">Perps</button>
-  <button class="filter-btn" data-filter="dex">DEX</button>
-  <button class="filter-btn" data-filter="lending">Lending</button>
-  <button class="filter-btn" data-filter="staking">Staking</button>
-  <button class="filter-btn" data-filter="defi">DeFi</button>
-</div>
-
-<div class="main">
-  <table class="data-table rv">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>协议</th>
-        <th>TEV Yield</th>
-        <th>机制</th>
-        <th>30日趋势</th>
-        <th>年化分配</th>
-      </tr>
-    </thead>
-    <tbody id="proto-list">
-      <!-- Dynamic content -->
-    </tbody>
-  </table>
-</div>
-
-<footer>
-  <div class="ft">
-    <span>© 2026 Crypto3D</span>
-    <div class="ft-links">
-      <a href="https://x.com/22333D" target="_blank">Twitter</a>
-      <a href="https://www.youtube.com/@Crypto36D" target="_blank">YouTube</a>
-      <a href="./governance/">治理动态</a>
-    </div>
-  </div>
-</footer>
-
-<script>
-document.getElementById('tt').addEventListener('click',()=>{
-  const isDark=document.documentElement.getAttribute('data-theme')!=='light';
-  isDark?document.documentElement.setAttribute('data-theme','light'):document.documentElement.removeAttribute('data-theme');
-  localStorage.setItem('theme',isDark?'light':'dark');
-});
-
-// Scroll reveal
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.08});
-document.querySelectorAll('.rv').forEach((el,i)=>{el.style.transitionDelay=i*40+'ms';io.observe(el)});
-
-// Protocol data
-const protocols=[
-  {rank:1,name:'Hyperliquid',cat:'Perps',yield:42.8,mech:'销毁',mechClass:'burn',annual:'$124M',trend:[38,40,39,41,42,43,42.8]},
-  {rank:2,name:'dYdX',cat:'Perps',yield:18.3,mech:'分配',mechClass:'div',annual:'$89M',trend:[16,17,17.5,18,18.2,18.1,18.3]},
-  {rank:3,name:'GMX',cat:'Perps',yield:12.6,mech:'分红',mechClass:'div',annual:'$52M',trend:[14,13.5,13,12.8,12.5,12.4,12.6]},
-  {rank:4,name:'Curve',cat:'DEX',yield:8.9,mech:'分红',mechClass:'div',annual:'$38M',trend:[9.2,9.1,9.0,8.8,8.7,8.8,8.9]},
-  {rank:5,name:'Aave',cat:'Lending',yield:5.2,mech:'回购',mechClass:'buy',annual:'$28M',trend:[4.8,4.9,5.0,5.1,5.2,5.2,5.2]},
-  {rank:6,name:'PancakeSwap',cat:'DEX',yield:7.8,mech:'销毁',mechClass:'burn',annual:'$42M',trend:[8.2,8.0,7.9,7.8,7.7,7.8,7.8]},
-  {rank:7,name:'Sushi',cat:'DEX',yield:4.2,mech:'分红',mechClass:'div',annual:'$18M',trend:[4.5,4.4,4.3,4.2,4.1,4.2,4.2]},
-  {rank:8,name:'Compound',cat:'Lending',yield:3.1,mech:'回购',mechClass:'buy',annual:'$12M',trend:[2.8,2.9,3.0,3.1,3.2,3.1,3.1]},
-  {rank:9,name:'Lido',cat:'Staking',yield:2.8,mech:'分红',mechClass:'div',annual:'$95M',trend:[2.5,2.6,2.7,2.8,2.9,2.8,2.8]},
-  {rank:10,name:'Rocket Pool',cat:'Staking',yield:2.1,mech:'分红',mechClass:'div',annual:'$8M',trend:[1.9,2.0,2.0,2.1,2.1,2.1,2.1]},
-];
-
-function spark(data,color){
-  const w=80,h=24,p=2;
-  const mn=Math.min(...data),mx=Math.max(...data),r=mx-mn||1;
-  const pts=data.map((v,i)=>[p+i/(data.length-1)*(w-p*2),h-p-(v-mn)/r*(h-p*2)]);
-  const ln=pts.map(p=>p.join(',')).join(' ');
-  return `<svg viewBox="0 0 ${w} ${h}" style="display:block;width:100%;height:100%"><polyline fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" points="${ln}"/></svg>`;
-}
-
-function render(filter){
-  const list=document.getElementById('proto-list');
-  const filtered=filter==='all'?protocols:protocols.filter(p=>p.cat.toLowerCase()===filter);
-  list.innerHTML=filtered.map(p=>`
-    <tr data-cat="${p.cat.toLowerCase()}">
-      <td><span class="proto-rank mono">${p.rank}</span></td>
-      <td>
-        <a href="#">
-          <div class="proto-icon">${p.name[0]}</div>
-          <div>
-            <div class="proto-name">${p.name}</div>
-            <div class="proto-cat">${p.cat}</div>
-          </div>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <a href="../" class="logo">
+          <img src="../logo.svg" alt="3D" class="logo-icon">
+          <span class="logo-text">Crypto3D</span>
         </a>
-      </td>
-      <td><span class="yield-val mono">${p.yield}%</span></td>
-      <td><span class="mech-tag ${p.mechClass}">${p.mech}</span></td>
-      <td><div class="trend-spark">${spark(p.trend,'#34d399')}</div></td>
-      <td><span class="mono">${p.annual}</span></td>
-    </tr>
-  `).join('');
-}
+        <div class="header-right">
+          <nav>
+            <a href="../" data-i18n="nav.home">首页</a>
+            <a href="../governance/" data-i18n="nav.governance" style="color:var(--text-secondary);">治理</a>
+          </nav>
+          <div class="lang-switch-tev">
+            <button class="lang-btn active" data-lang="zh">中文</button>
+            <button class="lang-btn" data-lang="en">EN</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-document.querySelectorAll('.filter-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    render(btn.dataset.filter);
-  });
-});
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1 data-i18n="hero.title">加密协议估值仪表盘</h1>
+        <p data-i18n="hero.subtitle">追踪协议收入真正流向代币持有者的比例。TEV Yield 是加密版的「股息率」。</p>
+      </div>
+    </section>
 
-render('all');
-</script>
+    
+
+    <section class="table-section" id="protocols">
+      <div class="container">
+        <div class="table-container">
+          <div class="table-header">
+            <div class="table-title" data-i18n="table.title">协议排名</div>
+            <div class="table-filters">
+              <button class="filter-btn active" data-filter="all" data-i18n="filter.all">全部</button>
+              <button class="filter-btn" data-filter="lending" data-i18n="filter.lending">借贷</button>
+              <button class="filter-btn" data-filter="dex" data-i18n="filter.dex">DEX</button>
+              <button class="filter-btn" data-filter="cex" data-i18n="filter.cex">CEX</button>
+              <button class="filter-btn" data-filter="perpetuals" data-i18n="filter.perps">Perps</button>
+              <button class="filter-btn" data-filter="yield" data-i18n="filter.yield">收益</button>
+            </div>
+          </div>
+          <div id="table-loading" class="loading">
+            <div class="loading-spinner"></div>
+            <div data-i18n="table.loading">加载协议数据中...</div>
+          </div>
+          <table id="protocol-table" style="display: none;">
+            <thead>
+              <tr>
+                <th style="width: 50px;">#</th>
+                <th data-i18n="th.protocol">协议</th>
+                <th class="text-right sortable" data-sort="tvl" data-i18n="th.tvl">TVL</th>
+                <th class="text-right sortable sorted desc" data-sort="tevStatus" data-i18n="th.tevStatus">TEV 状态</th>
+                <th class="text-right sortable" data-sort="tevRatio" data-i18n="th.tevRatio">分配比例</th>
+                <th class="text-right sortable" data-sort="mcap" data-i18n="th.mcap">市值</th>
+                <th class="text-right sortable" data-sort="earningYield" data-i18n="th.earningYield">收益率</th>
+                <th class="text-right sortable" data-sort="tevYield" data-i18n="th.yield">TEV Yield</th>
+                <th class="text-right" data-i18n="th.confidence">可信度</th>
+              </tr>
+            </thead>
+            <tbody id="protocol-tbody"></tbody>
+          </table>
+          <div class="data-update-time" id="data-update-time">数据更新: —</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro-section" id="methodology">
+      <div class="container">
+        <div class="intro-grid">
+          <div class="intro-card">
+            <h2><span class="icon">📊</span> <span data-i18n="intro.what.title">什么是 TEV?</span></h2>
+            <p data-i18n="intro.what.p1"><strong>TEV (Token Empowerment Value)</strong>，即「代币赋能价值」，是衡量加密协议向代币持有者分配价值能力的核心指标。</p>
+            <p data-i18n="intro.what.p2">不同于传统的「协议收入」，TEV 只计算真正赋能给代币持有者的那部分——包括回购销毁、质押分红、治理激励等。</p>
+            <div class="formula-box">TEV Yield = TEV ÷ Market Cap × 100%</div>
+            <p data-i18n="intro.what.p3">这个比率类似传统股票的「股息率」，帮助投资者用股东回报视角评估协议价值。</p>
+          </div>
+          <div class="intro-card">
+            <h2><span class="icon">💡</span> <span data-i18n="intro.why.title">为什么需要这个指标?</span></h2>
+            <p data-i18n="intro.why.p1">加密行业发展了这么多年，大部分 Token 依然是「空气」——持有它们除了投机，几乎没有任何实际价值。这也是为什么越来越多的投资者对「持币」失去信心。</p>
+            <p data-i18n="intro.why.p2">但并非所有项目都是如此。一些真正优秀的加密协议，正在通过回购、分红、销毁等方式，将协议收入回馈给代币持有者——这才是「持币者权益」应有的样子。</p>
+            <p data-i18n="intro.why.p3">TEV 指标的核心目标，就是帮你筛选出那些真正在为持币者创造价值的协议，而不是只会画饼的「空气项目」。用数据说话，让赋能可量化。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="author-video-section" id="about">
+      <div class="container">
+        <div class="author-video-grid">
+          <div class="author-card">
+            <div class="author-header">
+              <div class="author-avatar">🔮</div>
+              <div class="author-meta">
+                <h3>3D</h3>
+                <div class="tagline" data-i18n="author.tagline">DeFi 实战派 | TEV 框架创建者</div>
+              </div>
+            </div>
+            <p class="author-bio" data-i18n="author.bio">专注 DeFi、链上套利及低风险机会的探索与实战。TEV（代币赋能价值）指标体系是我在实践中提炼的估值框架——用「股东回报」视角审视加密项目，区分真正回馈持币者的优质协议和只会画饼的空气项目。相信「活得久」比「赚得多」更重要，希望这个工具能帮助更多人做出理性投资决策。我在 YouTube「3D 加密频道」持续分享 DeFi 研究和实战心得，欢迎订阅交流。</p>
+            <div class="author-links">
+              <a href="https://x.com/22333D" target="_blank" class="author-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                <span>@22333D</span>
+              </a>
+              <a href="https://www.youtube.com/@Crypto36D" target="_blank" class="author-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <span data-i18n="author.youtube">3D 加密频道</span>
+              </a>
+            </div>
+          </div>
+          <div class="video-card">
+            <h2 data-i18n="video.title">📺 TEV 框架详解</h2>
+            <div class="video-container">
+              <iframe src="https://www.youtube.com/embed/Gl8e_t2Zo6w" title="TEV Framework Explained" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="yt-banner">
+    <div class="container">
+      <div class="yt-banner-content">
+        <div class="yt-banner-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </div>
+        <div class="yt-banner-text">
+          <h3 data-i18n="ytbanner.title">📺 订阅 3D 加密频道</h3>
+          <p data-i18n="ytbanner.desc">更多 DeFi 深度分析、链上套利实战、低风险机会分享，尽在 YouTube</p>
+        </div>
+        <a href="https://www.youtube.com/@Crypto36D?sub_confirmation=1" target="_blank" class="yt-banner-btn" data-i18n="ytbanner.btn">立即订阅</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-text" id="footer-updated" data-i18n="footer.loading">加载数据中...</div>
+        <div class="footer-links">
+          <a href="#methodology" data-i18n="footer.methodology">方法论</a>
+          <a href="#" data-i18n="footer.sources">数据来源</a>
+          <a href="https://github.com" target="_blank">GitHub</a>
+          <a href="https://x.com/22333D" target="_blank">@22333D</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // === i18n ===
+    const i18n = {
+      zh: {
+        'nav.home': '← 首页', 'nav.governance': '治理', 'nav.protocols': '协议数据', 'nav.methodology': '方法论', 'nav.about': '关于',
+        'hero.title': '加密协议估值仪表盘', 'hero.subtitle': '追踪协议收入真正流向代币持有者的比例。TEV Yield 是加密版的「股息率」。',
+        'intro.what.title': '什么是 TEV?',
+        'intro.what.p1': '<strong>TEV (Token Empowerment Value)</strong>，即「代币赋能价值」，是衡量加密协议向代币持有者分配价值能力的核心指标。',
+        'intro.what.p2': '不同于传统的「协议收入」，TEV 只计算真正赋能给代币持有者的那部分——包括回购销毁、质押分红、治理激励等。',
+        'intro.what.p3': '这个比率类似传统股票的「股息率」，帮助投资者用股东回报视角评估协议价值。',
+        'intro.why.title': '为什么需要这个指标?',
+        'intro.why.p1': '加密行业发展了这么多年，大部分 Token 依然是「空气」——持有它们除了投机，几乎没有任何实际价值。这也是为什么越来越多的投资者对「持币」失去信心。',
+        'intro.why.p2': '但并非所有项目都是如此。一些真正优秀的加密协议，正在通过回购、分红、销毁等方式，将协议收入回馈给代币持有者——这才是「持币者权益」应有的样子。',
+        'intro.why.p3': 'TEV 指标的核心目标，就是帮你筛选出那些真正在为持币者创造价值的协议，而不是只会画饼的「空气项目」。用数据说话，让赋能可量化。',
+        'video.title': '📺 TEV 框架详解', 'author.tagline': 'DeFi 实战派 | TEV 框架创建者',
+        'author.bio': '专注 DeFi、链上套利及低风险机会的探索与实战。TEV（代币赋能价值）指标体系是我在实践中提炼的估值框架——用「股东回报」视角审视加密项目，区分真正回馈持币者的优质协议和只会画饼的空气项目。相信「活得久」比「赚得多」更重要，希望这个工具能帮助更多人做出理性投资决策。我在 YouTube「3D 加密频道」持续分享 DeFi 研究和实战心得，欢迎订阅交流。',
+        'author.youtube': '3D 加密频道',
+        'stats.protocols': '追踪协议数', 'stats.mcap': '总市值', 'stats.fees': '30日总费用', 'stats.tev': '30日总 TEV',
+        'table.title': '协议排名', 'table.loading': '加载协议数据中...',
+        'filter.all': '全部', 'filter.lending': '借贷', 'filter.dex': 'DEX', 'filter.cex': 'CEX', 'filter.perps': 'Perps', 'filter.yield': '收益',
+        'th.protocol': '协议', 'th.earningYield': '收益率', 'th.tvl': 'TVL', 'th.tevStatus': 'TEV 状态', 'th.tevRatio': '分配比例', 'th.mcap': '市值', 'th.yield': 'TEV Yield', 'th.confidence': '可信度',
+        'tevStatus.active': '活跃', 'tevStatus.partial': '部分', 'tevStatus.none': '无',
+        'confidence.high': '高', 'confidence.medium': '中', 'confidence.low': '低',
+        'footer.loading': '加载数据中...', 'footer.updated': '数据更新时间：{date} · 维护者 3D', 'footer.methodology': '方法论', 'footer.sources': '数据来源',
+        'ytbanner.title': '📺 订阅 3D 加密频道', 'ytbanner.desc': '更多 DeFi 深度分析、链上套利实战、低风险机会分享，尽在 YouTube', 'ytbanner.btn': '立即订阅',
+      },
+      en: {
+        'nav.home': '← Home', 'nav.governance': 'Governance', 'nav.protocols': 'Protocols', 'nav.methodology': 'Methodology', 'nav.about': 'About',
+        'hero.title': 'Crypto Protocol Valuation Dashboard', 'hero.subtitle': 'Track how much protocol revenue actually flows to token holders. TEV Yield is the dividend yield for crypto.',
+        'intro.what.title': 'What is TEV?',
+        'intro.what.p1': '<strong>TEV (Token Empowerment Value)</strong> measures how much value a crypto protocol distributes to its token holders.',
+        'intro.what.p2': 'Unlike "protocol revenue", TEV only counts value that actually empowers token holders — including buybacks, staking rewards, and governance incentives.',
+        'intro.what.p3': 'This ratio is similar to traditional dividend yield, helping investors evaluate protocols from a shareholder return perspective.',
+        'intro.why.title': 'Why This Metric?',
+        'intro.why.p1': 'After years of crypto evolution, most tokens remain "vaporware" — holding them offers nothing beyond speculation. That\'s why more investors are losing faith in "holding tokens."',
+        'intro.why.p2': 'But not all projects are the same. Some truly excellent DeFi protocols are giving back to token holders through buybacks, dividends, and burns — this is what "token holder equity" should look like.',
+        'intro.why.p3': 'The core goal of TEV is to help you identify protocols that genuinely create value for holders, not just projects that make empty promises. Let data speak, make empowerment measurable.',
+        'video.title': '📺 TEV Framework Explained', 'author.tagline': 'DeFi Practitioner | TEV Framework Creator',
+        'author.bio': 'Focused on DeFi, on-chain arbitrage, and low-risk opportunities. The TEV framework is a valuation system I developed to evaluate crypto projects from a shareholder return perspective. Subscribe to my YouTube channel "3D Crypto" for DeFi research and insights.',
+        'author.youtube': '3D Crypto Channel',
+        'stats.protocols': 'Protocols Tracked', 'stats.mcap': 'Total Market Cap', 'stats.fees': '30d Total Fees', 'stats.tev': '30d Total TEV',
+        'table.title': 'Protocol Rankings', 'table.loading': 'Loading protocol data...',
+        'filter.all': 'All', 'filter.lending': 'Lending', 'filter.dex': 'DEX', 'filter.cex': 'CEX', 'filter.perps': 'Perps', 'filter.yield': 'Yield',
+        'th.protocol': 'Protocol', 'th.earningYield': 'Earning Yield', 'th.tvl': 'TVL', 'th.tevStatus': 'TEV Status', 'th.tevRatio': 'Distribution', 'th.mcap': 'Market Cap', 'th.yield': 'TEV Yield', 'th.confidence': 'Confidence',
+        'tevStatus.active': 'Active', 'tevStatus.partial': 'Partial', 'tevStatus.none': 'None',
+        'confidence.high': 'High', 'confidence.medium': 'Medium', 'confidence.low': 'Low',
+        'footer.loading': 'Loading data...', 'footer.updated': 'Data updated: {date} · Maintained by 3D', 'footer.methodology': 'Methodology', 'footer.sources': 'Data Sources',
+        'ytbanner.title': '📺 Subscribe to 3D Crypto Channel', 'ytbanner.desc': 'More DeFi deep dives, on-chain arbitrage tactics, and low-risk opportunities on YouTube', 'ytbanner.btn': 'Subscribe Now',
+      }
+    };
+    let currentLang = 'zh';
+    const t = key => i18n[currentLang][key] || key;
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+      document.querySelectorAll('[data-i18n]').forEach(el => { const k = el.dataset.i18n; if (i18n[lang][k]) el.innerHTML = i18n[lang][k]; });
+      if (window.protocolData) { renderTable(window.protocolData); updateFooter(window.protocolData); } setupHeaderTips();
+    }
+
+    // === Data & State ===
+    let PROTOCOLS = {}, LOGO_URLS = {};
+
+    // Header tooltips
+    const headerTips = {
+      zh: {
+        tvl: 'Total Value Locked — 用户存入协议的总资产价值，反映协议的资金规模和信任度',
+        tevStatus: '该协议是否有将收入分配给代币持有者的机制，如回购、销毁、质押分红等',
+        tevRatio: '分配比例 = TEV ÷ 协议利润。衡量协议把多少比例的利润回馈给代币持有者，越高代表持有者获得的价值越多',
+        mcap: '代币的流通市值 = 当前价格 × 流通量，是计算 TEV Yield 的分母',
+        earningYield: '收益率 = 协议年化利润 ÷ 市值。类似传统金融的市盈率倒数（1/PE），反映协议的盈利能力',
+        tevYield: 'TEV Yield = 年化 TEV ÷ 市值。TEV（Token Enabled Value）是协议实际分配给代币持有者的价值（回购/销毁/分红），类似股票的股息率',
+        confidence: '数据可信度 — 基于数据来源是否可在链上验证、是否有公开 API、是否依赖第三方等因素综合判断'
+      },
+      en: {
+        tvl: 'Total Value Locked — total assets deposited in the protocol, reflecting its scale and trust',
+        tevStatus: 'Whether the protocol has mechanisms to distribute revenue to token holders (buybacks, burns, staking rewards, etc.)',
+        tevRatio: 'Distribution Ratio = TEV ÷ Protocol Revenue. Measures what share of profits goes back to token holders',
+        mcap: 'Circulating market cap = current price × circulating supply, used as denominator for TEV Yield',
+        earningYield: 'Earning Yield = Annualized Revenue ÷ Market Cap. Similar to inverse P/E ratio in traditional finance',
+        tevYield: 'TEV Yield = Annualized TEV ÷ Market Cap. TEV (Token Enabled Value) is the actual value distributed to holders (buybacks/burns/dividends), similar to dividend yield in stocks',
+        confidence: 'Data confidence — based on whether data is verifiable on-chain, has public APIs, or relies on third-party sources'
+      }
+    };
+    function setupHeaderTips() {
+      document.querySelectorAll('th[data-sort], th[data-i18n="th.confidence"]').forEach(th => {
+        const key = th.dataset.sort || 'confidence';
+        const tip = (headerTips[currentLang] || headerTips.zh)[key];
+        if (!tip) return;
+        let trigger = th.querySelector('.tip-trigger');
+        if (!trigger) { trigger = document.createElement('span'); trigger.className = 'tip-trigger'; trigger.textContent = 'ⓘ'; th.appendChild(trigger); }
+        trigger.setAttribute('data-tip', tip);
+      });
+    }
+    // Global tooltip controller
+    (function() {
+      const tip = document.createElement('div'); tip.id = 'g-tip'; document.body.appendChild(tip);
+      document.addEventListener('mouseover', e => {
+        const el = e.target.closest('[data-tip]');
+        if (!el || !el.dataset.tip) { tip.style.display = 'none'; return; }
+        tip.textContent = el.dataset.tip;
+        tip.style.display = 'block';
+        const r = el.getBoundingClientRect();
+        const top = r.bottom + 8;
+        let left = r.left;
+        // 防止右侧溢出
+        if (left + 330 > window.innerWidth) left = window.innerWidth - 340;
+        if (left < 8) left = 8;
+        // 防止底部溢出，改为上方显示
+        if (top + tip.offsetHeight > window.innerHeight) {
+          tip.style.top = (r.top - tip.offsetHeight - 8) + 'px';
+        } else {
+          tip.style.top = top + 'px';
+        }
+        tip.style.left = left + 'px';
+      });
+      document.addEventListener('mouseout', e => {
+        const el = e.target.closest('[data-tip]');
+        if (el) tip.style.display = 'none';
+      });
+    })();
+
+    let currentSort = { field: 'tevStatus', dir: 'desc' };
+    let currentFilter = 'all';
+    const TEV_STATUS_ORDER = { active: 3, partial: 2, none: 1 };
+
+    // === Formatting ===
+    const formatCurrency = (v, d = 0) => { if (v == null) return '—'; if (v >= 1e9) return '$' + (v / 1e9).toFixed(2) + 'B'; if (v >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M'; if (v >= 1e3) return '$' + (v / 1e3).toFixed(1) + 'K'; return '$' + v.toFixed(d); };
+    // formatPercent: v 已经是百分比（如 6.21 表示 6.21%），直接格式化即可
+    const formatPercent = v => v == null ? '—' : v.toFixed(2) + '%';
+
+    // === Data Loading ===
+    async function loadProtocolData() {
+      try {
+        const baseRes = await fetch('../data/all-protocols.json');
+        if (baseRes.ok) {
+          const baseData = await baseRes.json();
+          PROTOCOLS = baseData.protocols || {};
+          if (baseData.generated_at) {
+            const date = new Date(baseData.generated_at).toISOString().split('T')[0];
+            document.getElementById('data-update-time').textContent = (currentLang === 'zh' ? '数据更新: ' : 'Data updated: ') + date;
+          }
+        }
+      } catch (e) { console.warn('Failed to load all-protocols.json'); }
+      const entries = Object.entries(PROTOCOLS);
+      return Promise.all(entries.map(async ([key, config]) => {
+        try {
+          const res = await fetch(`../data/daily/${key}/latest.json`);
+          if (!res.ok) throw new Error();
+          const data = await res.json();
+          // 合并 metrics：优先用 daily 数据，回退到 all-protocols.json
+          const mergedMetrics = { ...config.metrics, ...data.metrics };
+          // tevRatio 直接使用 all-protocols.json 中的预计算值，不再动态计算
+          return { key, ...config, ...data, metrics: mergedMetrics, tevRatio: config.tevRatio };
+        } catch { return { key, ...config, error: true }; }
+      }));
+    }
+
+    // === Sorting ===
+    function getSortValue(p, f) {
+      switch (f) {
+        case 'tvl': return p.tvl || 0;
+        case 'tevStatus': return TEV_STATUS_ORDER[p.tevStatus] || 0;
+        case 'tevRatio': return p.tevRatio || 0;
+        case 'mcap': return p.market_cap_usd || 0;
+        case 'earningYield': return p.earning_yield_percent || 0;
+        case 'tevYield': return p.tev_yield_percent || 0;
+        default: return 0;
+      }
+    }
+    function sortProtocols(arr, f, d) {
+      return [...arr].sort((a, b) => {
+        // 默认排序（tevStatus）：有 tev_yield > 0 的排前面，然后按市值
+        if (f === 'tevStatus') {
+          const aYield = a.tev_yield_percent || 0;
+          const bYield = b.tev_yield_percent || 0;
+          const aHasYield = aYield > 0 ? 1 : 0;
+          const bHasYield = bYield > 0 ? 1 : 0;
+          if (bHasYield !== aHasYield) return bHasYield - aHasYield;
+          return (b.market_cap_usd || 0) - (a.market_cap_usd || 0);
+        }
+        // 其他字段：按点击的字段排序，使用预计算值
+        let aVal, bVal;
+        switch (f) {
+          case 'tvl': aVal = a.tvl || 0; bVal = b.tvl || 0; break;
+          case 'tevRatio': aVal = a.tevRatio || 0; bVal = b.tevRatio || 0; break;
+          case 'mcap': aVal = a.market_cap_usd || 0; bVal = b.market_cap_usd || 0; break;
+          case 'earningYield': aVal = a.earning_yield_percent || 0; bVal = b.earning_yield_percent || 0; break;
+          case 'tevYield': aVal = a.tev_yield_percent || 0; bVal = b.tev_yield_percent || 0; break;
+          default: aVal = a.market_cap_usd || 0; bVal = b.market_cap_usd || 0;
+        }
+        // 根据方向排序
+        const diff = bVal - aVal;  // 默认降序
+        return d === 'asc' ? -diff : diff;
+      });
+    }
+    function updateSortIndicators() {
+      document.querySelectorAll('th.sortable').forEach(th => {
+        th.classList.remove('sorted', 'asc', 'desc');
+        th.textContent = t(th.dataset.i18n || th.getAttribute('data-i18n'));
+      });
+      const active = document.querySelector(`th[data-sort="${currentSort.field}"]`);
+      if (active) active.classList.add('sorted', currentSort.dir);
+    }
+
+    // === Render ===
+    function renderTable(protocols, filter = currentFilter, sortField = null, sortDir = null) {
+      const tbody = document.getElementById('protocol-tbody');
+      tbody.innerHTML = '';
+      currentFilter = filter;
+      let filtered = protocols;
+      if (filter !== 'all') {
+        if (filter === 'cex') filtered = protocols.filter(p => p.category === 'cex');
+        else if (filter === 'perpetuals') filtered = protocols.filter(p => p.category === 'perpetuals');
+        else filtered = protocols.filter(p => p.category === filter);
+      }
+      if (sortField) { currentSort.field = sortField; currentSort.dir = sortDir || 'desc'; }
+      filtered = sortProtocols(filtered, currentSort.field, currentSort.dir);
+      updateSortIndicators();
+
+      filtered.forEach((p, i) => {
+        // 直接使用 all-protocols.json 中的预计算值
+        const tevYield = p.tev_yield_percent || 0;
+        const earningYield = p.earning_yield_percent || 0;
+        const tevStatus = p.tevStatus || 'none';
+        const tevRatio = p.tevRatio || 0;
+        const mcap = p.market_cap_usd || 0;
+
+        // tevRatio 显示：处理 'dynamic' 字符串和数字
+        let tevRatioDisplay = '—';
+        if (typeof tevRatio === 'string') {
+          tevRatioDisplay = tevRatio;
+        } else if (tevRatio > 0) {
+          tevRatioDisplay = (tevRatio * 100).toFixed(0) + '%';
+        }
+
+        const row = document.createElement('tr');
+        row.onclick = () => window.location.href = `protocol.html?id=${p.key}`;
+        row.innerHTML = `
+          <td>${i + 1}</td>
+          <td><div class="protocol-cell">
+            <div class="protocol-icon"><img src="${LOGO_URLS[p.key] || p.icon}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='${p.name.charAt(0)}'"></div>
+            <div class="protocol-info"><span class="protocol-name">${p.name}</span><span class="protocol-ticker">${p.ticker}</span></div>
+          </div></td>
+          <td class="text-right"><span class="value">${formatCurrency(p.tvl)}</span></td>
+          <td class="text-right"><span class="badge badge-${tevStatus === 'active' ? 'active' : tevStatus === 'partial' ? 'partial' : 'none'}">${tevStatus === 'active' ? '✓' : tevStatus === 'partial' ? '~' : '✗'} ${t('tevStatus.' + tevStatus)}</span></td>
+          <td class="text-right"><span class="value ${tevRatio >= 0.5 ? 'value-highlight' : tevRatio > 0 ? '' : 'value-zero'}">${tevRatioDisplay}</span></td>
+          <td class="text-right"><span class="value">${formatCurrency(mcap)}</span></td>
+          <td class="text-right"><span class="value ${earningYield > 0.1 ? 'value-highlight' : earningYield === 0 ? 'value-zero' : ''}">${earningYield > 0 ? formatPercent(earningYield) : '—'}</span></td>
+          <td class="text-right"><span class="value ${tevYield > 10 ? 'value-highlight' : tevYield === 0 ? 'value-zero' : ''}">${formatPercent(tevYield)}</span></td>
+          <td class="text-right"><span class="badge badge-${p.confidence === 'high' ? 'high' : p.confidence === 'medium' ? 'medium' : 'low'}" data-tip="${(p.confidence_reason && p.confidence_reason[currentLang]) || ''}">${p.confidence === 'high' ? '✓' : '!'} ${t('confidence.' + p.confidence)}</span></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function updateStats(protocols) {
+      const valid = protocols.filter(p => !p.error);
+
+    }
+
+    function updateFooter(protocols) {
+      const latest = protocols.map(p => p.updated_at).filter(Boolean).sort().reverse()[0];
+      if (latest) {
+        const dateStr = new Date(latest).toLocaleDateString(currentLang === 'zh' ? 'zh-CN' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        document.getElementById('footer-updated').textContent = t('footer.updated').replace('{date}', dateStr);
+      }
+    }
+
+    // === Init ===
+    async function init() {
+      try {
+        try { const lr = await fetch('../data/logo_urls.json'); if (lr.ok) LOGO_URLS = await lr.json(); } catch {}
+        const protocols = await loadProtocolData();
+        window.protocolData = protocols;
+        document.getElementById('table-loading').style.display = 'none';
+        document.getElementById('protocol-table').style.display = 'table';
+        renderTable(protocols);
+        setupHeaderTips();
+        updateStats(protocols);
+        updateFooter(protocols);
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          renderTable(window.protocolData, btn.dataset.filter);
+        }));
+        document.querySelectorAll('th.sortable').forEach(th => th.addEventListener('click', () => {
+          const f = th.dataset.sort, d = currentSort.field === f && currentSort.dir === 'desc' ? 'asc' : 'desc';
+          renderTable(window.protocolData, currentFilter, f, d);
+        }));
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+      } catch (e) {
+        console.error('Init failed:', e);
+        document.getElementById('table-loading').innerHTML = `<div style="color:var(--danger);">Failed to load data</div><div style="margin-top:8px;font-size:12px;">${e.message}</div>`;
+      }
+    }
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
 <script src="../js/theme.js"></script>
 </body>
 </html>

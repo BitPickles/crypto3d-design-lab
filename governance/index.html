@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <script>(function(){var t=localStorage.getItem('theme');if(t!=='dark')document.documentElement.setAttribute('data-theme','light')})()</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+  <title>治理提案监控 — Crypto3D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../indicators/css/common.css">
+  <style>
+    /* ===== Stats Row ===== */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+    .mini-stat { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+    .mini-stat .label { font-size: 11px; color: var(--text-tertiary); margin-bottom: 3px; }
+    .mini-stat .value { font-size: 22px; font-weight: 700; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; }
+    .clickable-stat { text-decoration: none; cursor: pointer; transition: all 0.2s; }
+    .clickable-stat:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .updated-at { font-size: 11px; color: var(--text-tertiary); text-align: right; margin-bottom: 14px; }
+
+    /* ===== Two-Column Layout ===== */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ===== Left: Feed ===== */
+    .feed-panel {
+      position: sticky;
+      top: 80px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-hover) transparent;
+    }
+    .feed-panel::-webkit-scrollbar { width: 4px; }
+    .feed-panel::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 2px; }
+
+    .feed-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      position: sticky;
+      top: 0;
+      background: var(--bg-primary);
+      padding: 4px 0 8px;
+      z-index: 2;
+    }
+    .feed-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .feed-title .fire { font-size: 18px; }
+    .feed-count {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      background: var(--bg-tertiary);
+      padding: 2px 8px;
+      border-radius: 8px;
+    }
+    .feed-toggle {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .feed-toggle:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+
+    .feed-list {
+      position: relative;
+      padding-left: 18px;
+    }
+    .feed-list::before {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 8px;
+      bottom: 8px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--border-hover), var(--border), transparent);
+    }
+
+    .feed-item {
+      position: relative;
+      padding: 14px 16px;
+      margin-bottom: 2px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: block;
+    }
+    .feed-item:hover { border-color: var(--border-hover); background: var(--bg-tertiary); }
+    .feed-item.is-active { border-left: 3px solid #22c55e; }
+    .feed-item.is-active:hover { box-shadow: 0 4px 12px rgba(34,197,94,0.08); }
+
+    .feed-item::before {
+      content: '';
+      position: absolute;
+      left: -18px;
+      top: 22px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--border-hover);
+      border: 2px solid var(--bg-primary);
+      z-index: 1;
+    }
+    .feed-item.is-active::before { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.5); }
+    .feed-item.is-passed::before { background: #64748b; }
+
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 4px rgba(34,197,94,0.3); }
+      50% { box-shadow: 0 0 10px rgba(34,197,94,0.6); }
+    }
+    .feed-item.is-active::before { animation: pulse-dot 2s ease-in-out infinite; }
+
+    .feed-item-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .feed-logo {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .feed-logo-placeholder {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+    }
+    .feed-protocol { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .feed-ticker { font-size: 10px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
+    .feed-status {
+      font-size: 10px;
+      padding: 1px 7px;
+      border-radius: 5px;
+      font-weight: 500;
+      margin-left: auto;
+    }
+    .feed-status.active { background: rgba(34,197,94,0.1); color: #22c55e; }
+    .feed-status.passed { background: rgba(148,163,184,0.1); color: #64748b; }
+    .feed-status.closed { background: var(--bg-tertiary); color: var(--text-tertiary); }
+
+    .feed-proposal-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.4;
+      margin-bottom: 5px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .feed-keywords { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
+    .feed-kw {
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-tertiary);
+      background: var(--bg-tertiary);
+      padding: 1px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .feed-summary {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .feed-summary.has-analysis { -webkit-line-clamp: 5; }
+    .feed-time {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      margin-top: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .feed-arrow { font-size: 11px; color: var(--text-tertiary); transition: transform 0.2s; }
+    .feed-item:hover .feed-arrow { transform: translateX(3px); color: #8b9cf7; }
+
+    /* ===== Right: Protocol Cards ===== */
+    .cards-panel {}
+    .cards-panel-header {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
+    }
+
+    /* Compact card */
+    .protocol-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .protocol-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-logo {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .card-logo-placeholder {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-hover));
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+    }
+    .card-identity { flex: 1; min-width: 0; }
+    .card-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-meta-line {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 1px;
+    }
+    .card-meta-line .sep { color: var(--border); }
+    .card-tev-yield {
+      font-family: 'JetBrains Mono', monospace;
+      color: #8b9cf7;
+      font-weight: 600;
+      font-size: 11px;
+    }
+
+    .card-stats-row {
+      display: flex;
+      gap: 12px;
+      font-size: 11px;
+      color: var(--text-tertiary);
+    }
+    .card-stats-row .stat-num {
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .card-stats-row .stat-num.active { color: #22c55e; }
+    .card-stats-row .stat-num.tev { color: #8b9cf7; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 900px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+      .feed-panel {
+        position: static;
+        max-height: none;
+        overflow: visible;
+      }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .protocol-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <link rel="stylesheet" href="../css/theme-override.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <a href="../" class="logo">
+          <img src="../logo.svg" alt="3D" class="logo-icon">
+          <span class="logo-text">Crypto3D</span>
+        </a>
+        <div class="nav-links">
+          <a href="../">首页</a>
+          <a href="../tev/" style="color:var(--text-primary);">TEV</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h1 class="page-title">🏛️ 治理提案监控</h1>
+        <p class="page-subtitle">TEV 协议治理提案实时追踪 · 每日自动更新</p>
+      </div>
+      <div class="updated-at" id="updated-at">加载中...</div>
+      <div class="stats-row">
+        <div class="mini-stat"><div class="label">监控协议</div><div class="value" id="s-protocols">—</div></div>
+        <a class="mini-stat clickable-stat" href="proposals.html?filter=active"><div class="label">进行中</div><div class="value" style="color:#22c55e" id="s-active">—</div></a>
+        <a class="mini-stat clickable-stat" href="proposals.html?filter=passed"><div class="label">已通过</div><div class="value" id="s-passed">—</div></a>
+        <a class="mini-stat clickable-stat" href="proposals.html?filter=tev"><div class="label">TEV 相关</div><div class="value" style="color:#8b9cf7" id="s-tev">—</div></a>
+      </div>
+
+      <div class="main-layout">
+        <!-- Left: Protocol Cards -->
+        <div class="cards-panel">
+          <div class="cards-panel-header">📋 协议总览</div>
+          <div class="protocol-grid" id="protocol-grid">
+            <div style="text-align:center;color:var(--text-tertiary);padding:40px;">加载中...</div>
+          </div>
+        </div>
+
+        <!-- Right: Feed -->
+        <div class="feed-panel" id="feed-section" style="display:none;">
+          <div class="feed-header">
+            <div class="feed-title">
+              <span class="fire">🔥</span> TEV 治理动态 <span class="feed-count" id="feed-count">0</span>
+            </div>
+            <a class="feed-toggle" href="proposals.html?filter=tev">查看全部 →</a>
+          </div>
+          <div class="feed-list" id="feed-list"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const CATEGORY_ZH = {
+      lending: '借贷', dex: 'DEX', derivatives: '衍生品', staking: '质押',
+      yield: '收益', bridge: '桥', l1: 'L1', l2: 'L2', cex: 'CEX',
+      restaking: '再质押', cdp: 'CDP', rwa: 'RWA', perp_dex: '永续DEX'
+    };
+
+    const TEV_TO_GOV = {
+      'aave': 'Aave', 'bnb': 'BNB Chain', 'compound': 'Compound', 'curve': 'Curve',
+      'dydx': 'dYdX', 'eigenlayer': 'EigenLayer', 'ethena': 'Ethena', 'etherfi': 'ether.fi',
+      'fluid': 'Fluid', 'gmx': 'GMX', 'lido': 'Lido', 'maple': 'Maple Finance',
+      'morpho': 'Morpho', 'pancakeswap': 'PancakeSwap', 'pendle': 'Pendle',
+      'mnt': 'Mantle', 'sky': 'Sky (MakerDAO)', 'spark': 'Spark', 'uniswap': 'Uniswap'
+    };
+    const GOV_TO_TEV = {};
+    for (const [k,v] of Object.entries(TEV_TO_GOV)) GOV_TO_TEV[v] = k;
+
+    let tevProtocols = {};
+    const TEV_ORDER = [];
+
+    function formatMcap(v) {
+      if (!v || v <= 0) return '';
+      if (v >= 1e9) return '$' + (v / 1e9).toFixed(1) + 'B';
+      if (v >= 1e6) return '$' + (v / 1e6).toFixed(0) + 'M';
+      return '$' + (v / 1e3).toFixed(0) + 'K';
+    }
+
+    function formatDate(ts) {
+      if (!ts) return '';
+      const d = typeof ts === 'number' ? new Date(ts * 1000) : new Date(ts);
+      if (isNaN(d.getTime())) return '';
+      return `${d.getMonth()+1}月${d.getDate()}日`;
+    }
+
+    let allTevProposals = [];
+    const FEED_DEFAULT = 8;
+
+    function renderFeed() {
+      const list = document.getElementById('feed-list');
+      const items = allTevProposals.slice(0, FEED_DEFAULT);
+
+      list.innerHTML = items.map(p => {
+        const tevId = GOV_TO_TEV[p.protocol];
+        const tevInfo = tevId ? tevProtocols[tevId] : null;
+        const icon = tevInfo?.icon;
+        const ticker = tevInfo?.ticker || '';
+        const sc = p.status === 'active' ? 'active' : p.status === 'passed' ? 'passed' : 'closed';
+        const sl = p.status === 'active' ? '进行中' : p.status === 'passed' ? '已通过' : '已关闭';
+        const keywords = (p.tev_keywords || []);
+        const fullAnalysis = p.analysis_zh || '';
+
+        let title, summary;
+        if (fullAnalysis) {
+          const parts = fullAnalysis.split(/\n\s*\n/);
+          title = parts[0].trim();
+          summary = parts.slice(1).join('\n\n').trim() || '';
+        } else {
+          title = p.title.replace(/^#\s*/, '');
+          summary = p.summary_zh || p.summary_en || '';
+        }
+
+        const logo = icon
+          ? `<img class="feed-logo" src="${icon}" alt="${p.protocol}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="feed-logo-placeholder" style="display:none">${p.protocol.charAt(0)}</div>`
+          : `<div class="feed-logo-placeholder">${p.protocol.charAt(0)}</div>`;
+
+        let ts = '';
+        if (p.status === 'active' && p.end) ts = `截止 ${formatDate(p.end)}`;
+        else if (p.created) ts = formatDate(p.created);
+
+        return `
+          <a class="feed-item is-${sc}" href="${p.link}" target="_blank" rel="noopener">
+            <div class="feed-item-top">
+              ${logo}
+              <span class="feed-protocol">${p.protocol}</span>
+              ${ticker ? `<span class="feed-ticker">${ticker}</span>` : ''}
+              <span class="feed-status ${sc}">${sl}</span>
+            </div>
+            <div class="feed-proposal-title">${title}</div>
+            ${keywords.length ? `<div class="feed-keywords">${keywords.map(k=>`<span class="feed-kw">${k}</span>`).join('')}</div>` : ''}
+            ${summary ? `<div class="feed-summary ${fullAnalysis ? 'has-analysis' : ''}">${summary}</div>` : ''}
+            <div class="feed-time"><span>${ts}</span><span class="feed-arrow">→</span></div>
+          </a>`;
+      }).join('');
+    }
+
+    async function loadData() {
+      try {
+        const tevResp = await fetch('../data/all-protocols.json');
+        const tevData = await tevResp.json();
+        tevProtocols = tevData.protocols;
+        const sorted = Object.entries(tevProtocols).sort((a,b) => {
+          const aH = (a[1].tev_yield_percent||0) > 0 ? 1 : 0;
+          const bH = (b[1].tev_yield_percent||0) > 0 ? 1 : 0;
+          if (bH !== aH) return bH - aH;
+          return (b[1].market_cap_usd||0) - (a[1].market_cap_usd||0);
+        });
+        for (const [id, info] of sorted) TEV_ORDER.push({ id, ...info });
+      } catch(e) {}
+
+      const resp = await fetch('../data/governance.json');
+      const data = await resp.json();
+
+      document.getElementById('s-active').textContent = data.active_count || 0;
+      document.getElementById('s-passed').textContent = data.passed_count || 0;
+      document.getElementById('s-tev').textContent = data.tev_related || 0;
+      document.getElementById('s-protocols').textContent = data.monitored_protocols || 0;
+      document.getElementById('updated-at').textContent =
+        '最后更新: ' + new Date(data.updated_at).toLocaleString('zh-CN', {timeZone:'Asia/Shanghai'});
+
+      // Feed
+      const tevP = data.proposals.filter(p => p.tev_related);
+      tevP.sort((a,b) => {
+        const aA = a.status==='active'?1:0, bA = b.status==='active'?1:0;
+        if (bA!==aA) return bA-aA;
+        const aT = typeof a.created==='number'?a.created:new Date(a.created).getTime()/1000;
+        const bT = typeof b.created==='number'?b.created:new Date(b.created).getTime()/1000;
+        return bT-aT;
+      });
+      allTevProposals = tevP;
+      if (tevP.length) {
+        document.getElementById('feed-section').style.display = '';
+        document.getElementById('feed-count').textContent = tevP.length;
+        renderFeed();
+      }
+
+      // Cards
+      const byProto = {};
+      for (const p of data.proposals) {
+        if (!byProto[p.protocol]) byProto[p.protocol] = [];
+        byProto[p.protocol].push(p);
+      }
+      if (data.protocols_meta) {
+        for (const name of Object.keys(data.protocols_meta)) {
+          if (!byProto[name]) byProto[name] = [];
+        }
+      }
+
+      const grid = document.getElementById('protocol-grid');
+      let html = '';
+      const rendered = new Set();
+
+      for (const tp of TEV_ORDER) {
+        const gn = TEV_TO_GOV[tp.id];
+        if (!gn) continue;
+        const ps = byProto[gn] || [];
+        if (!ps.length && !data.protocols_meta?.[gn]) continue;
+        rendered.add(gn);
+        html += renderCard(gn, ps, tp);
+      }
+      for (const [name, ps] of Object.entries(byProto)) {
+        if (!rendered.has(name) && ps.length) html += renderCard(name, ps, null);
+      }
+      grid.innerHTML = html || '<div style="text-align:center;color:var(--text-tertiary);padding:40px;">暂无数据</div>';
+    }
+
+    function renderCard(name, proposals, tevInfo) {
+      const active = proposals.filter(p=>p.status==='active').length;
+      const passed = proposals.filter(p=>p.status==='passed').length;
+      const tevRel = proposals.filter(p=>p.tev_related).length;
+      const hasYield = tevInfo && (tevInfo.tev_yield_percent||0) > 0;
+      const slug = encodeURIComponent(name);
+      const icon = tevInfo?.icon;
+
+      const logo = icon
+        ? `<img class="card-logo" src="${icon}" alt="${name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-logo-placeholder" style="display:none">${name.charAt(0)}</div>`
+        : `<div class="card-logo-placeholder">${name.charAt(0)}</div>`;
+
+      const ticker = tevInfo?.ticker || '';
+      const cat = tevInfo?.category ? (CATEGORY_ZH[tevInfo.category]||tevInfo.category) : '';
+      const mcap = formatMcap(tevInfo?.market_cap_usd);
+      const yld = hasYield ? tevInfo.tev_yield_percent.toFixed(1)+'%' : '';
+
+      const metaParts = [];
+      if (cat) metaParts.push(cat);
+      if (mcap) metaParts.push(mcap);
+      const metaHtml = metaParts.join('<span class="sep">·</span>');
+
+      return `
+        <a class="protocol-card"
+           href="protocol.html?name=${slug}">
+          <div class="card-top">
+            ${logo}
+            <div class="card-identity">
+              <div class="card-name">${name} ${ticker?`<span style="font-size:11px;color:var(--text-tertiary);font-weight:400;font-family:'JetBrains Mono',monospace">${ticker}</span>`:''}</div>
+              <div class="card-meta-line">${metaHtml}${yld?`<span class="sep">·</span><span class="card-tev-yield">TEV ${yld}</span>`:''}</div>
+            </div>
+          </div>
+          <div class="card-stats-row">
+            <span><span class="stat-num">${proposals.length}</span> 提案</span>
+            ${active?`<span><span class="stat-num active">${active}</span> 进行中</span>`:''}
+            ${tevRel?`<span><span class="stat-num tev">${tevRel}</span> TEV相关</span>`:''}
+          </div>
+        </a>`;
+    }
+
+    loadData();
+  </script>
+<script src="../js/theme.js"></script>
+</body>
+</html>
