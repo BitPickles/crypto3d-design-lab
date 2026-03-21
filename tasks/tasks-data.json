@@ -276,33 +276,6 @@
         }
       ],
       "boss_channel": "telegram:1311453837"
-    },
-    {
-      "id": "task-004",
-      "name": "任务看板 Agent 状态像素风 GIF 设计",
-      "assignee": "designer",
-      "assigner": "main",
-      "status": "in_progress",
-      "created_at": "2026-03-21T23:14:55+08:00",
-      "monitor_cron_id": "c67685e9-ee84-427b-884c-b9fcf838c9e9",
-      "check_interval": "15m",
-      "description": "为任务调度看板设计 4 个 Agent 状态用的像素风 meme GIF：idle / working / busy / commanding。走自制方案，不再搜索现成素材。",
-      "acceptance_criteria": "需要交付 4 个状态 GIF（idle/working/busy/commanding），每个约 4-5 帧，可循环，适合小尺寸卡片头像位显示。风格要求：像素风、好玩、搞笑、有梗，不要企业风。语义要求：idle=摆烂/发呆；working=爆肝/狂敲；busy=CPU爆炸/崩溃；commanding=盯人/审查/指挥。先出方案和预览给 Boss 确认，通过后再替换上线。",
-      "progress_notes": [
-        {
-          "time": "2026-03-21T23:14:55+08:00",
-          "actor": "main",
-          "task_name": "任务看板 Agent 状态像素风 GIF 设计",
-          "note": "Boss 决定不再找现成 meme 图，改为自制一套像素风 GIF。已创建持续任务并派给设计师。"
-        },
-        {
-          "time": "2026-03-21T23:31:00+08:00",
-          "actor": "main",
-          "task_name": "任务看板 Agent 状态像素风 GIF 设计",
-          "note": "📊 监控检查：designer 最后活动 23:24（7分钟前），当前正在处理 task-002 的 TEV 详情页问题。task-004 创建仅 16 分钟，设计师尚未开始 GIF 设计。无需催促，等待 task-002 完成后再跟进。"
-        }
-      ],
-      "boss_channel": "telegram:1311453837"
     }
   ]
 }
