@@ -1,0 +1,56 @@
+{
+  "id": "lido",
+  "name": "Lido",
+  "ticker": "LDO",
+  "icon": "https://coin-images.coingecko.com/coins/images/13573/large/Lido_DAO.png",
+  "category": "liquid_staking",
+  "description": "以太坊流动性质押协议",
+  "website": "https://lido.fi",
+  "docs": "https://docs.lido.fi",
+  "token": {
+    "address": "0x5a98fcbea516cf06857215779fd812ca3bef1b32",
+    "chain": "ethereum",
+    "coingecko_id": "lido-dao",
+    "defillama_id": "lido",
+    "circulating_supply": 848066802.5927889,
+    "total_supply": 1000000000
+  },
+  "tev_mechanisms": [],
+  "tev_summary": {
+    "fee_switch": "OFF",
+    "fee_switch_details": "所有收入归 DAO 国库，无分配给 LDO 持有者",
+    "buybacks": "NONE",
+    "dividends": "NONE",
+    "burns": "NONE",
+    "primary_value_accrual": "无 - LDO 仅为治理代币，不分享协议收入"
+  },
+  "confidence": "high",
+  "data_sources": [
+    {
+      "name": "DefiLlama tokenRights",
+      "type": "api",
+      "url": "https://api.llama.fi/protocol/lido",
+      "reliability": "high"
+    }
+  ],
+  "notes": "【收入规模】年化协议费用约 $677M，DAO 分成（10%费率的50%）约 $34M/年。尽管 Lido 是最大的 DeFi 协议之一（TVL $22B+），但 LDO 代币不分享任何协议收入（fee switch OFF）。协议收入完全归 DAO 国库控制。若未来开启 fee switch，潜在 TEV 基数较大。",
+  "last_updated": "2026-02-14",
+  "tev_data": {
+    "has_tev": false,
+    "tev_yield_percent": 0,
+    "annual_tev_usd": 0,
+    "note": "无持续 TEV"
+  },
+  "market_data": {
+    "tvl": 19854132982.44279,
+    "tvl_updated": "2026-03-21T13:01:43.069Z"
+  },
+  "tevStatus": "none",
+  "confidence_reason": {
+    "zh": "无 TEV 机制，纯治理代币，数据源透明",
+    "en": "No TEV mechanism, governance-only, transparent data"
+  },
+  "tevRatio": 0,
+  "earning_yield_percent": 29.49,
+  "market_cap_usd": 268602512.85
+}

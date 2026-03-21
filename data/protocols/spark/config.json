@@ -1,0 +1,70 @@
+{
+  "id": "spark",
+  "name": "Spark",
+  "ticker": "SPK",
+  "icon": "https://coin-images.coingecko.com/coins/images/38637/large/Spark-Logomark-RGB.png",
+  "category": "lending",
+  "description": "Sky (原 MakerDAO) 生态的借贷协议，提供 DAI 储蓄利率",
+  "website": "https://spark.fi",
+  "docs": "https://docs.spark.fi",
+  "token": {
+    "address": "0x4cF098fc4B4D8Bd2A7e30Dc8D4d1C9A19ce6Fc14",
+    "chain": "ethereum",
+    "coingecko_id": "spark-2",
+    "defillama_id": "spark",
+    "circulating_supply": 2356595748.026746,
+    "total_supply": 10000000000
+  },
+  "tev_mechanisms": [
+    {
+      "type": "airdrop",
+      "name": "SPK Airdrop",
+      "description": "SPK 代币通过空投分发给 Spark 用户",
+      "status": "active",
+      "start_date": "2024-09-01"
+    }
+  ],
+  "tev_summary": {
+    "fee_switch": "OFF",
+    "fee_switch_details": "SPK 代币刚启动，收入流向 Sky DAO",
+    "buybacks": "NONE",
+    "dividends": "NONE",
+    "burns": "NONE",
+    "primary_value_accrual": "治理代币 - SPK 用于 Spark SubDAO 治理，收入目前流向 Sky 主 DAO"
+  },
+  "confidence": "medium",
+  "data_sources": [
+    {
+      "name": "Spark Finance",
+      "type": "documentation",
+      "url": "https://spark.fi",
+      "reliability": "high"
+    },
+    {
+      "name": "DefiLlama",
+      "type": "api",
+      "url": "https://api.llama.fi/protocol/sparklend",
+      "reliability": "high"
+    }
+  ],
+  "notes": "Spark 是 Sky 生态的 SubDAO，SPK 代币于 2024 年 Q3 启动。作为新代币，TEV 机制仍在发展中。协议收入主要流向 Sky 主 DAO，通过 Smart Burn Engine 回购 MKR。",
+  "last_updated": "2026-02-14",
+  "tev_data": {
+    "has_tev": false,
+    "tev_yield_percent": 0,
+    "annual_tev_usd": 0,
+    "note": "无持续 TEV"
+  },
+  "market_data": {
+    "tvl": 5219616390.360991,
+    "tvl_updated": "2026-03-21T13:02:40.939Z"
+  },
+  "tevStatus": "none",
+  "confidence_reason": {
+    "zh": "SPK 代币较新，收入归 Sky DAO，具体分配机制仍在治理讨论中",
+    "en": "SPK token is new, revenue goes to Sky DAO, distribution mechanism still under governance discussion"
+  },
+  "tevRatio": 0,
+  "earning_yield_percent": 46.77,
+  "market_cap_usd": 49017114.84
+}

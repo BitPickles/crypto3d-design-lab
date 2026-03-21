@@ -1,0 +1,62 @@
+{
+  "id": "morpho",
+  "name": "Morpho",
+  "ticker": "MORPHO",
+  "icon": "https://coin-images.coingecko.com/coins/images/29837/large/Morpho-token-icon.png",
+  "category": "lending",
+  "description": "去中心化借贷优化器，提供更高效的利率匹配",
+  "website": "https://morpho.org",
+  "docs": "https://docs.morpho.org",
+  "token": {
+    "address": "0x58D97B57BB95320F9a05dC918Aef65434969c2B2",
+    "chain": "ethereum",
+    "coingecko_id": "morpho",
+    "defillama_id": "morpho",
+    "circulating_supply": 545775191.4464494,
+    "total_supply": 1000000000
+  },
+  "tev_mechanisms": [],
+  "tev_summary": {
+    "fee_switch": "OFF",
+    "fee_switch_details": "Morpho 当前无协议费用，由 vault curators 自行设定",
+    "buybacks": "NONE",
+    "dividends": "NONE",
+    "burns": "NONE",
+    "primary_value_accrual": "纯治理代币 - MORPHO 目前仅用于治理投票"
+  },
+  "confidence": "high",
+  "data_sources": [
+    {
+      "name": "Morpho Docs",
+      "type": "documentation",
+      "url": "https://docs.morpho.org",
+      "reliability": "high"
+    },
+    {
+      "name": "DefiLlama",
+      "type": "api",
+      "url": "https://api.llama.fi/protocol/morpho-v1",
+      "reliability": "high"
+    }
+  ],
+  "notes": "【收入确认】Morpho 当前无协议收入（fee switch OFF）。年化总借贷费用约 $180M，但 100% 归 LP，协议不抽成。DAO 可通过治理投票激活收费机制，但目前未启用。若启用收费（如10%），潜在年化协议收入约 $18M。",
+  "last_updated": "2026-02-14",
+  "tev_data": {
+    "has_tev": false,
+    "tev_yield_percent": 0,
+    "annual_tev_usd": 0,
+    "note": "无持续 TEV"
+  },
+  "market_data": {
+    "tvl": 6861451098,
+    "tvl_updated": "2026-03-21T13:01:58.302Z"
+  },
+  "tevStatus": "none",
+  "confidence_reason": {
+    "zh": "无 TEV 机制，纯治理代币，数据源透明",
+    "en": "No TEV mechanism, governance-only, transparent data"
+  },
+  "tevRatio": 0,
+  "earning_yield_percent": 0,
+  "market_cap_usd": 748073164.22
+}

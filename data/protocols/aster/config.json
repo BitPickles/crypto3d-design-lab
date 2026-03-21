@@ -1,0 +1,107 @@
+{
+  "id": "aster",
+  "name": "Aster (AsterDEX)",
+  "ticker": "ASTER",
+  "icon": "https://coin-images.coingecko.com/coins/images/69040/large/_ASTER.png",
+  "category": "perpetual_dex",
+  "description": "去中心化永续合约交易所",
+  "website": "https://www.asterdex.com/en",
+  "docs": "https://docs.asterdex.com",
+  "token": {
+    "chain": "BNB Chain (BEP-20)",
+    "contract_address": "0x000Ae314E2A2172a039B26378814C252734f556A",
+    "coingecko_id": "aster-2",
+    "total_supply": 1000000000
+  },
+  "tev_mechanisms": [
+    {
+      "type": "buyback",
+      "name": "协议回购",
+      "description": "平台手续费的大部分（约60-80%）用于回购 ASTER，包括每日自动回购和战略储备回购，回购后的代币进入协议储备或销毁",
+      "status": "active",
+      "fee_share_percentage": 70,
+      "source": {
+        "title": "Aster Tokenomics",
+        "url": "https://docs.asterdex.com/usdaster/tokenomics"
+      }
+    },
+    {
+      "type": "buyback_burn",
+      "name": "销毁机制",
+      "description": "部分回购的 ASTER 会被销毁至 0xdead 地址，减少流通供应",
+      "status": "active",
+      "source": {
+        "title": "BscScan Burn Address",
+        "url": "https://bscscan.com/token/0x000Ae314E2A2172a039B26378814C252734f556A?a=0x000000000000000000000000000000000000dead"
+      }
+    }
+  ],
+  "tev_summary": {
+    "fee_switch": "ON",
+    "buybacks": "ACTIVE",
+    "dividends": "NONE",
+    "burns": "ACTIVE",
+    "primary_value_accrual": "手续费回购 (60-80%)",
+    "tevRatio": 0.7
+  },
+  "confidence": "high",
+  "notes": "**当前 TEV 情况**\n\nAster 将较大比例的协议收入（约60-80%）用于回购 ASTER，包含每日自动回购与战略回购储备。\n\n**历史数据：**\n- Stage 1-4 (2025.10-12): 依据公开报道的回购总量，按天均摩摘形成日度数据\n- Stage 5-6 (2025.12至今): 链上回购记录，可按日追踪\n\n**透明度**：回购钱包地址公开，可通过 BscScan 实时验证。\n\n**注意**：官方文档未披露精确回购比例分配，60-80% 为公开材料中的估算范围。",
+  "data_sources": [
+    {
+      "name": "Aster Tokenomics",
+      "type": "documentation",
+      "url": "https://docs.asterdex.com/usdaster/tokenomics"
+    },
+    {
+      "name": "Aster Buyback Mechanism",
+      "type": "documentation",
+      "url": "https://docs.asterdex.com/usdaster/buyback-mechanism"
+    },
+    {
+      "name": "CoinGecko",
+      "type": "api",
+      "url": "https://www.coingecko.com/en/coins/aster-2"
+    },
+    {
+      "name": "BscScan 回购钱包",
+      "type": "onchain",
+      "url": "https://bscscan.com/address/0x664827c71193018D7843f0D0F41A5D0D6dcEBE0F"
+    }
+  ],
+  "references": [
+    {
+      "title": "Aster $214M 回购数据报道 (Cryptopolitan)",
+      "url": "https://www.cryptopolitan.com/aster-dex-completes-214-m-buybacks/",
+      "date": "2025-11-14"
+    }
+  ],
+  "last_updated": "2026-02-14",
+  "tev_data": {
+    "has_tev": true,
+    "tev_yield_percent": 9.55,
+    "annual_tev_usd": 143398020,
+    "market_cap_usd": 1501563922,
+    "calculation_date": "2026-02-14",
+    "sources": [
+      {
+        "name": "DefiLlama holdersRevenue",
+        "type": "defillama",
+        "annual_usd": 143398020,
+        "note": "60-80% 手续费回购"
+      }
+    ],
+    "calculation": "$143.40M / $1501.56M = 9.55%"
+  },
+  "tevStatus": "active",
+  "confidence_reason": {
+    "zh": "链上回购钱包可追踪（Moralis + BscScan）",
+    "en": "On-chain buyback wallets trackable (Moralis + BscScan)"
+  },
+  "market_data": {
+    "tvl": 853265422.765999,
+    "tvl_updated": "2026-03-21T13:01:02.255Z"
+  },
+  "tevRatio": 0.7,
+  "earning_yield_percent": 13.64,
+  "market_cap_usd": 1501563922
+}

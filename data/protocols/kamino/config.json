@@ -1,0 +1,78 @@
+{
+  "id": "kamino",
+  "name": "Kamino Finance",
+  "ticker": "KMNO",
+  "icon": "https://coin-images.coingecko.com/coins/images/35801/large/Kamino_200x200.png",
+  "category": "lending",
+  "description": "Solana 上的一站式 DeFi 协议，提供借贷、流动性管理和杠杆策略",
+  "website": "https://kamino.finance",
+  "docs": "https://docs.kamino.finance",
+  "token": {
+    "address": "KMNo3nJsBXfcpJTVhZcXLW7RmTwTt4GVFE7suUBo9sS",
+    "chain": "solana",
+    "coingecko_id": "kamino",
+    "defillama_id": "kamino",
+    "circulating_supply": 3859589230,
+    "total_supply": 9999959341.50722
+  },
+  "tev_mechanisms": [],
+  "tev_summary": {
+    "fee_switch": "NONE",
+    "fee_switch_details": "无协议收入直接分配给 KMNO 持有者。所谓 'staking' 实为 farming 奖励加成机制",
+    "buybacks": "NONE",
+    "dividends": "NONE",
+    "burns": "NONE",
+    "primary_value_accrual": "无 TEV — KMNO staking 仅提供 farming 奖励加成（boost），非协议收入分配。Season 奖励来自代币国库排放（激励），不是 fee distribution"
+  },
+  "confidence": "high",
+  "data_sources": [
+    {
+      "name": "Kamino Season 5 公告",
+      "type": "governance",
+      "url": "https://gov.kamino.finance/t/introducing-kamino-season-5/854",
+      "description": "详细说明了 KMNO staking boost 机制：起始 3% 加成，每天 +0.1%，每 1 KMNO 质押对 $1 仓位施加加成",
+      "reliability": "verified"
+    },
+    {
+      "name": "Kamino 2025 年度回顾",
+      "type": "governance",
+      "url": "https://gov.kamino.finance/t/kamino-lend-2025-year-in-review/866",
+      "description": "协议年度数据总结，供应量 $2.95B→$3.34B",
+      "reliability": "verified"
+    },
+    {
+      "name": "Kamino The Next Chapter",
+      "type": "governance",
+      "url": "https://gov.kamino.finance/t/kamino-the-next-chapter/864",
+      "description": "2026 路线图：固定利率借贷、链下抵押品、私人信贷等",
+      "reliability": "verified"
+    },
+    {
+      "name": "DefiLlama",
+      "type": "api",
+      "url": "https://api.llama.fi/protocol/kamino-lend",
+      "description": "TVL 和费用数据",
+      "reliability": "high"
+    }
+  ],
+  "notes": "⚠️ 从 PARTIAL 降级为 NONE。经深入调研确认：KMNO staking 不是协议收入分配，而是 farming 奖励加成（boost）机制。具体：(1) 新质押者起始 3% boost，每天 +0.1%；(2) 每 1 KMNO 质押对 $1 仓位施加 boost；(3) Season 奖励每 3 月最多 100M KMNO，来自代币国库（inflation），非协议费用；(4) 有 6 个月 vesting 期。Kamino 是优秀的 Solana 借贷协议（$3.34B AUM，零坏账），但 KMNO 代币目前无真正的 fee distribution 机制。2026 路线图专注机构产品（固定利率、链下抵押品），未来可能引入真正的 TEV。",
+  "last_updated": "2026-02-14",
+  "tev_data": {
+    "has_tev": false,
+    "tev_yield_percent": 0,
+    "annual_tev_usd": 0,
+    "note": "无持续 TEV"
+  },
+  "market_data": {
+    "tvl": 2220923883,
+    "tvl_updated": "2026-03-21T13:01:42.716Z"
+  },
+  "tevStatus": "none",
+  "confidence_reason": {
+    "zh": "无 TEV 机制，纯治理代币，数据源透明",
+    "en": "No TEV mechanism, governance-only, transparent data"
+  },
+  "tevRatio": 0,
+  "earning_yield_percent": 21.54,
+  "market_cap_usd": 93690384.64
+}

@@ -1,0 +1,148 @@
+{
+  "id": "sky",
+  "name": "Sky (MakerDAO)",
+  "ticker": "MKR",
+  "icon": "https://coin-images.coingecko.com/coins/images/1364/large/Mark_Maker.png",
+  "category": "cdp",
+  "description": "去中心化稳定币协议，发行 DAI/USDS 稳定币",
+  "website": "https://sky.money",
+  "docs": "https://docs.sky.money",
+  "token": {
+    "address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+    "chain": "ethereum",
+    "coingecko_id": "maker",
+    "defillama_id": "sky"
+  },
+  "tev_mechanisms": [
+    {
+      "type": "holders_revenue",
+      "name": "Smart Burn + 质押收益",
+      "description": "DSR 收入通过 Splitter 分配：burn 部分回购销毁 MKR，farm 部分分配给 SKY stakers",
+      "status": "active"
+    },
+    {
+      "type": "buyback_burn",
+      "name": "Smart Burn Engine (SBE)",
+      "description": "协议盈余用于回购 MKR 并添加流动性（Smart Burn Engine）",
+      "status": "active",
+      "ratio": 0.7,
+      "contract": "0x0000000000000000000000000000000000000000",
+      "source": {
+        "type": "governance",
+        "title": "Smart Burn Engine",
+        "url": "https://forum.makerdao.com/t/mip103-the-smart-burn-engine-and-tokenomics/19025"
+      }
+    }
+  ],
+  "tev_summary": {
+    "fee_switch": "ON",
+    "fee_switch_details": "协议盈余通过 Smart Burn Engine 回购 MKR 并添加流动性",
+    "buybacks": "ACTIVE",
+    "dividends": "NONE",
+    "burns": "NONE",
+    "primary_value_accrual": "回购 - Smart Burn Engine 使用协议盈余回购 MKR 并添加流动性"
+  },
+  "confidence": "high",
+  "data_sources": [
+    {
+      "name": "MakerDAO Forum",
+      "type": "governance",
+      "url": "https://forum.makerdao.com",
+      "reliability": "high"
+    },
+    {
+      "name": "Dune - MakerDAO Burns",
+      "type": "dune",
+      "url": "https://dune.com/steakhouse/makerdao",
+      "reliability": "high"
+    },
+    {
+      "name": "DefiLlama",
+      "type": "api",
+      "url": "https://api.llama.fi/protocol/sky",
+      "reliability": "high"
+    }
+  ],
+  "notes": "MakerDAO (现 Sky) 是最早实现代币回购销毁的 DeFi 协议之一。Smart Burn Engine 机制确保协议盈余持续回馈给 MKR 持有者。",
+  "last_updated": "2026-02-14",
+  "tev_data": {
+    "has_tev": true,
+    "tev_yield_percent": 6.21,
+    "annual_tev_usd": 99103164,
+    "market_cap_usd": 1595994273,
+    "calculation_date": "2026-02-14",
+    "sources": [
+      {
+        "name": "DefiLlama holdersRevenue",
+        "type": "defillama",
+        "annual_usd": 99103164,
+        "note": "Smart Burn Engine 回购"
+      }
+    ],
+    "calculation": "$99.10M / $1595.99M = 6.21%"
+  },
+  "market_data": {
+    "tvl": 7432394810.242925,
+    "tvl_updated": "2026-03-21T13:02:38.896Z"
+  },
+  "tevStatus": "active",
+  "confidence_reason": {
+    "zh": "Smart Burn Engine 合约链上可追踪 + DefiLlama 验证",
+    "en": "Smart Burn Engine contract on-chain trackable + DefiLlama validated"
+  },
+  "analyst_notes": {
+    "overview": {
+      "tev_12m": "$128.96M",
+      "latest_month": "$275.5K (2026-03)",
+      "mechanism": "Smart Burn Engine",
+      "yield_source": "Dai Savings Rate (DSR) revenue"
+    },
+    "burn_ratio": {
+      "dynamic": true,
+      "current": 1,
+      "governance": "Executive Vote"
+    },
+    "historical_changes": [
+      {
+        "date": "2024-10-17",
+        "from": 1,
+        "to": 0.7,
+        "vote": "Reduce Splitter Burn Rate"
+      },
+      {
+        "date": "2025-05-29",
+        "from": 1,
+        "to": 0.5,
+        "vote": "Reduce Splitter Burn Rate"
+      },
+      {
+        "date": "2025-08-21",
+        "from": 0.5,
+        "to": 0.25,
+        "vote": "Decrease Splitter Burn Rate"
+      },
+      {
+        "date": "2025-10-30",
+        "from": 0.25,
+        "to": 1,
+        "vote": "Increase Splitter Burn Rate"
+      }
+    ],
+    "contracts": {
+      "Splitter": "0xBF7111F13386d23cb2Fba5A538107A73f6872bCF",
+      "Flapper": "0x374D9c3d5134052Bc558F432Afa1df6575f07407",
+      "Vow": "0xa950524441892a31ebddf91d3ceefa04bf454466",
+      "Farm": "0x38E4254bD82ED5Ee97CD1C4278FAae748d998865"
+    },
+    "data_source": "DefiLlama HoldersRevenue",
+    "mechanism_note": "Dai Savings Rate (DSR) 收入通过 Splitter 分配：burn 部分用于回购销毁 MKR，farm 部分分配给 SKY stakers。DefiLlama HoldersRevenue = buyback + stakers_reward，自动反映治理投票后的分配比例变化。",
+    "links": {
+      "governance": "https://vote.skydao.eth/",
+      "burn_engine": "https://info-sky.blockanalitica.com/buyback/",
+      "api": "https://api.llama.fi/summary/fees/sky?dataType=dailyHoldersRevenue"
+    }
+  },
+  "tevRatio": 0.7,
+  "earning_yield_percent": 15.62,
+  "market_cap_usd": 1595994273
+}

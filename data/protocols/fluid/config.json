@@ -1,0 +1,143 @@
+{
+  "id": "fluid",
+  "name": "Fluid",
+  "ticker": "FLUID",
+  "icon": "../tev/logos/fluid.png",
+  "category": "lending",
+  "description": "Lending + DEX 一体化协议，由 Instadapp 团队推出，建立在统一的 Liquidity Layer 上",
+  "website": "https://fluid.io",
+  "docs": "https://docs.fluid.instadapp.io",
+  "token": {
+    "address": "0x6f40d4A6237C257fff2dB00FA0510DeEECd303eb",
+    "chain": "ethereum",
+    "coingecko_id": "instadapp",
+    "defillama_id": "fluid"
+  },
+  "tev_mechanisms": [
+    {
+      "type": "buyback",
+      "name": "Fluid Reserve Buyback",
+      "description": "Treasury 用协议收入回购 FLUID 代币，建立链上储备",
+      "status": "active",
+      "start_date": "2025-10-01",
+      "tev_ratio": 0.35,
+      "source": {
+        "type": "blog",
+        "title": "FLUID Reserve: Buybacks & Growth Strategy",
+        "url": "https://blog.instadapp.io/fluid-reserve-buybacks-growth-strategy/"
+      }
+    }
+  ],
+  "tev_summary": {
+    "fee_switch": "ON",
+    "fee_switch_details": "35% Revenue 用于回购",
+    "buybacks": "ACTIVE",
+    "dividends": "NONE",
+    "burns": "NONE",
+    "primary_value_accrual": "回购 - Treasury 用 35% Revenue 回购 FLUID，Q4 2025 启动"
+  },
+  "confidence": "high",
+  "data_sources": [
+    {
+      "name": "DefiLlama",
+      "type": "data",
+      "url": "https://defillama.com/protocol/fluid",
+      "reliability": "high"
+    },
+    {
+      "name": "Instadapp Blog",
+      "type": "official",
+      "url": "https://blog.instadapp.io",
+      "reliability": "high"
+    },
+    {
+      "name": "Fluid Governance",
+      "type": "governance",
+      "url": "https://gov.fluid.io",
+      "reliability": "high"
+    },
+    {
+      "name": "Dune Dashboard",
+      "type": "onchain",
+      "url": "https://dune.com/murathan/fluid-buybacks",
+      "reliability": "high"
+    }
+  ],
+  "references": [
+    {
+      "title": "FLUID Reserve: Buybacks & Growth Strategy",
+      "url": "https://blog.instadapp.io/fluid-reserve-buybacks-growth-strategy/",
+      "type": "blog",
+      "date": "2025-10-06"
+    },
+    {
+      "title": "Fluid Growth Vision & Community Buyback Discussion",
+      "url": "https://gov.fluid.io/t/fluid-growth-vision-community-buyback-discussion/1691",
+      "type": "governance"
+    },
+    {
+      "title": "The Defiant - Instadapp Proposes Rebrand",
+      "url": "https://thedefiant.io/news/defi/instadapp-proposes-rebrand-and-new-tokenomics-following-fluid-launch",
+      "type": "media"
+    }
+  ],
+  "analyst_notes": "## 链上数据追踪\n\n**追踪方法**: 监控 FLUID 代币流入储备钱包\n\n**储备钱包地址**:\n- `0x3e6FeBd2b195e1Ef3e8e3F4AABB6772aada32353`\n- `0x9Afb8C1798B93a8E04a18553eE65bAFa41a012F1`\n\n**原理**:\n回购 = 在市场买入 FLUID → 转入储备钱包\n追踪所有转入这两个地址的 FLUID = 回购量\n\n**数据来源**:\n- Etherscan (ERC20 Transfer 事件)\n- 价格: CoinGecko\n- 参考: [Dune Dashboard](https://dune.com/murathan/fluid-buybacks)",
+  "last_updated": "2026-02-21",
+  "data_confidence": "high",
+  "data_source_note": "链上追踪 (FLUID 流入储备钱包)",
+  "tev_data": {
+    "has_tev": true,
+    "trailing_365d_tev_usd": 4613558,
+    "tev_yield_percent": 2.58,
+    "market_cap_usd": 178886148,
+    "price_usd": 2.28,
+    "calculation_date": "2026-03-01",
+    "methodology": "链上回购追踪（Etherscan FLUID→储备钱包），DefiLlama 交叉验证",
+    "sources": [
+      {
+        "name": "DefiLlama holdersRevenue",
+        "type": "defillama",
+        "annual_usd": 4261283,
+        "note": "Treasury 回购 FLUID，批量执行"
+      }
+    ],
+    "validation": {
+      "onchain_total_usd": 4613558,
+      "defillama_total_usd": 4637397,
+      "diff_pct": 0.5
+    },
+    "last_updated": "2026-03-20"
+  },
+  "buyback_data": {
+    "total_bought": 1094934,
+    "total_usd": 4264765,
+    "avg_price": 3.895,
+    "days": 36,
+    "total_supply": 1000000000,
+    "ticker": "FLUID",
+    "reserve_wallets": [
+      {
+        "address": "0x3e6FeBd2b195e1Ef3e8e3F4AABB6772aada32353",
+        "label": "Reserve Wallet 1",
+        "role": "current"
+      },
+      {
+        "address": "0x9Afb8C1798B93a8E04a18553eE65bAFa41a012F1",
+        "label": "Reserve Wallet 2",
+        "role": "current"
+      }
+    ]
+  },
+  "tevStatus": "active",
+  "confidence_reason": {
+    "zh": "双钱包链上完全可追踪（Etherscan），与 DefiLlama 交叉验证差异 <0.1%",
+    "en": "Dual wallets fully on-chain trackable (Etherscan), cross-validated with DefiLlama <0.1% diff"
+  },
+  "market_data": {
+    "tvl": 1249487319.8493135,
+    "tvl_updated": "2026-03-21T13:01:27.250Z"
+  },
+  "tevRatio": 0.35,
+  "earning_yield_percent": 6.73,
+  "market_cap_usd": 167507396
+}
