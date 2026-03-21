@@ -279,6 +279,12 @@
           "actor": "researcher",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "📊 监控检查：engineer 22:39 汇报新 token 部署仍失败。Vercel 返回平台侧 'Unexpected error'，生产域名返回 404 DEPLOYMENT_NOT_FOUND。主要卡点：(1)Vercel 平台构建异常 (2)GitHub Login Connection 未绑定。距最后活动约3分钟，无需催促，阻塞在 Boss 配合 Vercel 后台检查。"
+        },
+        {
+          "time": "2026-03-21T23:47:00+08:00",
+          "actor": "researcher",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "⚠️ 监控催促：engineer 最后活动 22:39（约68分钟前），已超40分钟无消息。已发催促消息确认状态。当前卡点：Vercel 平台构建异常 + GitHub Login Connection 未绑定，等待 Boss 在 Vercel 后台处理。"
         }
       ],
       "boss_channel": "telegram:1311453837"
