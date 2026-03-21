@@ -184,6 +184,12 @@
           "actor": "boss",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "Boss 已提供 Vercel Token，P0-2 部署阻塞已解除，任务恢复为 in_progress，等待工程师继续部署测试站。"
+        },
+        {
+          "time": "2026-03-21T22:15:00+08:00",
+          "actor": "researcher",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "📊 监控检查：engineer 最后活动 22:05（10分钟前），P0-2 Vercel 部署遇到平台侧 'Unexpected error'，已修复依赖冲突（.npmrc），但需 Boss 配合：(1)Vercel后台检查GitHub Login Connection和Deployment Protection (2)提供Supabase DATABASE_URL (3)建议rotate Vercel Token。阻塞在 Boss 配合，无需催促工程师。"
         }
       ],
       "boss_channel": "telegram:1311453837"
