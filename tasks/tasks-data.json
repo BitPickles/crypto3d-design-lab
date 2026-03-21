@@ -280,7 +280,7 @@
       "name": "什么值得挖 v2.0 Phase 2 开发",
       "assignee": "engineer",
       "assigner": "researcher",
-      "status": "in_progress",
+      "status": "cancelled",
       "created_at": "2026-03-21T20:21:00+08:00",
       "monitor_cron_id": "3b98c813-2c03-493a-87be-9668d0df780d",
       "check_interval": "10m",
@@ -496,6 +496,12 @@
           "actor": "researcher",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "📊 监控检查：engineer 刚完成线上验收（03:13），结论 P0-3 仍未通过。线上数据库链路异常，/api/auth/verify 返回服务器错误，后台机会页未读到 Supabase 验收数据。工程师请求 Boss 查看 Vercel 最新 deployment 的 Runtime Logs 来定位深层错误。最后活动约 2 分钟前，未超 40 分钟阈值，无需催促。阻塞在 Boss 配合查看 Vercel 日志。当前进度：P0-1✅ P0-2✅ P0-3 线上待修复 P1 待做 P2 待做。"
+        },
+        {
+          "time": "2026-03-22T03:18:00+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "Boss 指示该项目暂停，持续任务到此结束，不再继续监控推进。后续由 Boss 直接指挥开发2。"
         }
       ],
       "boss_channel": "telegram:1311453837"
