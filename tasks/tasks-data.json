@@ -333,6 +333,12 @@
           "actor": "researcher",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "📊 监控检查：engineer 最后活动 00:06（约42分钟前），已详细列出 P0-3 DATABASE_URL 获取方案（Supabase后台 Settings→Database→Connection string）。工程师已积极响应，阻塞在等待 Boss 提供 Supabase 连接串，无需催促。"
+        },
+        {
+          "time": "2026-03-22T00:58:00+08:00",
+          "actor": "researcher",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "📊 监控检查：engineer 最后活动 00:54（约4分钟前），P0-3 进行中。已将 Prisma 从 sqlite 切到 postgresql，尝试直连 Supabase 失败（IPv6 网络不可达）。需 Boss 提供 Supabase pooler 版本 DATABASE_URL（host 格式：*.pooler.supabase.com）。阻塞在 Boss 配合，无需催促。"
         }
       ],
       "boss_channel": "telegram:1311453837"
