@@ -312,6 +312,14 @@ table tbody td,
   border-bottom: 1px solid rgba(17,24,39,0.04);
 }
 
+#protocol-table tbody td:first-child {
+  padding-left: 18px !important;
+}
+
+#protocol-table tbody td:last-child {
+  padding-right: 18px !important;
+}
+
 #protocol-table tbody tr:hover {
   transform: translateX(1px);
 }
@@ -450,7 +458,7 @@ table tbody td,
   line-height: 1.72 !important;
   color: var(--text-secondary) !important;
 }
-.protocol-notes h2 { font-size: 18px !important; margin: 24px 0 12px !important; }
+.protocol-notes h2 { font-size: 18px !important; margin: 24px 0 12px !important; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 .protocol-notes h3 { font-size: 15px !important; margin: 20px 0 8px !important; }
 .protocol-notes code,
 .feed-kw,
@@ -653,6 +661,14 @@ table tbody td,
   padding: 16px 18px !important;
 }
 
+.mechanism-card,
+.source-item,
+.gov-card,
+.feed-item,
+.protocol-card {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
 .mechanism-header,
 .source-item,
 .gov-card-meta {
@@ -712,6 +728,7 @@ table tbody td,
 
 .feed-item.is-active {
   border-left-width: 3px !important;
+  background: linear-gradient(180deg, rgba(34,197,94,0.05), transparent 55%), var(--bg-secondary) !important;
 }
 
 .feed-item::after {
@@ -746,6 +763,12 @@ table tbody td,
 .card-stats-row {
   padding-top: 8px;
   border-top: 1px solid var(--border);
+  justify-content: space-between;
+}
+
+.card-stats-row .stat-num {
+  font-size: 12px !important;
+  letter-spacing: -0.02em;
 }
 
 [data-theme="light"] .feed-header {
