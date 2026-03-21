@@ -6,7 +6,7 @@
       "name": "全站 UI 升级优化",
       "assignee": "designer",
       "assigner": "main",
-      "status": "reviewing",
+      "status": "in_progress",
       "created_at": "2026-03-21T19:48:38.124368+08:00",
       "monitor_cron_id": "0ed93db1-41e9-42e8-ae51-ce1a92cb4b40",
       "check_interval": "15m",
@@ -78,6 +78,18 @@
           "actor": "main",
           "task_name": "全站 UI 升级优化",
           "note": "📊 监控检查：designer 最后活动在 21:48（10分钟前），状态 reviewing，浅色主题修复已推送。无需催促，待 Boss 确认首页设计。"
+        },
+        {
+          "time": "2026-03-21T22:03:01+08:00",
+          "actor": "boss",
+          "task_name": "全站 UI 升级优化",
+          "note": "Boss 已确认通过首页 UI 方案，同意继续推进子页面 UI 升级。"
+        },
+        {
+          "time": "2026-03-21T22:03:01+08:00",
+          "actor": "main",
+          "task_name": "全站 UI 升级优化",
+          "note": "已收到 Boss 确认，通过首页方案。任务继续执行，进入子页面 UI 升级阶段。"
         }
       ],
       "boss_channel": "telegram:1311453837"
