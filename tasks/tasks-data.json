@@ -219,6 +219,12 @@
           "actor": "researcher",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "📊 监控检查：engineer 22:18 详细汇报 P0-2 状态。Vercel 部署连续遇平台侧 'Unexpected error'，project 已创建成功但部署未通过。需 Boss 配合：(1)Vercel后台绑定GitHub Login Connection (2)关闭测试站访问保护 (3)提供Supabase DATABASE_URL (4)rotate Vercel Token。距最后活动约7分钟，无需催促，阻塞在 Boss 配合。"
+        },
+        {
+          "time": "2026-03-21T22:38:00+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "Boss 已创建并提供新的 Vercel Token，要求工程师废弃旧 token，继续推进测试站部署。"
         }
       ],
       "boss_channel": "telegram:1311453837"
