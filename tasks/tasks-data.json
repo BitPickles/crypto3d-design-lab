@@ -297,6 +297,12 @@
           "actor": "researcher",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "📊 监控检查：engineer 最后活动 00:06（约20分钟前），已响应 P0-3 任务并列出配置需求（DATABASE_URL）。阻塞在等待 Boss 提供 Supabase 连接串，无需催促。"
+        },
+        {
+          "time": "2026-03-22T00:28:00+08:00",
+          "actor": "researcher",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "📊 监控检查：engineer 最后活动 00:06（约22分钟前），已响应 P0-3 并详细列出 DATABASE_URL 获取方案。当前阻塞在等待 Boss 提供 Supabase 连接串，未超40分钟阈值，无需催促。"
         }
       ],
       "boss_channel": "telegram:1311453837"
