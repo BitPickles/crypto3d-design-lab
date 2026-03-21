@@ -99,6 +99,7 @@
     .rv.vis{opacity:1;transform:none}
     @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
   </style>
+  <link rel="stylesheet" href="../css/theme-override.css">
 </head>
 <body>
 <header>
@@ -220,5 +221,6 @@ document.querySelectorAll('.rv').forEach((el,i)=>{el.style.transitionDelay=i*40+
   svg.innerHTML=`<defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.2"/><stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/></linearGradient></defs><polygon fill="url(#cg)" points="${fill}"/><polyline fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" points="${ln}"/><circle cx="${pts[pts.length-1][0]}" cy="${pts[pts.length-1][1]}" r="4" fill="#fbbf24"/>`;
 })();
 </script>
+<script src="../js/theme.js"></script>
 </body>
 </html>

@@ -64,7 +64,7 @@
 
     /* Kanban */
     .kanban-wrap h2{font-size:15px;font-weight:700;margin-bottom:12px}
-    .kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+    .kanban{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
     .column{background:#f1f3f5;border-radius:10px;padding:12px}
     .col-header{display:flex;align-items:center;gap:6px;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid}
     .col-header.pending{border-color:#9ca3af}
@@ -140,7 +140,6 @@
     <div class="stats">
       <div class="stat-card"><div class="stat-label">进行中</div><div class="stat-value blue" id="statProgress">-</div></div>
       <div class="stat-card"><div class="stat-label">待确认</div><div class="stat-value amber" id="statReview">-</div></div>
-      <div class="stat-card"><div class="stat-label">已完成</div><div class="stat-value green" id="statDone">-</div></div>
       <div class="stat-card"><div class="stat-label">总任务</div><div class="stat-value gray" id="statTotal">-</div></div>
     </div>
 
@@ -180,20 +179,12 @@
         <h2>📌 任务看板</h2>
         <div class="kanban" id="kanban">
           <div class="column">
-            <div class="col-header pending"><div class="col-title">待处理</div><div class="col-count" id="countPending">0</div></div>
-            <div id="colPending"></div>
-          </div>
-          <div class="column">
             <div class="col-header progress"><div class="col-title">进行中</div><div class="col-count" id="countProgress">0</div></div>
             <div id="colProgress"></div>
           </div>
           <div class="column">
             <div class="col-header review"><div class="col-title">待 Boss 确认</div><div class="col-count" id="countReview">0</div><div class="col-subtitle">⏳</div></div>
             <div id="colReview"></div>
-          </div>
-          <div class="column">
-            <div class="col-header done"><div class="col-title">已完成</div><div class="col-count" id="countDone">0</div></div>
-            <div id="colDone"></div>
           </div>
         </div>
 
