@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TEV · Token Enabled Value — Crypto3D</title>
-  <script>(function(){if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light')})()</script>
+  <script>(function(){var t=localStorage.getItem('theme');if(t!=='dark')document.documentElement.setAttribute('data-theme','light')})()</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -201,9 +201,9 @@
 
 <script>
 document.getElementById('tt').addEventListener('click',()=>{
-  const l=document.documentElement.getAttribute('data-theme')==='light';
-  l?document.documentElement.removeAttribute('data-theme'):document.documentElement.setAttribute('data-theme','light');
-  localStorage.setItem('theme',l?'dark':'light');
+  const isDark=document.documentElement.getAttribute('data-theme')!=='light';
+  isDark?document.documentElement.setAttribute('data-theme','light'):document.documentElement.removeAttribute('data-theme');
+  localStorage.setItem('theme',isDark?'light':'dark');
 });
 
 // Scroll reveal
