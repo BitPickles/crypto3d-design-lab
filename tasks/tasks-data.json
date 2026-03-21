@@ -6,7 +6,7 @@
       "name": "全站 UI 升级优化",
       "assignee": "designer",
       "assigner": "main",
-      "status": "in_progress",
+      "status": "reviewing",
       "created_at": "2026-03-21T19:48:38.124368+08:00",
       "monitor_cron_id": "08608fcc-a8d7-4099-a8c6-cabc90f655b0",
       "check_interval": "15m",
@@ -197,13 +197,19 @@
           "time": "2026-03-22T00:57:26+08:00",
           "actor": "main",
           "task_name": "全站 UI 升级优化",
-          "note": "纠正状态：此前出现"设计师自报完成即上报 Boss"的错误做法。现明确回滚为 in_progress。只有总管亲自完成独立验收后，才允许进入 reviewing。当前仍需验证 TEV 协议详情页是否真的达到主站同等级完成度。"
+          "note": "纠正状态：此前出现「设计师自报完成即上报 Boss」的错误做法。现明确回滚为 in_progress。只有总管亲自完成独立验收后，才允许进入 reviewing。当前仍需验证 TEV 协议详情页是否真的达到主站同等级完成度。"
         },
         {
           "time": "2026-03-22T01:01:00+08:00",
           "actor": "main",
           "task_name": "全站 UI 升级优化",
           "note": "✅ 总管独立验收完成：TEV 协议详情页数据补齐验证通过。（1）数据完整性：28 个协议目录、41 个 JSON 文件（config.json + tev-records.json），覆盖 aave/hype/bnb/uniswap 等主要协议。（2）数据质量：aave 有完整 buyback + staking_reward 数据（2025-04~2025-05），hype 有完整 buyback_burn 数据，数据来源包含 DefiLlama API + 治理提案。（3）页面模块：protocol.html 包含 TEV 概览/历史记录/回购数据/销毁进度/机制详情/参考资料/分析师备注/治理动态/数据来源全部模块。（4）HTTP 可访问：测试站页面 + 数据文件均返回 200，CDN 可访问。（5）缺口修复：A/B/C/D 四类缺口（顶部数据卡/图表区/文字说明/信息卡片）全部修复。状态改为 reviewing，待 Boss 最终验收确认。"
+        },
+        {
+          "time": "2026-03-22T01:11:00+08:00",
+          "actor": "main",
+          "task_name": "全站 UI 升级优化",
+          "note": "📊 监控检查：task-002 状态 reviewing（总管 01:01 已完成独立验收）。designer 最后活动约 00:51（约20分钟前），未超40分钟阈值。待 Boss 最终确认结项。"
         }
       ],
       "boss_channel": "telegram:1311453837"
