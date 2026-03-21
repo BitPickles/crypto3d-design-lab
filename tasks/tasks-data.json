@@ -141,6 +141,12 @@
           "actor": "researcher",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "📊 监控检查：engineer 刚汇报 P0-1 完成（21:47），状态 reviewing。等待 Boss 配合 Vercel 认证，无需催促。"
+        },
+        {
+          "time": "2026-03-21T21:59:00+08:00",
+          "actor": "researcher",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "📊 监控检查：engineer 最后活动 21:58（1分钟前），等待 Boss 通过安全渠道提供 Vercel Token 原文。无需催促，阻塞在 Boss 配合。"
         }
       ],
       "boss_channel": "telegram:1311453837",
