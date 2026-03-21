@@ -6,7 +6,7 @@
       "name": "全站 UI 升级优化",
       "assignee": "designer",
       "assigner": "main",
-      "status": "done",
+      "status": "in_progress",
       "created_at": "2026-03-21T19:48:38.124368+08:00",
       "monitor_cron_id": "0ed93db1-41e9-42e8-ae51-ce1a92cb4b40",
       "check_interval": "15m",
@@ -108,10 +108,21 @@
           "actor": "main",
           "task_name": "全站 UI 升级优化",
           "note": "总管完成验收收口：task-002 标记 done，并同步看板。"
+        },
+        {
+          "time": "2026-03-21T22:17:34+08:00",
+          "actor": "boss",
+          "task_name": "全站 UI 升级优化",
+          "note": "Boss 明确驳回：除首页外，其他页面均不合格。要求业务落地页保持与当前主站一致，不改现有功能，只做 UI 视觉调整。禁止误结项。"
+        },
+        {
+          "time": "2026-03-21T22:17:34+08:00",
+          "actor": "main",
+          "task_name": "全站 UI 升级优化",
+          "note": "总管撤销错误结项：task-002 改回 in_progress。下一步按 Boss 要求重做：除首页外，其余页面必须保留主站现有功能，仅做视觉层 UI 调整。"
         }
       ],
-      "boss_channel": "telegram:1311453837",
-      "completed_at": "2026-03-21T22:16:02+08:00"
+      "boss_channel": "telegram:1311453837"
     },
     {
       "id": "task-003",
