@@ -1,20 +1,12 @@
 /**
  * Crypto3D Design Lab — Theme Override
- * 覆盖现有站 common.css 的配色和字体
- * 只改视觉，不改结构
+ * 全站设计 token 收口层：只改视觉，不改业务逻辑
  */
 
-/* ============================================================
-   FONT OVERRIDE
-   ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-}
-
 /* ============================================================
-   DARK THEME (default when no data-theme set — for backward compat)
+   GLOBAL TOKENS
    ============================================================ */
 :root {
   --bg-primary: #050507;
@@ -36,11 +28,31 @@ body {
   --blue-dim: rgba(96,165,250,0.08);
   --purple: #a78bfa;
   --cyan: #38bdf8;
+
+  --page-max: 1240px;
+  --page-pad: 28px;
+  --radius-xs: 8px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --shadow-soft: 0 10px 30px rgba(0,0,0,0.22);
+  --shadow-hover: 0 18px 40px rgba(0,0,0,0.28);
+  --shadow-light-soft: 0 8px 24px rgba(17,24,39,0.06);
+  --shadow-light-hover: 0 16px 36px rgba(17,24,39,0.10);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+  --space-10: 72px;
 }
 
-/* ============================================================
-   LIGHT THEME
-   ============================================================ */
 [data-theme="light"],
 [data-theme="light"] :root {
   --bg-primary: #fafafa;
@@ -64,14 +76,133 @@ body {
   --cyan: #0a7aab;
 }
 
-[data-theme="light"] body {
+/* ============================================================
+   GLOBAL BASELINE
+   ============================================================ */
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
   background: var(--bg-primary) !important;
   color: var(--text-primary) !important;
+}
+
+.container,
+.hd,
+.sec,
+.hero-inner,
+.stats-bar-inner,
+.risk-content {
+  max-width: var(--page-max) !important;
+}
+
+.container {
+  padding-left: var(--page-pad) !important;
+  padding-right: var(--page-pad) !important;
+}
+
+@media (max-width: 768px) {
+  :root { --page-pad: 20px; }
+}
+
+/* ============================================================
+   TYPOGRAPHY TOKENS
+   ============================================================ */
+h1, .page-title, .sec-title, .hero-title {
+  letter-spacing: -0.03em;
+}
+
+h1 { font-weight: 800 !important; }
+h2 { font-weight: 700 !important; letter-spacing: -0.025em; }
+h3 { font-weight: 700 !important; letter-spacing: -0.02em; }
+
+.page-title { font-size: clamp(28px, 4vw, 38px) !important; line-height: 1.1 !important; }
+.page-subtitle, .page-desc, .sec-desc, .hero p, .protocol-notes, p {
+  line-height: 1.68;
+}
+
+.stat-value,
+.metric-value,
+.value,
+.tev-value,
+.hero-price,
+.ind-val,
+.stat-num,
+.mono,
+.yield,
+[class*="value"]:not(.label):not(.stat-label) {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.label,
+.stat-label,
+.chart-stat-label,
+.hero-meta-label,
+.tev-kpi-l,
+.table thead th,
+.table-title,
+.data-update-time,
+.feed-count,
+.feed-kw,
+.feed-time,
+.protocol-ticker,
+.section-subtitle,
+.updated-at {
+  letter-spacing: 0.06em;
+}
+
+/* ============================================================
+   HEADER + NAV CONSISTENCY
+   ============================================================ */
+header {
+  padding: 0 !important;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border) !important;
 }
 
 [data-theme="light"] header {
   background: rgba(250,250,250,0.92) !important;
   border-bottom-color: var(--border) !important;
+}
+
+.header-content {
+  height: 52px;
+  align-items: center;
+  gap: 18px;
+}
+
+.logo-text { font-size: 15px !important; font-weight: 700 !important; }
+.nav-links a, nav a, .hd-nav a { font-size: 13px !important; }
+
+/* ============================================================
+   CARD SYSTEM
+   ============================================================ */
+.card,
+.intro-card,
+.author-card,
+.video-card,
+.table-container,
+.chart-card,
+.chart-section,
+.section,
+.proposal-card,
+.protocol-card,
+.mini-stat,
+.stat-card,
+.metric-card,
+.feed-item,
+.source-item,
+.mechanism-card,
+.bento-card,
+.risk-card,
+.indicator-card,
+.gov-card {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: none;
 }
 
 [data-theme="light"] .card,
@@ -86,85 +217,104 @@ body {
 [data-theme="light"] .protocol-card,
 [data-theme="light"] .mini-stat,
 [data-theme="light"] .stat-card,
-[data-theme="light"] .metric-card {
+[data-theme="light"] .metric-card,
+[data-theme="light"] .feed-item,
+[data-theme="light"] .source-item,
+[data-theme="light"] .mechanism-card,
+[data-theme="light"] .bento-card,
+[data-theme="light"] .risk-card,
+[data-theme="light"] .indicator-card,
+[data-theme="light"] .gov-card {
   background: var(--bg-secondary) !important;
   border-color: var(--border) !important;
 }
 
-[data-theme="light"] table thead th {
-  background: var(--bg-tertiary) !important;
+.card:hover,
+.intro-card:hover,
+.author-card:hover,
+.video-card:hover,
+.proposal-card:hover,
+.protocol-card:hover,
+.feed-item:hover,
+.bento-card:hover,
+.gov-card:hover,
+.clickable-stat:hover {
+  border-color: var(--border-hover) !important;
+}
+
+[data-theme="light"] .card:hover,
+[data-theme="light"] .intro-card:hover,
+[data-theme="light"] .author-card:hover,
+[data-theme="light"] .video-card:hover,
+[data-theme="light"] .proposal-card:hover,
+[data-theme="light"] .protocol-card:hover,
+[data-theme="light"] .feed-item:hover,
+[data-theme="light"] .bento-card:hover,
+[data-theme="light"] .gov-card:hover,
+[data-theme="light"] .clickable-stat:hover {
+  box-shadow: var(--shadow-light-soft) !important;
+}
+
+.chart-container,
+.table-container,
+.section,
+.chart-card,
+.chart-section {
+  padding: 24px !important;
+}
+
+@media (max-width: 768px) {
+  .chart-container,
+  .table-container,
+  .section,
+  .chart-card,
+  .chart-section {
+    padding: 18px !important;
+  }
+}
+
+/* ============================================================
+   TABLE TOKENS
+   ============================================================ */
+table { font-size: 14px; }
+
+table thead th,
+#protocol-table thead th {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
   color: var(--text-secondary) !important;
+  background: var(--bg-tertiary) !important;
+  padding: 12px 16px !important;
+  letter-spacing: 0.08em;
+}
+
+table tbody td,
+#protocol-table tbody td {
+  padding: 14px 16px !important;
+  vertical-align: middle;
 }
 
 [data-theme="light"] table tbody tr:hover td {
   background: var(--bg-tertiary) !important;
 }
 
-[data-theme="light"] .filter-btn {
-  background: transparent !important;
-  border-color: var(--border) !important;
-  color: var(--text-secondary) !important;
-}
-
-[data-theme="light"] .filter-btn:hover {
-  border-color: var(--border-hover) !important;
-  color: var(--text-primary) !important;
-}
-
-[data-theme="light"] .filter-btn.active {
-  background: var(--accent-dim) !important;
-  border-color: var(--accent) !important;
-  color: var(--accent) !important;
-}
-
-[data-theme="light"] .hero {
-  background: var(--bg-primary) !important;
-}
-
-[data-theme="light"] .formula-box {
-  background: var(--bg-tertiary) !important;
-  border-color: var(--border) !important;
-  color: var(--text-primary) !important;
-}
-
-[data-theme="light"] .yt-banner {
-  background: var(--bg-tertiary) !important;
-}
-
-[data-theme="light"] footer {
-  border-color: var(--border) !important;
-}
-
-[data-theme="light"] #g-tip {
-  background: var(--bg-secondary) !important;
-  border-color: var(--border) !important;
-  color: var(--text-primary) !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important;
-}
-
 /* ============================================================
-   HEADER OVERRIDES
+   BUTTONS / TAGS / FILTERS
    ============================================================ */
-header {
-  padding: 0 !important;
-  height: 52px;
-  display: flex;
-  align-items: center;
+.theme-toggle-btn,
+.ib,
+.filter-btn,
+.feed-toggle,
+.lang-btn,
+.yt-banner-btn,
+.author-link,
+.protocol-link,
+.source-link,
+.gov-more-link {
+  transition: all .18s ease !important;
 }
 
-.header-content {
-  height: 52px;
-  align-items: center;
-}
-
-.logo-text {
-  font-size: 15px !important;
-  font-weight: 700 !important;
-}
-
-/* ============================================================
-   THEME TOGGLE (injected by JS)
-   ============================================================ */
 .theme-toggle-btn {
   width: 30px;
   height: 30px;
@@ -176,7 +326,6 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s;
   flex-shrink: 0;
 }
 
@@ -185,54 +334,117 @@ header {
   color: var(--text-primary);
 }
 
-.theme-toggle-btn svg {
-  width: 15px;
-  height: 15px;
-}
-
+.theme-toggle-btn svg { width: 15px; height: 15px; }
 .theme-toggle-btn .sun { display: block; }
 .theme-toggle-btn .moon { display: none; }
 [data-theme="light"] .theme-toggle-btn .sun { display: none; }
 [data-theme="light"] .theme-toggle-btn .moon { display: block; }
 
-/* ============================================================
-   TYPOGRAPHY REFINEMENT
-   ============================================================ */
-h1, h2, h3 {
-  letter-spacing: -0.02em;
+.filter-btn,
+.lang-btn,
+.feed-toggle {
+  border-radius: var(--radius-xs) !important;
 }
 
-.stat-value, .card .value, td .mono, .yield {
+[data-theme="light"] .filter-btn {
+  background: transparent !important;
+  border-color: var(--border) !important;
+  color: var(--text-secondary) !important;
+}
+[data-theme="light"] .filter-btn:hover {
+  border-color: var(--border-hover) !important;
+  color: var(--text-primary) !important;
+}
+[data-theme="light"] .filter-btn.active {
+  background: var(--accent-dim) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* ============================================================
+   CHART / DATA CONTAINERS
+   ============================================================ */
+.chart-header,
+.table-header,
+.section-title,
+.feed-header,
+.cards-panel-header {
+  margin-bottom: 16px !important;
+}
+
+.chart-stat-value,
+.stat-value,
+.metric-value,
+.value,
+.tev-summary-value,
+.tev-kpi-v,
+.ind-val,
+.stat-num {
+  letter-spacing: -0.03em;
+}
+
+.chart-hint,
+.data-update-time,
+.updated-at,
+.feed-time,
+.hero-meta-label,
+.protocol-ticker,
+.source-type,
+.mechanism-type {
+  color: var(--text-tertiary) !important;
+}
+
+[data-theme="light"] .formula-box,
+[data-theme="light"] .yt-banner,
+[data-theme="light"] #g-tip {
+  background: var(--bg-secondary) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] #g-tip {
+  box-shadow: var(--shadow-light-soft) !important;
+}
+
+/* ============================================================
+   HOMEPAGE TOKEN ALIGNMENT
+   ============================================================ */
+.hero { background: var(--bg-primary) !important; }
+.sec { padding-top: 56px !important; padding-bottom: 56px !important; }
+.sec-head { margin-bottom: 32px !important; }
+.sec-title { font-size: clamp(28px, 4vw, 38px) !important; }
+.sec-desc { max-width: 620px !important; }
+.bento-card { border-radius: var(--radius-lg) !important; padding: 26px !important; }
+.tev-tag { border-radius: 6px !important; }
+.stats-bar { border-color: var(--border) !important; }
+[data-theme="light"] .stats-bar { background: #e6e8ef !important; }
+[data-theme="light"] .sec-tinted { background: #eef0f5 !important; }
+[data-theme="light"] .risk-gradient { background: linear-gradient(180deg,var(--bg-primary) 0%, #e2e4ed 50%, var(--bg-primary) 100%) !important; }
+
+/* ============================================================
+   TEV / GOVERNANCE DETAIL PAGES
+   ============================================================ */
+.protocol-notes {
+  font-size: 14px !important;
+  line-height: 1.72 !important;
+  color: var(--text-secondary) !important;
+}
+.protocol-notes h2 { font-size: 18px !important; margin: 24px 0 12px !important; }
+.protocol-notes h3 { font-size: 15px !important; margin: 20px 0 8px !important; }
+.protocol-notes code,
+.feed-kw,
+.source-type,
+.protocol-ticker,
+.feed-time,
+.chart-stat-label {
   font-family: 'JetBrains Mono', monospace !important;
-  font-variant-numeric: tabular-nums;
 }
 
 /* ============================================================
-   TABLE REFINEMENT
+   FOOTER
    ============================================================ */
-table {
-  font-size: 14px;
-}
-
-table thead th {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 12px 16px;
-}
-
-table tbody td {
-  padding: 14px 16px;
-}
-
-/* ============================================================
-   CARD REFINEMENT
-   ============================================================ */
-.card,
-.intro-card,
-.chart-card {
-  border-radius: 12px;
+footer {
+  border-top-color: var(--border) !important;
 }
 
 /* ============================================================
@@ -241,4 +453,10 @@ table tbody td {
 @media (max-width: 768px) {
   header { height: 48px; }
   .header-content { height: 48px; }
+  .page-title { font-size: 28px !important; }
+  .section,
+  .chart-card,
+  .chart-section,
+  .table-container,
+  .bento-card { border-radius: var(--radius-sm) !important; }
 }
