@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>任务看板 — Crypto3D</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,sans-serif;background:#f8f9fa;color:#1a1a2e;min-height:100vh}
+    
+    /* Header */
+    .header{background:#fff;border-bottom:1px solid #e8e8ee;padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
+    .header h1{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
+    .header h1 span{font-size:22px}
+    .header .refresh{padding:6px 14px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px;color:#666;transition:all .15s}
+    .header .refresh:hover{border-color:#3b82f6;color:#3b82f6}
+    .last-update{font-size:12px;color:#999;margin-top:2px}
+
+    /* Layout */
+    .container{max-width:1200px;margin:0 auto;padding:24px 32px}
+    
+    /* Stats Bar */
+    .stats{display:flex;gap:16px;margin-bottom:28px}
+    .stat-card{flex:1;background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:16px 20px}
+    .stat-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:4px}
+    .stat-value{font-size:28px;font-weight:800;letter-spacing:-.02em}
+    .stat-value.green{color:#059669}
+    .stat-value.blue{color:#3b82f6}
+    .stat-value.amber{color:#d97706}
+    .stat-value.gray{color:#9ca3af}
+
+    /* Kanban Columns */
+    .kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+    .column{background:#f1f3f5;border-radius:10px;padding:16px}
+    .col-header{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid}
+    .col-header.pending{border-color:#9ca3af}
+    .col-header.progress{border-color:#3b82f6}
+    .col-header.review{border-color:#d97706}
+    .col-header.done{border-color:#059669}
+    .col-title{font-size:13px;font-weight:700}
+    .col-count{font-size:11px;font-weight:600;background:rgba(0,0,0,.06);padding:2px 8px;border-radius:10px}
+
+    /* Task Card */
+    .task-card{background:#fff;border:1px solid #e8e8ee;border-radius:8px;padding:14px;margin-bottom:10px;cursor:default;transition:box-shadow .15s}
+    .task-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06)}
+    .task-id{font-size:10px;font-weight:600;color:#999;font-family:'JetBrains Mono',monospace}
+    .task-name{font-size:14px;font-weight:600;margin:6px 0}
+    .task-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+    .tag{font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px}
+    .tag.agent{background:#ede9fe;color:#7c3aed}
+    .tag.assigner{background:#e0f2fe;color:#0369a1}
+    .tag.time{background:#f3f4f6;color:#6b7280}
+    .task-desc{font-size:12px;color:#666;margin-top:8px;line-height:1.5}
+    .task-criteria{font-size:11px;color:#888;margin-top:6px;padding-top:6px;border-top:1px solid #f0f0f0}
+    .task-criteria strong{color:#555}
+
+    /* Timeline */
+    .timeline-section{margin-top:32px}
+    .timeline-section h2{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .timeline{position:relative;padding-left:24px}
+    .timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:#e0e0e8}
+    .tl-item{position:relative;margin-bottom:16px;padding-left:16px}
+    .tl-item::before{content:'';position:absolute;left:-20px;top:6px;width:10px;height:10px;border-radius:50%;border:2px solid}
+    .tl-item.created::before{border-color:#9ca3af;background:#f9fafb}
+    .tl-item.progress::before{border-color:#3b82f6;background:#eff6ff}
+    .tl-item.check::before{border-color:#d97706;background:#fffbeb}
+    .tl-item.done::before{border-color:#059669;background:#ecfdf5}
+    .tl-item.nudge::before{border-color:#ef4444;background:#fef2f2}
+    .tl-time{font-size:11px;color:#999;font-family:'JetBrains Mono',monospace}
+    .tl-text{font-size:13px;color:#333;margin-top:2px}
+    .tl-agent{font-weight:600;color:#7c3aed}
+
+    /* Empty State */
+    .empty{text-align:center;padding:60px 20px;color:#aaa}
+    .empty-icon{font-size:48px;margin-bottom:12px}
+    .empty-text{font-size:15px}
+
+    /* Agent Flow */
+    .flow-section{margin-top:32px;background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:24px}
+    .flow-section h2{font-size:16px;font-weight:700;margin-bottom:16px}
+    .flow-diagram{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:20px 0}
+    .flow-node{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;text-align:center;min-width:100px}
+    .flow-node.boss{background:#fef3c7;color:#92400e;border:2px solid #f59e0b}
+    .flow-node.main{background:#dbeafe;color:#1e40af;border:2px solid #3b82f6}
+    .flow-node.worker{background:#ede9fe;color:#5b21b6;border:2px solid #8b5cf6}
+    .flow-arrow{font-size:18px;color:#ccc}
+    .flow-label{font-size:10px;color:#999;text-align:center;margin-top:4px}
+
+    /* Responsive */
+    @media(max-width:900px){
+      .kanban{grid-template-columns:repeat(2,1fr)}
+      .stats{flex-wrap:wrap}
+      .stat-card{min-width:calc(50% - 8px)}
+    }
+    @media(max-width:600px){
+      .kanban{grid-template-columns:1fr}
+      .container{padding:16px}
+      .flow-diagram{flex-direction:column}
+    }
+
+    /* No data notice */
+    .no-data{background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:40px;text-align:center;margin-bottom:24px}
+    .no-data p{color:#888;font-size:14px;margin-top:8px}
+    .data-url{font-family:'JetBrains Mono',monospace;font-size:12px;color:#3b82f6;word-break:break-all}
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1><span>📋</span> 任务调度看板</h1>
+      <div class="last-update" id="lastUpdate">加载中...</div>
+    </div>
+    <button class="refresh" onclick="loadData()">🔄 刷新</button>
+  </div>
+
+  <div class="container">
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card"><div class="stat-label">进行中</div><div class="stat-value blue" id="statProgress">-</div></div>
+      <div class="stat-card"><div class="stat-label">审核中</div><div class="stat-value amber" id="statReview">-</div></div>
+      <div class="stat-card"><div class="stat-label">已完成</div><div class="stat-value green" id="statDone">-</div></div>
+      <div class="stat-card"><div class="stat-label">总任务</div><div class="stat-value gray" id="statTotal">-</div></div>
+    </div>
+
+    <!-- Agent Flow Diagram -->
+    <div class="flow-section">
+      <h2>🔗 调度流程</h2>
+      <div class="flow-diagram">
+        <div>
+          <div class="flow-node boss">👤 Boss</div>
+          <div class="flow-label">下达指令</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div>
+          <div class="flow-node main">🎯 总管</div>
+          <div class="flow-label">任务编排</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div>
+          <div class="flow-node worker">🎨 设计师</div>
+          <div class="flow-label">执行</div>
+        </div>
+        <div class="flow-arrow">&nbsp;</div>
+        <div>
+          <div class="flow-node worker">⚙️ 工程师</div>
+          <div class="flow-label">执行</div>
+        </div>
+        <div class="flow-arrow">&nbsp;</div>
+        <div>
+          <div class="flow-node worker">🔍 研究员</div>
+          <div class="flow-label">执行</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kanban Board -->
+    <div style="margin-top:24px">
+      <h2 style="font-size:16px;font-weight:700;margin-bottom:16px">📌 任务看板</h2>
+    </div>
+    <div class="kanban" id="kanban">
+      <div class="column">
+        <div class="col-header pending"><div class="col-title">待处理</div><div class="col-count" id="countPending">0</div></div>
+        <div id="colPending"></div>
+      </div>
+      <div class="column">
+        <div class="col-header progress"><div class="col-title">进行中</div><div class="col-count" id="countProgress">0</div></div>
+        <div id="colProgress"></div>
+      </div>
+      <div class="column">
+        <div class="col-header review"><div class="col-title">审核中</div><div class="col-count" id="countReview">0</div></div>
+        <div id="colReview"></div>
+      </div>
+      <div class="column">
+        <div class="col-header done"><div class="col-title">已完成</div><div class="col-count" id="countDone">0</div></div>
+        <div id="colDone"></div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-section">
+      <h2>📜 活动时间线</h2>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </div>
+
+  <script>
+    const AGENT_NAMES = {
+      main: '🎯 总管',
+      designer: '🎨 设计师',
+      engineer: '⚙️ 工程师',
+      engineer2: '⚙️ 工程师2号',
+      researcher: '🔍 研究员',
+      operator: '📡 运营',
+    };
+
+    const STATUS_MAP = {
+      created: 'Pending',
+      in_progress: 'Progress',
+      reviewing: 'Review',
+      done: 'Done',
+      rejected: 'Progress',
+      cancelled: 'Done',
+    };
+
+    function timeAgo(dateStr) {
+      const d = new Date(dateStr);
+      const now = new Date();
+      const diff = Math.floor((now - d) / 1000);
+      if (diff < 60) return '刚才';
+      if (diff < 3600) return Math.floor(diff/60) + ' 分钟前';
+      if (diff < 86400) return Math.floor(diff/3600) + ' 小时前';
+      return Math.floor(diff/86400) + ' 天前';
+    }
+
+    function renderCard(task) {
+      const agentName = AGENT_NAMES[task.assignee] || task.assignee;
+      const assignerName = AGENT_NAMES[task.assigner] || task.assigner;
+      return `
+        <div class="task-card">
+          <div class="task-id">#${task.id}</div>
+          <div class="task-name">${task.name}</div>
+          <div class="task-desc">${task.description || ''}</div>
+          <div class="task-meta">
+            <span class="tag agent">${agentName}</span>
+            <span class="tag assigner">← ${assignerName}</span>
+            <span class="tag time">${timeAgo(task.created_at)}</span>
+          </div>
+          ${task.acceptance_criteria ? `<div class="task-criteria"><strong>验收标准：</strong>${task.acceptance_criteria}</div>` : ''}
+        </div>
+      `;
+    }
+
+    function renderTimeline(tasks) {
+      const items = [];
+      tasks.forEach(t => {
+        items.push({
+          time: t.created_at,
+          type: 'created',
+          text: `<span class="tl-agent">${AGENT_NAMES[t.assigner]||t.assigner}</span> 创建任务「${t.name}」→ 派给 <span class="tl-agent">${AGENT_NAMES[t.assignee]||t.assignee}</span>`
+        });
+        if (t.progress_notes) {
+          t.progress_notes.forEach(n => {
+            items.push({
+              time: n.time || t.created_at,
+              type: 'check',
+              text: n.note || n
+            });
+          });
+        }
+        if (t.status === 'done' && t.completed_at) {
+          items.push({
+            time: t.completed_at,
+            type: 'done',
+            text: `任务「${t.name}」✅ 验收通过`
+          });
+        }
+      });
+      items.sort((a, b) => new Date(b.time) - new Date(a.time));
+      
+      if (items.length === 0) {
+        return '<div class="empty"><div class="empty-icon">📜</div><div class="empty-text">暂无活动记录</div></div>';
+      }
+      
+      return items.map(item => `
+        <div class="tl-item ${item.type}">
+          <div class="tl-time">${new Date(item.time).toLocaleString('zh-CN')}</div>
+          <div class="tl-text">${item.text}</div>
+        </div>
+      `).join('');
+    }
+
+    function loadData() {
+      // Try to load from tasks-data.json (generated by task-orchestrator)
+      fetch('./tasks-data.json?t=' + Date.now())
+        .then(r => r.ok ? r.json() : Promise.reject('no data file'))
+        .then(data => render(data))
+        .catch(() => {
+          // Fallback: show demo/empty state with instructions
+          render({ version: 1, tasks: [], _fallback: true });
+        });
+    }
+
+    function render(data) {
+      const tasks = data.tasks || [];
+      
+      // Stats
+      const counts = { created: 0, in_progress: 0, reviewing: 0, done: 0 };
+      tasks.forEach(t => { counts[t.status] = (counts[t.status] || 0) + 1; });
+      document.getElementById('statProgress').textContent = counts.in_progress + counts.created;
+      document.getElementById('statReview').textContent = counts.reviewing;
+      document.getElementById('statDone').textContent = counts.done;
+      document.getElementById('statTotal').textContent = tasks.length;
+      document.getElementById('lastUpdate').textContent = '更新于 ' + new Date().toLocaleString('zh-CN');
+
+      // Column counts
+      document.getElementById('countPending').textContent = counts.created;
+      document.getElementById('countProgress').textContent = counts.in_progress;
+      document.getElementById('countReview').textContent = counts.reviewing;
+      document.getElementById('countDone').textContent = counts.done;
+
+      // Cards
+      const cols = { Pending: [], Progress: [], Review: [], Done: [] };
+      tasks.forEach(t => {
+        const col = STATUS_MAP[t.status] || 'Pending';
+        cols[col].push(renderCard(t));
+      });
+      document.getElementById('colPending').innerHTML = cols.Pending.join('') || '<div class="empty"><div class="empty-text" style="font-size:12px;color:#ccc">空</div></div>';
+      document.getElementById('colProgress').innerHTML = cols.Progress.join('') || '<div class="empty"><div class="empty-text" style="font-size:12px;color:#ccc">空</div></div>';
+      document.getElementById('colReview').innerHTML = cols.Review.join('') || '<div class="empty"><div class="empty-text" style="font-size:12px;color:#ccc">空</div></div>';
+      document.getElementById('colDone').innerHTML = cols.Done.join('') || '<div class="empty"><div class="empty-text" style="font-size:12px;color:#ccc">空</div></div>';
+
+      // Timeline
+      document.getElementById('timeline').innerHTML = renderTimeline(tasks);
+    }
+
+    loadData();
+    // Auto refresh every 30 seconds
+    setInterval(loadData, 30000);
+  </script>
+</body>
+</html>
