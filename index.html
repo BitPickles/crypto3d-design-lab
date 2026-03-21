@@ -113,6 +113,8 @@
     /* ── SECTION SYSTEM ── */
     .sec{max-width:1280px;margin:0 auto;padding:56px 32px}
     .sec-alt{background:var(--bg-1)}
+    .sec-tinted{background:var(--bg-2)}
+    [data-theme="light"] .sec-tinted{background:#eef0f5}
     .sec-dark{background:linear-gradient(180deg,var(--bg-0),var(--bg-2),var(--bg-0))}
     .sec-head{margin-bottom:36px}
     .sec-eyebrow{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
@@ -196,7 +198,7 @@
     /* ── WIDE STATS BAR (Stripe-inspired) ── */
     .stats-bar{padding:48px 0;position:relative;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
     .stats-bar-bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(52,211,153,0.04),rgba(96,165,250,0.04),rgba(167,139,250,0.03));opacity:var(--glow-opacity)}
-    [data-theme="light"] .stats-bar{background:var(--bg-2)}
+    [data-theme="light"] .stats-bar{background:#e6e8ef;border-color:rgba(0,0,0,0.08)}
     .stats-bar-inner{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-around;gap:40px;position:relative;z-index:1;flex-wrap:wrap}
     .stat-item{text-align:center}
     .stat-num{font-size:52px;font-weight:900;letter-spacing:-0.04em;line-height:1}
@@ -210,7 +212,7 @@
     /* ── RISK SECTION (full-width gradient bg) ── */
     .risk-section{position:relative;overflow:hidden}
     .risk-gradient{position:absolute;inset:0;background:linear-gradient(180deg,var(--bg-0) 0%,var(--bg-2) 50%,var(--bg-0) 100%)}
-    [data-theme="light"] .risk-gradient{background:linear-gradient(180deg,var(--bg-0) 0%,#e8e8f0 50%,var(--bg-0) 100%)}
+    [data-theme="light"] .risk-gradient{background:linear-gradient(180deg,var(--bg-0) 0%,#e2e4ed 50%,var(--bg-0) 100%)}
     .risk-content{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:56px 32px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
     @media(max-width:960px){.risk-content{grid-template-columns:1fr;gap:32px}}
 
@@ -402,7 +404,7 @@
 </section>
 
 <!-- ═══════════════════ 区域2: BTC 周期指标 ═══════════════════ -->
-<section id="cycle">
+<section id="cycle" class="sec-tinted">
   <div class="sec">
     <div class="sec-head">
       <div class="sec-eyebrow" style="color:var(--blue)"><div class="dot" style="background:var(--blue)"></div>BTC Cycle</div>
