@@ -291,6 +291,12 @@
           "actor": "boss",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "Boss 已手动完成 Vercel 测试站部署。P0-2 达成，可访问地址：https://what-to-mine-v67o.vercel.app 。任务继续推进下一步。"
+        },
+        {
+          "time": "2026-03-22T00:26:00+08:00",
+          "actor": "researcher",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "📊 监控检查：engineer 最后活动 00:06（约20分钟前），已响应 P0-3 任务并列出配置需求（DATABASE_URL）。阻塞在等待 Boss 提供 Supabase 连接串，无需催促。"
         }
       ],
       "boss_channel": "telegram:1311453837"
