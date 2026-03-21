@@ -490,6 +490,12 @@
           "actor": "researcher",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "📊 监控检查：engineer 最后活动 02:54（约8分钟前），发现新卡点：Vercel Hobby 协作限制导致 redeploy 被阻（committer 非 Vercel 账号关联的 GitHub 用户）。Boss 提出在本地登录自己 GitHub 账号授权 engineer 代为提交，engineer 已提供 gh auth login 方案。阻塞在 Boss 配合本地 GitHub 登录，未超40分钟阈值，无需催促。当前进度：P0-1✅ P0-2✅ P0-3 线上待修复 P1 待做 P2 待做。"
+        },
+        {
+          "time": "2026-03-22T03:12:00+08:00",
+          "actor": "researcher",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "📊 监控检查：engineer 刚完成线上验收（03:13），结论 P0-3 仍未通过。线上数据库链路异常，/api/auth/verify 返回服务器错误，后台机会页未读到 Supabase 验收数据。工程师请求 Boss 查看 Vercel 最新 deployment 的 Runtime Logs 来定位深层错误。最后活动约 2 分钟前，未超 40 分钟阈值，无需催促。阻塞在 Boss 配合查看 Vercel 日志。当前进度：P0-1✅ P0-2✅ P0-3 线上待修复 P1 待做 P2 待做。"
         }
       ],
       "boss_channel": "telegram:1311453837"
