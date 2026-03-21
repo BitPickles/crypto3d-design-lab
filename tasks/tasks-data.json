@@ -1,5 +1,5 @@
 {
-  "lastSync": "2026-03-22T01:30:00+08:00",
+  "lastSync": "2026-03-22T01:40:00+08:00",
   "tasks": [
     {
       "id": "task-002",
@@ -16,7 +16,7 @@
       "assignee": "engineer",
       "status": "in_progress",
       "description": "Phase 2 开发：P0（后台表单+Vercel部署+Supabase），P1（收藏前端+Recharts），P2（复盘页+TG通知）",
-      "lastUpdate": "2026-03-22T01:30:00+08:00",
+      "lastUpdate": "2026-03-22T01:40:00+08:00",
       "summary": "P0-3 进行中。Prisma 已切到 postgresql，直连 Supabase 因 IPv6 不可达失败。阻塞在等待 Boss 提供 Supabase pooler 版本 DATABASE_URL（host: *.pooler.supabase.com）。"
     }
   ]
