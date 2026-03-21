@@ -6,15 +6,19 @@
       "name": "全站 UI 升级优化",
       "assignee": "designer",
       "assigner": "main",
-      "status": "done",
+      "status": "in_progress",
       "created_at": "2026-03-21T19:48:38.124368",
       "monitor_cron_id": "0ed93db1-41e9-42e8-ae51-ce1a92cb4b40",
       "check_interval": "15m",
       "description": "默认浅色主题、修复所有子页面、统一导航和Footer、移动端适配",
       "acceptance_criteria": "7个页面全部可访问且渲染正常，默认浅色，导航统一，双主题正常，移动端适配",
-      "progress_notes": [],
-      "boss_channel": "telegram:1311453837",
-      "completed_at": "2026-03-21T19:53:49.733883"
+      "progress_notes": [
+        {
+          "time": "2026-03-21T19:59:00",
+          "note": "Boss 指出不应标记完成，基础框架完成但细节待优化，改回进行中"
+        }
+      ],
+      "boss_channel": "telegram:1311453837"
     }
   ]
 }
