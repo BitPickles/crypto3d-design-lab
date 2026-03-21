@@ -111,6 +111,7 @@
     .tl-time{font-size:10px;color:#999;font-family:'JetBrains Mono',monospace}
     .tl-text{font-size:12px;color:#333;margin-top:2px}
     .tl-agent{font-weight:600;color:#7c3aed}
+    .tl-task{color:#3b82f6;font-weight:500}
 
     .empty{text-align:center;padding:30px 10px;color:#ccc;font-size:12px}
 
@@ -345,13 +346,30 @@
 
     function renderTimeline(tasks) {
       const items = [];
+      const ACTOR_NAMES = Object.assign({}, AGENT_NAMES, { boss: '👤 Boss' });
+      
       tasks.forEach(t => {
-        items.push({ time: t.created_at, type: 'created', text: `<span class="tl-agent">${AGENT_NAMES[t.assigner]||t.assigner}</span> 创建「${t.name}」→ <span class="tl-agent">${AGENT_NAMES[t.assignee]||t.assignee}</span>` });
+        items.push({
+          time: t.created_at,
+          type: 'created',
+          text: `<span class="tl-agent">${ACTOR_NAMES[t.assigner]||t.assigner}</span> 创建任务「<strong>${t.name}</strong>」→ 派给 <span class="tl-agent">${ACTOR_NAMES[t.assignee]||t.assignee}</span>`
+        });
         (t.progress_notes||[]).forEach(n => {
-          items.push({ time: n.time||t.created_at, type: 'check', text: typeof n === 'string' ? n : n.note });
+          const note = typeof n === 'string' ? n : n.note;
+          const actor = (typeof n === 'object' && n.actor) ? ACTOR_NAMES[n.actor] || n.actor : ACTOR_NAMES[t.assigner] || t.assigner;
+          const taskName = (typeof n === 'object' && n.task_name) ? n.task_name : t.name;
+          items.push({
+            time: (typeof n === 'object' ? n.time : null) || t.created_at,
+            type: 'check',
+            text: `<span class="tl-agent">${actor}</span> <span class="tl-task">「${taskName}」</span> ${note}`
+          });
         });
         if (t.status === 'done' && t.completed_at) {
-          items.push({ time: t.completed_at, type: 'done', text: `「${t.name}」✅ 完成` });
+          items.push({
+            time: t.completed_at,
+            type: 'done',
+            text: `<span class="tl-agent">${ACTOR_NAMES[t.assigner]||t.assigner}</span> 确认任务「<strong>${t.name}</strong>」✅ 完成`
+          });
         }
       });
       items.sort((a, b) => new Date(b.time) - new Date(a.time));
