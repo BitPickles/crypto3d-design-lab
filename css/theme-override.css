@@ -295,6 +295,14 @@ table tbody td,
   vertical-align: middle;
 }
 
+#protocol-table tbody tr {
+  transition: background-color .16s ease, transform .16s ease;
+}
+
+#protocol-table tbody tr:hover {
+  transform: translateX(1px);
+}
+
 [data-theme="light"] table tbody tr:hover td {
   background: var(--bg-tertiary) !important;
 }
@@ -443,12 +451,27 @@ table tbody td,
 /* ============================================================
    TEV DETAIL PAGE RHYTHM + RESEARCH PRODUCT FEEL
    ============================================================ */
+.breadcrumb {
+  font-size: 12px !important;
+  color: var(--text-tertiary) !important;
+  margin: 14px 0 18px !important;
+  letter-spacing: 0.04em;
+}
+
+.breadcrumb a {
+  color: var(--text-secondary) !important;
+}
+
+.breadcrumb a:hover {
+  color: var(--text-primary) !important;
+}
+
 .protocol-header {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 280px;
+  grid-template-columns: minmax(0, 1fr) 300px;
   gap: 24px;
   align-items: stretch;
-  margin: 18px 0 26px !important;
+  margin: 18px 0 28px !important;
 }
 
 .protocol-title,
@@ -528,6 +551,16 @@ table tbody td,
 
 .tev-summary-item {
   padding: 14px 16px !important;
+  min-height: 92px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tev-summary-item:hover,
+.burn-chart-card:hover,
+.chart-stat:hover {
+  border-color: var(--border-hover) !important;
 }
 
 .tev-summary-label,
@@ -550,6 +583,17 @@ table tbody td,
 #buyback-chart-section .chart-container,
 #token-burns-section .burn-chart-card {
   background: var(--bg-secondary) !important;
+}
+
+#tev-chart-section .chart-container,
+#buyback-chart-section .chart-container {
+  padding: 20px !important;
+  border-radius: var(--radius-md) !important;
+}
+
+.chart-canvas-wrap {
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 #tev-chart-section .chart-stats {
@@ -613,10 +657,20 @@ table tbody td,
 .feed-item {
   padding: 16px 18px !important;
   border-radius: var(--radius-md) !important;
+  position: relative;
 }
 
 .feed-item.is-active {
   border-left-width: 3px !important;
+}
+
+.feed-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 40%);
 }
 
 .feed-proposal-title {
@@ -632,6 +686,7 @@ table tbody td,
 .protocol-card {
   padding: 16px 18px !important;
   gap: 10px !important;
+  position: relative;
 }
 
 .card-name {
