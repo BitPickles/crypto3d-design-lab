@@ -60,6 +60,12 @@
           "actor": "main",
           "task_name": "全站 UI 升级优化",
           "note": "⚠️ 待 Boss 确认：首页布局是否满意？测试站 https://bitpickles.github.io/crypto3d-design-lab/?v=contrast 。确认后继续做子页面 UI 升级。"
+        },
+        {
+          "time": "2026-03-21T21:48:29+08:00",
+          "actor": "designer",
+          "task_name": "全站 UI 升级优化",
+          "note": "✅ 浅色主题对比度修复完成：每个业务区域有独立背景色（白→蓝灰#eef0f5→灰#e6e8ef→深灰渐变#e2e4ed），已推送 commit。待 Boss 确认。"
         }
       ],
       "boss_channel": "telegram:1311453837"
