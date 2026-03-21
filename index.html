@@ -517,12 +517,6 @@
 </footer>
 
 <script>
-document.getElementById('tt').addEventListener('click',()=>{
-  const isDark=document.documentElement.getAttribute('data-theme')!=='light';
-  isDark?document.documentElement.setAttribute('data-theme','light'):document.documentElement.removeAttribute('data-theme');
-  localStorage.setItem('theme',isDark?'light':'dark');
-});
-
 /* Scroll reveal */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.08,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.rv').forEach((el,i)=>{el.style.transitionDelay=i*50+'ms';io.observe(el)});
@@ -584,6 +578,7 @@ sp('sp-d',[57.5,57.8,58.0,57.9,58.1,58.3,58.2],'#38bdf8');
   s.innerHTML=`<defs><linearGradient id="rg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fbbf24" stop-opacity=".15"/><stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/></linearGradient></defs><polygon fill="url(#rg)" points="${p},${h-p} ${ln} ${w-p},${h-p}"/><polyline fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="${ln}"/><circle cx="${la[0]}" cy="${la[1]}" r="3" fill="#fbbf24"/>`;
 })();
 </script>
+<script src="./js/theme.js"></script>
 </body>
 </html>
 <!-- cache-bust 1774095253 -->

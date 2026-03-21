@@ -80,7 +80,13 @@ body {
 [data-theme="light"] .video-card,
 [data-theme="light"] .table-container,
 [data-theme="light"] .chart-card,
-[data-theme="light"] .chart-section {
+[data-theme="light"] .chart-section,
+[data-theme="light"] .section,
+[data-theme="light"] .proposal-card,
+[data-theme="light"] .protocol-card,
+[data-theme="light"] .mini-stat,
+[data-theme="light"] .stat-card,
+[data-theme="light"] .metric-card {
   background: var(--bg-secondary) !important;
   border-color: var(--border) !important;
 }
