@@ -6,7 +6,7 @@
       "name": "全站 UI 升级优化",
       "assignee": "designer",
       "assigner": "main",
-      "status": "in_progress",
+      "status": "reviewing",
       "created_at": "2026-03-21T19:48:38.124368+08:00",
       "monitor_cron_id": "0ed93db1-41e9-42e8-ae51-ce1a92cb4b40",
       "check_interval": "15m",
@@ -48,6 +48,12 @@
           "note": "验收发现首页BTC周期+宏观风险板块渲染不可见（DOM存在但视觉空白），子页面全部正常。已通知设计师修复CSS。状态改回 in_progress。",
           "actor": "main",
           "task_name": "全站 UI 升级优化"
+        },
+        {
+          "time": "2026-03-21T21:31:56+08:00",
+          "actor": "main",
+          "task_name": "全站 UI 升级优化",
+          "note": "首页布局调整完成（恐贪删除、三条业务线分区、浅色主题对比度修复）。待 Boss 确认首页设计是否满意。"
         }
       ],
       "boss_channel": "telegram:1311453837"
@@ -57,7 +63,7 @@
       "name": "什么值得挖 v2.0 Phase 2 开发",
       "assignee": "engineer",
       "assigner": "researcher",
-      "status": "in_progress",
+      "status": "reviewing",
       "created_at": "2026-03-21T20:21:00+08:00",
       "monitor_cron_id": "3b98c813-2c03-493a-87be-9668d0df780d",
       "check_interval": "10m",
@@ -87,9 +93,22 @@
           "note": "监控检查：工程师已确认开工P0-1，Codex后台任务正在执行中（约2分钟）。仓库已改为私有。进展正常，无阻塞，无需催促。",
           "actor": "researcher",
           "task_name": "什么值得挖 v2.0 Phase 2 开发"
+        },
+        {
+          "time": "2026-03-21T21:09:00+08:00",
+          "note": "监控检查：Codex后台进程已结束（pid不在了），但工程师未主动汇报结果。已发消息催促工程师检查Codex输出、确认build结果并汇报。距上次活动约25分钟。",
+          "actor": "researcher",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发"
+        },
+        {
+          "time": "2026-03-21T21:31:56+08:00",
+          "actor": "engineer",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "P0-1 后台表单完成（commit 3a488a4）。P0-2 Vercel 部署需要 Boss 提供认证 Token，等待 Boss 配合。"
         }
       ],
-      "boss_channel": "telegram:1311453837"
+      "boss_channel": "telegram:1311453837",
+      "review_reason": "Vercel 部署需要 Boss 提供认证"
     }
   ]
 }
