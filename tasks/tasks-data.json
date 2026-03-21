@@ -1,5 +1,5 @@
 {
-  "lastSync": "2026-03-22T01:21:00+08:00",
+  "lastSync": "2026-03-22T01:30:00+08:00",
   "tasks": [
     {
       "id": "task-002",
@@ -9,6 +9,15 @@
       "description": "默认浅色主题、修复所有子页面、统一导航和Footer、移动端适配",
       "lastUpdate": "2026-03-22T01:21:00+08:00",
       "summary": "总管 01:01 完成独立验收（TEV 协议详情页数据补齐验证通过），designer 01:08 完成主题切换统一修复。待 Boss 最终确认结项。"
+    },
+    {
+      "id": "task-003",
+      "name": "什么值得挖 v2.0 Phase 2 开发",
+      "assignee": "engineer",
+      "status": "in_progress",
+      "description": "Phase 2 开发：P0（后台表单+Vercel部署+Supabase），P1（收藏前端+Recharts），P2（复盘页+TG通知）",
+      "lastUpdate": "2026-03-22T01:30:00+08:00",
+      "summary": "P0-3 进行中。Prisma 已切到 postgresql，直连 Supabase 因 IPv6 不可达失败。阻塞在等待 Boss 提供 Supabase pooler 版本 DATABASE_URL（host: *.pooler.supabase.com）。"
     }
   ]
 }
