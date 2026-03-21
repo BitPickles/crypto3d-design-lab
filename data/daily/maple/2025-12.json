@@ -1,0 +1,319 @@
+{
+  "protocol": "maple",
+  "period": "2025-12",
+  "source": "defillama+coingecko",
+  "fetched_at": "2026-02-14T06:57:29.491Z",
+  "record_count": 31,
+  "records": [
+    {
+      "date": "2025-12-01",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 348103,
+      "daily_revenue_usd": 43597,
+      "daily_holders_revenue_usd": 10899,
+      "daily_tev_usd": 10899,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-02",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 853513,
+      "daily_revenue_usd": 96642,
+      "daily_holders_revenue_usd": 24161,
+      "daily_tev_usd": 24161,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-03",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 120122,
+      "daily_revenue_usd": 19932,
+      "daily_holders_revenue_usd": 4983,
+      "daily_tev_usd": 4983,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-04",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 200052,
+      "daily_revenue_usd": 28663,
+      "daily_holders_revenue_usd": 7166,
+      "daily_tev_usd": 7166,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-05",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 1292246,
+      "daily_revenue_usd": 140942,
+      "daily_holders_revenue_usd": 35235,
+      "daily_tev_usd": 35235,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-06",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 378564,
+      "daily_revenue_usd": 42504,
+      "daily_holders_revenue_usd": 10626,
+      "daily_tev_usd": 10626,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-07",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 6663,
+      "daily_revenue_usd": 6663,
+      "daily_holders_revenue_usd": 1666,
+      "daily_tev_usd": 1666,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-08",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 1172766,
+      "daily_revenue_usd": 127638,
+      "daily_holders_revenue_usd": 31910,
+      "daily_tev_usd": 31910,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-09",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 699634,
+      "daily_revenue_usd": 87859,
+      "daily_holders_revenue_usd": 21965,
+      "daily_tev_usd": 21965,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-10",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 8184,
+      "daily_revenue_usd": 8184,
+      "daily_holders_revenue_usd": 2046,
+      "daily_tev_usd": 2046,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-11",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 639318,
+      "daily_revenue_usd": 72468,
+      "daily_holders_revenue_usd": 18117,
+      "daily_tev_usd": 18117,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-12",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 531995,
+      "daily_revenue_usd": 67371,
+      "daily_holders_revenue_usd": 16843,
+      "daily_tev_usd": 16843,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-13",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 44635,
+      "daily_revenue_usd": 12223,
+      "daily_holders_revenue_usd": 3056,
+      "daily_tev_usd": 3056,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-14",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 8386,
+      "daily_revenue_usd": 8386,
+      "daily_holders_revenue_usd": 2097,
+      "daily_tev_usd": 2097,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-15",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 508872,
+      "daily_revenue_usd": 64919,
+      "daily_holders_revenue_usd": 16230,
+      "daily_tev_usd": 16230,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-16",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 752052,
+      "daily_revenue_usd": 92538,
+      "daily_holders_revenue_usd": 23135,
+      "daily_tev_usd": 23135,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-17",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 7962,
+      "daily_revenue_usd": 7962,
+      "daily_holders_revenue_usd": 1990,
+      "daily_tev_usd": 1990,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-18",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 848801,
+      "daily_revenue_usd": 94949,
+      "daily_holders_revenue_usd": 23737,
+      "daily_tev_usd": 23737,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-19",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 1945,
+      "daily_revenue_usd": 1945,
+      "daily_holders_revenue_usd": 486,
+      "daily_tev_usd": 486,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-20",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 2031,
+      "daily_revenue_usd": 2031,
+      "daily_holders_revenue_usd": 508,
+      "daily_tev_usd": 508,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-21",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 1762,
+      "daily_revenue_usd": 1762,
+      "daily_holders_revenue_usd": 441,
+      "daily_tev_usd": 441,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-22",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 183947,
+      "daily_revenue_usd": 21096,
+      "daily_holders_revenue_usd": 5274,
+      "daily_tev_usd": 5274,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-23",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 494857,
+      "daily_revenue_usd": 99423,
+      "daily_holders_revenue_usd": 24856,
+      "daily_tev_usd": 24856,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-24",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 34180,
+      "daily_revenue_usd": 8865,
+      "daily_holders_revenue_usd": 2216,
+      "daily_tev_usd": 2216,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-25",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 114415,
+      "daily_revenue_usd": 15807,
+      "daily_holders_revenue_usd": 3952,
+      "daily_tev_usd": 3952,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-26",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 4571,
+      "daily_revenue_usd": 4571,
+      "daily_holders_revenue_usd": 1143,
+      "daily_tev_usd": 1143,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-27",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 28235,
+      "daily_revenue_usd": 5132,
+      "daily_holders_revenue_usd": 1283,
+      "daily_tev_usd": 1283,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-28",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 60784,
+      "daily_revenue_usd": 10394,
+      "daily_holders_revenue_usd": 2599,
+      "daily_tev_usd": 2599,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-29",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 7607,
+      "daily_revenue_usd": 4133,
+      "daily_holders_revenue_usd": 1033,
+      "daily_tev_usd": 1033,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-30",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 286243,
+      "daily_revenue_usd": 40914,
+      "daily_holders_revenue_usd": 10229,
+      "daily_tev_usd": 10229,
+      "tev_source": "defillama_holdersRevenue"
+    },
+    {
+      "date": "2025-12-31",
+      "price_usd": null,
+      "market_cap_usd": null,
+      "daily_fees_usd": 144770,
+      "daily_revenue_usd": 22642,
+      "daily_holders_revenue_usd": 5661,
+      "daily_tev_usd": 5661,
+      "tev_source": "defillama_holdersRevenue"
+    }
+  ]
+}

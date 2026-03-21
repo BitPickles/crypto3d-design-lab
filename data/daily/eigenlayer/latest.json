@@ -1,0 +1,34 @@
+{
+  "protocol": "eigenlayer",
+  "updated_at": "2026-03-01T13:02:40.460428+00:00",
+  "data_sources": {
+    "tvl": "DefiLlama",
+    "fees": "DefiLlama",
+    "market": "CoinGecko"
+  },
+  "latest_record": {
+    "date": "2026-03-01",
+    "price_usd": 0.18544,
+    "market_cap_usd": 118679418,
+    "fdv_usd": 333891686,
+    "circulating_supply": 640067972.8223805,
+    "total_supply": 1800761902.021464,
+    "tvl_usd": 8833299779.316027,
+    "daily_fees_usd": 0,
+    "daily_tev_usd": 0,
+    "tev_ratio_used": 0
+  },
+  "metrics": {
+    "trailing_30d_fees_usd": 0,
+    "trailing_30d_tev_usd": 0,
+    "annualized_fees_usd": 0,
+    "annualized_tev_usd": 0,
+    "current_market_cap_usd": 118679418,
+    "tev_yield": "0.00%",
+    "tev_yield_decimal": 0.0,
+    "tvl_usd": 8833299779.316027,
+    "mcap_tvl_ratio": 0.0134,
+    "calculated_at": "2026-03-01T13:02:40.460428+00:00"
+  },
+  "fees_breakdown": {}
+}
