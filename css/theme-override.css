@@ -81,9 +81,15 @@
    ============================================================ */
 html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-family: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif !important;
   background: var(--bg-primary) !important;
   color: var(--text-primary) !important;
+}
+
+:lang(zh),
+html[lang="zh-CN"] body,
+html[lang="zh"] body {
+  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 .container,
@@ -622,6 +628,17 @@ table tbody td,
   color: var(--text-tertiary) !important;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  font-weight: 600 !important;
+}
+
+.tev-summary-label .label-zh,
+.burn-stat-label,
+.chart-stat-label,
+.tev-summary-value,
+.mechanism-status,
+.feed-status,
+.badge {
+  -webkit-font-smoothing: antialiased;
 }
 
 .tev-summary-value,
