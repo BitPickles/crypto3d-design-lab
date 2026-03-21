@@ -72,6 +72,12 @@
           "actor": "main",
           "task_name": "全站 UI 升级优化",
           "note": "📊 监控检查：designer 刚完成浅色主题修复并推送（21:48），状态 reviewing。无需催促，待 Boss 确认。"
+        },
+        {
+          "time": "2026-03-21T21:58:00+08:00",
+          "actor": "main",
+          "task_name": "全站 UI 升级优化",
+          "note": "📊 监控检查：designer 最后活动在 21:48（10分钟前），状态 reviewing，浅色主题修复已推送。无需催促，待 Boss 确认首页设计。"
         }
       ],
       "boss_channel": "telegram:1311453837"
