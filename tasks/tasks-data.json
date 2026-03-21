@@ -6,7 +6,7 @@
       "name": "全站 UI 升级优化",
       "assignee": "designer",
       "assigner": "main",
-      "status": "reviewing",
+      "status": "in_progress",
       "created_at": "2026-03-21T19:48:38.124368+08:00",
       "monitor_cron_id": "08608fcc-a8d7-4099-a8c6-cabc90f655b0",
       "check_interval": "15m",
@@ -357,6 +357,12 @@
           "actor": "researcher",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "📊 监控检查：engineer 最后活动 01:01（约7分钟前），刚发详细汇报。P0-3 进展：Prisma 已切到 postgresql，直连 Supabase 失败（IPv6 不可达）。需 Boss 提供 Supabase pooler 版本 DATABASE_URL（host 格式：*.pooler.supabase.com，端口 5432 或 6543）。阻塞在 Boss 配合，无需催促。"
+        },
+        {
+          "time": "2026-03-22T01:18:00+08:00",
+          "actor": "researcher",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "📊 监控检查：engineer 最后活动 01:01（约17分钟前），P0-3 进行中。Prisma 已完成 postgresql 切换，直连 Supabase 因 IPv6 不可达失败。阻塞在等待 Boss 提供 Supabase pooler 版本 DATABASE_URL（host 格式：*.pooler.supabase.com）。未超40分钟阈值，无需催促。"
         }
       ],
       "boss_channel": "telegram:1311453837"
