@@ -6,7 +6,7 @@
       "name": "全站 UI 升级优化",
       "assignee": "designer",
       "assigner": "main",
-      "status": "reviewing",
+      "status": "in_progress",
       "created_at": "2026-03-21T19:48:38.124368",
       "monitor_cron_id": "0ed93db1-41e9-42e8-ae51-ce1a92cb4b40",
       "check_interval": "15m",
@@ -24,6 +24,10 @@
         {
           "time": "2026-03-21T20:23:37.346460",
           "note": "重新验收：代码和渲染都正常，之前误判。统计条/宏观风险/治理全部可见。状态改为 reviewing 待 Boss 确认。"
+        },
+        {
+          "time": "2026-03-21T20:46:40.007574",
+          "note": "Boss 反馈：首页业务线分区不对，治理要移到TEV下方，恐贪指数删除，子页面只改UI不重构功能。已派修改任务。"
         }
       ],
       "boss_channel": "telegram:1311453837"

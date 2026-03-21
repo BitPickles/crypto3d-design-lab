@@ -319,10 +319,7 @@
         <span class="hero-meta-label">BTC 占比</span>
         <span class="hero-meta-val mono">58.2%</span>
       </div>
-      <div class="hero-meta-item">
-        <span class="hero-meta-label">恐贪指数</span>
-        <span class="hero-meta-val mono" style="color:var(--amber)">45 · 中性</span>
-      </div>
+
     </div>
   </div>
   <div class="hero-chart rv">
@@ -330,44 +327,91 @@
   </div>
 </section>
 
-<!-- ═══════════════════ TEV + INDICATORS (Bento Grid) ═══════════════════ -->
+<!-- ═══════════════════ 区域1: TEV 业务线 ═══════════════════ -->
 <section class="sec-alt" id="tev">
   <div class="sec">
     <div class="sec-head rv">
       <div class="sec-eyebrow" style="color:var(--green)"><div class="dot" style="background:var(--green)"></div>Protocol Valuation</div>
-      <h2 class="sec-title">为长期投资者提供价值判断工具</h2>
-      <p class="sec-desc">追踪协议价值分配，量化 BTC 周期位置，评估宏观风险——数据驱动的决策框架。</p>
+      <h2 class="sec-title">协议估值</h2>
+      <p class="sec-desc">追踪协议收益如何流向代币持有者——回购、销毁、分红等价值分配机制。</p>
     </div>
 
-    <div class="bento">
-      <!-- TEV: 8 columns -->
-      <a href="./tev/" class="bento-card glow b-8 rv" id="cycle">
-        <div class="tev-inner">
-          <div>
-            <div class="tev-eyebrow">💰 TEV · Token Enabled Value <span class="badge">Live</span></div>
-            <h3 class="tev-title">协议收益如何流向代币持有者？</h3>
-            <p class="tev-desc">追踪回购、销毁、分红等价值分配机制，量化代币价值捕获能力。</p>
-            <div class="tev-kpis">
-              <div><div class="tev-kpi-v mono">25+</div><div class="tev-kpi-l">覆盖协议</div></div>
-              <div><div class="tev-kpi-v mono">5</div><div class="tev-kpi-l">分配机制</div></div>
-              <div><div class="tev-kpi-v mono">24h</div><div class="tev-kpi-l">更新频率</div></div>
-            </div>
-            <div class="tev-tags"><span class="tev-tag">DeFi</span><span class="tev-tag">Perps</span><span class="tev-tag">Lending</span><span class="tev-tag">Staking</span></div>
+    <!-- TEV 大卡片 -->
+    <a href="./tev/" class="bento-card glow rv" style="display:block">
+      <div class="tev-inner">
+        <div>
+          <div class="tev-eyebrow">💰 TEV · Token Enabled Value <span class="badge">Live</span></div>
+          <h3 class="tev-title">协议收益如何流向代币持有者？</h3>
+          <p class="tev-desc">追踪回购、销毁、分红等价值分配机制，量化代币价值捕获能力。</p>
+          <div class="tev-kpis">
+            <div><div class="tev-kpi-v mono">25+</div><div class="tev-kpi-l">覆盖协议</div></div>
+            <div><div class="tev-kpi-v mono">5</div><div class="tev-kpi-l">分配机制</div></div>
+            <div><div class="tev-kpi-v mono">24h</div><div class="tev-kpi-l">更新频率</div></div>
           </div>
-          <div class="tev-table">
-            <div class="tev-table-head">Top TEV Yield</div>
-            <div class="tev-row"><span class="tev-rank">1</span><span class="tev-proto">Hyperliquid</span><span class="tev-yield mono">42.8%</span><span class="tev-mech">销毁</span></div>
-            <div class="tev-row"><span class="tev-rank">2</span><span class="tev-proto">dYdX</span><span class="tev-yield mono">18.3%</span><span class="tev-mech">分配</span></div>
-            <div class="tev-row"><span class="tev-rank">3</span><span class="tev-proto">GMX</span><span class="tev-yield mono">12.6%</span><span class="tev-mech">分红</span></div>
-            <div class="tev-row"><span class="tev-rank">4</span><span class="tev-proto">Curve</span><span class="tev-yield mono">8.9%</span><span class="tev-mech">分红</span></div>
-            <div class="tev-row"><span class="tev-rank">5</span><span class="tev-proto">Aave</span><span class="tev-yield mono">5.2%</span><span class="tev-mech">回购</span></div>
-            <div class="tev-link">查看完整排名 →</div>
-          </div>
+          <div class="tev-tags"><span class="tev-tag">DeFi</span><span class="tev-tag">Perps</span><span class="tev-tag">Lending</span><span class="tev-tag">Staking</span></div>
         </div>
-      </a>
+        <div class="tev-table">
+          <div class="tev-table-head">Top TEV Yield</div>
+          <div class="tev-row"><span class="tev-rank">1</span><span class="tev-proto">Hyperliquid</span><span class="tev-yield mono">42.8%</span><span class="tev-mech">销毁</span></div>
+          <div class="tev-row"><span class="tev-rank">2</span><span class="tev-proto">dYdX</span><span class="tev-yield mono">18.3%</span><span class="tev-mech">分配</span></div>
+          <div class="tev-row"><span class="tev-rank">3</span><span class="tev-proto">GMX</span><span class="tev-yield mono">12.6%</span><span class="tev-mech">分红</span></div>
+          <div class="tev-row"><span class="tev-rank">4</span><span class="tev-proto">Curve</span><span class="tev-yield mono">8.9%</span><span class="tev-mech">分红</span></div>
+          <div class="tev-row"><span class="tev-rank">5</span><span class="tev-proto">Aave</span><span class="tev-yield mono">5.2%</span><span class="tev-mech">回购</span></div>
+          <div class="tev-link">查看完整排名 →</div>
+        </div>
+      </div>
+    </a>
 
-      <!-- AHR999: 4 columns -->
-      <a href="./ahr999/" class="bento-card b-4 rv">
+    <!-- 治理动态（TEV 子板块） -->
+    <div style="margin-top:24px">
+      <div class="sec-head rv" style="margin-bottom:20px">
+        <div class="sec-eyebrow" style="color:var(--purple)"><div class="dot" style="background:var(--purple)"></div>Governance</div>
+        <h3 class="sec-title" style="font-size:24px">治理动态</h3>
+      </div>
+      <div class="gov-grid rv">
+        <a href="./tev/governance/" class="gov-card">
+          <div class="gov-card-status active"><div class="pulse-dot"></div>进行中</div>
+          <div class="gov-card-title">[ARFC] 激活 Aave Buyback 回购机制</div>
+          <div class="gov-card-proto">Aave · TEV 相关</div>
+          <div class="gov-card-meta">
+            <dl><dt>投票截止</dt><dd class="mono">3月23日</dd></dl>
+            <dl><dt>支持率</dt><dd class="mono" style="color:var(--green)">89.2%</dd></dl>
+          </div>
+        </a>
+        <a href="./tev/governance/" class="gov-card">
+          <div class="gov-card-status tev">TEV 相关</div>
+          <div class="gov-card-title">Uniswap 费用开关 V2 提案</div>
+          <div class="gov-card-proto">Uniswap · 讨论中</div>
+          <div class="gov-card-meta">
+            <dl><dt>阶段</dt><dd>温度检查</dd></dl>
+            <dl><dt>论坛回复</dt><dd class="mono">142</dd></dl>
+          </div>
+        </a>
+        <a href="./tev/governance/" class="gov-card">
+          <div class="gov-card-status passed">已通过</div>
+          <div class="gov-card-title">PancakeSwap veCAKE 收益分配调整</div>
+          <div class="gov-card-proto">PancakeSwap · 已执行</div>
+          <div class="gov-card-meta">
+            <dl><dt>通过日期</dt><dd class="mono">3月18日</dd></dl>
+            <dl><dt>投票率</dt><dd class="mono">72.5%</dd></dl>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ 区域2: BTC 周期指标 ═══════════════════ -->
+<section id="cycle">
+  <div class="sec">
+    <div class="sec-head rv">
+      <div class="sec-eyebrow" style="color:var(--blue)"><div class="dot" style="background:var(--blue)"></div>BTC Cycle</div>
+      <h2 class="sec-title">BTC 周期</h2>
+      <p class="sec-desc">通过多维度链上指标量化 BTC 所处的市场周期位置。</p>
+    </div>
+
+    <div class="bento rv">
+      <a href="./ahr999/" class="bento-card b-4">
         <div class="ind-top">
           <div class="ind-label"><div class="ind-icon" style="background:var(--blue-d)">📈</div><span class="ind-name">AHR999</span></div>
           <div class="ind-spark"><svg id="sp-a" width="80" height="28" viewBox="0 0 80 28"></svg></div>
@@ -381,30 +425,28 @@
         </div>
       </a>
 
-      <!-- MVRV: 6 columns -->
-      <a href="./mvrv/" class="bento-card b-6 rv">
+      <a href="./mvrv/" class="bento-card b-4">
         <div class="ind-top">
           <div class="ind-label"><div class="ind-icon" style="background:var(--purple-d)">📊</div><span class="ind-name">MVRV</span></div>
           <div class="ind-spark"><svg id="sp-m" width="80" height="28" viewBox="0 0 80 28"></svg></div>
         </div>
         <div class="ind-val mono" style="color:var(--amber)">1.29</div>
         <div class="ind-zone y">合理区</div>
-        <p class="ind-desc">市值与实现价值比率，判断市场整体估值水平与周期位置</p>
+        <p class="ind-desc">市值与实现价值比率，判断周期顶底</p>
         <div class="ind-foot">
           <div><span class="ind-chg down mono">-1.4%</span><span class="ind-7d">7日</span></div>
           <span class="ind-act" style="color:var(--purple)">详情 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></span>
         </div>
       </a>
 
-      <!-- BTC.D: 6 columns -->
-      <a href="./btc-dominance/" class="bento-card b-6 rv">
+      <a href="./btc-dominance/" class="bento-card b-4">
         <div class="ind-top">
           <div class="ind-label"><div class="ind-icon" style="background:var(--blue-d)">🥇</div><span class="ind-name">BTC.D</span></div>
           <div class="ind-spark"><svg id="sp-d" width="80" height="28" viewBox="0 0 80 28"></svg></div>
         </div>
         <div class="ind-val mono">58.2%</div>
         <div class="ind-zone b">平衡</div>
-        <p class="ind-desc">BTC 市值占比，追踪资金在比特币与山寨币之间的流向</p>
+        <p class="ind-desc">BTC 市值占比，追踪资金流向</p>
         <div class="ind-foot">
           <div><span class="ind-chg up mono">+0.8%</span><span class="ind-7d">7日</span></div>
           <span class="ind-act" style="color:var(--blue)">详情 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></span>
@@ -460,55 +502,7 @@
   </div>
 </section>
 
-<!-- ═══════════════════ GOVERNANCE (交错布局) ═══════════════════ -->
-<section class="gov-section sec-alt">
-  <div class="gov-inner">
-    <div class="sec-head rv">
-      <div class="sec-eyebrow" style="color:var(--purple)"><div class="dot" style="background:var(--purple)"></div>Governance</div>
-      <h2 class="sec-title">治理动态</h2>
-      <p class="sec-desc">追踪协议治理提案中与 TEV（代币价值分配）相关的关键决策。</p>
-    </div>
 
-    <div class="gov-grid rv">
-      <a href="./tev/governance/" class="gov-card">
-        <div class="gov-card-status active"><div class="pulse-dot"></div>进行中</div>
-        <div class="gov-card-title">[ARFC] 激活 Aave Buyback 回购机制</div>
-        <div class="gov-card-proto">Aave · TEV 相关</div>
-        <div class="gov-card-meta">
-          <dl><dt>投票截止</dt><dd class="mono">3月23日</dd></dl>
-          <dl><dt>支持率</dt><dd class="mono" style="color:var(--green)">89.2%</dd></dl>
-        </div>
-      </a>
-
-      <a href="./tev/governance/" class="gov-card">
-        <div class="gov-card-status tev">TEV 相关</div>
-        <div class="gov-card-title">Uniswap 费用开关 V2 提案</div>
-        <div class="gov-card-proto">Uniswap · 讨论中</div>
-        <div class="gov-card-meta">
-          <dl><dt>阶段</dt><dd>温度检查</dd></dl>
-          <dl><dt>论坛回复</dt><dd class="mono">142</dd></dl>
-        </div>
-      </a>
-
-      <a href="./tev/governance/" class="gov-card">
-        <div class="gov-card-status passed">已通过</div>
-        <div class="gov-card-title">PancakeSwap veCAKE 收益分配调整</div>
-        <div class="gov-card-proto">PancakeSwap · 已执行</div>
-        <div class="gov-card-meta">
-          <dl><dt>通过日期</dt><dd class="mono">3月18日</dd></dl>
-          <dl><dt>投票率</dt><dd class="mono">72.5%</dd></dl>
-        </div>
-      </a>
-    </div>
-
-    <div class="gov-more rv">
-      <a href="./tev/governance/">
-        查看全部治理提案
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
 
 <footer>
   <div class="ft">
