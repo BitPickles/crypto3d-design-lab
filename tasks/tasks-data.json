@@ -180,6 +180,12 @@
           "actor": "main",
           "task_name": "全站 UI 升级优化",
           "note": "📊 监控检查：designer 最后活动 23:24（约14分钟前），正在用浏览器打开 localhost:8931/tev/protocol.html?protocol=aave，截图查看页面渲染，排查数据缺失问题。积极工作中，无需催促。"
+        },
+        {
+          "time": "2026-03-22T00:39:00+08:00",
+          "actor": "main",
+          "task_name": "全站 UI 升级优化",
+          "note": "📊 监控检查：designer 最后活动 00:24（约15分钟前），刚回复 Boss 确认在岗，正在逐模块检查 TEV 详情页数据缺失问题。重点核对：顶部关键数据卡、各类图表、文字说明区、信息卡片/治理模块。积极工作中，未超40分钟阈值，无需催促。"
         }
       ],
       "boss_channel": "telegram:1311453837"
