@@ -441,6 +441,258 @@ table tbody td,
 }
 
 /* ============================================================
+   TEV DETAIL PAGE RHYTHM + RESEARCH PRODUCT FEEL
+   ============================================================ */
+.protocol-header {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 24px;
+  align-items: stretch;
+  margin: 18px 0 26px !important;
+}
+
+.protocol-title,
+.tev-highlight {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-lg) !important;
+  padding: 24px !important;
+}
+
+.tev-highlight {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--bg-secondary), var(--bg-tertiary)) !important;
+}
+
+.protocol-info h1 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.protocol-icon-lg {
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 18px !important;
+  background: var(--bg-tertiary) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.protocol-link {
+  padding: 7px 10px !important;
+  border-radius: 8px !important;
+  background: var(--bg-tertiary) !important;
+  border: 1px solid var(--border) !important;
+  font-size: 12px !important;
+}
+
+.tev-status,
+.badge,
+.feed-status,
+.mechanism-status {
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em;
+}
+
+.tev-value {
+  font-size: clamp(28px, 4vw, 40px) !important;
+  letter-spacing: -0.04em !important;
+  margin: 6px 0 !important;
+}
+
+.tev-label {
+  font-size: 11px !important;
+  color: var(--text-tertiary) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.tev-summary-grid {
+  gap: 12px !important;
+}
+
+.tev-summary-item,
+.burn-chart-card,
+.burn-stat,
+.chart-stat {
+  background: var(--bg-tertiary) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.tev-summary-item {
+  padding: 14px 16px !important;
+}
+
+.tev-summary-label,
+.burn-stat-label,
+.chart-stat-label {
+  font-size: 11px !important;
+  color: var(--text-tertiary) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.tev-summary-value,
+.burn-stat-value,
+.chart-stat-value {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+}
+
+#tev-chart-section .chart-container,
+#buyback-chart-section .chart-container,
+#token-burns-section .burn-chart-card {
+  background: var(--bg-secondary) !important;
+}
+
+#tev-chart-section .chart-stats {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px !important;
+}
+
+.mechanism-card,
+.source-item,
+.gov-card {
+  padding: 16px 18px !important;
+}
+
+.mechanism-header,
+.source-item,
+.gov-card-meta {
+  align-items: flex-start !important;
+}
+
+.mechanism-name,
+.source-name,
+.gov-card-title {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+}
+
+.mechanism-desc,
+.gov-card-summary,
+.source-link,
+.protocol-notes p,
+.protocol-notes li {
+  line-height: 1.72 !important;
+}
+
+#governance-list {
+  gap: 10px !important;
+}
+
+/* ============================================================
+   GOVERNANCE INTELLIGENCE FEEL
+   ============================================================ */
+.feed-panel,
+.cards-panel {
+  background: transparent !important;
+}
+
+.feed-header,
+.cards-panel-header {
+  padding-bottom: 10px !important;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 14px !important;
+}
+
+.feed-title,
+.cards-panel-header {
+  letter-spacing: -0.02em;
+}
+
+.feed-item {
+  padding: 16px 18px !important;
+  border-radius: var(--radius-md) !important;
+}
+
+.feed-item.is-active {
+  border-left-width: 3px !important;
+}
+
+.feed-proposal-title {
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+}
+
+.feed-summary {
+  font-size: 12px !important;
+  color: var(--text-secondary) !important;
+}
+
+.protocol-card {
+  padding: 16px 18px !important;
+  gap: 10px !important;
+}
+
+.card-name {
+  font-size: 14px !important;
+}
+
+.card-stats-row {
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+[data-theme="light"] .feed-header {
+  background: var(--bg-primary) !important;
+}
+
+/* ============================================================
+   FINANCIAL PRODUCT DENSITY / MICRO-POLISH
+   ============================================================ */
+.table-title,
+.section-title,
+.chart-header h3,
+.chart-header h2,
+.cards-panel-header,
+.feed-title {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+
+.table-header,
+.chart-header {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-update-time,
+.updated-at,
+.footer-text {
+  font-size: 11px !important;
+}
+
+.text-right,
+.stat-num,
+.card-tev-yield,
+.tev-yield,
+.tev-summary-value,
+.chart-stat-value,
+.burn-stat-value {
+  font-variant-numeric: tabular-nums;
+}
+
+[data-theme="light"] .protocol-title,
+[data-theme="light"] .tev-highlight,
+[data-theme="light"] .tev-summary-item,
+[data-theme="light"] .burn-chart-card,
+[data-theme="light"] .burn-stat,
+[data-theme="light"] .chart-stat,
+[data-theme="light"] .protocol-link {
+  box-shadow: var(--shadow-light-soft);
+}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 footer {
@@ -450,6 +702,12 @@ footer {
 /* ============================================================
    RESPONSIVE
    ============================================================ */
+@media (max-width: 900px) {
+  .protocol-header {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 @media (max-width: 768px) {
   header { height: 48px; }
   .header-content { height: 48px; }
@@ -459,4 +717,11 @@ footer {
   .chart-section,
   .table-container,
   .bento-card { border-radius: var(--radius-sm) !important; }
+  #tev-chart-section .chart-stats {
+    grid-template-columns: 1fr !important;
+  }
+  .protocol-title,
+  .tev-highlight {
+    padding: 18px !important;
+  }
 }
