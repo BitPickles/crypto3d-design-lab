@@ -125,35 +125,27 @@
     <!-- Agent Flow Diagram -->
     <div class="flow-section">
       <h2>🔗 调度流程</h2>
-      <div class="flow-diagram">
-        <div>
-          <div class="flow-node boss">👤 Boss</div>
-          <div class="flow-label">下达指令</div>
+      <div style="text-align:center">
+        <!-- Boss -->
+        <div style="margin-bottom:20px">
+          <div class="flow-node boss" style="display:inline-block">👤 Boss</div>
+          <div class="flow-label">可直接指挥任何人</div>
         </div>
-        <div class="flow-arrow">→</div>
-        <div>
-          <div class="flow-node main">🎯 总管</div>
-          <div class="flow-label">任务编排</div>
+        <div style="font-size:18px;color:#ccc;margin-bottom:16px">↓</div>
+        <!-- 指挥层 -->
+        <div style="margin-bottom:8px;font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.08em">指挥层</div>
+        <div style="display:flex;justify-content:center;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+          <div><div class="flow-node main">🎯 总管</div><div class="flow-label">全局协调</div></div>
+          <div><div class="flow-node main">🔍 研究员</div><div class="flow-label">调研 / PM</div></div>
+          <div><div class="flow-node main">📡 运营</div><div class="flow-label">运维 / 管理</div></div>
         </div>
-        <div class="flow-arrow">→</div>
-        <div>
-          <div class="flow-node main">🔍 研究员</div>
-          <div class="flow-label">调研 / 编排</div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div>
-          <div class="flow-node worker">🎨 设计师</div>
-          <div class="flow-label">执行</div>
-        </div>
-        <div class="flow-arrow">&nbsp;</div>
-        <div>
-          <div class="flow-node worker">⚙️ 工程师</div>
-          <div class="flow-label">执行</div>
-        </div>
-        <div class="flow-arrow">&nbsp;</div>
-        <div>
-          <div class="flow-node worker">📡 运营</div>
-          <div class="flow-label">执行</div>
+        <div style="font-size:18px;color:#ccc;margin-bottom:16px">↓ 指挥派发</div>
+        <!-- 中台层 -->
+        <div style="margin-bottom:8px;font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.08em">中台（执行层）</div>
+        <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
+          <div><div class="flow-node worker">🎨 设计师</div><div class="flow-label">UI/UX</div></div>
+          <div><div class="flow-node worker">⚙️ 工程师1</div><div class="flow-label">开发</div></div>
+          <div><div class="flow-node worker">⚙️ 工程师2</div><div class="flow-label">开发</div></div>
         </div>
       </div>
     </div>
