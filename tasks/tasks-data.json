@@ -54,6 +54,12 @@
           "actor": "main",
           "task_name": "全站 UI 升级优化",
           "note": "首页布局调整完成（恐贪删除、三条业务线分区、浅色主题对比度修复）。待 Boss 确认首页设计是否满意。"
+        },
+        {
+          "time": "2026-03-21T21:35:03+08:00",
+          "actor": "main",
+          "task_name": "全站 UI 升级优化",
+          "note": "⚠️ 待 Boss 确认：首页布局是否满意？测试站 https://bitpickles.github.io/crypto3d-design-lab/?v=contrast 。确认后继续做子页面 UI 升级。"
         }
       ],
       "boss_channel": "telegram:1311453837"
@@ -105,6 +111,12 @@
           "actor": "engineer",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "P0-1 后台表单完成（commit 3a488a4）。P0-2 Vercel 部署需要 Boss 提供认证 Token，等待 Boss 配合。"
+        },
+        {
+          "time": "2026-03-21T21:35:03+08:00",
+          "actor": "researcher",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "⚠️ 待 Boss 配合：P0-2 Vercel 部署需要 Boss 提供 Vercel Token 或登录一次完成认证。请联系工程师1 @engineer_3d_bot 操作。"
         }
       ],
       "boss_channel": "telegram:1311453837",
