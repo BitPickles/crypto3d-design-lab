@@ -1,5 +1,5 @@
 {
-  "lastSync": "2026-03-22T01:41:00+08:00",
+  "lastSync": "2026-03-22T01:52:00+08:00",
   "tasks": [
     {
       "id": "task-002",
@@ -7,8 +7,8 @@
       "assignee": "designer",
       "status": "reviewing",
       "description": "默认浅色主题、修复所有子页面、统一导航和Footer、移动端适配",
-      "lastUpdate": "2026-03-22T01:41:00+08:00",
-      "summary": "总管 01:01 完成独立验收（TEV 协议详情页数据补齐验证通过），designer 01:41 完成主题切换统一修复汇报（commit f8c0eb6），逐页快检 11 页面均通过。待 Boss 最终确认结项。"
+      "lastUpdate": "2026-03-22T01:52:00+08:00",
+      "summary": "总管 01:01 完成独立验收（TEV 协议详情页数据补齐验证通过），designer 01:41 完成主题切换统一修复（commit f8c0eb6），逐页快检 11 页面均通过。状态 reviewing，待 Boss 最终确认结项。"
     },
     {
       "id": "task-003",
