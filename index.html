@@ -79,7 +79,7 @@
     @media(max-width:768px){.hd-nav{display:none}.hd{padding:0 20px}}
 
     /* ── HERO: Big chart + price ── */
-    .hero{position:relative;overflow:hidden;padding:80px 0 0}
+    .hero{position:relative;overflow:hidden;padding:56px 0 0}
     .hero-inner{max-width:1280px;margin:0 auto;padding:0 32px;position:relative;z-index:2}
 
     /* Glow behind hero chart */
@@ -111,10 +111,10 @@
     }
 
     /* ── SECTION SYSTEM ── */
-    .sec{max-width:1280px;margin:0 auto;padding:80px 32px}
+    .sec{max-width:1280px;margin:0 auto;padding:56px 32px}
     .sec-alt{background:var(--bg-1)}
     .sec-dark{background:linear-gradient(180deg,var(--bg-0),var(--bg-2),var(--bg-0))}
-    .sec-head{margin-bottom:48px}
+    .sec-head{margin-bottom:36px}
     .sec-eyebrow{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
     .sec-eyebrow .dot{width:6px;height:6px;border-radius:50%}
     .sec-title{font-size:36px;font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:8px}
@@ -194,7 +194,7 @@
     .ind-act svg{width:12px;height:12px}
 
     /* ── WIDE STATS BAR (Stripe-inspired) ── */
-    .stats-bar{padding:64px 0;position:relative;overflow:hidden}
+    .stats-bar{padding:48px 0;position:relative;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
     .stats-bar-bg{position:absolute;inset:0;background:linear-gradient(135deg,rgba(52,211,153,0.04),rgba(96,165,250,0.04),rgba(167,139,250,0.03));opacity:var(--glow-opacity)}
     [data-theme="light"] .stats-bar{background:var(--bg-2)}
     .stats-bar-inner{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-around;gap:40px;position:relative;z-index:1;flex-wrap:wrap}
@@ -210,8 +210,8 @@
     /* ── RISK SECTION (full-width gradient bg) ── */
     .risk-section{position:relative;overflow:hidden}
     .risk-gradient{position:absolute;inset:0;background:linear-gradient(180deg,var(--bg-0) 0%,var(--bg-2) 50%,var(--bg-0) 100%)}
-    [data-theme="light"] .risk-gradient{background:linear-gradient(180deg,var(--bg-0) 0%,var(--bg-3) 50%,var(--bg-0) 100%)}
-    .risk-content{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:80px 32px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+    [data-theme="light"] .risk-gradient{background:linear-gradient(180deg,var(--bg-0) 0%,#e8e8f0 50%,var(--bg-0) 100%)}
+    .risk-content{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:56px 32px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
     @media(max-width:960px){.risk-content{grid-template-columns:1fr;gap:32px}}
 
     .risk-text .sec-eyebrow{color:var(--amber)}
@@ -236,7 +236,7 @@
 
     /* ── GOVERNANCE SECTION (Linear tab-switch inspired) ── */
     .gov-section{position:relative;z-index:1}
-    .gov-inner{max-width:1280px;margin:0 auto;padding:80px 32px}
+    .gov-inner{max-width:1280px;margin:0 auto;padding:56px 32px}
     @media(max-width:768px){.gov-inner{padding:56px 20px}}
 
     .gov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
