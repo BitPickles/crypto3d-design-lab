@@ -252,6 +252,12 @@
           "actor": "main",
           "task_name": "全站 UI 升级优化",
           "note": "📊 监控检查：designer 刚完成全站 12 页自检（02:30），确认无阻断性问题。全站主题切换按钮正常、核心业务页渲染正常、TEV 详情页模块完整、仓库 clean。Boss 正与 designer 讨论 UI 优化建议。状态 reviewing，无需催促，待 Boss 最终确认结项。"
+        },
+        {
+          "time": "2026-03-22T02:48:00+08:00",
+          "actor": "main",
+          "task_name": "全站 UI 升级优化",
+          "note": "📊 监控检查：designer 最后活动约 02:31（约 17 分钟前），Boss 正与 designer 讨论 UI 优化建议。状态 reviewing（总管 01:01 独立验收通过 + 全站 12 页自检通过），未超 40 分钟阈值，无需催促。待 Boss 最终确认结项。"
         }
       ],
       "boss_channel": "telegram:1311453837"
