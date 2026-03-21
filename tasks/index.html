@@ -380,17 +380,17 @@
       
       document.getElementById('statProgress').textContent = counts.in_progress + counts.created;
       document.getElementById('statReview').textContent = counts.reviewing;
-      document.getElementById('statDone').textContent = counts.done;
       document.getElementById('statTotal').textContent = tasks.length;
       document.getElementById('lastUpdate').textContent = '更新于 ' + toCST(new Date().toISOString());
-      document.getElementById('countPending').textContent = counts.created;
-      document.getElementById('countProgress').textContent = counts.in_progress;
+      document.getElementById('countProgress').textContent = counts.in_progress + counts.created;
       document.getElementById('countReview').textContent = counts.reviewing;
-      document.getElementById('countDone').textContent = counts.done;
 
-      const cols = { Pending:[], Progress:[], Review:[], Done:[] };
-      tasks.forEach(t => cols[STATUS_MAP[t.status]||'Pending'].push(renderCard(t)));
-      ['Pending','Progress','Review','Done'].forEach(c => {
+      const cols = { Progress:[], Review:[] };
+      tasks.forEach(t => {
+        const mapped = STATUS_MAP[t.status] || 'Progress';
+        if (mapped === 'Progress' || mapped === 'Review') cols[mapped].push(renderCard(t));
+      });
+      ['Progress','Review'].forEach(c => {
         document.getElementById('col'+c).innerHTML = cols[c].join('') || '<div class="empty">空</div>';
       });
 
