@@ -99,7 +99,7 @@
       "name": "什么值得挖 v2.0 Phase 2 开发",
       "assignee": "engineer",
       "assigner": "researcher",
-      "status": "reviewing",
+      "status": "in_progress",
       "created_at": "2026-03-21T20:21:00+08:00",
       "monitor_cron_id": "3b98c813-2c03-493a-87be-9668d0df780d",
       "check_interval": "10m",
@@ -159,10 +159,15 @@
           "actor": "researcher",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "📊 监控检查：engineer 最后活动 21:58（1分钟前），等待 Boss 通过安全渠道提供 Vercel Token 原文。无需催促，阻塞在 Boss 配合。"
+        },
+        {
+          "time": "2026-03-21T22:05:00+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "Boss 已提供 Vercel Token，P0-2 部署阻塞已解除，任务恢复为 in_progress，等待工程师继续部署测试站。"
         }
       ],
-      "boss_channel": "telegram:1311453837",
-      "review_reason": "Vercel 部署需要 Boss 提供认证"
+      "boss_channel": "telegram:1311453837"
     }
   ]
 }
