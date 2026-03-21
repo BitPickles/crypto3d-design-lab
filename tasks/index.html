@@ -97,6 +97,10 @@
       .container{padding:16px}
       .flow-diagram{flex-direction:column}
     }
+    @media(max-width:900px){
+      /* Stack flow + kanban on small screens */
+      .container > div[style*="grid-template-columns:280px"]{grid-template-columns:1fr!important}
+    }
 
     /* No data notice */
     .no-data{background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:40px;text-align:center;margin-bottom:24px}
@@ -122,38 +126,37 @@
       <div class="stat-card"><div class="stat-label">总任务</div><div class="stat-value gray" id="statTotal">-</div></div>
     </div>
 
-    <!-- Agent Flow Diagram -->
-    <div class="flow-section">
-      <h2>🔗 调度流程</h2>
+    <!-- Two column: Flow + Kanban -->
+    <div style="display:grid;grid-template-columns:280px 1fr;gap:16px;align-items:start">
+
+    <!-- Agent Flow Diagram (left) -->
+    <div class="flow-section" style="margin-top:0;position:sticky;top:80px">
+      <h2 style="font-size:14px">🔗 调度流程</h2>
       <div style="text-align:center">
-        <!-- Boss -->
-        <div style="margin-bottom:20px">
-          <div class="flow-node boss" style="display:inline-block">👤 Boss</div>
+        <div style="margin-bottom:12px">
+          <div class="flow-node boss" style="display:inline-block;padding:6px 14px;font-size:12px;min-width:auto">👤 Boss</div>
           <div class="flow-label">可直接指挥任何人</div>
         </div>
-        <div style="font-size:18px;color:#ccc;margin-bottom:16px">↓</div>
-        <!-- 指挥层 -->
-        <div style="margin-bottom:8px;font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.08em">指挥层</div>
-        <div style="display:flex;justify-content:center;gap:16px;margin-bottom:20px;flex-wrap:wrap">
-          <div><div class="flow-node main">🎯 总管</div><div class="flow-label">全局协调</div></div>
-          <div><div class="flow-node main">🔍 研究员</div><div class="flow-label">调研 / PM</div></div>
-          <div><div class="flow-node main">📡 运营</div><div class="flow-label">运维 / 管理</div></div>
+        <div style="font-size:14px;color:#ccc;margin-bottom:10px">↓</div>
+        <div style="margin-bottom:4px;font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em">指挥层</div>
+        <div style="display:flex;justify-content:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <div><div class="flow-node main" style="padding:5px 10px;font-size:11px;min-width:auto">🎯 总管</div></div>
+          <div><div class="flow-node main" style="padding:5px 10px;font-size:11px;min-width:auto">🔍 研究员</div></div>
+          <div><div class="flow-node main" style="padding:5px 10px;font-size:11px;min-width:auto">📡 运营</div></div>
         </div>
-        <div style="font-size:18px;color:#ccc;margin-bottom:16px">↓ 指挥派发</div>
-        <!-- 中台层 -->
-        <div style="margin-bottom:8px;font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.08em">中台（执行层）</div>
-        <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
-          <div><div class="flow-node worker">🎨 设计师</div><div class="flow-label">UI/UX</div></div>
-          <div><div class="flow-node worker">⚙️ 工程师1</div><div class="flow-label">开发</div></div>
-          <div><div class="flow-node worker">⚙️ 工程师2</div><div class="flow-label">开发</div></div>
+        <div style="font-size:14px;color:#ccc;margin-bottom:10px">↓</div>
+        <div style="margin-bottom:4px;font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em">中台（执行层）</div>
+        <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
+          <div><div class="flow-node worker" style="padding:5px 10px;font-size:11px;min-width:auto">🎨 设计师</div></div>
+          <div><div class="flow-node worker" style="padding:5px 10px;font-size:11px;min-width:auto">⚙️ 工程师1</div></div>
+          <div><div class="flow-node worker" style="padding:5px 10px;font-size:11px;min-width:auto">⚙️ 工程师2</div></div>
         </div>
       </div>
     </div>
 
-    <!-- Kanban Board -->
-    <div style="margin-top:24px">
-      <h2 style="font-size:16px;font-weight:700;margin-bottom:16px">📌 任务看板</h2>
-    </div>
+    <!-- Kanban Board (right) -->
+    <div>
+    <h2 style="font-size:16px;font-weight:700;margin-bottom:16px">📌 任务看板</h2>
     <div class="kanban" id="kanban">
       <div class="column">
         <div class="col-header pending"><div class="col-title">待处理</div><div class="col-count" id="countPending">0</div></div>
@@ -172,6 +175,8 @@
         <div id="colDone"></div>
       </div>
     </div>
+    </div><!-- close kanban right column -->
+    </div><!-- close two-column grid -->
 
     <!-- Timeline -->
     <div class="timeline-section">
