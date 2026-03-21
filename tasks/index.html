@@ -239,6 +239,10 @@
       return Math.floor(diff/86400) + '天前';
     }
 
+    function toCST(dateStr) {
+      return new Date(dateStr).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+    }
+
     function getProgressClass(pct) {
       if (pct >= 100) return 'full';
       if (pct >= 60) return 'high';
@@ -354,7 +358,7 @@
       if (!items.length) return '<div class="empty">暂无活动记录</div>';
       return items.map(i => `
         <div class="tl-item ${i.type}">
-          <div class="tl-time">${new Date(i.time).toLocaleString('zh-CN')}</div>
+          <div class="tl-time">${toCST(i.time)}</div>
           <div class="tl-text">${i.text}</div>
         </div>
       `).join('');
@@ -369,7 +373,7 @@
       document.getElementById('statReview').textContent = counts.reviewing;
       document.getElementById('statDone').textContent = counts.done;
       document.getElementById('statTotal').textContent = tasks.length;
-      document.getElementById('lastUpdate').textContent = '更新于 ' + new Date().toLocaleString('zh-CN');
+      document.getElementById('lastUpdate').textContent = '更新于 ' + toCST(new Date().toISOString());
       document.getElementById('countPending').textContent = counts.created;
       document.getElementById('countProgress').textContent = counts.in_progress;
       document.getElementById('countReview').textContent = counts.reviewing;
