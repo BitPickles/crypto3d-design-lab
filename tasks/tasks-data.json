@@ -444,7 +444,7 @@
       "name": "新闻监控雷达开发",
       "assignee": "engineer2",
       "assigner": "operator",
-      "status": "cancelled",
+      "status": "in_progress",
       "created_at": "2026-03-22T02:04:30+08:00",
       "monitor_cron_id": "cf9610f0-d399-4c52-a422-aa8bd3e53f36",
       "check_interval": "10m",
@@ -462,6 +462,12 @@
           "actor": "boss",
           "task_name": "新闻监控雷达开发",
           "note": "Boss 决定 task-004 改由运营直接指挥工程师2，不再通过总管编排。任务在总管编排侧取消。"
+        },
+        {
+          "time": "2026-03-22T02:30:00+08:00",
+          "note": "工程师2 已完成脚本开发，采集层调通（66条），正在跑全链路测试",
+          "actor": "operator",
+          "task_name": "新闻监控雷达"
         }
       ],
       "boss_channel": "telegram:1311453837"
