@@ -33,8 +33,7 @@
     btn.id = 'tt';
     btn.setAttribute('data-theme-toggle', 'true');
     btn.setAttribute('aria-label', '切换主题');
-    btn.classList.remove('ib', 'tt');
-    btn.classList.add('theme-toggle-btn');
+    btn.classList.add('theme-toggle-btn', 'ib', 'tt');
     if (!btn.querySelector('.moon') || !btn.querySelector('.sun')) {
       btn.innerHTML = iconMarkup();
     }
