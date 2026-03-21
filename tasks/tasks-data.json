@@ -6,7 +6,7 @@
       "name": "全站 UI 升级优化",
       "assignee": "designer",
       "assigner": "main",
-      "status": "in_progress",
+      "status": "reviewing",
       "created_at": "2026-03-21T19:48:38.124368+08:00",
       "monitor_cron_id": "0ed93db1-41e9-42e8-ae51-ce1a92cb4b40",
       "check_interval": "15m",
@@ -144,6 +144,18 @@
           "actor": "main",
           "task_name": "全站 UI 升级优化",
           "note": "已将验收标准升级：除功能与UI对齐主站外，数据展示也必须达到主站同等效果；允许非实时，但不允许空数据页面。任务保持 in_progress。"
+        },
+        {
+          "time": "2026-03-21T22:48:13+08:00",
+          "actor": "designer",
+          "task_name": "全站 UI 升级优化",
+          "note": "数据补齐完成：已从主站复制关键数据文件与图表依赖，TEV/AHR999/MVRV/BMRI/BTC.D/治理页面的数据展示效果已补齐到接近主站水平，功能保持不变。"
+        },
+        {
+          "time": "2026-03-21T22:48:13+08:00",
+          "actor": "main",
+          "task_name": "全站 UI 升级优化",
+          "note": "按 Boss 新标准复验后进入 reviewing：除视觉层外，页面数据也已补齐。等待 Boss 最终验收是否结项。"
         }
       ],
       "boss_channel": "telegram:1311453837"
