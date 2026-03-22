@@ -550,6 +550,126 @@
         }
       ],
       "boss_channel": "telegram:1311453837"
+    },
+    {
+      "id": "task-005",
+      "name": "什么值得挖｜前端产品线开发",
+      "assignee": "engineer",
+      "assigner": "main",
+      "status": "in_progress",
+      "created_at": "2026-03-23T07:07:15+08:00",
+      "monitor_cron_id": "manual-main-005",
+      "check_interval": "10m",
+      "description": "围绕什么值得挖前端产品线推进：钱包认证/会籍访问、机会列表与详情展示、监控信息前端展示、用户辅助工具；基于现有代码梳理现状与缺口并持续开发。",
+      "acceptance_criteria": "1. 输出现有前端结构与缺口清单；2. 前端访问与身份链路可用；3. 机会展示清晰；4. 监控信息可在前端合理展示；5. 产出以可验证文件/页面/提交为准。",
+      "progress_notes": [
+        {
+          "time": "2026-03-23T07:07:15+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖 多Agent并行推进",
+          "note": "Boss 确认启用持续任务编排：由总管统一指挥 engineer / engineer2 / designer / researcher 并行推进，要求在任务编排后台可见实时工作状态；项目总文档后续由总管维护。"
+        },
+        {
+          "time": "2026-03-23T07:07:15+08:00",
+          "actor": "main",
+          "task_name": "什么值得挖｜前端产品线开发",
+          "note": "总管已派发任务给 engineer：负责前端产品线主开发，并要求先提交结构化现状/缺口/优先级报告，后续持续推进。"
+        }
+      ],
+      "boss_channel": "telegram:1311453837"
+    },
+    {
+      "id": "task-006",
+      "name": "什么值得挖｜运营监控线开发",
+      "assignee": "engineer2",
+      "assigner": "main",
+      "status": "in_progress",
+      "created_at": "2026-03-23T07:07:15+08:00",
+      "monitor_cron_id": "manual-main-006",
+      "check_interval": "10m",
+      "description": "围绕什么值得挖运营监控线推进：CEX 公告监控收口、链上价格监控方案与实现。链上价格监控服务脱毛类代币/理财类机会，不是交易机会。",
+      "acceptance_criteria": "1. 明确 CEX 监控已完成边界并沉淀到项目文档；2. 输出链上价格监控对象/逻辑/提醒方式方案；3. 后续实现有可验证文件/脚本/推送证据。",
+      "progress_notes": [
+        {
+          "time": "2026-03-23T07:07:15+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖 多Agent并行推进",
+          "note": "Boss 确认启用持续任务编排：由总管统一指挥 engineer / engineer2 / designer / researcher 并行推进，要求在任务编排后台可见实时工作状态；项目总文档后续由总管维护。"
+        },
+        {
+          "time": "2026-03-23T07:07:15+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖｜运营监控线开发",
+          "note": "Boss 同步新事实：开发1已完成中心化交易所监控模块。总管后续需将监控线重点切到链上价格监控。"
+        },
+        {
+          "time": "2026-03-23T07:07:15+08:00",
+          "actor": "main",
+          "task_name": "什么值得挖｜运营监控线开发",
+          "note": "总管已派发任务给 engineer2：负责监控主线，先确认 CEX 模块真实完成边界，再梳理链上价格监控方案与下一步实现拆分。"
+        }
+      ],
+      "boss_channel": "telegram:1311453837"
+    },
+    {
+      "id": "task-007",
+      "name": "什么值得挖｜前端体验与信息结构设计支持",
+      "assignee": "designer",
+      "assigner": "main",
+      "status": "in_progress",
+      "created_at": "2026-03-23T07:07:15+08:00",
+      "monitor_cron_id": "manual-main-007",
+      "check_interval": "10m",
+      "description": "从设计视角支持什么值得挖前端产品线，聚焦钱包认证与访问流程、机会列表/详情、监控信息展示、用户辅助工具的信息结构与体验优化。",
+      "acceptance_criteria": "1. 给出可落地的信息结构与页面优化建议；2. 区分现在就做/以后再做/不要做重；3. 输出可直接供 engineer 采用。",
+      "progress_notes": [
+        {
+          "time": "2026-03-23T07:07:15+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖 多Agent并行推进",
+          "note": "Boss 确认启用持续任务编排：由总管统一指挥 engineer / engineer2 / designer / researcher 并行推进，要求在任务编排后台可见实时工作状态；项目总文档后续由总管维护。"
+        },
+        {
+          "time": "2026-03-23T07:07:15+08:00",
+          "actor": "main",
+          "task_name": "什么值得挖｜前端体验与信息结构设计支持",
+          "note": "总管已派发任务给 designer：围绕重运营产品特征，输出前端关键页面与监控展示的设计建议，支持工程并行推进。"
+        }
+      ],
+      "boss_channel": "telegram:1311453837"
+    },
+    {
+      "id": "task-008",
+      "name": "什么值得挖｜产品结构与项目文档维护",
+      "assignee": "researcher",
+      "assigner": "main",
+      "status": "in_progress",
+      "created_at": "2026-03-23T07:07:15+08:00",
+      "monitor_cron_id": "manual-main-008",
+      "check_interval": "10m",
+      "description": "基于 Boss 最新口径与既有 PRD/文档，梳理什么值得挖项目定义、模块边界、不做事项，并协助总管维护本地项目总文档。",
+      "acceptance_criteria": "1. 给出简明产品结构说明；2. 指出旧文档与新口径冲突处；3. 提供相关文件路径；4. 支持总管长期维护项目总文档。",
+      "progress_notes": [
+        {
+          "time": "2026-03-23T07:07:15+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖 多Agent并行推进",
+          "note": "Boss 确认启用持续任务编排：由总管统一指挥 engineer / engineer2 / designer / researcher 并行推进，要求在任务编排后台可见实时工作状态；项目总文档后续由总管维护。"
+        },
+        {
+          "time": "2026-03-23T07:07:15+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖｜产品结构与项目文档维护",
+          "note": "Boss 要求：本地必须有“什么值得挖”项目对应文档，后续由总管维护；开发1已开始建立该文档。"
+        },
+        {
+          "time": "2026-03-23T07:07:15+08:00",
+          "actor": "main",
+          "task_name": "什么值得挖｜产品结构与项目文档维护",
+          "note": "总管已派发任务给 researcher：补产品结构与文档支持；总管将接管本地项目总文档，统一沉淀分工、进展、决策与阻塞。"
+        }
+      ],
+      "boss_channel": "telegram:1311453837"
     }
   ]
 }
