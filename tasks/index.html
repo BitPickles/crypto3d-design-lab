@@ -290,7 +290,7 @@
         </div>
         <div class="decision-rules">
           <div class="rule-pill blue">有效进展：commit / 文件修改 / 页面更新 / 明确阻塞说明</div>
-          <div class="rule-pill amber">需关注：超过 10 分钟未见有效进展</div>
+          <div class="rule-pill amber">需关注：超过 5 分钟未见有效进展</div>
           <div class="rule-pill red">阻塞：明确依赖 Boss / 外部资源 / 平台问题</div>
         </div>
         <div class="hero-bottom">
@@ -307,7 +307,7 @@
           <div class="metric-box">
             <div class="metric-label">超时无进展</div>
             <div class="metric-value red" id="statStale">-</div>
-            <div class="metric-foot">默认阈值 10 分钟</div>
+            <div class="metric-foot">默认阈值 5 分钟</div>
           </div>
           <div class="metric-box">
             <div class="metric-label">已验证产出</div>
@@ -367,8 +367,9 @@
             </div>
             <div class="board-chip-row">
               <div class="board-chip" id="boardSummaryChip">0 个任务</div>
-              <div class="board-chip">监控窗口：10 分钟</div>
-              <div class="board-chip">40 分钟以上可催促</div>
+              <div class="board-chip">监控窗口：5 分钟</div>
+                <div class="board-chip">每 5 分钟同步一次指挥检查</div>
+              <div class="board-chip">40 分钟以上强制催促</div>
             </div>
           </div>
           <div class="kanban-grid">
@@ -491,7 +492,7 @@
       commanding: './img/commanding.gif',
     };
 
-    const STALE_MINUTES = 10;
+    const STALE_MINUTES = 5;
     let CURRENT_TIMELINE_FILTER = 'meaningful';
 
     function timeAgo(dateStr) {
