@@ -263,7 +263,7 @@
           <span style="font-size:28px">📋</span>
           <div>
             <h1>持续任务调度看板</h1>
-            <div class="header-sub">先看真实产出，再看谁在忙。看板目标不是展示热闹，而是帮助 Boss 判断：谁在推进、谁该催、谁能验收。</div>
+            <div class="header-sub">只保留当前任务与每轮检查结果，帮助 Boss 直接看到：现在在做什么、这轮检查结论是什么、哪里需要参与。</div>
           </div>
         </div>
       </div>
@@ -280,7 +280,7 @@
         <div class="hero-top">
           <div>
             <h2>Boss 判断优先级</h2>
-            <p>这版看板把“真实进展、待决策、阻塞风险”抬到最上层。默认不把“读文件、截图、开浏览器、口头说在看”当成进展。</p>
+            <p>这版看板只保留当前任务和每轮检查结果。默认不把“我在看、读文件、开浏览器、截图”当成有效进展。</p>
           </div>
           <div class="board-chip-row">
             <div class="board-chip">双列结构：进行中 / 待 Boss 确认</div>
@@ -317,53 +317,18 @@
         </div>
       </div>
 
-      <aside class="summary-card">
-        <h3>看板使用说明</h3>
-        <p>您只需看三件事：有没有证据、有没有风险、现在该不该拍板。</p>
-        <div class="summary-list">
-          <div class="summary-item">
-            <strong>先看右侧“待 Boss 确认”</strong>
-            <span>这里只保留能进入决策的任务，并展示交付物证据。</span>
-          </div>
-          <div class="summary-item">
-            <strong>再看“需关注”</strong>
-            <span>超时无有效进展、明确阻塞、状态异常的任务会被提到右栏。</span>
-          </div>
-          <div class="summary-item">
-            <strong>最后看证据流</strong>
-            <span>时间线默认优先展示 commit、修复、验收、阻塞说明，不鼓励空话型日志。</span>
-          </div>
-        </div>
-      </aside>
+      
     </section>
 
     <div class="main-grid">
       <div class="left-col">
-        <section class="principle-card">
-          <div class="principle-grid">
-            <div class="principle">
-              <div class="kicker">Signal 01</div>
-              <div class="title">真实产出优先</div>
-              <div class="desc">任务卡核心展示最近一次可验证产出，而不是最后一次发言。</div>
-            </div>
-            <div class="principle">
-              <div class="kicker">Signal 02</div>
-              <div class="title">风险即颜色</div>
-              <div class="desc">正常推进保持冷静配色；需关注、阻塞、待确认用不同信号色直接提示。</div>
-            </div>
-            <div class="principle">
-              <div class="kicker">Signal 03</div>
-              <div class="title">下一步必须明确</div>
-              <div class="desc">每张卡都给出“下一步谁来做”，避免只描述现状、不指向行动。</div>
-            </div>
-          </div>
-        </section>
+        
 
         <section>
           <div class="kanban-head">
             <div class="kanban-title">
               <h2>任务主看板</h2>
-              <p>只保留两列：左边看推进，右边看待拍板。任务卡默认带证据、风险、下一动作。</p>
+              <p>只看当前任务。每张卡重点显示：最后检查时间、本轮结论、最近产出、下一动作。</p>
             </div>
             <div class="board-chip-row">
               <div class="board-chip" id="boardSummaryChip">0 个任务</div>
@@ -399,8 +364,8 @@
         <section class="timeline-card">
           <div class="timeline-head">
             <div>
-              <h2>证据时间线</h2>
-              <p>默认优先看可验证进展；也可切换查看全部记录。</p>
+              <h2>每轮检查时间线</h2>
+              <p>优先看总管每一轮的检查、验收、催促和下一步指挥。</p>
             </div>
             <div class="timeline-controls">
               <button class="filter-btn active" data-filter="meaningful">只看有效进展</button>
@@ -412,17 +377,9 @@
       </div>
 
       <aside class="rail">
-        <section class="rail-card">
-          <h3>需关注</h3>
-          <div class="rail-note">优先处理超时无证据、明确阻塞、状态异常任务。</div>
-          <div class="attention-list" id="attentionList"></div>
-        </section>
+        
 
-        <section class="rail-card">
-          <h3>刚刚有真实产出</h3>
-          <div class="rail-note">这里不看“谁在线”，只看最近一次可验证交付。</div>
-          <div class="evidence-list" id="evidenceList"></div>
-        </section>
+        
 
         <section class="rail-card">
           <h3>待您拍板</h3>
@@ -442,37 +399,7 @@
           <div class="decision-list" id="agentCheckList"></div>
         </section>
 
-        <section class="rail-card">
-          <h3>有效进展定义</h3>
-          <div class="signal-row">
-            <div>
-              <div class="signal-name">commit / 文件变更</div>
-              <div class="signal-desc">明确改了什么，算推进。</div>
-            </div>
-            <div class="signal-tag green">有效</div>
-          </div>
-          <div class="signal-row">
-            <div>
-              <div class="signal-name">验收缺口 / 修复说明</div>
-              <div class="signal-desc">具体指出问题和补齐内容，算推进。</div>
-            </div>
-            <div class="signal-tag green">有效</div>
-          </div>
-          <div class="signal-row">
-            <div>
-              <div class="signal-name">明确阻塞说明</div>
-              <div class="signal-desc">能判断该不该催，算有效状态。</div>
-            </div>
-            <div class="signal-tag amber">有效但阻塞</div>
-          </div>
-          <div class="signal-row">
-            <div>
-              <div class="signal-name">读文件 / 截图 / 我在看</div>
-              <div class="signal-desc">没有任务特异性交付，不算进展。</div>
-            </div>
-            <div class="signal-tag red">无效</div>
-          </div>
-        </section>
+        
 
         <section class="rail-card agent-card">
           <h3>Agent 状态</h3>
@@ -939,7 +866,7 @@
       document.getElementById('statEvidence').textContent = evidenceCount;
       document.getElementById('countProgress').textContent = progressTasks.length;
       document.getElementById('countReview').textContent = reviewTasks.length;
-      document.getElementById('boardSummaryChip').textContent = `${tasks.length} 个活跃任务`;
+      document.getElementById('boardSummaryChip').textContent = `${tasks.length} 个当前任务`;
       document.getElementById('lastUpdate').textContent = '更新于 ' + toCST(new Date().toISOString());
 
       const progressHTML = progressTasks
