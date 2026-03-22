@@ -431,6 +431,18 @@
         </section>
 
         <section class="rail-card">
+          <h3>需要 Boss 参与</h3>
+          <div class="rail-note">每轮检查中，只要发现需要 Boss 出手的事项，就在这里显式高亮。</div>
+          <div class="decision-list" id="bossActionList"></div>
+        </section>
+
+        <section class="rail-card">
+          <h3>逐 Agent 检查记录</h3>
+          <div class="rail-note">展示总管对每个 Agent 最近一轮的检查结论与处理动作。</div>
+          <div class="decision-list" id="agentCheckList"></div>
+        </section>
+
+        <section class="rail-card">
           <h3>有效进展定义</h3>
           <div class="signal-row">
             <div>
@@ -768,6 +780,57 @@
       `).join('');
     }
 
+    function renderBossActions(tasks) {
+      const items = [];
+      tasks.forEach(task => {
+        getNotes(task).forEach(raw => {
+          const txt = raw.note || '';
+          if (/待 boss|需要 boss|需 boss|boss 参与|等待 boss|请 boss|由 boss/i.test(txt)) {
+            items.push({ task, raw });
+          }
+        });
+      });
+      items.sort((a,b) => new Date(b.raw.time) - new Date(a.raw.time));
+      const latest = [];
+      const seen = new Set();
+      for (const item of items) {
+        const key = item.task.id;
+        if (!seen.has(key)) { seen.add(key); latest.push(item); }
+      }
+      if (!latest.length) return '<div class="empty">当前没有需要 Boss 参与的事项</div>';
+      return latest.slice(0,8).map(({task,raw}) => `
+        <div class="decision-item">
+          <div class="title">${escapeHtml(task.name)}</div>
+          <div class="meta">${toCST(raw.time)} · ${escapeHtml(AGENT_NAMES[raw.actor] || raw.actor)}</div>
+          <div class="meta" style="margin-top:6px">${linkify(raw.note)}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderAgentChecks(tasks) {
+      const byAgent = {};
+      tasks.forEach(task => {
+        getNotes(task).forEach(raw => {
+          if (raw.actor !== 'main') return;
+          if (!/第\d+轮检查|本轮|检查（5分钟制）|检查结果|纠偏指令|下一步指挥|已催促|已验收/.test(raw.note || '')) return;
+          const agent = task.assignee;
+          const existing = byAgent[agent];
+          if (!existing || new Date(raw.time) > new Date(existing.raw.time)) {
+            byAgent[agent] = { task, raw };
+          }
+        });
+      });
+      const items = Object.entries(byAgent).sort((a,b) => new Date(b[1].raw.time)-new Date(a[1].raw.time));
+      if (!items.length) return '<div class="empty">当前还没有逐 Agent 检查记录</div>';
+      return items.map(([agent,{task,raw}]) => `
+        <div class="decision-item">
+          <div class="title">${escapeHtml(AGENT_NAMES[agent] || agent)}</div>
+          <div class="meta">任务：${escapeHtml(task.name)} · ${toCST(raw.time)}</div>
+          <div class="meta" style="margin-top:6px">${linkify(raw.note)}</div>
+        </div>
+      `).join('');
+    }
+
     function renderDecisions(tasks) {
       const items = tasks
         .filter(task => task.status === 'reviewing')
@@ -905,6 +968,8 @@
       document.getElementById('attentionList').innerHTML = renderAttention(tasks);
       document.getElementById('evidenceList').innerHTML = renderEvidence(tasks);
       document.getElementById('decisionList').innerHTML = renderDecisions(tasks);
+      document.getElementById('bossActionList').innerHTML = renderBossActions(tasks);
+      document.getElementById('agentCheckList').innerHTML = renderAgentChecks(tasks);
       document.getElementById('agentStatus').innerHTML = renderAgentStatus(tasks);
       document.getElementById('timeline').innerHTML = renderTimeline(tasks);
     }
