@@ -513,34 +513,46 @@ table tbody td,
 }
 
 /* YT Banner: demote to footnote-level */
+section.yt-banner,
 .yt-banner {
   padding: 14px 0 !important;
   margin: 0 !important;
   border-top: 1px solid var(--border) !important;
   border-bottom: none !important;
   background: transparent !important;
+  background-image: none !important;
 }
+section.yt-banner .yt-banner-content,
+.yt-banner .yt-banner-content,
 .yt-banner-content {
   gap: 12px !important;
   align-items: center !important;
+  background: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  padding: 8px 0 !important;
+  border-radius: 0 !important;
 }
+section.yt-banner .yt-banner-icon,
 .yt-banner-icon {
   display: none !important;
 }
+section.yt-banner .yt-banner-text h3,
 .yt-banner-text h3 {
   font-size: 12px !important;
   font-weight: 500 !important;
   color: var(--text-secondary) !important;
   margin: 0 !important;
+  margin-bottom: 0 !important;
 }
-.yt-banner-text h3::before {
-  content: none !important;
-}
+section.yt-banner .yt-banner-text p,
 .yt-banner-text p {
   font-size: 11px !important;
   color: var(--text-tertiary) !important;
   margin: 2px 0 0 !important;
 }
+section.yt-banner a.yt-banner-btn,
+a.yt-banner-btn,
 .yt-banner-btn {
   font-size: 11px !important;
   padding: 5px 14px !important;
@@ -552,23 +564,37 @@ table tbody td,
   letter-spacing: 0.04em !important;
   font-weight: 500 !important;
   text-decoration: none !important;
+  transform: none !important;
 }
+section.yt-banner a.yt-banner-btn:hover,
+a.yt-banner-btn:hover,
 .yt-banner-btn:hover {
   border-color: var(--border-hover) !important;
   color: var(--text-primary) !important;
   background: transparent !important;
+  transform: none !important;
 }
 
 /* Light theme specifics */
+[data-theme="light"] section.yt-banner,
 [data-theme="light"] .yt-banner {
   background: transparent !important;
   border-top-color: var(--border) !important;
 }
+[data-theme="light"] section.yt-banner .yt-banner-content,
+[data-theme="light"] .yt-banner-content {
+  background: transparent !important;
+  border: none !important;
+}
+[data-theme="light"] section.yt-banner a.yt-banner-btn,
+[data-theme="light"] a.yt-banner-btn,
 [data-theme="light"] .yt-banner-btn {
   background: transparent !important;
   border-color: var(--border) !important;
   color: var(--text-secondary) !important;
 }
+[data-theme="light"] section.yt-banner a.yt-banner-btn:hover,
+[data-theme="light"] a.yt-banner-btn:hover,
 [data-theme="light"] .yt-banner-btn:hover {
   border-color: var(--border-hover) !important;
   color: var(--text-primary) !important;
