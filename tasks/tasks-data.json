@@ -559,7 +559,7 @@
       "status": "in_progress",
       "created_at": "2026-03-23T07:07:15+08:00",
       "monitor_cron_id": "manual-main-005",
-      "check_interval": "10m",
+      "check_interval": "5m",
       "description": "围绕什么值得挖前端产品线推进：钱包认证/会籍访问、机会列表与详情展示、监控信息前端展示、用户辅助工具；基于现有代码梳理现状与缺口并持续开发。",
       "acceptance_criteria": "1. 输出现有前端结构与缺口清单；2. 前端访问与身份链路可用；3. 机会展示清晰；4. 监控信息可在前端合理展示；5. 产出以可验证文件/页面/提交为准。",
       "progress_notes": [
@@ -586,6 +586,12 @@
           "actor": "main",
           "task_name": "什么值得挖｜前端产品线开发",
           "note": "➡️ 下一步指挥：等待总管验收并切下一轮；若通过，将直接要求 engineer 开始实现 P0：/alerts 监控信息流页。"
+        },
+        {
+          "time": "2026-03-23T07:28:14+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖｜前端产品线开发",
+          "note": "Boss 新规已生效：改为每 5 分钟一轮检查；删除旧的 10 分钟窗口和 40 分钟催促规则。总管需每轮检查、催促、验收并同步看板。"
         }
       ],
       "boss_channel": "telegram:1311453837"
@@ -598,7 +604,7 @@
       "status": "in_progress",
       "created_at": "2026-03-23T07:07:15+08:00",
       "monitor_cron_id": "manual-main-006",
-      "check_interval": "10m",
+      "check_interval": "5m",
       "description": "围绕什么值得挖运营监控线推进：CEX 公告监控收口、链上价格监控方案与实现。链上价格监控服务脱毛类代币/理财类机会，不是交易机会。",
       "acceptance_criteria": "1. 明确 CEX 监控已完成边界并沉淀到项目文档；2. 输出链上价格监控对象/逻辑/提醒方式方案；3. 后续实现有可验证文件/脚本/推送证据。",
       "progress_notes": [
@@ -631,6 +637,12 @@
           "actor": "main",
           "task_name": "什么值得挖｜运营监控线开发",
           "note": "⚠️ 纠偏指令：要求 engineer2 立即回到 what-to-mine 当前项目语境，围绕“CEX 已完成后的链上价格监控（服务脱毛/理财机会）”重新提交方案与拆分；本轮视为未完成。"
+        },
+        {
+          "time": "2026-03-23T07:28:14+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖｜运营监控线开发",
+          "note": "Boss 新规已生效：改为每 5 分钟一轮检查；删除旧的 10 分钟窗口和 40 分钟催促规则。总管需每轮检查、催促、验收并同步看板。"
         }
       ],
       "boss_channel": "telegram:1311453837"
@@ -643,7 +655,7 @@
       "status": "in_progress",
       "created_at": "2026-03-23T07:07:15+08:00",
       "monitor_cron_id": "manual-main-007",
-      "check_interval": "10m",
+      "check_interval": "5m",
       "description": "从设计视角支持什么值得挖前端产品线，聚焦钱包认证与访问流程、机会列表/详情、监控信息展示、用户辅助工具的信息结构与体验优化。",
       "acceptance_criteria": "1. 给出可落地的信息结构与页面优化建议；2. 区分现在就做/以后再做/不要做重；3. 输出可直接供 engineer 采用。",
       "progress_notes": [
@@ -670,6 +682,12 @@
           "actor": "main",
           "task_name": "什么值得挖｜前端体验与信息结构设计支持",
           "note": "➡️ 下一步指挥：等待总管将设计建议验收收口后，继续要求 designer 输出“最新动态模块”和“详情页三层结构”的更细页面结构稿。"
+        },
+        {
+          "time": "2026-03-23T07:28:14+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖｜前端体验与信息结构设计支持",
+          "note": "Boss 新规已生效：改为每 5 分钟一轮检查；删除旧的 10 分钟窗口和 40 分钟催促规则。总管需每轮检查、催促、验收并同步看板。"
         }
       ],
       "boss_channel": "telegram:1311453837"
@@ -682,7 +700,7 @@
       "status": "in_progress",
       "created_at": "2026-03-23T07:07:15+08:00",
       "monitor_cron_id": "manual-main-008",
-      "check_interval": "10m",
+      "check_interval": "5m",
       "description": "基于 Boss 最新口径与既有 PRD/文档，梳理什么值得挖项目定义、模块边界、不做事项，并协助总管维护本地项目总文档。",
       "acceptance_criteria": "1. 给出简明产品结构说明；2. 指出旧文档与新口径冲突处；3. 提供相关文件路径；4. 支持总管长期维护项目总文档。",
       "progress_notes": [
@@ -715,6 +733,12 @@
           "actor": "main",
           "task_name": "什么值得挖｜产品结构与项目文档维护",
           "note": "➡️ 下一步指挥：总管将据此接管并维护本地“什么值得挖”项目总文档，后续要求 researcher 继续补旧文档与新口径的冲突清单。"
+        },
+        {
+          "time": "2026-03-23T07:28:14+08:00",
+          "actor": "boss",
+          "task_name": "什么值得挖｜产品结构与项目文档维护",
+          "note": "Boss 新规已生效：改为每 5 分钟一轮检查；删除旧的 10 分钟窗口和 40 分钟催促规则。总管需每轮检查、催促、验收并同步看板。"
         }
       ],
       "boss_channel": "telegram:1311453837"
