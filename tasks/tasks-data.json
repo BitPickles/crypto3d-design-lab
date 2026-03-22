@@ -502,6 +502,12 @@
           "actor": "boss",
           "task_name": "什么值得挖 v2.0 Phase 2 开发",
           "note": "Boss 指示该项目暂停，持续任务到此结束，不再继续监控推进。后续由 Boss 直接指挥开发2。"
+        },
+        {
+          "time": "2026-03-22T04:41:37+08:00",
+          "actor": "main",
+          "task_name": "什么值得挖 v2.0 Phase 2 开发",
+          "note": "按 Boss 要求取消持续任务 skill 侧监控：该任务后续不再由持续任务编排推进。"
         }
       ],
       "boss_channel": "telegram:1311453837"
@@ -511,7 +517,7 @@
       "name": "新闻监控雷达开发",
       "assignee": "engineer2",
       "assigner": "operator",
-      "status": "in_progress",
+      "status": "cancelled",
       "created_at": "2026-03-22T02:04:30+08:00",
       "monitor_cron_id": "cf9610f0-d399-4c52-a422-aa8bd3e53f36",
       "check_interval": "10m",
@@ -535,6 +541,12 @@
           "note": "工程师2 已完成脚本开发，采集层调通（66条），正在跑全链路测试",
           "actor": "operator",
           "task_name": "新闻监控雷达"
+        },
+        {
+          "time": "2026-03-22T04:41:37+08:00",
+          "actor": "main",
+          "task_name": "新闻监控雷达开发",
+          "note": "按 Boss 要求取消持续任务 skill 侧监控：该任务后续不再由持续任务编排推进。"
         }
       ],
       "boss_channel": "telegram:1311453837"

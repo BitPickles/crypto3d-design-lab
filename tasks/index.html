@@ -3,199 +3,472 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>任务看板 — Crypto3D</title>
+  <title>任务调度看板 — Crypto3D</title>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Inter',-apple-system,sans-serif;background:#f8f9fa;color:#1a1a2e;min-height:100vh}
-    
-    .header{background:#fff;border-bottom:1px solid #e8e8ee;padding:16px 32px;display:flex;align-items:center;justify-content:space-between}
-    .header h1{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px}
-    .header .refresh{padding:6px 14px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px;color:#666;transition:all .15s}
-    .header .refresh:hover{border-color:#3b82f6;color:#3b82f6}
-    .last-update{font-size:12px;color:#999;margin-top:2px}
-    .container{max-width:1400px;margin:0 auto;padding:20px 32px}
-    
-    /* Stats */
-    .stats{display:flex;gap:12px;margin-bottom:20px}
-    .stat-card{flex:1;background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:12px 16px}
-    .stat-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#888;margin-bottom:2px}
-    .stat-value{font-size:24px;font-weight:800;letter-spacing:-.02em}
-    .stat-value.green{color:#059669}
-    .stat-value.blue{color:#3b82f6}
-    .stat-value.amber{color:#d97706}
-    .stat-value.gray{color:#9ca3af}
-
-    /* Two column layout */
-    .main-grid{display:grid;grid-template-columns:260px 1fr;gap:16px;align-items:start}
-    
-    /* Left sidebar */
-    .sidebar{display:flex;flex-direction:column;gap:16px}
-    
-    /* Flow card */
-    .flow-card{background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:16px}
-    .flow-card h2{font-size:13px;font-weight:700;margin-bottom:12px}
-    .flow-node{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;text-align:center;display:inline-block}
-    .flow-node.boss{background:#fef3c7;color:#92400e;border:1px solid #fbbf24}
-    .flow-node.cmd{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd}
-    .flow-node.exec{background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd}
-    .flow-label{font-size:9px;color:#999;text-align:center;margin-top:2px}
-    .flow-arrow{font-size:12px;color:#ccc;text-align:center;margin:4px 0}
-
-    /* Agent status card */
-    .agent-card{background:#fff;border:1px solid #e8e8ee;border-radius:10px;padding:16px}
-    .agent-card h2{font-size:13px;font-weight:700;margin-bottom:12px}
-    .agent-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f5f8}
-    .agent-item:last-child{border-bottom:none}
-    .agent-avatar{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;overflow:hidden}
-    .agent-avatar.idle{background:#f3f4f6}
-    .agent-avatar.working{background:#eff6ff}
-    .agent-avatar.busy{background:#fef3c7}
-    .agent-avatar.commanding{background:#ede9fe}
-    .agent-gif{width:36px;height:36px;border-radius:6px;object-fit:cover}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-    .agent-info{flex:1;min-width:0}
-    .agent-name{font-size:12px;font-weight:600}
-    .agent-status{font-size:10px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .agent-status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-    .agent-status-dot.idle{background:#d1d5db}
-    .agent-status-dot.working{background:#3b82f6;animation:pulse 1.5s infinite}
-    .agent-status-dot.busy{background:#f59e0b;animation:pulse 1s infinite}
-    .agent-status-dot.commanding{background:#8b5cf6;animation:pulse 1.2s infinite}
-
-    /* Kanban */
-    .kanban-wrap h2{font-size:15px;font-weight:700;margin-bottom:12px}
-    .kanban{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
-    .column{background:#f1f3f5;border-radius:10px;padding:12px}
-    .col-header{display:flex;align-items:center;gap:6px;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid}
-    .col-header.pending{border-color:#9ca3af}
-    .col-header.progress{border-color:#3b82f6}
-    .col-header.review{border-color:#d97706}
-    .col-header.done{border-color:#059669}
-    .col-title{font-size:12px;font-weight:700}
-    .col-count{font-size:10px;font-weight:600;background:rgba(0,0,0,.06);padding:2px 7px;border-radius:10px}
-    .col-subtitle{font-size:9px;color:#999;margin-left:auto}
-
-    /* Task Card */
-    .task-card{background:#fff;border:1px solid #e8e8ee;border-radius:8px;padding:12px;margin-bottom:8px;transition:box-shadow .15s}
-    .task-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.06)}
-    .task-id{font-size:9px;font-weight:600;color:#999;font-family:'JetBrains Mono',monospace}
-    .task-name{font-size:13px;font-weight:600;margin:4px 0}
-    .task-meta{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
-    .tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:4px}
-    .tag.agent{background:#ede9fe;color:#7c3aed}
-    .tag.assigner{background:#e0f2fe;color:#0369a1}
-    .tag.time{background:#f3f4f6;color:#6b7280}
-    .task-desc{font-size:11px;color:#666;margin-top:6px;line-height:1.5}
-    .task-criteria{font-size:10px;color:#888;margin-top:6px;padding-top:6px;border-top:1px solid #f0f0f0}
-    .task-criteria strong{color:#555}
-    /* Progress bar */
-    .progress-bar{margin-top:8px;background:#f0f0f5;border-radius:4px;height:6px;overflow:hidden;position:relative}
-    .progress-fill{height:100%;border-radius:4px;transition:width .5s ease;position:relative}
-    .progress-fill.low{background:linear-gradient(90deg,#ef4444,#f59e0b)}
-    .progress-fill.mid{background:linear-gradient(90deg,#f59e0b,#3b82f6)}
-    .progress-fill.high{background:linear-gradient(90deg,#3b82f6,#059669)}
-    .progress-fill.full{background:#059669}
-    .progress-text{font-size:9px;font-weight:600;color:#888;margin-top:3px;text-align:right}
-
-    /* Timeline */
-    .timeline-section{margin-top:24px}
-    .timeline-section h2{font-size:15px;font-weight:700;margin-bottom:12px}
-    .timeline{position:relative;padding-left:24px}
-    .timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:#e0e0e8}
-    .tl-item{position:relative;margin-bottom:12px;padding-left:16px}
-    .tl-item::before{content:'';position:absolute;left:-20px;top:6px;width:10px;height:10px;border-radius:50%;border:2px solid}
-    .tl-item.created::before{border-color:#9ca3af;background:#f9fafb}
-    .tl-item.progress::before{border-color:#3b82f6;background:#eff6ff}
-    .tl-item.check::before{border-color:#d97706;background:#fffbeb}
-    .tl-item.done::before{border-color:#059669;background:#ecfdf5}
-    .tl-time{font-size:10px;color:#999;font-family:'JetBrains Mono',monospace}
-    .tl-text{font-size:12px;color:#333;margin-top:2px}
-    .tl-agent{font-weight:600;color:#7c3aed}
-    .tl-task{color:#3b82f6;font-weight:500}
-
-    .empty{text-align:center;padding:30px 10px;color:#ccc;font-size:12px}
-
-    @media(max-width:900px){
-      .main-grid{grid-template-columns:1fr}
-      .kanban{grid-template-columns:repeat(2,1fr)}
-      .stats{flex-wrap:wrap}
-      .stat-card{min-width:calc(50% - 6px)}
+    :root{
+      --bg:#f4f6fb;
+      --panel:#ffffff;
+      --panel-soft:#f8fafd;
+      --line:#e4e9f2;
+      --line-strong:#d5ddea;
+      --text:#172033;
+      --muted:#667089;
+      --muted-2:#8a93a8;
+      --blue:#2563eb;
+      --blue-soft:#eaf2ff;
+      --amber:#d97706;
+      --amber-soft:#fff5e8;
+      --green:#059669;
+      --green-soft:#e9fbf5;
+      --red:#dc2626;
+      --red-soft:#fff0f0;
+      --purple:#7c3aed;
+      --purple-soft:#f3edff;
+      --shadow:0 10px 30px rgba(25,40,72,.08);
+      --radius:18px;
+      --radius-sm:12px;
+      --ease:cubic-bezier(.16,1,.3,1);
     }
-    @media(max-width:600px){
-      .kanban{grid-template-columns:1fr}
-      .container{padding:12px}
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:"Geist","DM Sans","PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif;
+      background:linear-gradient(180deg,#f7f9fd 0%,#f3f6fb 100%);
+      color:var(--text);
+      min-height:100vh;
+      line-height:1.5;
+    }
+    a{color:var(--blue);text-decoration:none}
+    a:hover{text-decoration:underline}
+    button{font:inherit}
+
+    .header{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter:saturate(180%) blur(18px);
+      background:rgba(247,249,253,.78);
+      border-bottom:1px solid rgba(213,221,234,.8);
+    }
+    .header-inner{
+      max-width:1560px;margin:0 auto;padding:18px 28px;
+      display:flex;align-items:center;justify-content:space-between;gap:18px;
+    }
+    .header-left{display:flex;flex-direction:column;gap:6px}
+    .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);font-weight:700}
+    .header-title{display:flex;align-items:center;gap:12px}
+    .header-title h1{font-size:26px;letter-spacing:-.03em}
+    .header-sub{font-size:13px;color:var(--muted);max-width:760px}
+    .header-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+    .last-update{font-size:12px;color:var(--muted-2)}
+    .refresh{
+      border:1px solid var(--line-strong);background:#fff;color:var(--text);
+      padding:10px 14px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;
+      transition:all .18s var(--ease);box-shadow:0 2px 10px rgba(17,24,39,.03);
+    }
+    .refresh:hover{border-color:#b9c7dd;transform:translateY(-1px)}
+
+    .page{max-width:1560px;margin:0 auto;padding:24px 28px 36px}
+
+    .hero{
+      display:grid;grid-template-columns:1.35fr .9fr;gap:18px;margin-bottom:18px;
+    }
+    .hero-card,.principle-card,.summary-card,.kanban-col,.rail-card,.timeline-card,.agent-card{
+      background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+    }
+    .hero-card{padding:22px 22px 18px}
+    .hero-top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+    .hero-top h2{font-size:20px;letter-spacing:-.02em;margin-bottom:6px}
+    .hero-top p{font-size:14px;color:var(--muted);max-width:720px}
+    .decision-rules{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
+    .rule-pill{
+      font-size:12px;font-weight:700;padding:8px 12px;border-radius:999px;border:1px solid;
+      background:#fff;
+    }
+    .rule-pill.blue{color:#1d4ed8;background:var(--blue-soft);border-color:#cfe0ff}
+    .rule-pill.amber{color:#b45309;background:var(--amber-soft);border-color:#f7d8b1}
+    .rule-pill.red{color:#b91c1c;background:var(--red-soft);border-color:#f6c7c7}
+    .hero-bottom{margin-top:18px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .metric-box{padding:14px 16px;background:var(--panel-soft);border:1px solid #edf1f7;border-radius:16px}
+    .metric-label{font-size:11px;color:var(--muted-2);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:6px}
+    .metric-value{font-size:30px;font-weight:800;letter-spacing:-.04em}
+    .metric-value.blue{color:var(--blue)}
+    .metric-value.amber{color:var(--amber)}
+    .metric-value.green{color:var(--green)}
+    .metric-value.red{color:var(--red)}
+    .metric-foot{font-size:12px;color:var(--muted);margin-top:6px}
+
+    .summary-card{padding:20px}
+    .summary-card h3{font-size:15px;margin-bottom:10px}
+    .summary-card p{font-size:13px;color:var(--muted);margin-bottom:14px}
+    .summary-list{display:flex;flex-direction:column;gap:10px}
+    .summary-item{padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--panel-soft)}
+    .summary-item strong{display:block;font-size:13px;margin-bottom:3px}
+    .summary-item span{font-size:12px;color:var(--muted)}
+
+    .main-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
+    .left-col{display:flex;flex-direction:column;gap:18px}
+
+    .principle-card{padding:18px 20px}
+    .principle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .principle{padding:14px;border-radius:14px;background:var(--panel-soft);border:1px solid #edf1f7}
+    .principle .kicker{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-2);font-weight:700;margin-bottom:6px}
+    .principle .title{font-size:14px;font-weight:700;margin-bottom:4px}
+    .principle .desc{font-size:12px;color:var(--muted)}
+
+    .kanban-head{display:flex;align-items:end;justify-content:space-between;gap:14px}
+    .kanban-title h2{font-size:18px;margin-bottom:4px}
+    .kanban-title p{font-size:13px;color:var(--muted)}
+    .board-chip-row{display:flex;gap:8px;flex-wrap:wrap}
+    .board-chip{padding:8px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12px;color:var(--muted);font-weight:700}
+
+    .kanban-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .kanban-col{padding:16px;background:linear-gradient(180deg,#fbfcff 0%,#f7f9fd 100%)}
+    .col-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+    .col-head h3{font-size:16px;letter-spacing:-.02em}
+    .col-head p{font-size:12px;color:var(--muted);margin-top:3px}
+    .col-count{min-width:34px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+    .col-count.progress{background:var(--blue-soft);color:var(--blue)}
+    .col-count.review{background:var(--amber-soft);color:var(--amber)}
+    .task-list{margin-top:14px;display:flex;flex-direction:column;gap:12px}
+
+    .task-card{
+      background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;
+      transition:transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s var(--ease);
+      position:relative;overflow:hidden;
+    }
+    .task-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(26,44,84,.08)}
+    .task-card.risk-attention{border-color:#f0bf67;background:linear-gradient(180deg,#fffdfa 0%,#fff 100%)}
+    .task-card.risk-blocked{border-color:#f0aaaa;background:linear-gradient(180deg,#fff8f8 0%,#fff 100%)}
+    .task-card.risk-review{border-color:#d9c4ff;background:linear-gradient(180deg,#fcfaff 0%,#fff 100%)}
+    .task-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .task-code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:11px;color:var(--muted-2);font-weight:700}
+    .task-name{font-size:17px;font-weight:800;letter-spacing:-.02em;margin-top:3px}
+    .task-desc{font-size:13px;color:var(--muted);margin-top:8px}
+    .task-badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .badge{font-size:11px;padding:7px 10px;border-radius:999px;font-weight:800;border:1px solid}
+    .badge.blue{background:var(--blue-soft);color:var(--blue);border-color:#cfe0ff}
+    .badge.amber{background:var(--amber-soft);color:var(--amber);border-color:#f7d8b1}
+    .badge.red{background:var(--red-soft);color:var(--red);border-color:#f6c7c7}
+    .badge.green{background:var(--green-soft);color:var(--green);border-color:#b9eddc}
+    .badge.purple{background:var(--purple-soft);color:var(--purple);border-color:#dbcafc}
+    .task-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .meta-pill{font-size:11px;padding:7px 10px;border-radius:999px;background:#f6f8fc;color:#44506a;border:1px solid #e7edf7;font-weight:700}
+
+    .proof-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:12px;margin-top:14px}
+    .section-box{padding:13px 14px;border-radius:14px;background:var(--panel-soft);border:1px solid #edf1f7;min-height:100%}
+    .section-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-2);font-weight:800;margin-bottom:8px}
+    .section-title{font-size:13px;font-weight:800;margin-bottom:6px}
+    .section-text{font-size:12px;color:var(--muted);word-break:break-word}
+    .section-text .link-list a{display:block;margin-top:6px}
+    .section-empty{font-size:12px;color:var(--muted-2)}
+
+    .task-footer{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+    .criteria{font-size:12px;color:var(--muted)}
+    .criteria strong{display:block;color:var(--text);margin-bottom:5px;font-size:12px}
+
+    .rail{display:flex;flex-direction:column;gap:18px}
+    .rail-card{padding:18px}
+    .rail-card h3{font-size:15px;margin-bottom:12px}
+    .rail-note{font-size:12px;color:var(--muted);margin-top:-2px;margin-bottom:12px}
+
+    .attention-list,.evidence-list,.decision-list{display:flex;flex-direction:column;gap:10px}
+    .attention-item,.evidence-item,.decision-item{
+      padding:12px 13px;border-radius:14px;border:1px solid var(--line);background:var(--panel-soft);
+    }
+    .attention-item.red{background:var(--red-soft);border-color:#f5c5c5}
+    .attention-item.amber{background:var(--amber-soft);border-color:#f2d5a8}
+    .attention-item .title,.decision-item .title,.evidence-item .title{font-size:13px;font-weight:800;margin-bottom:4px}
+    .attention-item .meta,.decision-item .meta,.evidence-item .meta{font-size:12px;color:var(--muted)}
+
+    .signal-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #edf1f7}
+    .signal-row:last-child{border-bottom:none;padding-bottom:0}
+    .signal-row:first-child{padding-top:0}
+    .signal-name{font-size:13px;font-weight:700}
+    .signal-desc{font-size:12px;color:var(--muted)}
+    .signal-tag{font-size:11px;font-weight:800;padding:6px 8px;border-radius:999px}
+    .signal-tag.green{background:var(--green-soft);color:var(--green)}
+    .signal-tag.amber{background:var(--amber-soft);color:var(--amber)}
+    .signal-tag.red{background:var(--red-soft);color:var(--red)}
+
+    .agent-card h3{margin-bottom:8px}
+    .agent-list{display:flex;flex-direction:column;gap:10px}
+    .agent-item{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #edf1f7}
+    .agent-item:last-child{border-bottom:none;padding-bottom:0}
+    .agent-item:first-child{padding-top:0}
+    .agent-avatar{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--line)}
+    .agent-avatar.idle{background:#f5f7fb}
+    .agent-avatar.working{background:#eef5ff}
+    .agent-avatar.busy{background:#fff4df}
+    .agent-avatar.commanding{background:#f3edff}
+    .agent-gif{width:46px;height:46px;object-fit:cover;border-radius:12px}
+    .agent-name{font-size:14px;font-weight:800}
+    .agent-status{font-size:12px;color:var(--muted);margin-top:3px}
+    .agent-dot{width:10px;height:10px;border-radius:50%}
+    .agent-dot.idle{background:#c7d0df}
+    .agent-dot.working{background:var(--blue);box-shadow:0 0 0 6px rgba(37,99,235,.12)}
+    .agent-dot.busy{background:var(--amber);box-shadow:0 0 0 6px rgba(217,119,6,.12)}
+    .agent-dot.commanding{background:var(--purple);box-shadow:0 0 0 6px rgba(124,58,237,.12)}
+
+    .timeline-card{padding:18px}
+    .timeline-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
+    .timeline-head h2{font-size:18px}
+    .timeline-head p{font-size:13px;color:var(--muted);margin-top:4px}
+    .timeline-controls{display:flex;gap:8px;flex-wrap:wrap}
+    .filter-btn{
+      border:1px solid var(--line);background:#fff;padding:8px 10px;border-radius:999px;cursor:pointer;
+      font-size:12px;font-weight:700;color:var(--muted);transition:all .16s var(--ease)
+    }
+    .filter-btn.active{background:var(--text);color:#fff;border-color:var(--text)}
+    .timeline{position:relative;padding-left:24px}
+    .timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:4px;width:2px;background:#dde5f1}
+    .tl-item{position:relative;padding:0 0 14px 18px}
+    .tl-item::before{content:"";position:absolute;left:-2px;top:4px;width:12px;height:12px;border-radius:50%;border:2px solid;background:#fff}
+    .tl-item.created::before{border-color:#94a3b8;background:#f8fafc}
+    .tl-item.progress::before{border-color:var(--blue);background:#eaf2ff}
+    .tl-item.check::before{border-color:var(--amber);background:#fff6e8}
+    .tl-item.done::before{border-color:var(--green);background:#ecfdf5}
+    .tl-item.alert::before{border-color:var(--red);background:#fff1f2}
+    .tl-time{font-size:11px;color:var(--muted-2);font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+    .tl-text{font-size:13px;color:#2a3449;margin-top:4px}
+    .tl-text strong{font-weight:800}
+    .tl-text .tl-agent{font-weight:800;color:var(--purple)}
+    .tl-text .tl-task{color:var(--blue);font-weight:800}
+
+    .empty{padding:18px 12px;text-align:center;color:var(--muted-2);font-size:13px;border:1px dashed var(--line);border-radius:14px;background:#fff}
+
+    @media (max-width:1280px){
+      .main-grid{grid-template-columns:1fr}
+      .hero{grid-template-columns:1fr}
+      .proof-grid,.task-footer,.principle-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:900px){
+      .page,.header-inner{padding-left:16px;padding-right:16px}
+      .hero-bottom,.kanban-grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:700px){
+      .header-inner,.hero-top,.timeline-head,.kanban-head{flex-direction:column;align-items:flex-start}
+      .hero-bottom,.kanban-grid{grid-template-columns:1fr}
+      .header-title h1{font-size:22px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <div>
-      <h1><span>📋</span> 任务调度看板</h1>
-      <div class="last-update" id="lastUpdate">加载中...</div>
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="eyebrow">Crypto3D · Task Orchestrator</div>
+        <div class="header-title">
+          <span style="font-size:28px">📋</span>
+          <div>
+            <h1>持续任务调度看板</h1>
+            <div class="header-sub">先看真实产出，再看谁在忙。看板目标不是展示热闹，而是帮助 Boss 判断：谁在推进、谁该催、谁能验收。</div>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="last-update" id="lastUpdate">加载中...</div>
+        <button class="refresh" onclick="loadData()">刷新看板</button>
+      </div>
     </div>
-    <button class="refresh" onclick="loadData()">🔄 刷新</button>
-  </div>
+  </header>
 
-  <div class="container">
-    <div class="stats">
-      <div class="stat-card"><div class="stat-label">进行中</div><div class="stat-value blue" id="statProgress">-</div></div>
-      <div class="stat-card"><div class="stat-label">待确认</div><div class="stat-value amber" id="statReview">-</div></div>
-      <div class="stat-card"><div class="stat-label">总任务</div><div class="stat-value gray" id="statTotal">-</div></div>
-    </div>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-top">
+          <div>
+            <h2>Boss 判断优先级</h2>
+            <p>这版看板把“真实进展、待决策、阻塞风险”抬到最上层。默认不把“读文件、截图、开浏览器、口头说在看”当成进展。</p>
+          </div>
+          <div class="board-chip-row">
+            <div class="board-chip">双列结构：进行中 / 待 Boss 确认</div>
+            <div class="board-chip">证据优先</div>
+            <div class="board-chip">异常高亮</div>
+          </div>
+        </div>
+        <div class="decision-rules">
+          <div class="rule-pill blue">有效进展：commit / 文件修改 / 页面更新 / 明确阻塞说明</div>
+          <div class="rule-pill amber">需关注：超过 10 分钟未见有效进展</div>
+          <div class="rule-pill red">阻塞：明确依赖 Boss / 外部资源 / 平台问题</div>
+        </div>
+        <div class="hero-bottom">
+          <div class="metric-box">
+            <div class="metric-label">进行中</div>
+            <div class="metric-value blue" id="statInProgress">-</div>
+            <div class="metric-foot">仍在推进的任务</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">待 Boss 确认</div>
+            <div class="metric-value amber" id="statReview">-</div>
+            <div class="metric-foot">已进入待决策区</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">超时无进展</div>
+            <div class="metric-value red" id="statStale">-</div>
+            <div class="metric-foot">默认阈值 10 分钟</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">已验证产出</div>
+            <div class="metric-value green" id="statEvidence">-</div>
+            <div class="metric-foot">本页任务中的有效证据数</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="summary-card">
+        <h3>看板使用说明</h3>
+        <p>您只需看三件事：有没有证据、有没有风险、现在该不该拍板。</p>
+        <div class="summary-list">
+          <div class="summary-item">
+            <strong>先看右侧“待 Boss 确认”</strong>
+            <span>这里只保留能进入决策的任务，并展示交付物证据。</span>
+          </div>
+          <div class="summary-item">
+            <strong>再看“需关注”</strong>
+            <span>超时无有效进展、明确阻塞、状态异常的任务会被提到右栏。</span>
+          </div>
+          <div class="summary-item">
+            <strong>最后看证据流</strong>
+            <span>时间线默认优先展示 commit、修复、验收、阻塞说明，不鼓励空话型日志。</span>
+          </div>
+        </div>
+      </aside>
+    </section>
 
     <div class="main-grid">
-      <!-- Left sidebar -->
-      <div class="sidebar">
-        <!-- Flow -->
-        <div class="flow-card">
-          <h2>🔗 调度流程</h2>
-          <div style="text-align:center">
-            <div><div class="flow-node boss">👤 Boss</div><div class="flow-label">可直接指挥任何人</div></div>
-            <div class="flow-arrow">↓</div>
-            <div style="font-size:9px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">指挥层</div>
-            <div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:6px">
-              <div class="flow-node cmd">🎯 总管</div>
-              <div class="flow-node cmd">🔍 研究员</div>
-              <div class="flow-node cmd">📡 运营</div>
+      <div class="left-col">
+        <section class="principle-card">
+          <div class="principle-grid">
+            <div class="principle">
+              <div class="kicker">Signal 01</div>
+              <div class="title">真实产出优先</div>
+              <div class="desc">任务卡核心展示最近一次可验证产出，而不是最后一次发言。</div>
             </div>
-            <div class="flow-arrow">↓ 派发</div>
-            <div style="font-size:9px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">中台</div>
-            <div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap">
-              <div class="flow-node exec">🎨 设计师</div>
-              <div class="flow-node exec">⚙️ 工程师</div>
+            <div class="principle">
+              <div class="kicker">Signal 02</div>
+              <div class="title">风险即颜色</div>
+              <div class="desc">正常推进保持冷静配色；需关注、阻塞、待确认用不同信号色直接提示。</div>
+            </div>
+            <div class="principle">
+              <div class="kicker">Signal 03</div>
+              <div class="title">下一步必须明确</div>
+              <div class="desc">每张卡都给出“下一步谁来做”，避免只描述现状、不指向行动。</div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <!-- Agent Status -->
-        <div class="agent-card">
-          <h2>🤖 Agent 状态</h2>
-          <div id="agentStatus"></div>
-        </div>
-      </div>
-
-      <!-- Right: Kanban -->
-      <div class="kanban-wrap">
-        <h2>📌 任务看板</h2>
-        <div class="kanban" id="kanban">
-          <div class="column">
-            <div class="col-header progress"><div class="col-title">进行中</div><div class="col-count" id="countProgress">0</div></div>
-            <div id="colProgress"></div>
+        <section>
+          <div class="kanban-head">
+            <div class="kanban-title">
+              <h2>任务主看板</h2>
+              <p>只保留两列：左边看推进，右边看待拍板。任务卡默认带证据、风险、下一动作。</p>
+            </div>
+            <div class="board-chip-row">
+              <div class="board-chip" id="boardSummaryChip">0 个任务</div>
+              <div class="board-chip">监控窗口：10 分钟</div>
+              <div class="board-chip">40 分钟以上可催促</div>
+            </div>
           </div>
-          <div class="column">
-            <div class="col-header review"><div class="col-title">待 Boss 确认</div><div class="col-count" id="countReview">0</div><div class="col-subtitle">⏳</div></div>
-            <div id="colReview"></div>
+          <div class="kanban-grid">
+            <section class="kanban-col">
+              <div class="col-head">
+                <div>
+                  <h3>进行中</h3>
+                  <p>正在推进，但未进入 Boss 决策阶段。</p>
+                </div>
+                <div class="col-count progress" id="countProgress">0</div>
+              </div>
+              <div class="task-list" id="colProgress"></div>
+            </section>
+            <section class="kanban-col">
+              <div class="col-head">
+                <div>
+                  <h3>待 Boss 确认</h3>
+                  <p>已经具备证据包，等待最终确认、驳回或继续。</p>
+                </div>
+                <div class="col-count review" id="countReview">0</div>
+              </div>
+              <div class="task-list" id="colReview"></div>
+            </section>
           </div>
-        </div>
+        </section>
 
-        <!-- Timeline -->
-        <div class="timeline-section">
-          <h2>📜 活动时间线</h2>
+        <section class="timeline-card">
+          <div class="timeline-head">
+            <div>
+              <h2>证据时间线</h2>
+              <p>默认优先看可验证进展；也可切换查看全部记录。</p>
+            </div>
+            <div class="timeline-controls">
+              <button class="filter-btn active" data-filter="meaningful">只看有效进展</button>
+              <button class="filter-btn" data-filter="all">查看全部</button>
+            </div>
+          </div>
           <div class="timeline" id="timeline"></div>
-        </div>
+        </section>
       </div>
+
+      <aside class="rail">
+        <section class="rail-card">
+          <h3>需关注</h3>
+          <div class="rail-note">优先处理超时无证据、明确阻塞、状态异常任务。</div>
+          <div class="attention-list" id="attentionList"></div>
+        </section>
+
+        <section class="rail-card">
+          <h3>刚刚有真实产出</h3>
+          <div class="rail-note">这里不看“谁在线”，只看最近一次可验证交付。</div>
+          <div class="evidence-list" id="evidenceList"></div>
+        </section>
+
+        <section class="rail-card">
+          <h3>待您拍板</h3>
+          <div class="rail-note">进入 reviewing 的任务会在这里汇总成待批单。</div>
+          <div class="decision-list" id="decisionList"></div>
+        </section>
+
+        <section class="rail-card">
+          <h3>有效进展定义</h3>
+          <div class="signal-row">
+            <div>
+              <div class="signal-name">commit / 文件变更</div>
+              <div class="signal-desc">明确改了什么，算推进。</div>
+            </div>
+            <div class="signal-tag green">有效</div>
+          </div>
+          <div class="signal-row">
+            <div>
+              <div class="signal-name">验收缺口 / 修复说明</div>
+              <div class="signal-desc">具体指出问题和补齐内容，算推进。</div>
+            </div>
+            <div class="signal-tag green">有效</div>
+          </div>
+          <div class="signal-row">
+            <div>
+              <div class="signal-name">明确阻塞说明</div>
+              <div class="signal-desc">能判断该不该催，算有效状态。</div>
+            </div>
+            <div class="signal-tag amber">有效但阻塞</div>
+          </div>
+          <div class="signal-row">
+            <div>
+              <div class="signal-name">读文件 / 截图 / 我在看</div>
+              <div class="signal-desc">没有任务特异性交付，不算进展。</div>
+            </div>
+            <div class="signal-tag red">无效</div>
+          </div>
+        </section>
+
+        <section class="rail-card agent-card">
+          <h3>Agent 状态</h3>
+          <div class="rail-note">GIF 只做点缀，状态判断仍以证据为准。</div>
+          <div class="agent-list" id="agentStatus"></div>
+        </section>
+      </aside>
     </div>
-  </div>
+  </main>
 
   <script>
     const AGENTS = [
@@ -204,18 +477,13 @@
       { id: 'operator', name: '运营', emoji: '📡', role: 'cmd' },
       { id: 'designer', name: '设计师', emoji: '🎨', role: 'exec' },
       { id: 'engineer', name: '工程师1', emoji: '⚙️', role: 'exec' },
-      { id: 'engineer2', name: '工程师2', emoji: '⚙️', role: 'exec' },
+      { id: 'engineer2', name: '工程师2', emoji: '🛠️', role: 'exec' },
+      { id: 'boss', name: 'Boss', emoji: '👤', role: 'boss' },
     ];
 
     const AGENT_NAMES = {};
-    AGENTS.forEach(a => AGENT_NAMES[a.id] = a.emoji + ' ' + a.name);
+    AGENTS.forEach(a => AGENT_NAMES[a.id] = `${a.emoji} ${a.name}`);
 
-    const STATUS_MAP = {
-      created: 'Pending', in_progress: 'Progress', reviewing: 'Review',
-      done: 'Done', rejected: 'Progress', cancelled: 'Done',
-    };
-
-    // Pixel dog meme GIFs for each status
     const STATUS_GIFS = {
       idle: './img/idle.gif',
       working: './img/working.gif',
@@ -223,188 +491,441 @@
       commanding: './img/commanding.gif',
     };
 
+    const STALE_MINUTES = 10;
+    let CURRENT_TIMELINE_FILTER = 'meaningful';
+
     function timeAgo(dateStr) {
+      if (!dateStr) return '未知';
       const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
       if (diff < 60) return '刚才';
-      if (diff < 3600) return Math.floor(diff/60) + '分钟前';
-      if (diff < 86400) return Math.floor(diff/3600) + '小时前';
-      return Math.floor(diff/86400) + '天前';
+      if (diff < 3600) return Math.floor(diff / 60) + ' 分钟前';
+      if (diff < 86400) return Math.floor(diff / 3600) + ' 小时前';
+      return Math.floor(diff / 86400) + ' 天前';
+    }
+
+    function minutesSince(dateStr) {
+      if (!dateStr) return Infinity;
+      return Math.floor((Date.now() - new Date(dateStr).getTime()) / 60000);
     }
 
     function toCST(dateStr) {
-      return new Date(dateStr).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+      return new Date(dateStr).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai', hour12: false });
     }
 
-    function getProgressClass(pct) {
-      if (pct >= 100) return 'full';
-      if (pct >= 60) return 'high';
-      if (pct >= 30) return 'mid';
-      return 'low';
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>\"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
     }
 
-    function estimateProgress(task) {
-      if (task.status === 'done') return 100;
-      if (task.status === 'reviewing') return 90;
-      if (task.progress) return task.progress;
-      // Estimate from notes count
-      const notes = (task.progress_notes || []).length;
-      return Math.min(80, 20 + notes * 15);
+    function linkify(text) {
+      if (!text) return '';
+      const safe = escapeHtml(text);
+      return safe.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
     }
 
-    function renderCard(task) {
+    function normalizeNote(noteEntry, task) {
+      if (typeof noteEntry === 'string') {
+        return { note: noteEntry, time: task.created_at, actor: task.assigner, task_name: task.name };
+      }
+      return {
+        note: noteEntry.note || '',
+        time: noteEntry.time || task.created_at,
+        actor: noteEntry.actor || task.assigner,
+        task_name: noteEntry.task_name || task.name,
+      };
+    }
+
+    function isMeaninglessActivity(text) {
+      const low = (text || '').toLowerCase();
+      return [
+        '我在看','我在查','截图','开浏览器','打开浏览器','打开 localhost','读文件','查看页面','检查页面','刚回复 boss 确认在岗',
+        'session 最近有活动','积极工作中','无需催促','未超40分钟阈值','最后活动','约','监控检查：', '📊 监控检查', '监控检查',
+      ].some(k => low.includes(k.toLowerCase()));
+    }
+
+    function classifyNote(noteEntry) {
+      const note = (noteEntry.note || '').trim();
+      const low = note.toLowerCase();
+      const hasUrl = /https?:\/\//i.test(note);
+      const hasCommit = /commit\s+[0-9a-f]{6,}|已推送 commit|已 push|代码已 push|push（commit/i.test(note);
+      const hasFiles = /文件|json|目录|模块|页面|图表|卡片|修复|补齐|部署|build 通过|建表|数据补齐|主题切换统一修复|HTTP 200|返回 200/i.test(note);
+      const explicitBlocked = /阻塞|等待 boss|需 boss|需要 boss|平台侧|不可达|提供.*token|提供.*database_url|待 boss 配合|外部依赖/i.test(low);
+      const reviewLike = /待 boss 确认|待 boss 最终确认|进入 reviewing|状态改为 reviewing|等待 boss 最终验收|待您确认/i.test(low);
+      const completion = /✅|完成|已完成|验证通过|验收通过|结项|done/i.test(note);
+      const rejection = /驳回|撤销|改回 in_progress|不通过|继续改|退回|误结项/i.test(note);
+      const monitorLike = /监控检查|监控验收|监控催促|最后活动|无需催促|未超40分钟阈值/i.test(note);
+      const meaningful = !monitorLike && (hasCommit || hasFiles || explicitBlocked || reviewLike || completion || rejection || hasUrl) && !isMeaninglessActivity(note);
+      let type = 'check';
+      if (explicitBlocked) type = 'alert';
+      else if (completion || reviewLike) type = 'done';
+      else if (hasCommit || hasFiles || hasUrl || rejection) type = 'progress';
+
+      return {
+        note,
+        meaningful,
+        type,
+        explicitBlocked,
+        reviewLike,
+        completion,
+        hasCommit,
+        hasUrl,
+        monitorLike,
+        preview: note.length > 150 ? note.slice(0, 150) + '…' : note,
+      };
+    }
+
+    function getNotes(task) {
+      return (task.progress_notes || []).map(n => normalizeNote(n, task));
+    }
+
+    function getLatestMeaningfulNote(task) {
+      const notes = getNotes(task)
+        .map(n => ({ ...n, meta: classifyNote(n) }))
+        .filter(n => n.meta.meaningful)
+        .sort((a,b) => new Date(b.time) - new Date(a.time));
+      return notes[0] || null;
+    }
+
+    function getLatestAnyNote(task) {
+      const notes = getNotes(task).sort((a,b) => new Date(b.time) - new Date(a.time));
+      return notes[0] || null;
+    }
+
+    function getLatestBlockedNote(task) {
+      const notes = getNotes(task)
+        .map(n => ({ ...n, meta: classifyNote(n) }))
+        .filter(n => n.meta.explicitBlocked)
+        .sort((a,b) => new Date(b.time) - new Date(a.time));
+      return notes[0] || null;
+    }
+
+    function getLatestReviewNote(task) {
+      const notes = getNotes(task)
+        .map(n => ({ ...n, meta: classifyNote(n) }))
+        .filter(n => n.meta.reviewLike && !n.meta.monitorLike)
+        .sort((a,b) => new Date(b.time) - new Date(a.time));
+      return notes[0] || null;
+    }
+
+    function isStillBlocked(task) {
+      const blocked = getLatestBlockedNote(task);
+      const latestMeaningful = getLatestMeaningfulNote(task);
+      if (!blocked) return false;
+      if (!latestMeaningful) return true;
+      return new Date(blocked.time) >= new Date(latestMeaningful.time);
+    }
+
+    function getTaskRisk(task) {
+      const blocked = getLatestBlockedNote(task);
+      const stillBlocked = isStillBlocked(task);
+      const latestMeaningful = getLatestMeaningfulNote(task);
+      const latestAny = getLatestAnyNote(task);
+      const referenceTime = latestMeaningful?.time || latestAny?.time || task.created_at;
+      const staleMinutes = minutesSince(referenceTime);
+
+      if (stillBlocked && ['in_progress','created'].includes(task.status)) {
+        return { level:'blocked', label:'明确阻塞', detail:'等待 Boss / 外部依赖 / 平台侧问题', staleMinutes, source: blocked };
+      }
+      if (task.status === 'reviewing') {
+        return { level:'review', label:'待拍板', detail:'已进入 Boss 决策阶段', staleMinutes };
+      }
+      if (staleMinutes > STALE_MINUTES && ['in_progress','created'].includes(task.status)) {
+        return { level:'attention', label:'超时无进展', detail:`${staleMinutes} 分钟内未见有效进展`, staleMinutes };
+      }
+      return { level:'normal', label:'正常推进', detail: latestMeaningful ? '最近有可验证产出' : '等待首个有效产出', staleMinutes };
+    }
+
+    function getNextAction(task, risk) {
+      const blocked = isStillBlocked(task);
+      if (task.status === 'reviewing') return 'Boss 决定：确认通过 / 退回继续改';
+      if (blocked) return 'Boss/相关方提供依赖后，执行人继续推进';
+      if (risk.level === 'attention') return `应由 ${AGENT_NAMES[task.assigner] || task.assigner} 立即复核并决定是否催促`;
+      return `${AGENT_NAMES[task.assignee] || task.assignee} 继续推进当前阶段`; 
+    }
+
+    function collectEvidenceLinks(text) {
+      const matches = (text || '').match(/https?:\/\/[^\s)]+/g);
+      return matches || [];
+    }
+
+    function renderEvidenceLinks(urls) {
+      if (!urls.length) return '<div class="section-empty">暂无链接证据</div>';
+      return `<div class="link-list">${urls.slice(0,3).map(u => `<a href="${u}" target="_blank" rel="noopener noreferrer">${u}</a>`).join('')}</div>`;
+    }
+
+    function renderTaskCard(task) {
+      const latestMeaningful = getLatestMeaningfulNote(task);
+      const latestReview = getLatestReviewNote(task);
+      const latestAny = getLatestAnyNote(task);
+      const risk = getTaskRisk(task);
       const agentName = AGENT_NAMES[task.assignee] || task.assignee;
       const assignerName = AGENT_NAMES[task.assigner] || task.assigner;
-      const progress = estimateProgress(task);
-      const showProgress = task.status === 'in_progress' || task.status === 'reviewing';
-      
+      const reference = latestMeaningful || latestAny;
+      const proofText = latestMeaningful?.note || '';
+      const proofLinks = collectEvidenceLinks([proofText, task.description, task.acceptance_criteria].join(' '));
+      const decisionText = task.status === 'reviewing'
+        ? (latestReview?.note || '已进入待确认阶段，等待 Boss 拍板。')
+        : getNextAction(task, risk);
+
+      const badgeByRisk = {
+        normal: '<span class="badge green">正常推进</span>',
+        attention: `<span class="badge amber">需关注 · ${risk.staleMinutes} 分钟</span>`,
+        blocked: '<span class="badge red">明确阻塞</span>',
+        review: '<span class="badge purple">待 Boss 确认</span>'
+      };
+
+      const statusBadge = task.status === 'reviewing'
+        ? '<span class="badge amber">待决策</span>'
+        : '<span class="badge blue">进行中</span>';
+
       return `
-        <div class="task-card">
-          <div class="task-id">#${task.id}</div>
-          <div class="task-name">${task.name}</div>
-          <div class="task-desc">${task.description || ''}</div>
-          ${showProgress ? `
-          <div class="progress-bar"><div class="progress-fill ${getProgressClass(progress)}" style="width:${progress}%"></div></div>
-          <div class="progress-text">${progress}%</div>
-          ` : ''}
-          <div class="task-meta">
-            <span class="tag agent">${agentName}</span>
-            <span class="tag assigner">← ${assignerName}</span>
-            <span class="tag time">${timeAgo(task.created_at)}</span>
+        <article class="task-card risk-${risk.level}">
+          <div class="task-top">
+            <div>
+              <div class="task-code">${escapeHtml(task.id)}</div>
+              <div class="task-name">${escapeHtml(task.name)}</div>
+              <div class="task-desc">${linkify(task.description || '')}</div>
+            </div>
+            <div class="task-badges">
+              ${statusBadge}
+              ${badgeByRisk[risk.level]}
+            </div>
           </div>
-          ${task.acceptance_criteria ? `<div class="task-criteria"><strong>验收标准：</strong>${task.acceptance_criteria}</div>` : ''}
-        </div>
+
+          <div class="task-meta">
+            <span class="meta-pill">执行人：${escapeHtml(agentName)}</span>
+            <span class="meta-pill">指挥人：${escapeHtml(assignerName)}</span>
+            <span class="meta-pill">创建于：${timeAgo(task.created_at)}</span>
+            <span class="meta-pill">最近证据：${reference ? timeAgo(reference.time) : '暂无'}</span>
+          </div>
+
+          <div class="proof-grid">
+            <div class="section-box">
+              <div class="section-label">最近一次真实产出</div>
+              ${latestMeaningful ? `
+                <div class="section-title">${escapeHtml(AGENT_NAMES[latestMeaningful.actor] || latestMeaningful.actor)} · ${toCST(latestMeaningful.time)}</div>
+                <div class="section-text">${linkify(latestMeaningful.note)}</div>
+              ` : `
+                <div class="section-title">暂无可验证产出</div>
+                <div class="section-empty">当前没有识别到 commit、文件变更、明确修复说明或阻塞说明。</div>
+              `}
+            </div>
+            <div class="section-box">
+              <div class="section-label">风险与下一步</div>
+              <div class="section-title">${risk.label}</div>
+              <div class="section-text">${escapeHtml(risk.detail)}</div>
+              <div class="section-title" style="margin-top:10px">下一动作</div>
+              <div class="section-text">${escapeHtml(decisionText)}</div>
+            </div>
+          </div>
+
+          <div class="task-footer">
+            <div class="section-box">
+              <div class="section-label">验收标准</div>
+              <div class="criteria">${task.acceptance_criteria ? linkify(task.acceptance_criteria) : '<span class="section-empty">暂无验收标准</span>'}</div>
+            </div>
+            <div class="section-box">
+              <div class="section-label">证据入口</div>
+              <div class="section-text">${renderEvidenceLinks(proofLinks)}</div>
+            </div>
+          </div>
+        </article>
       `;
     }
 
+    function renderAttention(tasks) {
+      const items = tasks
+        .map(task => ({ task, risk: getTaskRisk(task), latest: getLatestMeaningfulNote(task) || getLatestAnyNote(task) }))
+        .filter(({task, risk}) => task.status !== 'done' && task.status !== 'cancelled' && ['blocked','attention'].includes(risk.level))
+        .sort((a,b) => {
+          const order = { blocked: 0, attention: 1 };
+          if (order[a.risk.level] !== order[b.risk.level]) return order[a.risk.level] - order[b.risk.level];
+          return new Date(b.latest?.time || b.task.created_at) - new Date(a.latest?.time || a.task.created_at);
+        });
+      if (!items.length) return '<div class="empty">当前没有高优先级风险项</div>';
+      return items.map(({task,risk,latest}) => `
+        <div class="attention-item ${risk.level === 'blocked' ? 'red' : 'amber'}">
+          <div class="title">${escapeHtml(task.name)}</div>
+          <div class="meta">${risk.label} · ${risk.detail}</div>
+          <div class="meta" style="margin-top:6px">执行人：${escapeHtml(AGENT_NAMES[task.assignee] || task.assignee)} · 最近记录：${latest ? timeAgo(latest.time) : '暂无'}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderEvidence(tasks) {
+      const items = tasks
+        .map(task => ({ task, evidence: getLatestMeaningfulNote(task) }))
+        .filter(x => x.evidence)
+        .sort((a,b) => new Date(b.evidence.time) - new Date(a.evidence.time))
+        .slice(0,5);
+      if (!items.length) return '<div class="empty">暂无有效进展证据</div>';
+      return items.map(({task,evidence}) => `
+        <div class="evidence-item">
+          <div class="title">${escapeHtml(task.name)}</div>
+          <div class="meta">${escapeHtml(AGENT_NAMES[evidence.actor] || evidence.actor)} · ${timeAgo(evidence.time)}</div>
+          <div class="meta" style="margin-top:6px">${linkify(evidence.meta.preview)}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderDecisions(tasks) {
+      const items = tasks
+        .filter(task => task.status === 'reviewing')
+        .map(task => ({ task, review: getLatestReviewNote(task) || getLatestMeaningfulNote(task) || getLatestAnyNote(task) }))
+        .sort((a,b) => new Date(b.review?.time || b.task.created_at) - new Date(a.review?.time || a.task.created_at));
+      if (!items.length) return '<div class="empty">当前没有待确认任务</div>';
+      return items.map(({task,review}) => `
+        <div class="decision-item">
+          <div class="title">${escapeHtml(task.name)}</div>
+          <div class="meta">执行人：${escapeHtml(AGENT_NAMES[task.assignee] || task.assignee)}</div>
+          <div class="meta" style="margin-top:6px">${review ? linkify(review.meta.preview) : '已进入 reviewing，等待 Boss 决策。'}</div>
+        </div>
+      `).join('');
+    }
+
     function renderAgentStatus(tasks) {
-      const agentTasks = {};
-      const agentCommanding = {};
-      
-      tasks.forEach(t => {
-        if (t.status === 'in_progress' || t.status === 'reviewing') {
-          // Assignee is working
-          if (!agentTasks[t.assignee]) agentTasks[t.assignee] = [];
-          agentTasks[t.assignee].push(t.name);
-          // Assigner is commanding
-          if (!agentCommanding[t.assigner]) agentCommanding[t.assigner] = [];
-          agentCommanding[t.assigner].push(t.name);
+      const workingMap = {};
+      const commandingMap = {};
+      tasks.forEach(task => {
+        if (['in_progress','reviewing','created'].includes(task.status)) {
+          const evidence = getLatestMeaningfulNote(task);
+          const risk = getTaskRisk(task);
+          if (!workingMap[task.assignee]) workingMap[task.assignee] = [];
+          workingMap[task.assignee].push({ task, evidence, risk });
+          if (!commandingMap[task.assigner]) commandingMap[task.assigner] = [];
+          commandingMap[task.assigner].push(task);
         }
       });
 
-      return AGENTS.map(agent => {
-        const working = agentTasks[agent.id] || [];
-        const commanding = agentCommanding[agent.id] || [];
-        let status, statusClass, animEmoji, animClass;
+      return AGENTS.filter(a => a.id !== 'boss').map(agent => {
+        const working = workingMap[agent.id] || [];
+        const commanding = commandingMap[agent.id] || [];
+        let status = '空闲';
+        let cls = 'idle';
 
         if (working.length >= 2) {
-          status = `执行 ${working.length} 个任务`;
-          statusClass = 'busy';
-          animEmoji = '🔥';
-          animClass = 'working';
+          cls = 'busy';
+          status = `并行推进 ${working.length} 个任务`;
         } else if (working.length === 1) {
-          status = working[0].substring(0, 15) + (working[0].length > 15 ? '…' : '');
-          statusClass = 'working';
-          animEmoji = '🔨';
-          animClass = 'working';
+          const risk = working[0].risk;
+          cls = risk.level === 'blocked' ? 'busy' : 'working';
+          status = `${working[0].task.name} · ${risk.label}`;
         } else if (commanding.length > 0) {
-          status = `指挥 ${commanding.length} 个任务`;
-          statusClass = 'commanding';
-          animEmoji = '📢';
-          animClass = 'commanding';
-        } else {
-          status = '空闲';
-          statusClass = 'idle';
-          animEmoji = '💤';
-          animClass = 'idle';
+          cls = 'commanding';
+          status = `在指挥 ${commanding.length} 个任务`;
         }
 
-        const gifSrc = STATUS_GIFS[statusClass] || STATUS_GIFS.idle;
-
+        const gifSrc = STATUS_GIFS[cls] || STATUS_GIFS.idle;
         return `
           <div class="agent-item">
-            <div class="agent-avatar ${statusClass}">
-              <img class="agent-gif" src="${gifSrc}" alt="${status}" title="${agent.name}: ${status}">
-            </div>
-            <div class="agent-info">
+            <div class="agent-avatar ${cls}"><img class="agent-gif" src="${gifSrc}" alt="${status}"></div>
+            <div>
               <div class="agent-name">${agent.emoji} ${agent.name}</div>
-              <div class="agent-status">${status}</div>
+              <div class="agent-status">${escapeHtml(status)}</div>
             </div>
-            <div class="agent-status-dot ${statusClass}"></div>
+            <div class="agent-dot ${cls}"></div>
           </div>
         `;
       }).join('');
     }
 
     function renderTimeline(tasks) {
-      const items = [];
-      const ACTOR_NAMES = Object.assign({}, AGENT_NAMES, { boss: '👤 Boss' });
-      
-      tasks.forEach(t => {
-        items.push({
-          time: t.created_at,
+      const entries = [];
+      tasks.forEach(task => {
+        entries.push({
+          time: task.created_at,
           type: 'created',
-          text: `<span class="tl-agent">${ACTOR_NAMES[t.assigner]||t.assigner}</span> 创建任务「<strong>${t.name}</strong>」→ 派给 <span class="tl-agent">${ACTOR_NAMES[t.assignee]||t.assignee}</span>`
+          meaningful: true,
+          text: `<span class="tl-agent">${escapeHtml(AGENT_NAMES[task.assigner] || task.assigner)}</span> 创建任务 <span class="tl-task">「${escapeHtml(task.name)}」</span> → 派给 <span class="tl-agent">${escapeHtml(AGENT_NAMES[task.assignee] || task.assignee)}</span>`
         });
-        (t.progress_notes||[]).forEach(n => {
-          const note = typeof n === 'string' ? n : n.note;
-          const actor = (typeof n === 'object' && n.actor) ? ACTOR_NAMES[n.actor] || n.actor : ACTOR_NAMES[t.assigner] || t.assigner;
-          const taskName = (typeof n === 'object' && n.task_name) ? n.task_name : t.name;
-          items.push({
-            time: (typeof n === 'object' ? n.time : null) || t.created_at,
-            type: 'check',
-            text: `<span class="tl-agent">${actor}</span> <span class="tl-task">「${taskName}」</span> ${note}`
+        getNotes(task).forEach(raw => {
+          const meta = classifyNote(raw);
+          entries.push({
+            time: raw.time,
+            type: meta.type,
+            meaningful: meta.meaningful,
+            text: `<span class="tl-agent">${escapeHtml(AGENT_NAMES[raw.actor] || raw.actor)}</span> <span class="tl-task">「${escapeHtml(raw.task_name)}」</span> ${linkify(raw.note)}`
           });
         });
-        if (t.status === 'done' && t.completed_at) {
-          items.push({
-            time: t.completed_at,
-            type: 'done',
-            text: `<span class="tl-agent">${ACTOR_NAMES[t.assigner]||t.assigner}</span> 确认任务「<strong>${t.name}</strong>」✅ 完成`
-          });
-        }
       });
-      items.sort((a, b) => new Date(b.time) - new Date(a.time));
-      if (!items.length) return '<div class="empty">暂无活动记录</div>';
-      return items.map(i => `
-        <div class="tl-item ${i.type}">
-          <div class="tl-time">${toCST(i.time)}</div>
-          <div class="tl-text">${i.text}</div>
+
+      const filtered = entries
+        .filter(item => CURRENT_TIMELINE_FILTER === 'all' ? true : item.meaningful)
+        .sort((a,b) => new Date(b.time) - new Date(a.time))
+        .slice(0,60);
+
+      if (!filtered.length) return '<div class="empty">当前筛选下暂无时间线记录</div>';
+      return filtered.map(item => `
+        <div class="tl-item ${item.type}">
+          <div class="tl-time">${toCST(item.time)}</div>
+          <div class="tl-text">${item.text}</div>
         </div>
       `).join('');
     }
 
     function render(data) {
-      const tasks = data.tasks || [];
-      const counts = { created:0, in_progress:0, reviewing:0, done:0 };
-      tasks.forEach(t => counts[t.status] = (counts[t.status]||0) + 1);
-      
-      document.getElementById('statProgress').textContent = counts.in_progress + counts.created;
-      document.getElementById('statReview').textContent = counts.reviewing;
-      document.getElementById('statTotal').textContent = tasks.length;
+      const tasks = (data.tasks || []).filter(task => !['done','cancelled'].includes(task.status));
+      const progressTasks = tasks.filter(task => ['created','in_progress','rejected'].includes(task.status));
+      const reviewTasks = tasks.filter(task => task.status === 'reviewing');
+      const staleCount = progressTasks.filter(task => getTaskRisk(task).level === 'attention').length;
+      const evidenceCount = tasks.reduce((sum, task) => sum + (getLatestMeaningfulNote(task) ? 1 : 0), 0);
+
+      document.getElementById('statInProgress').textContent = progressTasks.length;
+      document.getElementById('statReview').textContent = reviewTasks.length;
+      document.getElementById('statStale').textContent = staleCount;
+      document.getElementById('statEvidence').textContent = evidenceCount;
+      document.getElementById('countProgress').textContent = progressTasks.length;
+      document.getElementById('countReview').textContent = reviewTasks.length;
+      document.getElementById('boardSummaryChip').textContent = `${tasks.length} 个活跃任务`;
       document.getElementById('lastUpdate').textContent = '更新于 ' + toCST(new Date().toISOString());
-      document.getElementById('countProgress').textContent = counts.in_progress + counts.created;
-      document.getElementById('countReview').textContent = counts.reviewing;
 
-      const cols = { Progress:[], Review:[] };
-      tasks.forEach(t => {
-        const mapped = STATUS_MAP[t.status] || 'Progress';
-        if (mapped === 'Progress' || mapped === 'Review') cols[mapped].push(renderCard(t));
-      });
-      ['Progress','Review'].forEach(c => {
-        document.getElementById('col'+c).innerHTML = cols[c].join('') || '<div class="empty">空</div>';
-      });
+      const progressHTML = progressTasks
+        .sort((a,b) => {
+          const riskOrder = { blocked:0, attention:1, normal:2, review:3 };
+          const riskA = getTaskRisk(a), riskB = getTaskRisk(b);
+          if (riskOrder[riskA.level] !== riskOrder[riskB.level]) return riskOrder[riskA.level] - riskOrder[riskB.level];
+          const ta = getLatestMeaningfulNote(a)?.time || getLatestAnyNote(a)?.time || a.created_at;
+          const tb = getLatestMeaningfulNote(b)?.time || getLatestAnyNote(b)?.time || b.created_at;
+          return new Date(tb) - new Date(ta);
+        })
+        .map(renderTaskCard)
+        .join('');
 
+      const reviewHTML = reviewTasks
+        .sort((a,b) => {
+          const ta = getLatestReviewNote(a)?.time || getLatestMeaningfulNote(a)?.time || a.created_at;
+          const tb = getLatestReviewNote(b)?.time || getLatestMeaningfulNote(b)?.time || b.created_at;
+          return new Date(tb) - new Date(ta);
+        })
+        .map(renderTaskCard)
+        .join('');
+
+      document.getElementById('colProgress').innerHTML = progressHTML || '<div class="empty">当前没有进行中的任务</div>';
+      document.getElementById('colReview').innerHTML = reviewHTML || '<div class="empty">当前没有待确认任务</div>';
+      document.getElementById('attentionList').innerHTML = renderAttention(tasks);
+      document.getElementById('evidenceList').innerHTML = renderEvidence(tasks);
+      document.getElementById('decisionList').innerHTML = renderDecisions(tasks);
       document.getElementById('agentStatus').innerHTML = renderAgentStatus(tasks);
       document.getElementById('timeline').innerHTML = renderTimeline(tasks);
     }
 
-    function loadData() {
-      fetch('./tasks-data.json?t='+Date.now())
-        .then(r => r.ok ? r.json() : Promise.reject())
-        .then(render)
-        .catch(() => render({ version:1, tasks:[] }));
+    function bindTimelineFilters() {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          CURRENT_TIMELINE_FILTER = btn.dataset.filter;
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+          loadData();
+        });
+      });
     }
 
+    function loadData() {
+      fetch('./tasks-data.json?t=' + Date.now())
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(render)
+        .catch(() => render({ tasks: [] }));
+    }
+
+    bindTimelineFilters();
     loadData();
     setInterval(loadData, 30000);
   </script>
