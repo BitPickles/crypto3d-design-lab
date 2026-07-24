@@ -84,10 +84,10 @@
     <section class="docs-hero">
       <div class="container">
         <h1>协议财务口径文档</h1>
-        <p>本页定义 Crypto3D 测试站本轮如何用 DefiLlama 的市场数据、Fees、Revenue 与 Holders Revenue 计算 26 个协议的 P/S、Cash P/E 和 Shareholder Yield。</p>
-        <div class="docs-meta"><span>口径版本 v1.2</span><span>生效日期 2026-07-25</span><span>适用范围：Crypto3D 测试站会议版</span><span>更新频率：每日</span></div>
+        <p>本页定义 Crypto3D 测试站本轮如何用 DefiLlama 的市场数据、Fees、Revenue 与 Holders Revenue 计算 26 个协议的 P/S、Cash P/E 和 Shareholder Yield，并说明 CAKE 的官方激励调整特例。</p>
+        <div class="docs-meta"><span>口径版本 v1.3</span><span>生效日期 2026-07-25</span><span>适用范围：Crypto3D 测试站会议版</span><span>更新频率：每日</span></div>
         <div class="rule-grid">
-          <div class="rule-card"><strong>DefiLlama 单一来源</strong><p>本轮市场和财务数值统一取自 DefiLlama，不使用旧数据或其他平台回填。</p></div>
+          <div class="rule-card"><strong>DefiLlama 基础数据</strong><p>市场和基础财务数值统一取自 DefiLlama；仅 CAKE 外部激励使用 PancakeSwap 官方报告。</p></div>
           <div class="rule-card"><strong>价格每日更新</strong><p>当前价格、市值和财务 total1y 由每日任务刷新；超过新鲜度阈值时校验失败。</p></div>
           <div class="rule-card"><strong>聚合值明确标记</strong><p>所有非零数值显示为第三方估算；Holders Revenue 不冒充分红、回购或销毁明细。</p></div>
         </div>
@@ -112,7 +112,7 @@
       <article class="docs-content">
         <section class="doc-section" id="overview">
           <h2>1. 指标总览</h2>
-          <div class="callout"><strong>本轮会议版数据规则：</strong>以下公式使用 DefiLlama 单一来源。它是为了快速得到口径一致、每天可重复刷新的横向比较，不替代后续逐协议链上审计。</div>
+          <div class="callout"><strong>本轮会议版数据规则：</strong>基础公式使用 DefiLlama 数据；仅 CAKE 外部激励使用 PancakeSwap 官方报告。该规则用于快速得到口径一致、每天可重复刷新的横向比较，不替代后续逐协议链上审计。</div>
           <div class="doc-table-wrap">
             <table class="doc-table">
               <thead><tr><th>指标</th><th>定义</th><th>公式</th><th>页面用途</th></tr></thead>
@@ -120,7 +120,7 @@
                 <tr><td>Market Cap</td><td>DefiLlama 当前流通市值</td><td>DefiLlama protocol mcap；缺失时仅用 DefiLlama 价格 × DefiLlama 流通量快照</td><td>估值分子</td></tr>
                 <tr><td>Fees TTM</td><td>DefiLlama 统计的用户总费用</td><td>dailyFees total1y</td><td>业务规模</td></tr>
                 <tr><td>Revenue TTM</td><td>DefiLlama 统计的协议留存收入</td><td>dailyRevenue total1y</td><td>P/S 与利润代理</td></tr>
-                <tr><td>Protocol Earnings TTM</td><td>本轮简化的协议经济收益代理</td><td>DefiLlama Revenue total1y</td><td>Cash P/E 分母</td></tr>
+                <tr><td>Protocol Earnings TTM</td><td>本轮简化的协议经济收益代理</td><td>默认 = DefiLlama Revenue total1y；CAKE = Revenue − 外部激励年化代理</td><td>Cash P/E 分母</td></tr>
                 <tr><td>P/S</td><td>市值相对协议收入的倍数</td><td>Market Cap ÷ Revenue TTM</td><td>收入估值</td></tr>
                 <tr><td>Cash P/E</td><td>市值相对协议经济收益的倍数</td><td>Market Cap ÷ Protocol Earnings TTM</td><td>盈利估值</td></tr>
                 <tr><td>Holders Revenue TTM</td><td>DefiLlama 归类为持币者收入的聚合金额</td><td>dailyHoldersRevenue total1y</td><td>持币者价值捕获</td></tr>
@@ -140,9 +140,13 @@
 
           <h3>2.2 直接经济成本与项目方费用边界</h3>
           <p>长期严格口径会扣协议业务本身不可避免的直接经济成本与已实现损失。但 DefiLlama 不提供 26 个协议统一可复核的直接成本账本，因此本轮不猜测这些拆分，直接把 Revenue 作为 Protocol Earnings 代理。</p>
-          <div class="formula">本轮 Protocol Earnings proxy = DefiLlama Revenue total1y</div>
+          <div class="formula">默认 Protocol Earnings proxy = DefiLlama Revenue total1y</div>
           <div class="callout">团队工资、基金会管理、市场、法律、办公室、一般基础设施、DAO 资助和战略投资等项目方组织运营费用不纳入本指标。项目方可以使用或出售自身代币覆盖这些支出，而多数项目又没有完整、统一的公司费用账本，因此 Crypto3D 不把它们伪装成可比的协议成本。</div>
-          <p>项目原生代币发行、奖励、解锁、归属、空投和流动性挖矿也不扣减 Protocol Earnings。供应增长仍单独披露，用于反映稀释风险。</p>
+          <p>默认情况下，项目原生代币发行、奖励、解锁、归属、空投和流动性挖矿不扣减 Protocol Earnings。供应增长仍单独披露，用于反映稀释风险。</p>
+          <div class="callout warning"><strong>PancakeSwap / CAKE 协议级特例：</strong>CAKE 的手续费留存与外部激励安排会使未经调整的 Revenue 代理低估维持业务所需的经济成本。因此测试站仅对 CAKE 扣除官方披露、实际用于 Farms 与 Other Product Usage 的外部 CAKE 激励运行率；其余 25 个协议继续采用默认规则。</div>
+          <div class="formula">CAKE 外部激励年化代理 = (236,919 Farms CAKE + 119,961 Other Product Usage CAKE) × 12 × 当前 DefiLlama CAKE 价格</div>
+          <div class="formula">CAKE Protocol Earnings proxy = DefiLlama Revenue total1y − CAKE 外部激励年化代理</div>
+          <p>CAKE 激励数量来自 <a href="https://blog.pancakeswap.finance/articles/cake-burn-june-2026" target="_blank" rel="noopener">PancakeSwap 2026 年 6 月官方 CAKE Burn Report</a>。不扣 Ecosystem Growth 的 295,684 CAKE，因为它是否作为当期外部业务激励进入流通尚未闭合；也不重复计算技术性铸造或销毁。该成本是 2026 年 6 月单月运行率年化，不是逐日重建的 TTM。</p>
 
           <h3>2.3 不重复计算持币者收益</h3>
           <p>分红、回购和费用销毁是现金利润的分配方式，不是新增利润。协议赚取 1 亿美元并分配其中 5,000 万美元时，现金利润不会因此变成 1.5 亿美元。</p>
@@ -178,7 +182,7 @@
 
         <section class="doc-section" id="supply">
           <h2>5. 代币增发与供应增长</h2>
-          <p>原生代币增发、激励、归属和解锁不进入 Direct Economic Costs，也不扣减 Protocol Earnings、Cash P/E 或页面主显示的 Shareholder Yield。</p>
+          <p>默认情况下，原生代币增发、激励、归属和解锁不进入 Direct Economic Costs，也不扣减 Protocol Earnings、Cash P/E 或页面主显示的 Shareholder Yield。唯一例外是 CAKE 已确认的 Farms 与 Other Product Usage 外部激励运行率；该特例只调整 CAKE P/E，不扩展到其他协议。</p>
           <div class="formula">Supply Growth = (Ending Circulating Supply ÷ Beginning Circulating Supply) − 1</div>
           <p>供应变化只作为独立风险字段披露，用于解释新项目高通胀、团队与投资人解锁，以及验证者奖励对流通结构的影响。它不会把高增长项目机械计算成经营亏损。</p>
         </section>
@@ -191,6 +195,7 @@
               <thead><tr><th>项目类型</th><th>主要指标</th><th>P/E 处理</th></tr></thead>
               <tbody>
                 <tr><td>DeFi 协议 / DAO</td><td>Revenue、Protocol Earnings、P/S、Cash P/E、Shareholder Yield</td><td>协议经济收益为正且直接成本口径可用时计算</td></tr>
+                <tr><td>PancakeSwap / CAKE 特例</td><td>Revenue、外部 CAKE 激励运行率、激励调整 Protocol Earnings</td><td>仅 CAKE 使用激励调整 P/E；外部激励按官方 2026 年 6 月数据年化</td></tr>
                 <tr><td>公链 / L1 / L2</td><td>DefiLlama Revenue、费用留存、Holders Revenue、P/Network Revenue</td><td>P/E 显示 N/A</td></tr>
                 <tr><td>CEX 平台币</td><td>DefiLlama Revenue 与 Holders Revenue</td><td>DefiLlama 缺失时显示待核实，不使用旧值回填</td></tr>
                 <tr><td>纯治理代币</td><td>协议收入与价值捕获机制</td><td>没有利润归属时为 N/A</td></tr>
@@ -212,16 +217,17 @@
 
         <section class="doc-section" id="sources">
           <h2>8. 数据来源与更新规则</h2>
-          <div class="callout"><strong>本轮会议版数据规则：DefiLlama 单一来源。</strong> 市场价格、流通市值、Fees、Revenue 与 Holders Revenue 全部来自 DefiLlama；每日自动刷新，不使用旧数据或其他平台回填。</div>
+          <div class="callout"><strong>本轮会议版数据规则：DefiLlama 基础数据 + CAKE 官方激励特例。</strong> 市场价格、流通市值、Fees、Revenue 与 Holders Revenue 全部来自 DefiLlama；只有 CAKE 的外部激励数量来自 PancakeSwap 官方 2026 年 6 月报告。每日自动刷新，不使用旧数据回填。</div>
           <ol>
             <li><strong>价格：</strong>DefiLlama Coins API 的 current price，同时保存价格时间戳与 confidence。</li>
             <li><strong>流通市值：</strong>DefiLlama protocol API 的 mcap。BGB 因协议端点没有 mcap，使用 DefiLlama 当前价格 × DefiLlama token 页流通量快照，并明确标记为估算。</li>
             <li><strong>Fees：</strong>DefiLlama summary API 的 dailyFees total1y。</li>
             <li><strong>Revenue：</strong>DefiLlama summary API 的 dailyRevenue total1y。</li>
             <li><strong>Holders Revenue：</strong>DefiLlama summary API 的 dailyHoldersRevenue total1y。</li>
+            <li><strong>CAKE 外部激励：</strong>PancakeSwap 官方 June 2026 CAKE Burn Report 的 Farms 与 Other Product Usage，按 12 个月年化并使用当日 DefiLlama CAKE 价格计价。</li>
           </ol>
           <p>每日任务先生成一份带观察时间和来源链接的快照，再重建页面数据并运行公式、字段覆盖、价格新鲜度和来源泄漏校验。价格或市值不是 26/26 时任务直接失败；财务字段缺失则保留待核实。</p>
-          <p>DefiLlama 是第三方聚合平台，所以非零数值统一显示“~估算”。本轮单一来源规则只适用于会议版测试站；长期研究仍保留链上一手优先、官方披露次之、第三方兜底的更严格原则。</p>
+          <p>DefiLlama 是第三方聚合平台，CAKE 激励成本又使用单月运行率年化，所以相关非零数值统一显示“~估算”。本轮规则只适用于会议版测试站；长期研究仍保留链上一手优先、官方披露次之、第三方兜底的更严格原则。</p>
         </section>
 
         <section class="doc-section" id="states">
@@ -247,7 +253,7 @@
     </div>
   </main>
 
-  <footer><div class="container"><div class="footer-content"><div class="footer-text">Crypto3D Research · 口径版本 v1.2 · 2026-07-25</div><div class="footer-links"><a href="../">返回协议财务</a><a href="../../governance/">治理</a><a href="https://x.com/22333D" target="_blank">@22333D</a></div></div></div></footer>
+  <footer><div class="container"><div class="footer-content"><div class="footer-text">Crypto3D Research · 口径版本 v1.3 · 2026-07-25</div><div class="footer-links"><a href="../">返回协议财务</a><a href="../../governance/">治理</a><a href="https://x.com/22333D" target="_blank">@22333D</a></div></div></div></footer>
   <script src="../../js/theme.js"></script>
 </body>
 </html>

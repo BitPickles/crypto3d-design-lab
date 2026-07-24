@@ -28,15 +28,15 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
     "numeric_review_status": "defillama_round_candidate"
   },
   "source_policy": {
-    "mode": "DEFILLAMA_ONLY_ROUND",
-    "provider": "DefiLlama",
+    "mode": "DEFILLAMA_BASE_WITH_OFFICIAL_CAKE_EXCEPTION",
+    "provider": "DefiLlama + PancakeSwap official CAKE incentive report",
     "legacy_fallback_allowed": false,
-    "rule": "本轮所有市场与财务数据统一来自 DefiLlama；价格每日刷新；缺失值保持待核实，不使用旧快照或其他来源回填。",
-    "limitation": "DefiLlama 是第三方聚合平台，因此所有非零数值均显示为估算。该规则是会议版测试站的轮次口径，不改写长期链上优先研究原则。"
+    "rule": "本轮市场与基础财务数据来自 DefiLlama，价格每日刷新；仅 PancakeSwap 按用户确认的协议级例外，使用官方 2026 年 6 月 CAKE 激励报告调整 P/E；缺失值保持待核实，不使用旧快照回填。",
+    "limitation": "DefiLlama 是第三方聚合平台；CAKE 激励成本又采用单月运行率年化，因此相关数值均为估算。该规则是会议版测试站的轮次口径，不改写长期链上优先研究原则。"
   },
   "expense_policy": {
-    "included": "DefiLlama Revenue 已按平台口径从 Fees 中区分协议留存收入；本轮不额外反推或虚构未单列的直接支出。",
-    "excluded": "项目方、基金会和开发公司的组织运营费用，以及原生代币发行、激励、解锁和归属。"
+    "included": "DefiLlama Revenue 已按平台口径从 Fees 中区分协议留存收入；PancakeSwap 额外扣除官方披露的 Farms 与 Other Product Usage CAKE 外部激励运行率，其他协议不额外反推或虚构未单列的直接支出。",
+    "excluded": "项目方、基金会和开发公司的组织运营费用，以及除 PancakeSwap 已确认外部激励特例以外的原生代币发行、激励、解锁和归属。"
   },
   "null_policy": {
     "PENDING": "DefiLlama 未覆盖或不提供该拆分；不等于 0，也不使用旧数据回填。",
@@ -47,7 +47,7 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
   "formulas": {
     "gross_fees": "Fees TTM = DefiLlama dailyFees total1y",
     "protocol_revenue": "Protocol Revenue TTM = DefiLlama dailyRevenue total1y",
-    "protocol_earnings": "Protocol Earnings proxy = DefiLlama Revenue total1y；不扣项目方组织运营费和原生代币发行",
+    "protocol_earnings": "默认 Protocol Earnings proxy = DefiLlama Revenue total1y；PancakeSwap = Revenue total1y − (356,880 CAKE × 12 × 当前 DefiLlama CAKE 价格)",
     "price_to_sales": "P/S = DefiLlama Circulating Market Cap ÷ DefiLlama Revenue total1y",
     "price_to_earnings": "Cash P/E = DefiLlama Circulating Market Cap ÷ Protocol Earnings proxy",
     "holders_revenue": "Holders Revenue TTM = DefiLlama dailyHoldersRevenue total1y",
@@ -5936,20 +5936,20 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "diluted_shares_outstanding": null
       },
       "income_statement": {
-        "period": "DefiLlama total1y",
+        "period": "DefiLlama total1y less June 2026 CAKE incentive run-rate",
         "gross_fees_ttm_usd": 275081650,
         "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 92408684,
-        "direct_economic_costs_ttm_usd": null,
+        "direct_economic_costs_ttm_usd": 5951015.509221455,
         "realized_protocol_losses_ttm_usd": null,
-        "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": 92408684,
+        "cost_of_revenue_ttm_usd": 5951015.509221455,
+        "gross_profit_ttm_usd": 86457668.49077855,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": 92408684,
-        "net_income_ttm_usd": 92408684,
-        "coverage": "defillama_revenue_proxy",
+        "operating_income_ttm_usd": 86457668.49077855,
+        "net_income_ttm_usd": 86457668.49077855,
+        "coverage": "pancakeswap_incentive_adjusted_run_rate",
         "organization_opex_policy": "excluded",
-        "native_token_expense_policy": "excluded"
+        "native_token_expense_policy": "pancakeswap_external_incentives_included"
       },
       "cash_flow": {
         "period": "TTM",
@@ -5977,7 +5977,7 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "valuation": {
         "price_to_sales": 4.86,
-        "price_to_earnings": 4.86,
+        "price_to_earnings": 5.19,
         "free_cash_flow_yield_pct": null
       },
       "chain_diagnostics": null,
@@ -6038,15 +6038,15 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
           "display_note": "DefiLlama"
         },
         "direct_economic_costs": {
-          "state": "PENDING",
-          "window": "TTM",
-          "source": "DefiLlama",
-          "source_url": "https://api.llama.fi/summary/fees/pancakeswap?dataType=dailyRevenue",
-          "as_of": null,
+          "state": "ESTIMATED",
+          "window": "June 2026 run-rate annualized",
+          "source": "PancakeSwap June 2026 CAKE Burn Report + DefiLlama CAKE price",
+          "source_url": "https://blog.pancakeswap.finance/articles/cake-burn-june-2026",
+          "as_of": "2026-07-24T21:01:56.353Z",
           "confidence": "medium",
-          "source_tier": "THIRD_PARTY_FALLBACK",
-          "reason": "DefiLlama Revenue 已反映平台定义的协议留存收入，但不提供可跨协议统一复核的直接经济成本明细；本轮不额外猜测。",
-          "display_note": "DefiLlama 未覆盖"
+          "source_tier": "MIXED_OFFICIAL_AND_THIRD_PARTY",
+          "reason": "PancakeSwap 协议级例外：扣除 2026 年 6 月实际用于 Farms 的 236,919 CAKE 和 Other Product Usage 的 119,961 CAKE，合计 356,880 CAKE/月，按 12 个月年化并使用当前 DefiLlama CAKE 价格计价。不扣 Ecosystem Growth 的 295,684 CAKE，也不重复计算技术性铸造或销毁。该成本是单月运行率年化估算，不是逐日重建的 TTM。",
+          "display_note": "CAKE 激励年化"
         },
         "realized_protocol_losses": {
           "state": "PENDING",
@@ -6061,14 +6061,14 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         },
         "protocol_earnings": {
           "state": "ESTIMATED",
-          "window": "DefiLlama total1y",
-          "source": "DefiLlama Revenue proxy",
-          "source_url": "https://api.llama.fi/summary/fees/pancakeswap?dataType=dailyRevenue",
+          "window": "DefiLlama total1y less June 2026 CAKE incentive run-rate",
+          "source": "DefiLlama Revenue less official CAKE external incentives",
+          "source_url": "https://blog.pancakeswap.finance/articles/cake-burn-june-2026",
           "as_of": "2026-07-24T00:00:00.000Z",
           "confidence": "medium",
-          "source_tier": "THIRD_PARTY_FALLBACK",
-          "reason": "本轮 Protocol Earnings 代理值采用 DefiLlama Revenue；不再另扣项目方组织运营费和原生代币发行。DefiLlama 未单列的协议直接成本不作虚构扣除。",
-          "display_note": "Revenue 代理"
+          "source_tier": "MIXED_OFFICIAL_AND_THIRD_PARTY",
+          "reason": "PancakeSwap Protocol Earnings = DefiLlama Revenue total1y − CAKE 外部激励年化代理 5951015.509221455 美元。该代理只含 Farms 与 Other Product Usage，不含 Ecosystem Growth、技术性铸造或销毁。",
+          "display_note": "CAKE 激励调整"
         },
         "price_to_sales": {
           "state": "ESTIMATED",
@@ -6083,13 +6083,13 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         },
         "price_to_earnings": {
           "state": "ESTIMATED",
-          "window": "DefiLlama total1y",
-          "source": "DefiLlama Market Cap + DefiLlama Revenue proxy",
-          "source_url": "https://api.llama.fi/summary/fees/pancakeswap?dataType=dailyRevenue",
+          "window": "DefiLlama total1y less June 2026 CAKE incentive run-rate",
+          "source": "DefiLlama Market Cap + DefiLlama Revenue less official CAKE external incentives",
+          "source_url": "https://blog.pancakeswap.finance/articles/cake-burn-june-2026",
           "as_of": "2026-07-24T21:01:56.353Z",
           "confidence": "medium",
-          "source_tier": "THIRD_PARTY_FALLBACK",
-          "reason": "Cash P/E = DefiLlama 流通市值 ÷ DefiLlama Revenue proxy。",
+          "source_tier": "MIXED_OFFICIAL_AND_THIRD_PARTY",
+          "reason": "Cash P/E = DefiLlama 流通市值 ÷ DefiLlama Revenue less official CAKE external incentives。",
           "display_note": "DefiLlama"
         },
         "holders_revenue": {
@@ -6188,16 +6188,17 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
           "https://api.llama.fi/protocol/pancakeswap",
           "https://api.llama.fi/summary/fees/pancakeswap?dataType=dailyFees",
           "https://api.llama.fi/summary/fees/pancakeswap?dataType=dailyRevenue",
-          "https://api.llama.fi/summary/fees/pancakeswap?dataType=dailyHoldersRevenue"
+          "https://api.llama.fi/summary/fees/pancakeswap?dataType=dailyHoldersRevenue",
+          "https://blog.pancakeswap.finance/articles/cake-burn-june-2026"
         ],
         "evidence_boundary": "本轮按用户决策统一使用 DefiLlama。所有数值标记为第三方聚合估算；不以旧数据、链上重建或其他平台补缺。Holders Revenue 只作为聚合持币者收入，不冒充分红或回购明细。"
       },
       "null_reasons": {
-        "income_statement": "本轮 Protocol Earnings 代理值采用 DefiLlama Revenue；不再另扣项目方组织运营费和原生代币发行。DefiLlama 未单列的协议直接成本不作虚构扣除。",
+        "income_statement": "PancakeSwap Protocol Earnings = DefiLlama Revenue total1y − CAKE 外部激励年化代理 5951015.509221455 美元。该代理只含 Farms 与 Other Product Usage，不含 Ecosystem Growth、技术性铸造或销毁。",
         "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮 DefiLlama 单一来源快照的覆盖范围。",
         "balance_sheet": "资产负债表不属于本轮 DefiLlama 单一来源快照的覆盖范围。",
         "capital_returns": "Holders Revenue 直接采用 DefiLlama summary API 的 total1y 字段；属于第三方聚合口径。",
-        "price_to_earnings": "Cash P/E = DefiLlama 流通市值 ÷ DefiLlama Revenue proxy。"
+        "price_to_earnings": "Cash P/E = DefiLlama 流通市值 ÷ DefiLlama Revenue less official CAKE external incentives。"
       }
     },
     {

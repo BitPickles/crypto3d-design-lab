@@ -12,6 +12,16 @@ const OUTPUT_JSON = path.join(ROOT, 'data', 'protocol-financials-us-equity.json'
 const OUTPUT_JS = path.join(ROOT, 'data', 'protocol-financials-us-equity.js');
 const SOURCE_TIER = 'THIRD_PARTY_FALLBACK';
 const PROTOCOL_EARNINGS_NA_IDS = new Set(['bnb', 'mnt']);
+const PANCAKESWAP_INCENTIVE_ADJUSTMENT = Object.freeze({
+  protocol_id: 'pancakeswap',
+  measurement_month: '2026-06',
+  farms_cake: 236_919,
+  other_product_usage_cake: 119_961,
+  excluded_ecosystem_growth_cake: 295_684,
+  annualization_months: 12,
+  source_label: 'PancakeSwap June 2026 CAKE Burn Report',
+  source_url: 'https://blog.pancakeswap.finance/articles/cake-burn-june-2026',
+});
 
 const NULL_REASONS = {
   cash_flow: '经营现金流、资本开支与自由现金流不属于本轮 DefiLlama 单一来源快照的覆盖范围。',
@@ -39,6 +49,7 @@ function meta({
   sourceUrl = null,
   asOf = null,
   confidence = 'medium',
+  sourceTier = SOURCE_TIER,
   reason,
   displayNote,
 }) {
@@ -49,7 +60,7 @@ function meta({
     source_url: sourceUrl,
     as_of: asOf,
     confidence,
-    source_tier: SOURCE_TIER,
+    source_tier: sourceTier,
     reason,
     display_note:
       displayNote
@@ -125,6 +136,7 @@ function derivedMultiple(marketCap, denominator, label, asOf) {
         source: denominator.meta.source,
         sourceUrl: denominator.meta.source_url,
         asOf,
+        sourceTier: denominator.meta.source_tier,
         reason: denominator.meta.reason,
         displayNote: 'N/A',
       }),
@@ -139,6 +151,7 @@ function derivedMultiple(marketCap, denominator, label, asOf) {
         source: denominator.meta.source,
         sourceUrl: denominator.meta.source_url,
         asOf,
+        sourceTier: denominator.meta.source_tier,
         reason: `${label} 的分母没有可用的 DefiLlama total1y 数值。`,
       }),
     };
@@ -152,6 +165,7 @@ function derivedMultiple(marketCap, denominator, label, asOf) {
         source: denominator.meta.source,
         sourceUrl: denominator.meta.source_url,
         asOf,
+        sourceTier: denominator.meta.source_tier,
         reason: `${label} 的分母小于或等于 0，倍数没有经济意义。`,
       }),
     };
@@ -164,6 +178,7 @@ function derivedMultiple(marketCap, denominator, label, asOf) {
       source: `DefiLlama Market Cap + ${denominator.meta.source}`,
       sourceUrl: denominator.meta.source_url,
       asOf,
+      sourceTier: denominator.meta.source_tier,
       reason: `${label} = DefiLlama 流通市值 ÷ DefiLlama ${denominator.meta.source.replace('DefiLlama ', '')}。`,
     }),
   };
@@ -210,6 +225,36 @@ function unavailableBreakdown(label, asOf) {
   };
 }
 
+function protocolIncentiveAdjustment(protocolId, price, asOf) {
+  if (protocolId !== PANCAKESWAP_INCENTIVE_ADJUSTMENT.protocol_id) return null;
+
+  const monthlyCake =
+    PANCAKESWAP_INCENTIVE_ADJUSTMENT.farms_cake
+    + PANCAKESWAP_INCENTIVE_ADJUSTMENT.other_product_usage_cake;
+  const annualizedCake =
+    monthlyCake * PANCAKESWAP_INCENTIVE_ADJUSTMENT.annualization_months;
+  const value = annualizedCake * price;
+
+  return {
+    value,
+    monthly_token_amount: monthlyCake,
+    annualized_token_amount: annualizedCake,
+    token: 'CAKE',
+    meta: meta({
+      state: 'ESTIMATED',
+      window: 'June 2026 run-rate annualized',
+      source: `${PANCAKESWAP_INCENTIVE_ADJUSTMENT.source_label} + DefiLlama CAKE price`,
+      sourceUrl: PANCAKESWAP_INCENTIVE_ADJUSTMENT.source_url,
+      asOf,
+      confidence: 'medium',
+      sourceTier: 'MIXED_OFFICIAL_AND_THIRD_PARTY',
+      reason:
+        'PancakeSwap 协议级例外：扣除 2026 年 6 月实际用于 Farms 的 236,919 CAKE 和 Other Product Usage 的 119,961 CAKE，合计 356,880 CAKE/月，按 12 个月年化并使用当前 DefiLlama CAKE 价格计价。不扣 Ecosystem Growth 的 295,684 CAKE，也不重复计算技术性铸造或销毁。该成本是单月运行率年化估算，不是逐日重建的 TTM。',
+      displayNote: 'CAKE 激励年化',
+    }),
+  };
+}
+
 function buildProtocol(identity, llama, generatedAt) {
   if (!llama) throw new Error(`${identity.id}: missing DefiLlama snapshot row`);
 
@@ -220,9 +265,9 @@ function buildProtocol(identity, llama, generatedAt) {
   const grossFees = defillamaAmount(llama.financials.fees, 'Fees', generatedAt);
   const revenue = defillamaAmount(llama.financials.revenue, 'Revenue', generatedAt);
   const holdersRevenue = defillamaAmount(llama.financials.holders_revenue, 'Holders Revenue', generatedAt);
+  const incentiveAdjustment = protocolIncentiveAdjustment(identity.id, price, generatedAt);
 
-  // 用户确认的本轮简化口径：不扣项目方组织费用和原生代币发行。
-  // DefiLlama Revenue 已是协议留存口径，因此作为 Protocol Earnings 代理。
+  // 默认口径不扣项目方组织费用和原生代币发行；PancakeSwap 是用户确认的协议级例外。
   const protocolEarnings = PROTOCOL_EARNINGS_NA_IDS.has(identity.id)
     ? notApplicableMetric(
         '该项目属于公链或网络型资产，DefiLlama Revenue 是网络收入，不代表代币持有者可索取的公司式净利润，因此不计算 P/E。',
@@ -230,15 +275,27 @@ function buildProtocol(identity, llama, generatedAt) {
       )
     : Number.isFinite(revenue.value)
     ? {
-        value: revenue.value,
+        value: revenue.value - (incentiveAdjustment?.value || 0),
         meta: meta({
-          state: stateFor(revenue.value),
-          window: revenue.meta.window,
-          source: 'DefiLlama Revenue proxy',
-          sourceUrl: revenue.meta.source_url,
+          state: stateFor(revenue.value - (incentiveAdjustment?.value || 0)),
+          window: incentiveAdjustment
+            ? 'DefiLlama total1y less June 2026 CAKE incentive run-rate'
+            : revenue.meta.window,
+          source: incentiveAdjustment
+            ? 'DefiLlama Revenue less official CAKE external incentives'
+            : 'DefiLlama Revenue proxy',
+          sourceUrl: incentiveAdjustment?.meta.source_url || revenue.meta.source_url,
           asOf: revenue.meta.as_of,
-          reason: '本轮 Protocol Earnings 代理值采用 DefiLlama Revenue；不再另扣项目方组织运营费和原生代币发行。DefiLlama 未单列的协议直接成本不作虚构扣除。',
-          displayNote: revenue.value === 0 ? 'DefiLlama 为 0' : 'Revenue 代理',
+          confidence: incentiveAdjustment ? 'medium' : revenue.meta.confidence,
+          sourceTier: incentiveAdjustment ? 'MIXED_OFFICIAL_AND_THIRD_PARTY' : SOURCE_TIER,
+          reason: incentiveAdjustment
+            ? `PancakeSwap Protocol Earnings = DefiLlama Revenue total1y − CAKE 外部激励年化代理 ${incentiveAdjustment.value} 美元。该代理只含 Farms 与 Other Product Usage，不含 Ecosystem Growth、技术性铸造或销毁。`
+            : '本轮 Protocol Earnings 代理值采用 DefiLlama Revenue；不再另扣项目方组织运营费和原生代币发行。DefiLlama 未单列的协议直接成本不作虚构扣除。',
+          displayNote: incentiveAdjustment
+            ? 'CAKE 激励调整'
+            : revenue.value === 0
+              ? 'DefiLlama 为 0'
+              : 'Revenue 代理',
         }),
       }
     : pendingMetric(
@@ -252,7 +309,7 @@ function buildProtocol(identity, llama, generatedAt) {
   const dividends = unavailableBreakdown('分红', generatedAt);
   const repurchases = unavailableBreakdown('回购', generatedAt);
   const feeBurns = unavailableBreakdown('费用销毁', generatedAt);
-  const directCosts = pendingMetric(
+  const directCosts = incentiveAdjustment || pendingMetric(
     'DefiLlama Revenue 已反映平台定义的协议留存收入，但不提供可跨协议统一复核的直接经济成本明细；本轮不额外猜测。',
     revenue.meta.source_url,
   );
@@ -294,6 +351,7 @@ function buildProtocol(identity, llama, generatedAt) {
     grossFees.meta.source_url,
     revenue.meta.source_url,
     holdersRevenue.meta.source_url,
+    incentiveAdjustment?.meta.source_url,
   ].filter(Boolean);
 
   return {
@@ -311,7 +369,9 @@ function buildProtocol(identity, llama, generatedAt) {
       diluted_shares_outstanding: null,
     },
     income_statement: {
-      period: 'DefiLlama total1y',
+      period: incentiveAdjustment
+        ? protocolEarnings.meta.window
+        : 'DefiLlama total1y',
       gross_fees_ttm_usd: grossFees.value,
       supply_side_payouts_ttm_usd: supplySidePayouts.value,
       revenue_ttm_usd: revenue.value,
@@ -322,9 +382,15 @@ function buildProtocol(identity, llama, generatedAt) {
       operating_expenses_ttm_usd: null,
       operating_income_ttm_usd: protocolEarnings.value,
       net_income_ttm_usd: protocolEarnings.value,
-      coverage: Number.isFinite(protocolEarnings.value) ? 'defillama_revenue_proxy' : 'pending',
+      coverage: Number.isFinite(protocolEarnings.value)
+        ? incentiveAdjustment
+          ? 'pancakeswap_incentive_adjusted_run_rate'
+          : 'defillama_revenue_proxy'
+        : 'pending',
       organization_opex_policy: 'excluded',
-      native_token_expense_policy: 'excluded',
+      native_token_expense_policy: incentiveAdjustment
+        ? 'pancakeswap_external_incentives_included'
+        : 'excluded',
     },
     cash_flow: {
       period: 'TTM',
@@ -442,17 +508,17 @@ function main() {
       numeric_review_status: 'defillama_round_candidate',
     },
     source_policy: {
-      mode: 'DEFILLAMA_ONLY_ROUND',
-      provider: 'DefiLlama',
+      mode: 'DEFILLAMA_BASE_WITH_OFFICIAL_CAKE_EXCEPTION',
+      provider: 'DefiLlama + PancakeSwap official CAKE incentive report',
       legacy_fallback_allowed: false,
-      rule: '本轮所有市场与财务数据统一来自 DefiLlama；价格每日刷新；缺失值保持待核实，不使用旧快照或其他来源回填。',
-      limitation: 'DefiLlama 是第三方聚合平台，因此所有非零数值均显示为估算。该规则是会议版测试站的轮次口径，不改写长期链上优先研究原则。',
+      rule: '本轮市场与基础财务数据来自 DefiLlama，价格每日刷新；仅 PancakeSwap 按用户确认的协议级例外，使用官方 2026 年 6 月 CAKE 激励报告调整 P/E；缺失值保持待核实，不使用旧快照回填。',
+      limitation: 'DefiLlama 是第三方聚合平台；CAKE 激励成本又采用单月运行率年化，因此相关数值均为估算。该规则是会议版测试站的轮次口径，不改写长期链上优先研究原则。',
     },
     expense_policy: {
       included:
-        'DefiLlama Revenue 已按平台口径从 Fees 中区分协议留存收入；本轮不额外反推或虚构未单列的直接支出。',
+        'DefiLlama Revenue 已按平台口径从 Fees 中区分协议留存收入；PancakeSwap 额外扣除官方披露的 Farms 与 Other Product Usage CAKE 外部激励运行率，其他协议不额外反推或虚构未单列的直接支出。',
       excluded:
-        '项目方、基金会和开发公司的组织运营费用，以及原生代币发行、激励、解锁和归属。',
+        '项目方、基金会和开发公司的组织运营费用，以及除 PancakeSwap 已确认外部激励特例以外的原生代币发行、激励、解锁和归属。',
     },
     null_policy: {
       PENDING: 'DefiLlama 未覆盖或不提供该拆分；不等于 0，也不使用旧数据回填。',
@@ -464,7 +530,7 @@ function main() {
       gross_fees: 'Fees TTM = DefiLlama dailyFees total1y',
       protocol_revenue: 'Protocol Revenue TTM = DefiLlama dailyRevenue total1y',
       protocol_earnings:
-        'Protocol Earnings proxy = DefiLlama Revenue total1y；不扣项目方组织运营费和原生代币发行',
+        '默认 Protocol Earnings proxy = DefiLlama Revenue total1y；PancakeSwap = Revenue total1y − (356,880 CAKE × 12 × 当前 DefiLlama CAKE 价格)',
       price_to_sales: 'P/S = DefiLlama Circulating Market Cap ÷ DefiLlama Revenue total1y',
       price_to_earnings: 'Cash P/E = DefiLlama Circulating Market Cap ÷ Protocol Earnings proxy',
       holders_revenue: 'Holders Revenue TTM = DefiLlama dailyHoldersRevenue total1y',

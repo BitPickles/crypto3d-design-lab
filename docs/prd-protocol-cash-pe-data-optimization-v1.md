@@ -45,7 +45,7 @@ Crypto3D 已经完成 26 个协议的首轮研究、协议级计算框架和部�
 - 不编制项目公司、基金会或开发公司的 GAAP/IFRS 财务报表。
 - 不统计团队工资、办公室、市场、法律、一般服务器、基金会管理和其他组织运营费用。
 - 不把项目方出售原生代币取得的资金或原生代币支付视为协议现金支出。
-- 不把原生代币激励、解锁、归属、空投或流动性挖矿计入 Cash P/E 分母。
+- 默认不把原生代币激励、解锁、归属、空投或流动性挖矿计入 Cash P/E 分母；PancakeSwap 按用户确认的协议级特例处理。
 - 不把回购、分红和费用销毁重复计入协议收益。
 - 不为缺少公司财务或经济主体边界的 CEX 平台币、公链和 L2 强行计算传统 P/E。
 - 不改变原页面 UI 结构、视觉风格、栏目顺序或交互模式。
@@ -119,6 +119,23 @@ Protocol Revenue 是协议留存收入，不包含内部国库转账、借款本
 3. 本指标衡量协议经济体的留存能力，不声称等同于公司会计净利润。
 
 原生代币供应增长仍作为独立风险指标披露，不进入 Cash P/E。
+
+#### PancakeSwap / CAKE 协议级例外
+
+仅 PancakeSwap 将官方披露、实际用于 Farms 与 Other Product Usage 的外部 CAKE 激励作为 Direct Economic Costs 代理：
+
+```text
+CAKE External Incentive Cost proxy
+= (236,919 Farms CAKE + 119,961 Other Product Usage CAKE)
+× 12
+× current DefiLlama CAKE price
+
+CAKE Protocol Earnings proxy
+= DefiLlama Revenue total1y
+− CAKE External Incentive Cost proxy
+```
+
+激励数量采用 PancakeSwap 官方 2026 年 6 月 CAKE Burn Report，因此属于单月运行率年化，不得标记为严格 TTM。不扣 Ecosystem Growth 的 295,684 CAKE，因为它是否作为当期外部业务激励进入流通尚未闭合；也不得重复计算技术性铸造或销毁。该例外不自动扩展到其余 25 个协议。
 
 ### 4.6 Protocol Earnings TTM
 
@@ -267,7 +284,7 @@ Shareholder Yield
 旧数据只作为候选输入，必须按照新框架重新分类：
 
 1. 将 Gross Fees、Protocol Revenue、Holders Revenue、回购、分红、销毁和原生代币激励拆开。
-2. 删除原生代币质押发行收益、普通通胀奖励和供应释放对 Cash P/E 的影响。
+2. 删除原生代币质押发行收益、普通通胀奖励和供应释放对 Cash P/E 的影响；保留 CAKE 已确认的外部激励协议级例外。
 3. 将供应方收益移至 Supply-side Payouts，不作为持币者分红。
 4. 回购只使用已执行金额；固定预算和治理比例不能代替执行值。
 5. 回购后进入国库仍计入 Repurchases，但必须与 burn 和 holder distribution 分开。
@@ -348,7 +365,7 @@ Shareholder Yield
 ### 阶段 C：Protocol Earnings 与 Cash P/E
 
 - 逐协议确认供应方分成和直接经济成本。
-- 排除项目方组织运营费用与原生代币支出。
+- 排除项目方组织运营费用与默认原生代币支出；CAKE 单独扣除已确认的 Farms 与 Other Product Usage 外部激励运行率。
 - 计算 Protocol Earnings。
 - 对正收益协议计算 Cash P/E；其他协议使用 N/A、N/M 或待核实。
 
@@ -384,7 +401,8 @@ Shareholder Yield
 
 - [ ] 供应方收益、返佣和必要结算成本已扣除。
 - [ ] 项目方组织运营费用没有进入 Protocol Earnings。
-- [ ] 原生代币发行、激励、解锁和归属没有进入 Cash P/E。
+- [ ] 除 CAKE 已确认外部激励特例外，原生代币发行、激励、解锁和归属没有进入 Cash P/E。
+- [ ] CAKE 激励调整只含 Farms 与 Other Product Usage，不含 Ecosystem Growth、技术性铸造或销毁，并明确标记为 2026 年 6 月运行率年化。
 - [ ] 回购、分红和费用销毁没有重复计入 Protocol Earnings。
 - [ ] 回购预算没有当作已执行金额。
 - [ ] 库存销毁没有自动当作费用支持销毁。

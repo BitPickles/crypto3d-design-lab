@@ -43,6 +43,9 @@ const REQUIRED_META = [
   'shareholder_yield',
 ];
 const PROTOCOL_EARNINGS_NA_IDS = new Set(['bnb', 'mnt']);
+const PANCAKESWAP_EXTERNAL_INCENTIVES_MONTHLY_CAKE = 236_919 + 119_961;
+const PANCAKESWAP_INCENTIVE_SOURCE =
+  'https://blog.pancakeswap.finance/articles/cake-burn-june-2026';
 
 function runBuild() {
   execFileSync(process.execPath, [path.join(__dirname, 'build-us-equity-financials.js')], {
@@ -71,11 +74,12 @@ const snapshotById = new Map(snapshot.protocols.map((protocol) => [protocol.id, 
 
 assert.strictEqual(data.schema_version, '5.0.0-defillama-daily');
 assert.strictEqual(data.terminology, 'public-equity-protocol-economics');
-assert.strictEqual(data.source_policy.mode, 'DEFILLAMA_ONLY_ROUND');
-assert.strictEqual(data.source_policy.provider, 'DefiLlama');
+assert.strictEqual(data.source_policy.mode, 'DEFILLAMA_BASE_WITH_OFFICIAL_CAKE_EXCEPTION');
+assert(data.source_policy.provider.includes('PancakeSwap'), 'CAKE official source exception is missing');
 assert.strictEqual(data.source_policy.legacy_fallback_allowed, false);
 assert(data.source_policy.rule.includes('每日刷新'), 'Daily price refresh rule is missing');
 assert(data.source_policy.rule.includes('不使用旧快照'), 'Legacy fallback prohibition is missing');
+assert(data.source_policy.rule.includes('PancakeSwap'), 'CAKE exception must be disclosed');
 assert.strictEqual(data.protocols.length, 26);
 assert.strictEqual(new Set(data.protocols.map((protocol) => protocol.id)).size, 26);
 assert.strictEqual(data.coverage.protocol_count, 26);
@@ -112,7 +116,11 @@ for (const protocol of data.protocols) {
   assert.strictEqual(marketCap, raw.market.market_cap_usd, `${protocol.id}: market cap did not come from DefiLlama snapshot`);
   assert.strictEqual(protocol.as_of, snapshot.generated_at, `${protocol.id}: stale as_of`);
   assert.strictEqual(income.organization_opex_policy, 'excluded', `${protocol.id}: organization opex policy`);
-  assert.strictEqual(income.native_token_expense_policy, 'excluded', `${protocol.id}: native token expense policy`);
+  assert.strictEqual(
+    income.native_token_expense_policy,
+    protocol.id === 'pancakeswap' ? 'pancakeswap_external_incentives_included' : 'excluded',
+    `${protocol.id}: native token expense policy`,
+  );
 
   const priceAgeHours = (Date.parse(snapshot.generated_at) - Date.parse(raw.market.price_timestamp)) / 3_600_000;
   assert(priceAgeHours >= -1 && priceAgeHours <= 24, `${protocol.id}: DefiLlama price timestamp is stale`);
@@ -121,22 +129,36 @@ for (const protocol of data.protocols) {
     assert(protocol.metric_meta[key], `${protocol.id}: missing metric_meta.${key}`);
     assert(VALID_STATES.has(protocol.metric_meta[key].state), `${protocol.id}: invalid state for ${key}`);
     assert(protocol.metric_meta[key].reason, `${protocol.id}: missing reason for ${key}`);
+    const mixedCakeMetric =
+      protocol.id === 'pancakeswap'
+      && ['direct_economic_costs', 'protocol_earnings', 'price_to_earnings'].includes(key);
     assert.strictEqual(
       protocol.metric_meta[key].source_tier,
-      'THIRD_PARTY_FALLBACK',
-      `${protocol.id}: ${key} must be identified as third-party`,
+      mixedCakeMetric ? 'MIXED_OFFICIAL_AND_THIRD_PARTY' : 'THIRD_PARTY_FALLBACK',
+      `${protocol.id}: ${key} source tier mismatch`,
     );
   }
 
   const rawFees = raw.financials.fees.total_1y_usd;
   const rawRevenue = raw.financials.revenue.total_1y_usd;
   const rawHolders = raw.financials.holders_revenue.total_1y_usd;
+  const expectedIncentiveCost =
+    protocol.id === 'pancakeswap'
+      ? PANCAKESWAP_EXTERNAL_INCENTIVES_MONTHLY_CAKE * 12 * price
+      : null;
+  const expectedEarnings =
+    PROTOCOL_EARNINGS_NA_IDS.has(protocol.id)
+      ? null
+      : Number.isFinite(rawRevenue)
+        ? rawRevenue - (expectedIncentiveCost || 0)
+        : null;
   assert.strictEqual(income.gross_fees_ttm_usd, Number.isFinite(rawFees) ? rawFees : null, `${protocol.id}: Fees mismatch`);
   assert.strictEqual(income.revenue_ttm_usd, Number.isFinite(rawRevenue) ? rawRevenue : null, `${protocol.id}: Revenue mismatch`);
+  assert.strictEqual(income.net_income_ttm_usd, expectedEarnings, `${protocol.id}: earnings proxy mismatch`);
   assert.strictEqual(
-    income.net_income_ttm_usd,
-    PROTOCOL_EARNINGS_NA_IDS.has(protocol.id) ? null : Number.isFinite(rawRevenue) ? rawRevenue : null,
-    `${protocol.id}: earnings proxy mismatch`,
+    income.direct_economic_costs_ttm_usd,
+    expectedIncentiveCost,
+    `${protocol.id}: direct economic costs mismatch`,
   );
   assert.strictEqual(
     returns.holders_revenue_ttm_usd,
@@ -151,7 +173,7 @@ for (const protocol of data.protocols) {
     assert.strictEqual(protocol.metric_meta.price_to_earnings.state, 'N/A', `${protocol.id}: P/E must be N/A`);
   } else if (Number.isFinite(rawRevenue) && rawRevenue > 0) {
     assert.strictEqual(valuation.price_to_sales, round(marketCap / rawRevenue), `${protocol.id}: P/S mismatch`);
-    assert.strictEqual(valuation.price_to_earnings, round(marketCap / rawRevenue), `${protocol.id}: Cash P/E mismatch`);
+    assert.strictEqual(valuation.price_to_earnings, round(marketCap / expectedEarnings), `${protocol.id}: Cash P/E mismatch`);
   } else {
     assert.strictEqual(valuation.price_to_sales, null, `${protocol.id}: P/S must be null`);
     assert.strictEqual(valuation.price_to_earnings, null, `${protocol.id}: Cash P/E must be null`);
@@ -204,6 +226,38 @@ assert.strictEqual(
 );
 assert.strictEqual(hype.chain_diagnostics, null, 'hype: chain diagnostics must not be a numeric source this round');
 
+const cake = data.protocols.find((protocol) => protocol.id === 'pancakeswap');
+assert(cake, 'pancakeswap: missing protocol');
+const cakeRaw = snapshotById.get('pancakeswap');
+const cakeIncentiveCost =
+  PANCAKESWAP_EXTERNAL_INCENTIVES_MONTHLY_CAKE * 12 * cake.market_data.price_usd;
+assert.strictEqual(
+  cake.income_statement.direct_economic_costs_ttm_usd,
+  cakeIncentiveCost,
+  'pancakeswap: external incentive annualization mismatch',
+);
+assert.strictEqual(
+  cake.income_statement.net_income_ttm_usd,
+  cakeRaw.financials.revenue.total_1y_usd - cakeIncentiveCost,
+  'pancakeswap: incentive-adjusted earnings mismatch',
+);
+assert.strictEqual(
+  cake.valuation.price_to_earnings,
+  round(cake.market_data.market_cap_usd / cake.income_statement.net_income_ttm_usd),
+  'pancakeswap: incentive-adjusted P/E mismatch',
+);
+assert(
+  cake.valuation.price_to_earnings > cake.valuation.price_to_sales,
+  'pancakeswap: adjusted P/E must be above unadjusted P/S',
+);
+assert.strictEqual(
+  cake.metric_meta.direct_economic_costs.source_url,
+  PANCAKESWAP_INCENTIVE_SOURCE,
+  'pancakeswap: official incentive source missing',
+);
+assert(cake.metric_meta.direct_economic_costs.reason.includes('356,880 CAKE/月'));
+assert(cake.metric_meta.direct_economic_costs.reason.includes('不扣 Ecosystem Growth'));
+
 const bgb = data.protocols.find((protocol) => protocol.id === 'bgb');
 const bgbRaw = snapshotById.get('bgb');
 assert.strictEqual(bgb.market_data.market_cap_method, 'DEFILLAMA_PRICE_X_DEFILLAMA_SUPPLY_SNAPSHOT');
@@ -230,9 +284,10 @@ for (const file of PUBLIC_FILES) {
 
 const publicDocs = fs.readFileSync(path.join(ROOT, 'tev', 'docs', 'index.html'), 'utf8');
 assert(publicDocs.includes('本轮会议版数据规则'), 'Public docs must identify the round-specific rule');
-assert(publicDocs.includes('DefiLlama 单一来源'), 'Public docs must state DefiLlama-only policy');
+assert(publicDocs.includes('DefiLlama 基础数据 + CAKE 官方激励特例'), 'Public docs must state the CAKE source exception');
+assert(publicDocs.includes(PANCAKESWAP_INCENTIVE_SOURCE), 'Public docs must link the official CAKE incentive source');
 assert(publicDocs.includes('每日自动刷新'), 'Public docs must state daily refresh');
-assert(publicDocs.includes('不使用旧数据或其他平台回填'), 'Public docs must state no fallback');
+assert(publicDocs.includes('不使用旧数据回填'), 'Public docs must state no legacy fallback');
 
 console.log(
   `PASS: DefiLlama daily snapshot; 26 prices/market caps, Revenue ${data.coverage.revenue_count}, `

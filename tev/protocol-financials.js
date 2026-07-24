@@ -103,6 +103,7 @@
     const returns = protocol.capital_returns;
     const valuation = protocol.valuation;
     const passed = protocol.review.status === 'independent_pass';
+    const isPancakeSwap = protocol.id === 'pancakeswap';
     const hasCashPE = Number.isFinite(valuation.price_to_earnings);
     const hasPS = Number.isFinite(valuation.price_to_sales);
     const primary = hasCashPE
@@ -111,11 +112,29 @@
         ? multiple(valuation.price_to_sales, 'price_to_sales')
         : '待核实';
     const primaryLabel = hasCashPE
-      ? 'Cash P/E · Market Cap ÷ Protocol Earnings TTM'
+      ? isPancakeSwap
+        ? '激励调整 P/E · Market Cap ÷ (Revenue − CAKE 外部激励年化代理)'
+        : 'Cash P/E · Market Cap ÷ Protocol Earnings TTM'
       : hasPS
         ? 'Price / Sales · Market Cap ÷ Protocol Revenue TTM'
         : 'VALUATION · DefiLlama Revenue 暂无可用值';
     const chain = protocol.chain_diagnostics;
+    const sourceLabel = isPancakeSwap ? 'DefiLlama + PancakeSwap 官方报告' : 'DefiLlama';
+    const directCostDetail = isPancakeSwap
+      ? '2026 年 6 月 Farms + Other Product Usage CAKE 激励，按 12 个月年化'
+      : '必要网络、结算及收入直接成本';
+    const earningsDetail = isPancakeSwap
+      ? 'DefiLlama Revenue total1y − CAKE 外部激励年化代理'
+      : '本轮代理值 = DefiLlama Revenue total1y';
+    const earningsNote = isPancakeSwap
+      ? 'CAKE 为协议级特例：扣除官方披露的 Farms 与 Other Product Usage 外部 CAKE 激励运行率；不扣 Ecosystem Growth，也不重复计算技术性铸造或销毁。该成本是 2026 年 6 月单月运行率年化，不是逐日重建的 TTM。'
+      : '本轮不虚构 DefiLlama 没有提供的直接成本明细；Protocol Earnings 以 Revenue 为代理。不统计项目方、基金会或开发公司的组织运营费用，原生代币激励、解锁和归属不进入 Cash P/E。';
+    const dataSourceLabel = isPancakeSwap
+      ? 'DefiLlama + PancakeSwap 官方激励报告'
+      : 'DefiLlama 单一来源';
+    const evidenceBoundary = isPancakeSwap
+      ? '市场、Revenue 与 Holders Revenue 使用 DefiLlama；CAKE 外部激励数量使用 PancakeSwap 官方 2026 年 6 月报告并按当前 CAKE 价格年化。其他缺失字段不以旧数据回填。'
+      : protocol.provenance.evidence_boundary;
 
     root.innerHTML = `
       <div class="breadcrumb"><a href="./">协议财务</a> / <span>${protocol.name}</span></div>
@@ -125,7 +144,7 @@
           <div class="protocol-info">
             <h1>${protocol.name}<span class="metric-status ${passed ? 'pass' : 'pending'}">${passed ? '框架已复核' : '候选待复核'}</span></h1>
             <div class="protocol-subtitle">${protocol.ticker}</div>
-            <div class="protocol-meta"><span>数据截至 ${date(protocol.as_of)}</span><span>来源：DefiLlama</span><span>数值状态：第三方聚合估算</span></div>
+            <div class="protocol-meta"><span>数据截至 ${date(protocol.as_of)}</span><span>来源：${sourceLabel}</span><span>数值状态：估算</span></div>
           </div>
         </div>
         <div class="tev-highlight">
@@ -142,7 +161,7 @@
           ${summaryItem('Revenue TTM', '协议留存收入', money(income.revenue_ttm_usd, 'revenue'))}
           ${summaryItem('Protocol Earnings TTM', '协议经济收益', money(income.net_income_ttm_usd, 'protocol_earnings'))}
           ${summaryItem('P/S', '市销率', multiple(valuation.price_to_sales, 'price_to_sales'))}
-          ${summaryItem('Cash P/E', '协议口径市盈率', multiple(valuation.price_to_earnings, 'price_to_earnings'))}
+          ${summaryItem(isPancakeSwap ? 'Incentive-adjusted P/E' : 'Cash P/E', isPancakeSwap ? '激励调整市盈率' : '协议口径市盈率', multiple(valuation.price_to_earnings, 'price_to_earnings'))}
           ${summaryItem('Fees TTM', '用户总费用', money(income.gross_fees_ttm_usd, 'gross_fees'))}
           ${summaryItem('Holders Revenue TTM', '持币者收入', money(returns.holders_revenue_ttm_usd, 'holders_revenue'))}
           ${summaryItem('Shareholder Yield', '持币者回报率', percent(returns.shareholder_yield_pct, 'shareholder_yield'))}
@@ -153,10 +172,10 @@
         row('Gross Fees / 用户总费用', money(income.gross_fees_ttm_usd, 'gross_fees'), '用户支付的 TTM 总费用'),
         row('Supply-side Payouts / 供应方分成', money(income.supply_side_payouts_ttm_usd, 'supply_side_payouts'), '存款人、LP、验证者、运营商及返佣分成'),
         row('Protocol Revenue / 协议留存收入', money(income.revenue_ttm_usd, 'revenue'), 'DefiLlama dailyRevenue total1y'),
-        row('Direct Economic Costs / 直接经济成本', money(income.direct_economic_costs_ttm_usd, 'direct_economic_costs'), '必要网络、结算及收入直接成本'),
+        row('Direct Economic Costs / 直接经济成本', money(income.direct_economic_costs_ttm_usd, 'direct_economic_costs'), directCostDetail),
         row('Realized Protocol Losses / 已实现协议损失', money(income.realized_protocol_losses_ttm_usd, 'realized_protocol_losses'), '坏账、赔付及已实现风险损失'),
-        row('Protocol Earnings / 协议经济收益', money(income.net_income_ttm_usd, 'protocol_earnings'), '本轮代理值 = DefiLlama Revenue total1y'),
-      ], '本轮不虚构 DefiLlama 没有提供的直接成本明细；Protocol Earnings 以 Revenue 为代理。不统计项目方、基金会或开发公司的组织运营费用，原生代币激励、解锁和归属不进入 Cash P/E。')}
+        row('Protocol Earnings / 协议经济收益', money(income.net_income_ttm_usd, 'protocol_earnings'), earningsDetail),
+      ], earningsNote)}
 
       ${section('Cash Flow / 现金流量表', '💵', [
         row('Operating Cash Flow / 经营现金流', legacyMoney(cash.operating_cash_flow_ttm_usd), '经营现金流入 − 流出'),
@@ -195,7 +214,7 @@
         <div class="source-grid">
           <div class="source-item"><span>数据观察时间</span><strong>${date(protocol.provenance.observed_at)}</strong></div>
           <div class="source-item"><span>市场数据方法</span><strong>${protocol.market_data.market_cap_method}</strong></div>
-          <div class="source-item"><span>本轮数据来源</span><strong>DefiLlama 单一来源</strong></div>
+          <div class="source-item"><span>本轮数据来源</span><strong>${dataSourceLabel}</strong></div>
           <div class="source-item"><span>更新频率</span><strong>每日自动刷新</strong></div>
           ${chain ? `
           <div class="source-item"><span>Assistance Fund 地址</span><strong class="value">${chain.assistance_fund.address}</strong></div>
@@ -205,7 +224,7 @@
           <div class="source-item"><span>部分窗口链上买入</span><strong>${legacyMoney(chain.fills_window.purchase_consideration_usd)}</strong></div>
           <div class="source-item"><span>完整 TTM</span><strong>${chain.fills_window.complete_for_ttm ? '已闭合' : '未闭合'}</strong></div>` : ''}
         </div>
-        <div class="section-note"><strong>待核实不等于 0，“~”代表 DefiLlama 第三方聚合估算。</strong> ${protocol.provenance.evidence_boundary}</div>
+        <div class="section-note"><strong>待核实不等于 0，“~”代表估算。</strong> ${evidenceBoundary}</div>
       </section>`;
   }
 
