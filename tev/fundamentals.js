@@ -141,7 +141,7 @@
     }
 
     try {
-      const response = await fetch('../data/logo_urls.json');
+      const response = await fetch('../data/logo_urls.json?v=ui-restore-2');
       if (response.ok) logoUrls = await response.json();
     } catch {
       logoUrls = {};

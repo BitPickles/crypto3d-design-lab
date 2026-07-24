@@ -87,7 +87,7 @@
 
     let logoUrl = '';
     try {
-      const response = await fetch('../data/logo_urls.json');
+      const response = await fetch('../data/logo_urls.json?v=ui-restore-2');
       if (response.ok) {
         const logos = await response.json();
         logoUrl = logos[protocol.id] || '';
