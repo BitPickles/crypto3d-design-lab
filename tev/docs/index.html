@@ -84,12 +84,12 @@
     <section class="docs-hero">
       <div class="container">
         <h1>协议财务口径文档</h1>
-        <p>本页定义 Crypto3D 如何计算 26 个协议的收入、协议经济收益、Cash P/E、股息率、回购收益率与持币者回报率。公共展示字段保持一致，但每个协议仍按其业务、治理与资金流独立建模。</p>
-        <div class="docs-meta"><span>口径版本 v1.1</span><span>生效日期 2026-07-25</span><span>适用范围：Crypto3D 测试站</span><span>持币者收益指标：Shareholder Yield</span></div>
+        <p>本页定义 Crypto3D 测试站本轮如何用 DefiLlama 的市场数据、Fees、Revenue 与 Holders Revenue 计算 26 个协议的 P/S、Cash P/E 和 Shareholder Yield。</p>
+        <div class="docs-meta"><span>口径版本 v1.2</span><span>生效日期 2026-07-25</span><span>适用范围：Crypto3D 测试站会议版</span><span>更新频率：每日</span></div>
         <div class="rule-grid">
-          <div class="rule-card"><strong>只扣直接经济成本</strong><p>供应方分成、必要网络/结算成本及已实现协议损失必须扣除；项目方组织运营费用不进入 Cash P/E。</p></div>
-          <div class="rule-card"><strong>持币者回报单独计算</strong><p>分红、协议出资回购和合格的费用销毁属于资本回报，不重复加进协议利润。</p></div>
-          <div class="rule-card"><strong>公链不强行套传统 P/E</strong><p>无法界定公司边界或剩余索取权时，P/E 显示 N/A，并改看网络收入与费用价值捕获。</p></div>
+          <div class="rule-card"><strong>DefiLlama 单一来源</strong><p>本轮市场和财务数值统一取自 DefiLlama，不使用旧数据或其他平台回填。</p></div>
+          <div class="rule-card"><strong>价格每日更新</strong><p>当前价格、市值和财务 total1y 由每日任务刷新；超过新鲜度阈值时校验失败。</p></div>
+          <div class="rule-card"><strong>聚合值明确标记</strong><p>所有非零数值显示为第三方估算；Holders Revenue 不冒充分红、回购或销毁明细。</p></div>
         </div>
       </div>
     </section>
@@ -112,18 +112,19 @@
       <article class="docs-content">
         <section class="doc-section" id="overview">
           <h2>1. 指标总览</h2>
+          <div class="callout"><strong>本轮会议版数据规则：</strong>以下公式使用 DefiLlama 单一来源。它是为了快速得到口径一致、每天可重复刷新的横向比较，不替代后续逐协议链上审计。</div>
           <div class="doc-table-wrap">
             <table class="doc-table">
               <thead><tr><th>指标</th><th>定义</th><th>公式</th><th>页面用途</th></tr></thead>
               <tbody>
-                <tr><td>Market Cap</td><td>流通代币的市场价值</td><td>当前价格 × 流通量</td><td>估值分母</td></tr>
-                <tr><td>Revenue TTM</td><td>过去十二个月协议及其有权主体真正保留的外部收入</td><td>Fees − Supply-side Fees − Pass-through</td><td>P/S 与利润起点</td></tr>
-                <tr><td>Protocol Earnings TTM</td><td>协议留存收入扣除直接经济成本和已实现协议损失后的余额</td><td>Revenue − Direct Economic Costs − Realized Losses</td><td>Cash P/E 分母</td></tr>
+                <tr><td>Market Cap</td><td>DefiLlama 当前流通市值</td><td>DefiLlama protocol mcap；缺失时仅用 DefiLlama 价格 × DefiLlama 流通量快照</td><td>估值分子</td></tr>
+                <tr><td>Fees TTM</td><td>DefiLlama 统计的用户总费用</td><td>dailyFees total1y</td><td>业务规模</td></tr>
+                <tr><td>Revenue TTM</td><td>DefiLlama 统计的协议留存收入</td><td>dailyRevenue total1y</td><td>P/S 与利润代理</td></tr>
+                <tr><td>Protocol Earnings TTM</td><td>本轮简化的协议经济收益代理</td><td>DefiLlama Revenue total1y</td><td>Cash P/E 分母</td></tr>
                 <tr><td>P/S</td><td>市值相对协议收入的倍数</td><td>Market Cap ÷ Revenue TTM</td><td>收入估值</td></tr>
                 <tr><td>Cash P/E</td><td>市值相对协议经济收益的倍数</td><td>Market Cap ÷ Protocol Earnings TTM</td><td>盈利估值</td></tr>
-                <tr><td>Dividend Yield</td><td>已执行的外部资产分红相对市值的比例</td><td>Dividends TTM ÷ Market Cap</td><td>直接现金回报</td></tr>
-                <tr><td>Buyback / Fee-burn Yield</td><td>已执行回购和合格费用销毁相对市值的比例</td><td>(Buybacks + Qualifying Fee Burns) ÷ Market Cap</td><td>间接资本回报</td></tr>
-                <tr><td>Shareholder Yield</td><td>持币者获得的全部合格资本回报</td><td>Dividend Yield + Buyback / Fee-burn Yield</td><td>持币者总回报</td></tr>
+                <tr><td>Holders Revenue TTM</td><td>DefiLlama 归类为持币者收入的聚合金额</td><td>dailyHoldersRevenue total1y</td><td>持币者价值捕获</td></tr>
+                <tr><td>Shareholder Yield</td><td>本轮持币者收入相对市值的比例</td><td>Holders Revenue total1y ÷ Market Cap</td><td>持币者回报代理</td></tr>
                 <tr><td>Supply Growth</td><td>流通供应量的期间变化</td><td>(期末流通量 ÷ 期初流通量) − 1</td><td>独立风险提示</td></tr>
               </tbody>
             </table>
@@ -133,12 +134,13 @@
         <section class="doc-section" id="income">
           <h2>2. 收入与现金利润</h2>
           <h3>2.1 用户费用与协议收入</h3>
-          <p>用户支付的全部费用不是协议收入。支付给 LP、验证者、Keeper、做市商、前端、渠道或其他供应方的部分属于供应侧分成或过手资金，必须先扣除。</p>
-          <div class="formula">Revenue TTM = Fees TTM − Supply-side Fees TTM − Other Pass-through TTM</div>
+          <p>用户支付的全部费用不是协议收入。本轮不自行反推各类供应侧分成，而是分别读取 DefiLlama 的 Fees 与 Revenue total1y。</p>
+          <div class="formula">Fees TTM = DefiLlama dailyFees total1y</div>
+          <div class="formula">Revenue TTM = DefiLlama dailyRevenue total1y</div>
 
           <h3>2.2 直接经济成本与项目方费用边界</h3>
-          <p>Cash P/E 只扣协议业务本身不可避免的直接经济成本，包括必要的 L1/DA/结算成本、明确归属于收入的 oracle 或 keeper 成本，以及协议已经实际承担的坏账、赔付和风险损失。</p>
-          <div class="formula">Protocol Earnings TTM = Revenue TTM − Direct Economic Costs TTM − Realized Protocol Losses TTM</div>
+          <p>长期严格口径会扣协议业务本身不可避免的直接经济成本与已实现损失。但 DefiLlama 不提供 26 个协议统一可复核的直接成本账本，因此本轮不猜测这些拆分，直接把 Revenue 作为 Protocol Earnings 代理。</p>
+          <div class="formula">本轮 Protocol Earnings proxy = DefiLlama Revenue total1y</div>
           <div class="callout">团队工资、基金会管理、市场、法律、办公室、一般基础设施、DAO 资助和战略投资等项目方组织运营费用不纳入本指标。项目方可以使用或出售自身代币覆盖这些支出，而多数项目又没有完整、统一的公司费用账本，因此 Crypto3D 不把它们伪装成可比的协议成本。</div>
           <p>项目原生代币发行、奖励、解锁、归属、空投和流动性挖矿也不扣减 Protocol Earnings。供应增长仍单独披露，用于反映稀释风险。</p>
 
@@ -157,7 +159,7 @@
 
         <section class="doc-section" id="returns">
           <h2>4. 持币者回报：Shareholder Yield</h2>
-          <p>持币者回报不直接等于股息率，因为它同时包含分红、回购和合格费用销毁。统一名称为 <strong>Shareholder Yield / 持币者回报率</strong>。</p>
+          <p>本轮直接读取 DefiLlama Holders Revenue 聚合值，并以它计算 <strong>Shareholder Yield / 持币者回报率代理</strong>。该值可能包含不同机制，不能自动理解为传统股票股息。</p>
 
           <h3>4.1 股息</h3>
           <p>计入实际向合格持币者或质押者分配的现金、稳定币、ETH 或其他外部资产。新发行的本币质押奖励、空投和流动性挖矿不计入股息。</p>
@@ -168,10 +170,10 @@
           <div class="formula">Buyback / Fee-burn Yield = (Executed Buybacks + Qualifying Fee-funded Burns) TTM ÷ Market Cap</div>
           <p>不计入：只获批准但尚未执行的额度、项目方原有库存币销毁、无法证明市场购买或费用来源的公式销毁、国库地址之间转账形成的做账回购。</p>
 
-          <h3>4.3 持币者回报率</h3>
-          <div class="formula">Shareholder Yield = Dividend Yield + Buyback / Fee-burn Yield</div>
-          <div class="formula">Payout Ratio = Qualified Holder Returns TTM ÷ Protocol Earnings TTM</div>
-          <p>Payout Ratio 只在现金净利润为正且回报金额来源可验证时计算；回购若由历史国库余额出资，比例可能超过 100%，页面必须说明资金来源。</p>
+          <h3>4.3 本轮持币者回报率</h3>
+          <div class="formula">Holders Revenue TTM = DefiLlama dailyHoldersRevenue total1y</div>
+          <div class="formula">Shareholder Yield = Holders Revenue TTM ÷ DefiLlama Market Cap × 100%</div>
+          <p>若 DefiLlama 没有 Holders Revenue，该字段显示待核实。分红、回购和费用销毁明细也保持待核实，不把聚合值强行拆分。</p>
         </section>
 
         <section class="doc-section" id="supply">
@@ -183,14 +185,14 @@
 
         <section class="doc-section" id="chains">
           <h2>6. 公链与特殊类型项目</h2>
-          <p>公链通常没有边界清晰的公司主体、完整运营费用账本或传统股东剩余索取权，因此不强行计算公司会计意义上的 P/E。</p>
+          <p>公链通常没有边界清晰的公司主体、完整运营费用账本或传统股东剩余索取权，因此这里的 Cash P/E 不是公司会计意义上的 P/E。本轮若 DefiLlama 提供 Revenue，则仍计算“流通市值 ÷ Revenue 代理”的协议经济倍数，方便横向比较，并明确标为估算。</p>
           <div class="doc-table-wrap">
             <table class="doc-table">
               <thead><tr><th>项目类型</th><th>主要指标</th><th>P/E 处理</th></tr></thead>
               <tbody>
                 <tr><td>DeFi 协议 / DAO</td><td>Revenue、Protocol Earnings、P/S、Cash P/E、Shareholder Yield</td><td>协议经济收益为正且直接成本口径可用时计算</td></tr>
-                <tr><td>公链 / L1 / L2</td><td>Network Revenue、费用留存、费用销毁、P/Network Revenue</td><td>传统 P/E 通常为 N/A</td></tr>
-                <tr><td>CEX 平台币</td><td>可验证回购、销毁与外部收入披露</td><td>缺少公司收入和支出时为 N/A</td></tr>
+                <tr><td>公链 / L1 / L2</td><td>DefiLlama Revenue、费用留存、Holders Revenue</td><td>有 Revenue 时计算会议版代理倍数；不称传统公司 P/E</td></tr>
+                <tr><td>CEX 平台币</td><td>DefiLlama Revenue 与 Holders Revenue</td><td>DefiLlama 缺失时显示待核实，不使用旧值回填</td></tr>
                 <tr><td>纯治理代币</td><td>协议收入与价值捕获机制</td><td>没有利润归属时为 N/A</td></tr>
               </tbody>
             </table>
@@ -209,22 +211,23 @@
         </section>
 
         <section class="doc-section" id="sources">
-          <h2>8. 数据来源与证据优先级</h2>
-          <div class="callout"><strong>统一原则：链上一手数据优先，项目官方公告、报告和仪表盘次之，第三方聚合数据仅作最后兜底。</strong> 能从链上重建的执行金额，不使用 DefiLlama 等聚合值替代主值。</div>
+          <h2>8. 数据来源与更新规则</h2>
+          <div class="callout"><strong>本轮会议版数据规则：DefiLlama 单一来源。</strong> 市场价格、流通市值、Fees、Revenue 与 Holders Revenue 全部来自 DefiLlama；每日自动刷新，不使用旧数据或其他平台回填。</div>
           <ol>
-            <li><strong>链上一手数据：</strong>合约事件、协议节点/RPC、官方 API 原始账本、可验证地址和资金流。</li>
-            <li><strong>项目官方披露：</strong>官方公告、报告、治理提案及执行记录、基金会披露和官方仪表盘。</li>
-            <li><strong>第三方兜底：</strong>DefiLlama、Token Terminal、Dune 等聚合数据；只有前两级不可得时才能用于候选值。</li>
-            <li>CoinGecko、CoinMarketCap 等市场数据，用于价格与流通市值，并核对正确的代币映射。</li>
+            <li><strong>价格：</strong>DefiLlama Coins API 的 current price，同时保存价格时间戳与 confidence。</li>
+            <li><strong>流通市值：</strong>DefiLlama protocol API 的 mcap。BGB 因协议端点没有 mcap，使用 DefiLlama 当前价格 × DefiLlama token 页流通量快照，并明确标记为估算。</li>
+            <li><strong>Fees：</strong>DefiLlama summary API 的 dailyFees total1y。</li>
+            <li><strong>Revenue：</strong>DefiLlama summary API 的 dailyRevenue total1y。</li>
+            <li><strong>Holders Revenue：</strong>DefiLlama summary API 的 dailyHoldersRevenue total1y。</li>
           </ol>
-          <p>每个非空数字至少记录来源、证据层级、观察日期、计算窗口、公式版本和证据状态。第三方数值必须标记为估算，不得覆盖与链上或官方证据冲突的结果。聚合平台的 Holders Revenue 不会自动等同于分红、已执行回购或 Protocol Earnings。</p>
-          <p>链上时点余额、累计持仓成本和只覆盖部分成交的 API 响应只能作为诊断，不能直接年化为 TTM。来源冲突时不取平均，保留链上主值并进入人工复核。</p>
+          <p>每日任务先生成一份带观察时间和来源链接的快照，再重建页面数据并运行公式、字段覆盖、价格新鲜度和来源泄漏校验。价格或市值不是 26/26 时任务直接失败；财务字段缺失则保留待核实。</p>
+          <p>DefiLlama 是第三方聚合平台，所以非零数值统一显示“~估算”。本轮单一来源规则只适用于会议版测试站；长期研究仍保留链上一手优先、官方披露次之、第三方兜底的更严格原则。</p>
         </section>
 
         <section class="doc-section" id="states">
           <h2>9. 空值、零值与不可计算状态</h2>
           <div class="status-grid">
-            <div class="status-card"><strong>0</strong><span>完成审核并确认该期间数值确实为零。</span></div>
+            <div class="status-card"><strong>0</strong><span>DefiLlama 对应 total1y 字段返回零；这是第三方平台状态，不冒充链上独立审核结论。</span></div>
             <div class="status-card"><strong>N/A</strong><span>指标在项目结构上不适用，例如多数公链的传统 P/E。</span></div>
             <div class="status-card"><strong>N/M</strong><span>分母为零或负数，倍数没有经济意义。</span></div>
             <div class="status-card"><strong>待核实</strong><span>数据缺失、来源冲突或证据尚未闭合，不能用零替代。</span></div>
@@ -235,7 +238,7 @@
         <section class="doc-section" id="display">
           <h2>10. 页面展示与字段分层</h2>
           <h3>主对比表</h3>
-          <p>协议、流通市值、Revenue TTM、Protocol Earnings TTM、P/S、Cash P/E、Dividends TTM、Repurchases TTM、Shareholder Yield 与审核状态。</p>
+          <p>协议、流通市值、Revenue TTM、Protocol Earnings TTM、P/S、Cash P/E、Fees TTM、Holders Revenue TTM、Shareholder Yield 与审核状态。</p>
           <h3>协议详情页</h3>
           <p>进一步展示 Fees、Supply-side Fees、直接经济成本、已实现协议损失、分红、回购、费用销毁、供应增长、适用口径、来源链接、数据日期和审核说明。</p>
           <div class="callout">本页定义展示合同，不要求 26 个协议使用完全相同的底层计算模型。协议级公式必须尊重各自业务、治理版本和资金流，最终统一映射到上述字段。</div>
@@ -244,7 +247,7 @@
     </div>
   </main>
 
-  <footer><div class="container"><div class="footer-content"><div class="footer-text">Crypto3D Research · 口径版本 v1.1 · 2026-07-25</div><div class="footer-links"><a href="../">返回协议财务</a><a href="../../governance/">治理</a><a href="https://x.com/22333D" target="_blank">@22333D</a></div></div></div></footer>
+  <footer><div class="container"><div class="footer-content"><div class="footer-text">Crypto3D Research · 口径版本 v1.2 · 2026-07-25</div><div class="footer-links"><a href="../">返回协议财务</a><a href="../../governance/">治理</a><a href="https://x.com/22333D" target="_blank">@22333D</a></div></div></div></footer>
   <script src="../../js/theme.js"></script>
 </body>
 </html>

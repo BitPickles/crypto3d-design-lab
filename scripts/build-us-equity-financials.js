@@ -6,17 +6,15 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const INPUT = path.join(ROOT, 'data', 'valuation-meeting-snapshot.json');
-const CANDIDATE_DIR = path.join(ROOT, 'data', 'candidates');
-const HYPE_CHAIN_DIAGNOSTICS = path.join(CANDIDATE_DIR, 'hype-chain-diagnostics.json');
+const IDENTITY_INPUT = path.join(ROOT, 'data', 'valuation-meeting-snapshot.json');
+const DEFILLAMA_INPUT = path.join(ROOT, 'data', 'defillama-daily-snapshot.json');
 const OUTPUT_JSON = path.join(ROOT, 'data', 'protocol-financials-us-equity.json');
 const OUTPUT_JS = path.join(ROOT, 'data', 'protocol-financials-us-equity.js');
-const VALID_STATES = new Set(['VERIFIED', 'ESTIMATED', 'ZERO', 'N/A', 'N/M', 'PENDING']);
-const CASH_PE_NA_IDS = new Set(['bgb', 'bnb', 'okb', 'mnt']);
+const SOURCE_TIER = 'THIRD_PARTY_FALLBACK';
 
 const NULL_REASONS = {
-  cash_flow: '经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。',
-  balance_sheet: '资产负债表需要另一套控制权与负债边界，本轮不强行补值。',
+  cash_flow: '经营现金流、资本开支与自由现金流不属于本轮 DefiLlama 单一来源快照的覆盖范围。',
+  balance_sheet: '资产负债表不属于本轮 DefiLlama 单一来源快照的覆盖范围。',
 };
 
 function round(value, digits = 2) {
@@ -24,360 +22,262 @@ function round(value, digits = 2) {
   return Math.round((value + Number.EPSILON) * scale) / scale;
 }
 
-function nullableNumber(value) {
+function finite(value) {
   return Number.isFinite(value) ? value : null;
 }
 
-function stateNote(state) {
-  return {
-    VERIFIED: '已核实',
-    ESTIMATED: '估算',
-    ZERO: '已核实为 0',
-    'N/A': '结构不适用',
-    'N/M': '收益≤0',
-    PENDING: '证据待补',
-  }[state] || '证据待补';
+function stateFor(value, missingState = 'PENDING') {
+  if (!Number.isFinite(value)) return missingState;
+  return value === 0 ? 'ZERO' : 'ESTIMATED';
 }
 
-function normalizeMetric(raw, fallback = {}) {
-  const hasCandidate = raw && typeof raw === 'object';
-  const useNumericFallback =
-    hasCandidate
-    && raw.state === 'PENDING'
-    && raw.block_fallback !== true
-    && !Number.isFinite(raw.value)
-    && Number.isFinite(fallback.value);
-  const candidate = useNumericFallback
-    ? {
-        ...fallback,
-        reason: raw.reason || fallback.reason,
-        display_note: '首版候选',
-      }
-    : hasCandidate
-      ? raw
-      : fallback;
-  const defaults = hasCandidate && !useNumericFallback ? fallback : {};
-  let value = nullableNumber(candidate.value);
-  let state = VALID_STATES.has(candidate.state) ? candidate.state : defaults.state;
-
-  if (!state) state = value === null ? 'PENDING' : 'ESTIMATED';
-  if (state === 'ZERO') value = 0;
-  if (state === 'PENDING' && value !== null) state = 'ESTIMATED';
-  if (['N/A', 'N/M', 'PENDING'].includes(state)) value = null;
-  if (['VERIFIED', 'ESTIMATED'].includes(state) && value === null) state = 'PENDING';
-
+function meta({
+  state,
+  window = null,
+  source = null,
+  sourceUrl = null,
+  asOf = null,
+  confidence = 'medium',
+  reason,
+  displayNote,
+}) {
   return {
-    value,
     state,
-    ...(candidate.block_fallback === true ? { block_fallback: true } : {}),
-    window: candidate.window || defaults.window || null,
-    source: candidate.source || defaults.source || null,
-    source_url: candidate.source_url || defaults.source_url || null,
-    as_of: candidate.as_of || defaults.as_of || null,
-    confidence: candidate.confidence || defaults.confidence || 'low',
-    source_tier: candidate.source_tier || defaults.source_tier || null,
-    reason: candidate.reason || defaults.reason || '',
+    window,
+    source,
+    source_url: sourceUrl,
+    as_of: asOf,
+    confidence,
+    source_tier: SOURCE_TIER,
+    reason,
     display_note:
-      candidate.display_note
-      || defaults.display_note
-      || (candidate.state === 'PENDING' && value !== null ? '首版候选' : stateNote(state)),
+      displayNote
+      ?? (state === 'ESTIMATED'
+        ? 'DefiLlama'
+        : state === 'ZERO'
+          ? 'DefiLlama 为 0'
+          : state === 'N/M'
+            ? '分母≤0'
+            : state === 'PENDING'
+              ? 'DefiLlama 未覆盖'
+              : ''),
   };
 }
 
-function candidateMetric(candidate, key) {
-  if (!candidate?.metrics) return null;
-  const aliases = {
-    realized_protocol_losses_ttm_usd: ['realized_protocol_losses_ttm_usd', 'realized_losses_ttm_usd'],
-    qualifying_fee_burns_ttm_usd: ['qualifying_fee_burns_ttm_usd', 'fee_burns_ttm_usd'],
+function pendingMetric(reason, sourceUrl = null, window = 'TTM') {
+  return {
+    value: null,
+    meta: meta({
+      state: 'PENDING',
+      window,
+      source: 'DefiLlama',
+      sourceUrl,
+      reason,
+    }),
   };
-  const keys = aliases[key] || [key];
-  for (const candidateKey of keys) {
-    if (candidate.metrics[candidateKey]) return candidate.metrics[candidateKey];
-  }
-  return null;
 }
 
-function loadCandidates() {
-  const candidates = new Map();
-  if (!fs.existsSync(CANDIDATE_DIR)) return candidates;
-
-  const files = fs.readdirSync(CANDIDATE_DIR)
-    .filter((file) => /^phase1-.*\.json$/i.test(file))
-    .sort();
-
-  for (const file of files) {
-    const fullPath = path.join(CANDIDATE_DIR, file);
-    const payload = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
-    if (!Array.isArray(payload.protocols)) {
-      throw new Error(`${file}: protocols must be an array`);
-    }
-    for (const protocol of payload.protocols) {
-      if (!protocol?.id) throw new Error(`${file}: candidate protocol is missing id`);
-      if (candidates.has(protocol.id)) throw new Error(`${file}: duplicate candidate id ${protocol.id}`);
-      candidates.set(protocol.id, { ...protocol, candidate_file: path.relative(ROOT, fullPath).replaceAll('\\', '/') });
-    }
-  }
-  if (candidates.has('hype') && fs.existsSync(HYPE_CHAIN_DIAGNOSTICS)) {
-    const diagnostics = JSON.parse(fs.readFileSync(HYPE_CHAIN_DIAGNOSTICS, 'utf8'));
-    candidates.set('hype', {
-      ...candidates.get('hype'),
-      chain_diagnostics: diagnostics,
-    });
-  }
-  return candidates;
-}
-
-function deriveState(...metrics) {
-  const states = metrics.map((metric) => metric.state);
-  if (states.includes('ESTIMATED')) return 'ESTIMATED';
-  if (states.every((state) => state === 'ZERO')) return 'ZERO';
-  if (states.includes('VERIFIED') || states.includes('ZERO')) return 'VERIFIED';
-  return 'PENDING';
-}
-
-function computeProtocolEarnings(protocolId, candidate, revenue, directCosts, realizedLosses) {
-  if (CASH_PE_NA_IDS.has(protocolId) || candidate?.cash_pe_applicability === 'N/A') {
-    return normalizeMetric({ state: 'N/A', reason: '缺少适用的协议/公司收益主体边界。' });
+function defillamaAmount(metric, label, asOf) {
+  if (!metric || !Number.isFinite(metric.total_1y_usd)) {
+    return pendingMetric(
+      `DefiLlama 未提供 ${label} 的 total1y；本轮禁止使用旧数据或其他来源回填。`,
+      metric?.source_url || null,
+    );
   }
 
-  const explicit = candidateMetric(candidate, 'protocol_earnings_ttm_usd');
-  if (explicit) {
-    const normalizedExplicit = normalizeMetric(explicit);
-    if (normalizedExplicit.state !== 'PENDING' || explicit.block_fallback === true) {
-      return normalizedExplicit;
-    }
-  }
-  if (revenue.value === null) {
-    return normalizeMetric({
-      state: 'PENDING',
-      reason: 'Protocol Revenue 尚无可用值，无法计算 Protocol Earnings。',
-    });
-  }
-
-  const directCostKnown = ['VERIFIED', 'ESTIMATED', 'ZERO'].includes(directCosts.state);
-  const lossKnown = ['VERIFIED', 'ESTIMATED', 'ZERO'].includes(realizedLosses.state);
-  const knownDirectCosts = directCosts.value || 0;
-  const knownLosses = realizedLosses.value || 0;
-  const value = revenue.value - knownDirectCosts - knownLosses;
-
-  if (directCostKnown && lossKnown) {
-    return normalizeMetric({
-      value,
-      state: deriveState(revenue, directCosts, realizedLosses),
-      window: revenue.window,
-      source: [revenue.source, directCosts.source, realizedLosses.source].filter(Boolean).join(' + '),
-      as_of: revenue.as_of,
-      confidence: [revenue, directCosts, realizedLosses].some((metric) => metric.confidence === 'low') ? 'low' : 'medium',
-      reason: 'Protocol Revenue 减去已知直接经济成本与已实现协议损失。',
-      display_note: deriveState(revenue, directCosts, realizedLosses) === 'ESTIMATED' ? '协议口径估算' : '协议口径',
-    });
-  }
-
-  return normalizeMetric({
+  const value = metric.total_1y_usd;
+  return {
     value,
-    state: 'ESTIMATED',
-    window: revenue.window,
-    source: [revenue.source, directCosts.source, realizedLosses.source, 'Crypto3D phase-1 protocol-earnings proxy']
-      .filter(Boolean)
-      .join(' + '),
-    as_of: revenue.as_of,
-    confidence: 'low',
-    reason: '首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。',
-    display_note: '首版协议口径估算',
-  });
+    meta: meta({
+      state: stateFor(value),
+      window: 'DefiLlama total1y',
+      source: `DefiLlama ${label}`,
+      sourceUrl: metric.source_url,
+      asOf: metric.latest_daily_at || asOf,
+      confidence: 'medium',
+      reason: `${label} 直接采用 DefiLlama summary API 的 total1y 字段；属于第三方聚合口径。`,
+    }),
+  };
 }
 
-function combineCapitalMetrics(metrics, label) {
-  const applicable = metrics.filter((metric) => metric.state !== 'N/A');
-  if (!applicable.length) return normalizeMetric({ state: 'N/A', reason: `${label}不适用。` });
-
-  const blocked = applicable.find((metric) => metric.state === 'PENDING' && metric.block_fallback);
-  if (blocked) {
-    return normalizeMetric({
-      state: 'PENDING',
-      block_fallback: true,
-      window: blocked.window,
-      source: blocked.source,
-      as_of: blocked.as_of,
-      confidence: blocked.confidence,
-      source_tier: blocked.source_tier,
-      reason: `${label}存在明确封锁的未闭合一手账本，不能以已知零值或第三方代理值代替。`,
-    });
+function derivedMultiple(marketCap, denominator, label, asOf) {
+  if (!Number.isFinite(denominator.value)) {
+    return {
+      value: null,
+      meta: meta({
+        state: 'PENDING',
+        window: denominator.meta.window,
+        source: denominator.meta.source,
+        sourceUrl: denominator.meta.source_url,
+        asOf,
+        reason: `${label} 的分母没有可用的 DefiLlama total1y 数值。`,
+      }),
+    };
   }
+  if (denominator.value <= 0) {
+    return {
+      value: null,
+      meta: meta({
+        state: 'N/M',
+        window: denominator.meta.window,
+        source: denominator.meta.source,
+        sourceUrl: denominator.meta.source_url,
+        asOf,
+        reason: `${label} 的分母小于或等于 0，倍数没有经济意义。`,
+      }),
+    };
+  }
+  return {
+    value: round(marketCap / denominator.value),
+    meta: meta({
+      state: 'ESTIMATED',
+      window: denominator.meta.window,
+      source: `DefiLlama Market Cap + ${denominator.meta.source}`,
+      sourceUrl: denominator.meta.source_url,
+      asOf,
+      reason: `${label} = DefiLlama 流通市值 ÷ DefiLlama ${denominator.meta.source.replace('DefiLlama ', '')}。`,
+    }),
+  };
+}
 
-  const known = applicable.filter((metric) => ['VERIFIED', 'ESTIMATED', 'ZERO'].includes(metric.state));
-  if (!known.length) return normalizeMetric({ state: 'PENDING', reason: `${label}尚无可用执行金额。` });
-
-  const value = known.reduce((sum, metric) => sum + (metric.value || 0), 0);
-  const hasPending = applicable.some((metric) => metric.state === 'PENDING');
-  const state = hasPending || known.some((metric) => metric.state === 'ESTIMATED')
-    ? 'ESTIMATED'
-    : known.every((metric) => metric.state === 'ZERO')
-      ? 'ZERO'
-      : 'VERIFIED';
-
-  return normalizeMetric({
+function derivedYield(marketCap, numerator, label, asOf) {
+  if (!Number.isFinite(numerator.value)) {
+    return {
+      value: null,
+      meta: meta({
+        state: 'PENDING',
+        window: numerator.meta.window,
+        source: numerator.meta.source,
+        sourceUrl: numerator.meta.source_url,
+        asOf,
+        reason: `${label} 的分子没有可用的 DefiLlama total1y 数值。`,
+      }),
+    };
+  }
+  const value = round((numerator.value / marketCap) * 100, 4);
+  return {
     value,
-    state,
-    window: known.find((metric) => metric.window)?.window || 'TTM',
-    source: [...new Set(known.map((metric) => metric.source).filter(Boolean))].join(' + '),
-    as_of: known.find((metric) => metric.as_of)?.as_of || null,
-    confidence: state === 'VERIFIED' || state === 'ZERO' ? 'medium' : 'low',
-    reason: hasPending ? `${label}为已识别执行部分的下限估算。` : `${label}由已识别执行金额汇总。`,
-    display_note: state === 'ESTIMATED' ? '已识别部分' : stateNote(state),
-  });
+    meta: meta({
+      state: stateFor(value),
+      window: numerator.meta.window,
+      source: `DefiLlama Market Cap + ${numerator.meta.source}`,
+      sourceUrl: numerator.meta.source_url,
+      asOf,
+      reason: `${label} = DefiLlama Holders Revenue total1y ÷ DefiLlama 流通市值 × 100%。`,
+    }),
+  };
 }
 
-function derivedRatioMetric(numerator, marketCap, formulaName) {
-  if (numerator.state === 'N/A') return normalizeMetric({ state: 'N/A', reason: `${formulaName}不适用。` });
-  if (numerator.state === 'PENDING' || numerator.value === null || marketCap === null) {
-    return normalizeMetric({ state: 'PENDING', reason: `${formulaName}分子尚无可用值。` });
-  }
-  return normalizeMetric({
-    value: round((numerator.value / marketCap) * 100, 4),
-    state: numerator.state,
-    window: numerator.window,
-    source: numerator.source,
-    source_tier: numerator.source_tier,
-    as_of: numerator.as_of,
-    confidence: numerator.confidence,
-    reason: `${formulaName}由基础金额与流通市值计算。`,
-    display_note: numerator.state === 'ESTIMATED' ? '估算' : stateNote(numerator.state),
-  });
+function unavailableBreakdown(label, asOf) {
+  return {
+    value: null,
+    meta: meta({
+      state: 'PENDING',
+      window: 'TTM',
+      source: 'DefiLlama',
+      asOf,
+      reason: `本轮只采用 DefiLlama；Holders Revenue 不足以可靠拆分为${label}，因此不把聚合值冒充明细。`,
+    }),
+  };
 }
 
-function meta(metric) {
-  const { value, ...rest } = metric;
-  return rest;
-}
+function buildProtocol(identity, llama, generatedAt) {
+  if (!llama) throw new Error(`${identity.id}: missing DefiLlama snapshot row`);
 
-function buildProtocol(protocol, snapshot, candidate) {
-  const marketCap = nullableNumber(protocol.market_cap_usd);
-  const marketCapMetric = normalizeMetric({
-    value: marketCap,
-    state: 'VERIFIED',
-    window: 'point-in-time',
-    source: `${snapshot.source_snapshot.repository}@${snapshot.source_snapshot.commit}`,
-    as_of: protocol.as_of,
-    confidence: 'high',
-    reason: '流通市值来自当前测试快照，用作估值公式分母。',
-    display_note: '',
-  });
+  const marketCap = finite(llama.market.market_cap_usd);
+  const price = finite(llama.market.price_usd);
+  if (!marketCap || !price) throw new Error(`${identity.id}: invalid DefiLlama market data`);
 
-  const baselineRevenue = protocol.revenue_ttm_usd > 0
+  const grossFees = defillamaAmount(llama.financials.fees, 'Fees', generatedAt);
+  const revenue = defillamaAmount(llama.financials.revenue, 'Revenue', generatedAt);
+  const holdersRevenue = defillamaAmount(llama.financials.holders_revenue, 'Holders Revenue', generatedAt);
+
+  // 用户确认的本轮简化口径：不扣项目方组织费用和原生代币发行。
+  // DefiLlama Revenue 已是协议留存口径，因此作为 Protocol Earnings 代理。
+  const protocolEarnings = Number.isFinite(revenue.value)
     ? {
-        value: protocol.revenue_ttm_usd,
-        state: 'ESTIMATED',
-        window: 'TTM',
-        source: `${snapshot.source_snapshot.repository}@${snapshot.source_snapshot.commit}`,
-        as_of: protocol.as_of,
-        confidence: protocol.confidence || 'low',
-        reason: '来自现有发布快照，按新协议经济口径作为首版候选。',
-        display_note: 'TTM 候选',
+        value: revenue.value,
+        meta: meta({
+          state: stateFor(revenue.value),
+          window: revenue.meta.window,
+          source: 'DefiLlama Revenue proxy',
+          sourceUrl: revenue.meta.source_url,
+          asOf: revenue.meta.as_of,
+          reason: '本轮 Protocol Earnings 代理值采用 DefiLlama Revenue；不再另扣项目方组织运营费和原生代币发行。DefiLlama 未单列的协议直接成本不作虚构扣除。',
+          displayNote: revenue.value === 0 ? 'DefiLlama 为 0' : 'Revenue 代理',
+        }),
       }
-    : { state: 'PENDING', reason: '现有发布快照没有可用 Revenue TTM。' };
+    : pendingMetric(
+        'DefiLlama Revenue 未覆盖，无法按本轮简化口径计算 Protocol Earnings 和 Cash P/E。',
+        revenue.meta.source_url,
+      );
 
-  const revenue = normalizeMetric(candidateMetric(candidate, 'revenue_ttm_usd'), baselineRevenue);
-  const grossFees = normalizeMetric(candidateMetric(candidate, 'gross_fees_ttm_usd'), {
-    state: 'PENDING',
-    reason: 'Gross Fees 尚未单列；Revenue 已按协议留存口径使用。',
-  });
-  const supplySidePayouts = normalizeMetric(candidateMetric(candidate, 'supply_side_payouts_ttm_usd'), {
-    state: 'PENDING',
-    reason: '供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。',
-  });
-  const directCosts = normalizeMetric(candidateMetric(candidate, 'direct_economic_costs_ttm_usd'), {
-    state: 'PENDING',
-    reason: '必要网络、结算或其他直接经济成本尚未单列。',
-  });
-  const realizedLosses = normalizeMetric(candidateMetric(candidate, 'realized_protocol_losses_ttm_usd'), {
-    state: 'PENDING',
-    reason: '当期已实现协议损失尚未单列。',
-  });
-  const protocolEarnings = computeProtocolEarnings(protocol.id, candidate, revenue, directCosts, realizedLosses);
+  const priceToSales = derivedMultiple(marketCap, revenue, 'P/S', generatedAt);
+  const priceToEarnings = derivedMultiple(marketCap, protocolEarnings, 'Cash P/E', generatedAt);
+  const shareholderYield = derivedYield(marketCap, holdersRevenue, 'Shareholder Yield', generatedAt);
+  const dividends = unavailableBreakdown('分红', generatedAt);
+  const repurchases = unavailableBreakdown('回购', generatedAt);
+  const feeBurns = unavailableBreakdown('费用销毁', generatedAt);
+  const directCosts = pendingMetric(
+    'DefiLlama Revenue 已反映平台定义的协议留存收入，但不提供可跨协议统一复核的直接经济成本明细；本轮不额外猜测。',
+    revenue.meta.source_url,
+  );
+  const realizedLosses = pendingMetric(
+    'DefiLlama 未提供可跨协议统一复核的已实现协议损失明细；本轮不额外猜测。',
+    revenue.meta.source_url,
+  );
+  const supplySidePayouts = pendingMetric(
+    '本轮采用 DefiLlama Revenue 作为留存收入，不反推 Fees 与 Revenue 之间的全部供应方分成。',
+    revenue.meta.source_url,
+  );
 
-  const dividends = normalizeMetric(candidateMetric(candidate, 'dividends_ttm_usd'), {
-    state: 'PENDING',
-    reason: '尚未完成外部资产分配金额的迁移分类。',
+  const marketCapMeta = meta({
+    state: 'ESTIMATED',
+    window: 'point-in-time',
+    source: 'DefiLlama protocol mcap',
+    sourceUrl: llama.market.source_url,
+    asOf: generatedAt,
+    confidence: llama.market.market_cap_method === 'DEFILLAMA_PROTOCOL_MCAP' ? 'medium' : 'low',
+    reason:
+      llama.market.market_cap_method === 'DEFILLAMA_PROTOCOL_MCAP'
+        ? '流通市值直接采用 DefiLlama protocol API 的当前 mcap。'
+        : `DefiLlama protocol API 未提供 mcap；使用 DefiLlama 当前价格 × DefiLlama token 页流通量快照 ${llama.market.circulating_supply_used} 估算。`,
+    displayNote: llama.market.market_cap_method === 'DEFILLAMA_PROTOCOL_MCAP' ? 'DefiLlama' : '价格×供应量',
   });
-  const repurchases = normalizeMetric(candidateMetric(candidate, 'repurchases_ttm_usd'), {
-    state: 'PENDING',
-    reason: '尚未完成已执行市场回购金额的迁移分类。',
+  const priceMeta = meta({
+    state: 'ESTIMATED',
+    window: 'point-in-time',
+    source: 'DefiLlama Coins API',
+    sourceUrl: `https://coins.llama.fi/prices/current/${encodeURIComponent(llama.mapping.coin_key)}`,
+    asOf: llama.market.price_timestamp,
+    confidence: llama.market.price_confidence >= 0.9 ? 'high' : 'medium',
+    reason: '价格来自 DefiLlama Coins API 当前价格，并在每日更新任务中刷新。',
+    displayNote: '每日更新',
   });
-  const feeBurns = normalizeMetric(candidateMetric(candidate, 'qualifying_fee_burns_ttm_usd'), {
-    state: 'PENDING',
-    reason: '尚未完成合格费用销毁金额的迁移分类。',
-  });
-
-  const buybackReturns = combineCapitalMetrics([repurchases, feeBurns], '回购与费用销毁');
-  const shareholderReturns = combineCapitalMetrics([dividends, repurchases, feeBurns], '持币者回报');
-  const dividendYield = derivedRatioMetric(dividends, marketCap, 'Dividend Yield');
-  const buybackYield = derivedRatioMetric(buybackReturns, marketCap, 'Buyback / Fee-burn Yield');
-  const shareholderYield = derivedRatioMetric(shareholderReturns, marketCap, 'Shareholder Yield');
-
-  const priceToSalesMetric = revenue.value !== null && revenue.value > 0
-    ? normalizeMetric({
-        value: round(marketCap / revenue.value),
-        state: revenue.state === 'VERIFIED' ? 'VERIFIED' : 'ESTIMATED',
-        window: revenue.window,
-        source: revenue.source,
-        as_of: protocol.as_of,
-        confidence: revenue.confidence,
-        reason: 'Market Cap ÷ Protocol Revenue TTM。',
-        display_note: revenue.state === 'VERIFIED' ? '' : '收入候选',
-      })
-    : revenue.state === 'N/A'
-      ? normalizeMetric({ state: 'N/A', reason: 'Revenue 不适用。' })
-      : normalizeMetric({ state: 'PENDING', reason: '缺少正的 Revenue TTM。' });
-
-  let priceToEarningsMetric;
-  if (protocolEarnings.state === 'N/A') {
-    priceToEarningsMetric = normalizeMetric({ state: 'N/A', reason: protocolEarnings.reason });
-  } else if (protocolEarnings.value !== null && protocolEarnings.value <= 0) {
-    priceToEarningsMetric = normalizeMetric({ state: 'N/M', reason: 'Protocol Earnings 小于或等于零。' });
-  } else if (protocolEarnings.value !== null) {
-    priceToEarningsMetric = normalizeMetric({
-      value: round(marketCap / protocolEarnings.value),
-      state: protocolEarnings.state === 'VERIFIED' ? 'VERIFIED' : 'ESTIMATED',
-      window: protocolEarnings.window,
-      source: protocolEarnings.source,
-      as_of: protocol.as_of,
-      confidence: protocolEarnings.confidence,
-      reason: 'Market Cap ÷ Protocol Earnings TTM。',
-      display_note: protocolEarnings.state === 'VERIFIED' ? '协议口径' : '首版协议口径估算',
-    });
-  } else {
-    priceToEarningsMetric = normalizeMetric({ state: 'PENDING', reason: '缺少可用 Protocol Earnings。' });
-  }
 
   const metricSources = [
-    grossFees,
-    supplySidePayouts,
-    revenue,
-    directCosts,
-    realizedLosses,
-    protocolEarnings,
-    dividends,
-    repurchases,
-    feeBurns,
-  ]
-    .filter((metric) => metric.source)
-    .map((metric) => metric.source);
+    llama.market.source_url,
+    grossFees.meta.source_url,
+    revenue.meta.source_url,
+    holdersRevenue.meta.source_url,
+  ].filter(Boolean);
 
   return {
-    id: protocol.id,
-    name: protocol.name,
-    ticker: protocol.ticker,
-    category: protocol.category,
-    as_of: protocol.as_of,
+    id: identity.id,
+    name: identity.name,
+    ticker: llama.ticker_override || identity.ticker,
+    category: identity.category,
+    as_of: generatedAt,
     market_data: {
+      price_usd: price,
       market_cap_usd: marketCap,
+      market_cap_method: llama.market.market_cap_method,
       enterprise_value_usd: null,
       shares_outstanding: null,
       diluted_shares_outstanding: null,
     },
     income_statement: {
-      period: 'TTM',
+      period: 'DefiLlama total1y',
       gross_fees_ttm_usd: grossFees.value,
       supply_side_payouts_ttm_usd: supplySidePayouts.value,
       revenue_ttm_usd: revenue.value,
@@ -388,7 +288,7 @@ function buildProtocol(protocol, snapshot, candidate) {
       operating_expenses_ttm_usd: null,
       operating_income_ttm_usd: protocolEarnings.value,
       net_income_ttm_usd: protocolEarnings.value,
-      coverage: protocolEarnings.state === 'VERIFIED' ? 'protocol_earnings_verified' : 'protocol_earnings_candidate',
+      coverage: Number.isFinite(protocolEarnings.value) ? 'defillama_revenue_proxy' : 'pending',
       organization_opex_policy: 'excluded',
       native_token_expense_policy: 'excluded',
     },
@@ -404,64 +304,67 @@ function buildProtocol(protocol, snapshot, candidate) {
       debt_and_liabilities_usd: null,
     },
     capital_returns: {
-      period: 'TTM',
+      period: 'DefiLlama total1y',
+      holders_revenue_ttm_usd: holdersRevenue.value,
       dividends_ttm_usd: dividends.value,
       share_repurchases_ttm_usd: repurchases.value,
       qualifying_fee_burns_ttm_usd: feeBurns.value,
-      share_retirement_ttm_usd: feeBurns.value,
+      share_retirement_ttm_usd: null,
       treasury_stock_usd: null,
       share_issuance_ttm_usd: null,
-      dividend_yield_pct: dividendYield.value,
-      buyback_yield_pct: buybackYield.value,
+      dividend_yield_pct: null,
+      buyback_yield_pct: null,
       shareholder_yield_pct: shareholderYield.value,
     },
     valuation: {
-      price_to_sales: priceToSalesMetric.value,
-      price_to_earnings: priceToEarningsMetric.value,
+      price_to_sales: priceToSales.value,
+      price_to_earnings: priceToEarnings.value,
       free_cash_flow_yield_pct: null,
     },
-    chain_diagnostics: candidate?.chain_diagnostics || null,
+    chain_diagnostics: null,
     metric_meta: {
-      market_cap: meta(marketCapMetric),
-      gross_fees: meta(grossFees),
-      supply_side_payouts: meta(supplySidePayouts),
-      revenue: meta(revenue),
-      direct_economic_costs: meta(directCosts),
-      realized_protocol_losses: meta(realizedLosses),
-      protocol_earnings: meta(protocolEarnings),
-      price_to_sales: meta(priceToSalesMetric),
-      price_to_earnings: meta(priceToEarningsMetric),
-      dividends: meta(dividends),
-      repurchases: meta(repurchases),
-      fee_burns: meta(feeBurns),
-      dividend_yield: meta(dividendYield),
-      buyback_yield: meta(buybackYield),
-      shareholder_yield: meta(shareholderYield),
+      price: priceMeta,
+      market_cap: marketCapMeta,
+      gross_fees: grossFees.meta,
+      supply_side_payouts: supplySidePayouts.meta,
+      revenue: revenue.meta,
+      direct_economic_costs: directCosts.meta,
+      realized_protocol_losses: realizedLosses.meta,
+      protocol_earnings: protocolEarnings.meta,
+      price_to_sales: priceToSales.meta,
+      price_to_earnings: priceToEarnings.meta,
+      holders_revenue: holdersRevenue.meta,
+      dividends: dividends.meta,
+      repurchases: repurchases.meta,
+      fee_burns: feeBurns.meta,
+      dividend_yield: dividends.meta,
+      buyback_yield: repurchases.meta,
+      shareholder_yield: shareholderYield.meta,
     },
     review: {
-      status: protocol.model_review?.status === 'pass' ? 'independent_pass' : 'pending',
-      confidence: candidate?.confidence || protocol.confidence || 'low',
+      status: identity.model_review?.status === 'pass' ? 'independent_pass' : 'pending',
+      confidence: 'medium',
       numeric_values_promoted: false,
-      numeric_review_status: 'phase1_candidate',
-      data_state: 'phase1_candidate',
+      numeric_review_status: 'defillama_round_candidate',
+      data_state: 'defillama_daily_candidate',
     },
     provenance: {
-      repository: snapshot.source_snapshot.repository,
-      ref: snapshot.source_snapshot.ref,
-      source_commit: snapshot.source_snapshot.commit,
-      observed_at: snapshot.source_snapshot.data_generated_at,
-      register_generated_at: snapshot.review_snapshot.register_generated_at,
-      candidate_file: candidate?.candidate_file || null,
+      repository: 'DefiLlama',
+      ref: 'daily API snapshot',
+      source_commit: null,
+      observed_at: generatedAt,
+      register_generated_at: null,
+      candidate_file: 'data/defillama-daily-snapshot.json',
       metric_sources: [...new Set(metricSources)],
       evidence_boundary:
-        '证据优先级为链上一手数据、官方披露、第三方兜底。第三方聚合值不能覆盖链上或官方冲突，也不能在一手账本未闭合时冒充已核实 TTM。',
+        '本轮按用户决策统一使用 DefiLlama。所有数值标记为第三方聚合估算；不以旧数据、链上重建或其他平台补缺。Holders Revenue 只作为聚合持币者收入，不冒充分红或回购明细。',
     },
     null_reasons: {
-      income_statement: protocolEarnings.reason,
+      income_statement: protocolEarnings.meta.reason,
       cash_flow: NULL_REASONS.cash_flow,
       balance_sheet: NULL_REASONS.balance_sheet,
-      capital_returns: shareholderReturns.reason,
-      price_to_earnings: priceToEarningsMetric.reason,
+      capital_returns: holdersRevenue.meta.reason,
+      price_to_earnings: priceToEarnings.meta.reason,
     },
   };
 }
@@ -471,72 +374,77 @@ function countNumeric(protocols, getter) {
 }
 
 function main() {
-  const snapshot = JSON.parse(fs.readFileSync(INPUT, 'utf8'));
-  const candidates = loadCandidates();
-  const protocols = snapshot.protocols
-    .map((protocol) => buildProtocol(protocol, snapshot, candidates.get(protocol.id)))
+  const identities = JSON.parse(fs.readFileSync(IDENTITY_INPUT, 'utf8'));
+  const defillama = JSON.parse(fs.readFileSync(DEFILLAMA_INPUT, 'utf8'));
+  if (defillama.source_policy !== 'DEFILLAMA_ONLY_ROUND') {
+    throw new Error('DefiLlama snapshot source policy mismatch');
+  }
+
+  const llamaById = new Map(defillama.protocols.map((protocol) => [protocol.id, protocol]));
+  const protocols = identities.protocols
+    .map((identity) => buildProtocol(identity, llamaById.get(identity.id), defillama.generated_at))
     .sort((left, right) => left.name.localeCompare(right.name, 'en'));
 
   const output = {
-    schema_version: '4.0.0-test-candidate',
+    schema_version: '5.0.0-defillama-daily',
     terminology: 'public-equity-protocol-economics',
-    generated_at: snapshot.generated_at,
-    observed_at: snapshot.source_snapshot.data_generated_at,
-    intended_use: 'Crypto3D test-site phase-1 protocol economics comparison',
-    source_snapshot: snapshot.source_snapshot,
+    generated_at: defillama.generated_at,
+    observed_at: defillama.generated_at,
+    intended_use: 'Crypto3D test-site DefiLlama daily comparison; indicative meeting view only',
+    source_snapshot: {
+      provider: 'DefiLlama',
+      file: 'data/defillama-daily-snapshot.json',
+      generated_at: defillama.generated_at,
+      freshness_policy: defillama.freshness_policy,
+      coverage: defillama.coverage,
+    },
     review_snapshot: {
-      ...snapshot.review_snapshot,
+      model_review_passed_protocols: identities.review_snapshot.model_review_passed_protocols,
       numeric_values_promoted: false,
-      numeric_review_status: 'phase1_candidate',
+      numeric_review_status: 'defillama_round_candidate',
     },
     source_policy: {
-      order: ['CHAIN_PRIMARY', 'OFFICIAL_PRIMARY', 'THIRD_PARTY_FALLBACK'],
-      chain_first:
-        '能从链上直接重建的执行金额，必须使用官方节点、RPC、API、合约事件、协议地址或原始账本作为主值。',
-      official_second:
-        '链上不可得或业务天然在链下时，使用项目官方公告、报告、治理执行记录、官方仪表盘或审计材料。',
-      third_party_last:
-        'DefiLlama、Token Terminal、Dune 等第三方只作兜底或交叉检查；必须标记为估算，不得覆盖链上或官方证据。',
-      conflict_policy:
-        '来源冲突时不取平均；保留链上主值、记录差异并触发人工复核。链上时点余额、累计成本和部分窗口不得冒充 TTM。',
+      mode: 'DEFILLAMA_ONLY_ROUND',
+      provider: 'DefiLlama',
+      legacy_fallback_allowed: false,
+      rule: '本轮所有市场与财务数据统一来自 DefiLlama；价格每日刷新；缺失值保持待核实，不使用旧快照或其他来源回填。',
+      limitation: 'DefiLlama 是第三方聚合平台，因此所有非零数值均显示为估算。该规则是会议版测试站的轮次口径，不改写长期链上优先研究原则。',
     },
     expense_policy: {
       included:
-        '供应方分成、返佣、必要网络/结算成本以及已实现坏账、赔付和协议风险损失。',
+        'DefiLlama Revenue 已按平台口径从 Fees 中区分协议留存收入；本轮不额外反推或虚构未单列的直接支出。',
       excluded:
         '项目方、基金会和开发公司的组织运营费用，以及原生代币发行、激励、解锁和归属。',
     },
     null_policy: {
-      PENDING: '证据不足，待核实；不等于 0。',
-      ZERO: '已有证据确认数值为 0。',
-      'N/A': '项目结构上不适用。',
-      'N/M': '分母小于或等于 0，倍数无经济意义。',
-      ESTIMATED: '使用现有快照、官方汇总、第三方映射或首版代理估算，以“~”显示。',
+      PENDING: 'DefiLlama 未覆盖或不提供该拆分；不等于 0，也不使用旧数据回填。',
+      ZERO: 'DefiLlama 的 total1y 数值为 0。',
+      'N/M': '分母小于或等于 0，倍数没有经济意义。',
+      ESTIMATED: 'DefiLlama 第三方聚合值或由其字段直接计算的结果，以“~”显示。',
     },
     formulas: {
-      protocol_revenue:
-        'Protocol Revenue = Gross Fees − Supply-side / Participant Payouts − Rebates / Refunds',
+      gross_fees: 'Fees TTM = DefiLlama dailyFees total1y',
+      protocol_revenue: 'Protocol Revenue TTM = DefiLlama dailyRevenue total1y',
       protocol_earnings:
-        'Protocol Earnings = Protocol Revenue − Direct Economic Costs − Realized Protocol Losses',
-      price_to_sales: 'P/S = Circulating Market Cap ÷ Protocol Revenue TTM',
-      price_to_earnings: 'Cash P/E = Circulating Market Cap ÷ Protocol Earnings TTM',
-      dividend_yield: 'Dividend Yield = Executed Dividends TTM ÷ Circulating Market Cap × 100%',
-      buyback_yield:
-        'Buyback Yield = (Executed Repurchases + Qualifying Fee Burns) TTM ÷ Circulating Market Cap × 100%',
-      shareholder_yield: 'Shareholder Yield = Dividend Yield + Buyback / Fee-burn Yield',
+        'Protocol Earnings proxy = DefiLlama Revenue total1y；不扣项目方组织运营费和原生代币发行',
+      price_to_sales: 'P/S = DefiLlama Circulating Market Cap ÷ DefiLlama Revenue total1y',
+      price_to_earnings: 'Cash P/E = DefiLlama Circulating Market Cap ÷ Protocol Earnings proxy',
+      holders_revenue: 'Holders Revenue TTM = DefiLlama dailyHoldersRevenue total1y',
+      shareholder_yield: 'Shareholder Yield proxy = DefiLlama Holders Revenue total1y ÷ DefiLlama Circulating Market Cap × 100%',
     },
     coverage: {
       protocol_count: protocols.length,
+      price_count: countNumeric(protocols, (protocol) => protocol.market_data.price_usd),
       market_cap_count: countNumeric(protocols, (protocol) => protocol.market_data.market_cap_usd),
+      gross_fees_count: countNumeric(protocols, (protocol) => protocol.income_statement.gross_fees_ttm_usd),
       revenue_count: countNumeric(protocols, (protocol) => protocol.income_statement.revenue_ttm_usd),
       price_to_sales_count: countNumeric(protocols, (protocol) => protocol.valuation.price_to_sales),
       net_income_count: countNumeric(protocols, (protocol) => protocol.income_statement.net_income_ttm_usd),
       price_to_earnings_count: countNumeric(protocols, (protocol) => protocol.valuation.price_to_earnings),
-      dividends_count: countNumeric(protocols, (protocol) => protocol.capital_returns.dividends_ttm_usd),
-      repurchases_count: countNumeric(protocols, (protocol) => protocol.capital_returns.share_repurchases_ttm_usd),
+      holders_revenue_count: countNumeric(protocols, (protocol) => protocol.capital_returns.holders_revenue_ttm_usd),
       shareholder_yield_count: countNumeric(protocols, (protocol) => protocol.capital_returns.shareholder_yield_pct),
       independent_pass_count: protocols.filter((protocol) => protocol.review.status === 'independent_pass').length,
-      candidate_file_count: candidates.size,
+      candidate_file_count: protocols.length,
     },
     protocols,
   };
@@ -548,7 +456,9 @@ function main() {
     'utf8',
   );
   console.log(
-    `Built ${protocols.length} protocols: Revenue ${output.coverage.revenue_count}, P/S ${output.coverage.price_to_sales_count}, Cash P/E ${output.coverage.price_to_earnings_count}, Shareholder Yield ${output.coverage.shareholder_yield_count}.`,
+    `Built ${protocols.length} protocols from DefiLlama: Fees ${output.coverage.gross_fees_count}, `
+      + `Revenue/P-E ${output.coverage.revenue_count}/${output.coverage.price_to_earnings_count}, `
+      + `Holders Revenue/Yield ${output.coverage.holders_revenue_count}/${output.coverage.shareholder_yield_count}.`,
   );
 }
 

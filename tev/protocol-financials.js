@@ -118,9 +118,7 @@
       ? 'Cash P/E · Market Cap ÷ Protocol Earnings TTM'
       : hasPS
         ? 'Price / Sales · Market Cap ÷ Protocol Revenue TTM'
-        : protocol.chain_diagnostics
-          ? 'CHAIN-FIRST · TTM 链上账本待闭合'
-          : 'VALUATION · 收入与收益证据待闭合';
+        : 'VALUATION · DefiLlama Revenue 暂无可用值';
     const chain = protocol.chain_diagnostics;
 
     root.innerHTML = `
@@ -131,7 +129,7 @@
           <div class="protocol-info">
             <h1>${protocol.name}<span class="metric-status ${passed ? 'pass' : 'pending'}">${passed ? '框架已复核' : '候选待复核'}</span></h1>
             <div class="protocol-subtitle">${protocol.ticker} · ${categoryLabels[protocol.category] || protocol.category}</div>
-            <div class="protocol-meta"><span>数据截至 ${date(protocol.as_of)}</span><span>既有框架置信度 ${protocol.review.confidence.toUpperCase()}</span><span>数值状态：首版候选</span></div>
+            <div class="protocol-meta"><span>数据截至 ${date(protocol.as_of)}</span><span>来源：DefiLlama</span><span>数值状态：第三方聚合估算</span></div>
           </div>
         </div>
         <div class="tev-highlight">
@@ -149,10 +147,8 @@
           ${summaryItem('Protocol Earnings TTM', '协议经济收益', money(income.net_income_ttm_usd, 'protocol_earnings'))}
           ${summaryItem('P/S', '市销率', multiple(valuation.price_to_sales, 'price_to_sales'))}
           ${summaryItem('Cash P/E', '协议口径市盈率', multiple(valuation.price_to_earnings, 'price_to_earnings'))}
-          ${summaryItem('Dividends TTM', '股息', money(returns.dividends_ttm_usd, 'dividends'))}
-          ${summaryItem('Repurchases TTM', '代币回购', money(returns.share_repurchases_ttm_usd, 'repurchases'))}
-          ${summaryItem('Dividend Yield', '股息率', percent(returns.dividend_yield_pct, 'dividend_yield'))}
-          ${summaryItem('Buyback / Fee-burn Yield', '回购与费用销毁收益率', percent(returns.buyback_yield_pct, 'buyback_yield'))}
+          ${summaryItem('Fees TTM', '用户总费用', money(income.gross_fees_ttm_usd, 'gross_fees'))}
+          ${summaryItem('Holders Revenue TTM', '持币者收入', money(returns.holders_revenue_ttm_usd, 'holders_revenue'))}
           ${summaryItem('Shareholder Yield', '持币者回报率', percent(returns.shareholder_yield_pct, 'shareholder_yield'))}
         </div>
       </section>
@@ -160,11 +156,11 @@
       ${section('Protocol Earnings / 协议经济收益', '📄', [
         row('Gross Fees / 用户总费用', money(income.gross_fees_ttm_usd, 'gross_fees'), '用户支付的 TTM 总费用'),
         row('Supply-side Payouts / 供应方分成', money(income.supply_side_payouts_ttm_usd, 'supply_side_payouts'), '存款人、LP、验证者、运营商及返佣分成'),
-        row('Protocol Revenue / 协议留存收入', money(income.revenue_ttm_usd, 'revenue'), 'Gross Fees − 供应方分成 − 返佣/退款'),
+        row('Protocol Revenue / 协议留存收入', money(income.revenue_ttm_usd, 'revenue'), 'DefiLlama dailyRevenue total1y'),
         row('Direct Economic Costs / 直接经济成本', money(income.direct_economic_costs_ttm_usd, 'direct_economic_costs'), '必要网络、结算及收入直接成本'),
         row('Realized Protocol Losses / 已实现协议损失', money(income.realized_protocol_losses_ttm_usd, 'realized_protocol_losses'), '坏账、赔付及已实现风险损失'),
-        row('Protocol Earnings / 协议经济收益', money(income.net_income_ttm_usd, 'protocol_earnings'), 'Revenue − Direct Economic Costs − Realized Losses'),
-      ], '不统计项目方、基金会或开发公司的组织运营费用；原生代币激励、解锁和归属不进入 Cash P/E。')}
+        row('Protocol Earnings / 协议经济收益', money(income.net_income_ttm_usd, 'protocol_earnings'), '本轮代理值 = DefiLlama Revenue total1y'),
+      ], '本轮不虚构 DefiLlama 没有提供的直接成本明细；Protocol Earnings 以 Revenue 为代理。不统计项目方、基金会或开发公司的组织运营费用，原生代币激励、解锁和归属不进入 Cash P/E。')}
 
       ${section('Cash Flow / 现金流量表', '💵', [
         row('Operating Cash Flow / 经营现金流', legacyMoney(cash.operating_cash_flow_ttm_usd), '经营现金流入 − 流出'),
@@ -181,17 +177,18 @@
       ], protocol.null_reasons.balance_sheet)}
 
       ${section('Capital Returns / 资本回报', '↩️', [
+        row('Holders Revenue / 持币者收入', money(returns.holders_revenue_ttm_usd, 'holders_revenue'), 'DefiLlama dailyHoldersRevenue total1y'),
         row('Dividends / 股息', money(returns.dividends_ttm_usd, 'dividends'), 'TTM 已执行外部资产分配'),
         row('Share Repurchases / 代币回购', money(returns.share_repurchases_ttm_usd, 'repurchases'), 'TTM 协议出资市场购买'),
         row('Qualifying Fee Burns / 合格费用销毁', money(returns.qualifying_fee_burns_ttm_usd, 'fee_burns'), '费用支持且不可逆退出供应'),
         row('Share Retirement / 注销价值', legacyMoney(returns.share_retirement_ttm_usd), 'TTM 不可逆退出流通'),
         row('Treasury Stock / 国库回购库存', legacyMoney(returns.treasury_stock_usd), '回购后仍由国库控制'),
         row('Supply Growth / 供应增长', legacyMoney(returns.share_issuance_ttm_usd), '仅作供应风险披露，不进入 Cash P/E'),
-        row('Shareholder Yield / 持币者回报率', percent(returns.shareholder_yield_pct, 'shareholder_yield'), 'Dividend Yield + Buyback / Fee-burn Yield'),
-      ], '只统计已执行分红、市场回购与合格费用销毁；预算、内部转账和原生代币发行不计入资本回报。')}
+        row('Shareholder Yield / 持币者回报率', percent(returns.shareholder_yield_pct, 'shareholder_yield'), 'Holders Revenue total1y ÷ DefiLlama 流通市值'),
+      ], 'Holders Revenue 是 DefiLlama 聚合口径，不能可靠拆分时，不把它冒充为分红、回购或费用销毁明细。')}
 
       ${section('Valuation / 估值', '🧮', [
-        row('Market Capitalization / 总市值', money(protocol.market_data.market_cap_usd, 'market_cap'), '流通价格 × 流通供应'),
+        row('Market Capitalization / 总市值', money(protocol.market_data.market_cap_usd, 'market_cap'), 'DefiLlama 当前流通市值'),
         row('Price / Sales / 市销率', multiple(valuation.price_to_sales, 'price_to_sales'), 'Market Cap ÷ Protocol Revenue TTM'),
         row('Cash Price / Earnings / 协议口径市盈率', multiple(valuation.price_to_earnings, 'price_to_earnings'), 'Market Cap ÷ Protocol Earnings TTM'),
         row('Free Cash Flow Yield / 自由现金流收益率', percent(valuation.free_cash_flow_yield_pct), 'Free Cash Flow ÷ Market Cap'),
@@ -201,9 +198,9 @@
         <div class="section-title"><span class="icon">🔗</span><span>数据来源与审核边界</span></div>
         <div class="source-grid">
           <div class="source-item"><span>数据观察时间</span><strong>${date(protocol.provenance.observed_at)}</strong></div>
-          <div class="source-item"><span>既有审核登记时间</span><strong>${date(protocol.provenance.register_generated_at)}</strong></div>
-          <div class="source-item"><span>数据来源原则</span><strong>${chain ? '链上一手数据优先' : '链上 → 官方 → 第三方兜底'}</strong></div>
-          <div class="source-item"><span>源提交</span><strong class="value">${protocol.provenance.source_commit}</strong></div>
+          <div class="source-item"><span>市场数据方法</span><strong>${protocol.market_data.market_cap_method}</strong></div>
+          <div class="source-item"><span>本轮数据来源</span><strong>DefiLlama 单一来源</strong></div>
+          <div class="source-item"><span>更新频率</span><strong>每日自动刷新</strong></div>
           ${chain ? `
           <div class="source-item"><span>Assistance Fund 地址</span><strong class="value">${chain.assistance_fund.address}</strong></div>
           <div class="source-item"><span>AF 链上 HYPE 余额</span><strong>${compactNumber(chain.assistance_fund.hype_balance, 4)} HYPE</strong></div>
@@ -212,7 +209,7 @@
           <div class="source-item"><span>部分窗口链上买入</span><strong>${legacyMoney(chain.fills_window.purchase_consideration_usd)}</strong></div>
           <div class="source-item"><span>完整 TTM</span><strong>${chain.fills_window.complete_for_ttm ? '已闭合' : '未闭合'}</strong></div>` : ''}
         </div>
-        <div class="section-note"><strong>待核实不等于 0，“~”代表估算。</strong> ${protocol.provenance.evidence_boundary}${chain ? ` AF 的 entryNtl 是时点累计持仓成本，不是 TTM 收入或利润；当前官方 API 成交窗口仅作为链上诊断，不能年化冒充完整 TTM。` : ''}</div>
+        <div class="section-note"><strong>待核实不等于 0，“~”代表 DefiLlama 第三方聚合估算。</strong> ${protocol.provenance.evidence_boundary}</div>
       </section>`;
   }
 

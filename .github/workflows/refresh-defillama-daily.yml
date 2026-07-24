@@ -1,0 +1,56 @@
+name: Refresh DefiLlama daily snapshot
+
+on:
+  schedule:
+    # 00:17 UTC = 08:17 Asia/Shanghai
+    - cron: "17 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: defillama-daily-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out test site
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Fetch DefiLlama and rebuild
+        run: |
+          node scripts/fetch-defillama-daily.js
+          node scripts/build-us-equity-financials.js
+          node scripts/validate-us-equity-financials.js
+
+      - name: Commit refreshed snapshot
+        id: commit
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No data changes."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/defillama-daily-snapshot.json data/protocol-financials-us-equity.json data/protocol-financials-us-equity.js
+          git commit -m "data: refresh DefiLlama daily snapshot"
+          git push origin "HEAD:${{ github.event.repository.default_branch }}"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Request GitHub Pages rebuild
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"

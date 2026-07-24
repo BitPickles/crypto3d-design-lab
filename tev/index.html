@@ -72,7 +72,7 @@
     <section class="hero">
       <div class="container">
         <h1>加密协议财务与估值</h1>
-        <p>保留原有页面结构，以协议留存收入、直接经济成本与持币者回报衡量协议价值；项目方运营费用及原生代币支出不进入 Cash P/E。</p>
+        <p>保留原有页面结构，本轮统一用 DefiLlama 的市场数据、Revenue 与 Holders Revenue 比较协议估值；项目方运营费用及原生代币支出不进入 Cash P/E。</p>
       </div>
     </section>
 
@@ -80,7 +80,7 @@
       <div class="container">
         <div class="snapshot-card">
           <div class="snapshot-head">
-            <div><div class="snapshot-title">26 协议财务快照</div><div class="snapshot-subtitle">数据截至 <span id="snapshot-as-of">—</span> · 来源：链上一手优先、官方次之、第三方兜底</div></div>
+            <div><div class="snapshot-title">26 协议财务快照</div><div class="snapshot-subtitle">数据截至 <span id="snapshot-as-of">—</span> · 本轮来源：DefiLlama 单一来源 · 价格每日自动刷新</div></div>
             <span class="snapshot-badge">测试站 · 非生产</span>
           </div>
           <div class="snapshot-grid">
@@ -90,7 +90,7 @@
             <div class="snapshot-metric"><strong id="snapshot-ps-count">—</strong><span>P/S 可计算</span></div>
             <div class="snapshot-metric"><strong id="snapshot-pe-count">—</strong><span>Cash P/E 可计算</span></div>
           </div>
-          <p class="snapshot-caveat">Cash P/E = Market Cap ÷ TTM Protocol Earnings。只扣除供应方分成、返佣、必要网络/结算成本及已实现协议损失；不统计项目方组织运营费用与原生代币支出。“~”为估算，待核实不等于 0。</p>
+          <p class="snapshot-caveat">本轮 Protocol Earnings 采用 DefiLlama Revenue total1y 代理；Cash P/E = DefiLlama 流通市值 ÷ Protocol Earnings。项目方组织运营费用与原生代币支出不扣除；DefiLlama 未覆盖的字段保持待核实，不使用旧数据回填。“~”表示第三方聚合估算。</p>
         </div>
       </div>
     </section>
@@ -121,8 +121,8 @@
                   <th class="text-right sortable" data-sort="net_income">Protocol Earnings TTM</th>
                   <th class="text-right sortable" data-sort="price_to_sales">P/S</th>
                   <th class="text-right sortable" data-sort="price_to_earnings">Cash P/E</th>
-                  <th class="text-right">Dividends TTM</th>
-                  <th class="text-right">Repurchases TTM</th>
+                  <th class="text-right">Fees TTM</th>
+                  <th class="text-right">Holders Revenue TTM</th>
                   <th class="text-right">Shareholder Yield</th>
                   <th class="text-right">状态</th>
                 </tr>
@@ -140,18 +140,18 @@
         <div class="intro-grid">
           <div class="intro-card">
             <h2><span class="icon">📊</span> 利润表与估值</h2>
-            <p><strong>Revenue</strong> 是协议保留的 TTM 收入，不等于用户支付的全部 Fees。Protocol Earnings 使用协议经济口径，只扣直接经济成本与已实现协议损失，不扣项目方组织运营费用。</p>
+            <p><strong>Revenue</strong> 采用 DefiLlama dailyRevenue 的 total1y，不等于用户支付的全部 Fees。本轮 Protocol Earnings 使用同一 Revenue 作为简化代理，不扣项目方组织运营费用和原生代币发行。</p>
             <div class="formula-box">P/S = Market Cap ÷ Revenue (TTM)</div>
             <div class="formula-box">Cash P/E = Market Cap ÷ Protocol Earnings (TTM)</div>
           </div>
           <div class="intro-card">
             <h2><span class="icon">💡</span> 资本回报</h2>
-            <p>Shareholder Yield 统一表示持币者回报率。实际分红、协议出资回购与合格的费用支持销毁分别记录；代币增发不扣减该指标，只作为供应风险披露。</p>
-            <div class="formula-box">Shareholder Yield = Dividend Yield + Buyback / Fee-burn Yield</div>
+            <p>本轮 Shareholder Yield 直接使用 DefiLlama Holders Revenue total1y 与流通市值计算。Holders Revenue 是聚合口径，不强行拆成分红、回购或销毁；代币增发不从该指标扣减。</p>
+            <div class="formula-box">Shareholder Yield = Holders Revenue (total1y) ÷ Market Cap</div>
           </div>
           <div class="intro-card method-card-wide">
             <h2><span class="icon">🧮</span> 空值与证据边界</h2>
-            <p>公共字段统一，协议计算模型不强行统一。每个协议仍按自身业务、治理版本、资金流和支出边界独立计算；页面区分估算、待核实、结构不适用和已核实为零。</p>
+            <p>本轮会议版统一采用 DefiLlama 字段，便于横向比较。第三方聚合值统一显示为估算；DefiLlama 没有提供的字段显示待核实，绝不把空值当作零。</p>
             <div class="formula-stack">
               <div class="formula-box">0 = 已确认确实为零</div>
               <div class="formula-box">N/A = 结构上不适用</div>
@@ -173,7 +173,7 @@
           </div>
           <div class="video-card">
             <h2>📘 协议财务研究框架</h2>
-            <div class="research-frame"><p>先确认收入归属，再扣除供应方分成、必要结算成本与已实现协议损失；项目方组织运营费用及原生代币支出不进入 Cash P/E。</p><div class="formula-box">Fees → Protocol Revenue → Protocol Earnings → Cash P/E</div><p>数据证据按链上一手、官方披露、第三方兜底排序；股息、回购、费用销毁和供应增长分别记录。</p></div>
+            <div class="research-frame"><p>本轮先用 DefiLlama 的 Fees、Revenue 与 Holders Revenue 建立可重复的会议快照；项目方组织运营费用及原生代币支出不进入 Cash P/E。</p><div class="formula-box">Fees → Revenue proxy → Protocol Earnings proxy → Cash P/E</div><p>价格与市值每日从 DefiLlama 更新。平台缺失项保留待核实，不用旧值或其他平台拼接。</p></div>
           </div>
         </div>
       </div>

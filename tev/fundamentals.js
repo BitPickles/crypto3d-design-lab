@@ -135,8 +135,8 @@
         <td class="text-right">${valueMarkup(protocol, 'protocol_earnings', income.net_income_ttm_usd, formatMoney, '协议口径')}</td>
         <td class="text-right">${valueMarkup(protocol, 'price_to_sales', protocol.valuation.price_to_sales, formatMultiple)}</td>
         <td class="text-right">${valueMarkup(protocol, 'price_to_earnings', protocol.valuation.price_to_earnings, formatMultiple, '协议口径')}</td>
-        <td class="text-right">${valueMarkup(protocol, 'dividends', returns.dividends_ttm_usd, formatMoney)}</td>
-        <td class="text-right">${valueMarkup(protocol, 'repurchases', returns.share_repurchases_ttm_usd, formatMoney)}</td>
+        <td class="text-right">${valueMarkup(protocol, 'gross_fees', income.gross_fees_ttm_usd, formatMoney)}</td>
+        <td class="text-right">${valueMarkup(protocol, 'holders_revenue', returns.holders_revenue_ttm_usd, formatMoney)}</td>
         <td class="text-right">${valueMarkup(protocol, 'shareholder_yield', returns.shareholder_yield_pct, formatPercent)}</td>
         <td class="text-right">${reviewBadge(protocol)}</td>
       </tr>`;
@@ -163,8 +163,8 @@
     document.querySelector('#snapshot-revenue-count').textContent = `${data.coverage.revenue_count}/26`;
     document.querySelector('#snapshot-ps-count').textContent = `${data.coverage.price_to_sales_count}/26`;
     document.querySelector('#snapshot-pe-count').textContent = `${data.coverage.price_to_earnings_count}/26`;
-    document.querySelector('#data-update-time').textContent = `数据更新: ${date} · 既有框架复核 ${data.coverage.independent_pass_count}/26 · 本轮数值均为首版候选`;
-    document.querySelector('#footer-updated').textContent = `Crypto3D Research · 数据截至 ${date}`;
+    document.querySelector('#data-update-time').textContent = `数据更新: ${date} · DefiLlama 每日快照 · 缺失项不使用旧数据回填`;
+    document.querySelector('#footer-updated').textContent = `Crypto3D Research · DefiLlama 数据截至 ${date}`;
 
     document.querySelectorAll('.filter-btn').forEach((button) => {
       button.addEventListener('click', () => {

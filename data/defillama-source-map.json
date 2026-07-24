@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "source_policy": "DEFILLAMA_ONLY_ROUND",
+  "protocols": {
+    "aave": {
+      "market_slug": "aave",
+      "fees_slug": "aave",
+      "coin_key": "coingecko:aave"
+    },
+    "aster": {
+      "market_slug": "aster",
+      "fees_slug": "aster",
+      "coin_key": "coingecko:aster-2"
+    },
+    "bgb": {
+      "market_slug": null,
+      "fees_slug": null,
+      "coin_key": "coingecko:bitget-token",
+      "circulating_supply_fallback": 699990000,
+      "supply_source": "https://defillama.com/token/BGB",
+      "supply_observed_at": "2026-07-24"
+    },
+    "bnb": {
+      "market_slug": "binance-smart-chain",
+      "fees_slug": "bsc",
+      "coin_key": "coingecko:binancecoin"
+    },
+    "compound": {
+      "market_slug": "compound-finance",
+      "fees_slug": "compound-finance",
+      "coin_key": "coingecko:compound-governance-token"
+    },
+    "curve": {
+      "market_slug": "curve-finance",
+      "fees_slug": "curve-finance",
+      "coin_key": "coingecko:curve-dao-token"
+    },
+    "dydx": {
+      "market_slug": "dydx",
+      "fees_slug": "dydx",
+      "coin_key": "coingecko:dydx-chain"
+    },
+    "eigenlayer": {
+      "market_slug": "eigencloud",
+      "fees_slug": "eigenlayer",
+      "coin_key": "coingecko:eigenlayer"
+    },
+    "ethena": {
+      "market_slug": "ethena",
+      "fees_slug": "ethena",
+      "coin_key": "coingecko:ethena"
+    },
+    "etherfi": {
+      "market_slug": "ether.fi",
+      "fees_slug": "ether.fi",
+      "coin_key": "coingecko:ether-fi"
+    },
+    "fluid": {
+      "market_slug": "fluid",
+      "fees_slug": "fluid",
+      "coin_key": "coingecko:instadapp"
+    },
+    "gmx": {
+      "market_slug": "gmx",
+      "fees_slug": "gmx",
+      "coin_key": "coingecko:gmx"
+    },
+    "hype": {
+      "market_slug": "hyperliquid",
+      "fees_slug": "hyperliquid",
+      "coin_key": "coingecko:hyperliquid"
+    },
+    "jito": {
+      "market_slug": "jito",
+      "fees_slug": "jito",
+      "coin_key": "coingecko:jito-governance-token"
+    },
+    "justlend": {
+      "market_slug": "justlend",
+      "fees_slug": "justlend",
+      "coin_key": "coingecko:just"
+    },
+    "kamino": {
+      "market_slug": "kamino",
+      "fees_slug": "kamino",
+      "coin_key": "coingecko:kamino"
+    },
+    "lido": {
+      "market_slug": "lido",
+      "fees_slug": "lido",
+      "coin_key": "coingecko:lido-dao"
+    },
+    "maple": {
+      "market_slug": "maple-finance",
+      "fees_slug": "maple",
+      "coin_key": "coingecko:syrup"
+    },
+    "mnt": {
+      "market_slug": "mantle-bridge",
+      "fees_slug": "mantle",
+      "coin_key": "coingecko:mantle"
+    },
+    "morpho": {
+      "market_slug": "morpho",
+      "fees_slug": "morpho",
+      "coin_key": "coingecko:morpho"
+    },
+    "okb": {
+      "market_slug": "okx",
+      "fees_slug": null,
+      "coin_key": "coingecko:okb"
+    },
+    "pancakeswap": {
+      "market_slug": "pancakeswap",
+      "fees_slug": "pancakeswap",
+      "coin_key": "coingecko:pancakeswap-token"
+    },
+    "pendle": {
+      "market_slug": "pendle",
+      "fees_slug": "pendle",
+      "coin_key": "coingecko:pendle"
+    },
+    "sky": {
+      "market_slug": "sky",
+      "fees_slug": "sky",
+      "coin_key": "coingecko:sky",
+      "ticker_override": "SKY"
+    },
+    "spark": {
+      "market_slug": "spark",
+      "fees_slug": "spark",
+      "coin_key": "coingecko:spark-2"
+    },
+    "uniswap": {
+      "market_slug": "uniswap",
+      "fees_slug": "uniswap",
+      "coin_key": "coingecko:uniswap"
+    }
+  }
+}
