@@ -373,6 +373,10 @@ function countNumeric(protocols, getter) {
   return protocols.filter((protocol) => Number.isFinite(getter(protocol))).length;
 }
 
+function nativeEol(text) {
+  return process.platform === 'win32' ? text.replace(/\n/g, '\r\n') : text;
+}
+
 function main() {
   const identities = JSON.parse(fs.readFileSync(IDENTITY_INPUT, 'utf8'));
   const defillama = JSON.parse(fs.readFileSync(DEFILLAMA_INPUT, 'utf8'));
@@ -449,10 +453,10 @@ function main() {
     protocols,
   };
 
-  fs.writeFileSync(OUTPUT_JSON, `${JSON.stringify(output, null, 2)}\n`, 'utf8');
+  fs.writeFileSync(OUTPUT_JSON, nativeEol(`${JSON.stringify(output, null, 2)}\n`), 'utf8');
   fs.writeFileSync(
     OUTPUT_JS,
-    `window.CRYPTO3D_PUBLIC_EQUITY = ${JSON.stringify(output, null, 2)};\n`,
+    nativeEol(`window.CRYPTO3D_PUBLIC_EQUITY = ${JSON.stringify(output, null, 2)};\n`),
     'utf8',
   );
   console.log(
