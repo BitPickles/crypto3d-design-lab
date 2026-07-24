@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "protocol_id": "hype",
+  "evidence_priority": "CHAIN_PRIMARY",
+  "observed_at": "2026-07-24T20:06:40.769Z",
+  "ttm_window": {
+    "start_inclusive": "2025-07-24T20:06:40.769Z",
+    "end_exclusive": "2026-07-24T20:06:40.769Z",
+    "expected_days": 365
+  },
+  "assistance_fund": {
+    "address": "0xfefefefefefefefefefefefefefefefefefefefe",
+    "hype_balance": 46016123.92473923,
+    "entry_ntl_usd": 1210093629.0637374,
+    "token_index": 150,
+    "source": "Hyperliquid official info API: spotClearinghouseState",
+    "source_url": "https://api.hyperliquid.xyz/info",
+    "semantic_limit": "Point-in-time account state. entryNtl is cumulative position cost, not TTM purchase cash or Protocol Earnings."
+  },
+  "fills_window": {
+    "all_rows": 16693,
+    "hype_buy_rows": 16646,
+    "observed_start": "2026-06-15T17:07:40.177Z",
+    "observed_end": "2026-07-24T20:05:42.620Z",
+    "hype_bought": 796262.37999999,
+    "purchase_consideration_usd": 52008479.56,
+    "complete_for_ttm": false,
+    "source": "Hyperliquid official info API: userFillsByTime",
+    "source_url": "https://api.hyperliquid.xyz/info",
+    "api_page_limit": 2000,
+    "api_documented_retention_limit": 10000,
+    "documentation_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint",
+    "semantic_limit": "The official documentation states a 2,000-fill response cap and a latest-10,000 retention limit. Paginated rows are deduplicated by trade id, but the observed window remains a partial chain diagnostic unless it spans the full TTM and reconciles opening/closing balances and transfers."
+  },
+  "official_mechanism": {
+    "fees_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/trading/fees",
+    "historical_data_url": "https://hyperliquid.gitbook.io/hyperliquid-docs/historical-data",
+    "summary": "Official documentation states that the Assistance Fund converts trading fees to HYPE automatically and burns the acquired HYPE. Complete historical reconstruction requires primary node data beyond the limited account fills endpoint."
+  },
+  "canonical_decision": {
+    "revenue_ttm_usd": "PENDING",
+    "protocol_earnings_ttm_usd": "PENDING",
+    "repurchases_ttm_usd": "PENDING",
+    "cash_pe": "PENDING",
+    "reason": "Chain-first policy blocks third-party or legacy snapshot fallback until the official TTM fee and Assistance Fund ledgers are complete and reconciled."
+  }
+}

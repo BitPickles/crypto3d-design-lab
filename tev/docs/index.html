@@ -210,14 +210,15 @@
 
         <section class="doc-section" id="sources">
           <h2>8. 数据来源与证据优先级</h2>
+          <div class="callout"><strong>统一原则：链上一手数据优先，项目官方公告、报告和仪表盘次之，第三方聚合数据仅作最后兜底。</strong> 能从链上重建的执行金额，不使用 DefiLlama 等聚合值替代主值。</div>
           <ol>
-            <li>链上执行记录、合约事件与可验证资金流。</li>
-            <li>协议官方文档、治理提案、已执行投票和基金会披露。</li>
-            <li>官方或授权的财务、国库和回购仪表盘。</li>
-            <li>DefiLlama、Token Terminal、Dune 等聚合数据，用于补充 Fees、Revenue 和 Holders Revenue，但必须核对字段含义、受益人和执行状态。</li>
+            <li><strong>链上一手数据：</strong>合约事件、协议节点/RPC、官方 API 原始账本、可验证地址和资金流。</li>
+            <li><strong>项目官方披露：</strong>官方公告、报告、治理提案及执行记录、基金会披露和官方仪表盘。</li>
+            <li><strong>第三方兜底：</strong>DefiLlama、Token Terminal、Dune 等聚合数据；只有前两级不可得时才能用于候选值。</li>
             <li>CoinGecko、CoinMarketCap 等市场数据，用于价格与流通市值，并核对正确的代币映射。</li>
           </ol>
-          <p>每个非空数字至少记录来源、观察日期、计算窗口、公式版本和证据状态。聚合平台的 Holders Revenue 不会自动等同于分红、已执行回购或现金净利润。</p>
+          <p>每个非空数字至少记录来源、证据层级、观察日期、计算窗口、公式版本和证据状态。第三方数值必须标记为估算，不得覆盖与链上或官方证据冲突的结果。聚合平台的 Holders Revenue 不会自动等同于分红、已执行回购或 Protocol Earnings。</p>
+          <p>链上时点余额、累计持仓成本和只覆盖部分成交的 API 响应只能作为诊断，不能直接年化为 TTM。来源冲突时不取平均，保留链上主值并进入人工复核。</p>
         </section>
 
         <section class="doc-section" id="states">

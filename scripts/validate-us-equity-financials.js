@@ -69,6 +69,13 @@ assert.strictEqual(fs.readFileSync(DATA_PATH, 'utf8'), firstBuild, 'Build must b
 
 const data = JSON.parse(firstBuild);
 assert.strictEqual(data.terminology, 'public-equity-protocol-economics');
+assert.deepStrictEqual(
+  data.source_policy.order,
+  ['CHAIN_PRIMARY', 'OFFICIAL_PRIMARY', 'THIRD_PARTY_FALLBACK'],
+  'Global source priority must be chain, official, then third-party fallback',
+);
+assert(data.source_policy.chain_first.includes('链上'), 'Missing chain-first source rule');
+assert(data.source_policy.third_party_last.includes('兜底'), 'Missing third-party fallback rule');
 assert.strictEqual(data.protocols.length, 26);
 assert.strictEqual(data.coverage.protocol_count, 26);
 assert.strictEqual(new Set(data.protocols.map((protocol) => protocol.id)).size, 26);
@@ -110,6 +117,10 @@ for (const protocol of data.protocols) {
     assert(protocol.metric_meta[key], `${protocol.id}: missing metric_meta.${key}`);
     assert(VALID_STATES.has(protocol.metric_meta[key].state), `${protocol.id}: invalid state for ${key}`);
     assert(protocol.metric_meta[key].reason, `${protocol.id}: missing reason for ${key}`);
+    assert(
+      Object.hasOwn(protocol.metric_meta[key], 'source_tier'),
+      `${protocol.id}: missing source_tier field for ${key}`,
+    );
   }
 
   for (const value of [
@@ -167,6 +178,46 @@ for (const id of ['bgb', 'bnb', 'okb', 'mnt']) {
   assert.strictEqual(protocol.metric_meta.price_to_earnings.state, 'N/A', `${id}: Cash P/E must be N/A`);
 }
 
+const hype = data.protocols.find((protocol) => protocol.id === 'hype');
+assert(hype, 'hype: missing protocol');
+assert.strictEqual(hype.income_statement.revenue_ttm_usd, null, 'hype: legacy revenue proxy must be withdrawn');
+assert.strictEqual(hype.income_statement.net_income_ttm_usd, null, 'hype: earnings must remain pending');
+assert.strictEqual(hype.valuation.price_to_sales, null, 'hype: P/S must remain pending');
+assert.strictEqual(hype.valuation.price_to_earnings, null, 'hype: Cash P/E must remain pending');
+assert.strictEqual(hype.capital_returns.share_repurchases_ttm_usd, null, 'hype: partial fills are not TTM repurchases');
+assert.strictEqual(hype.capital_returns.shareholder_yield_pct, null, 'hype: partial fills are not TTM shareholder yield');
+assert.strictEqual(hype.metric_meta.revenue.state, 'PENDING', 'hype: revenue state');
+assert.strictEqual(hype.metric_meta.revenue.source_tier, 'CHAIN_PRIMARY', 'hype: revenue source tier');
+assert.strictEqual(hype.metric_meta.protocol_earnings.state, 'PENDING', 'hype: earnings state');
+assert.strictEqual(hype.metric_meta.protocol_earnings.source_tier, 'CHAIN_PRIMARY', 'hype: earnings source tier');
+assert.strictEqual(hype.metric_meta.repurchases.state, 'PENDING', 'hype: repurchases state');
+assert.strictEqual(hype.metric_meta.repurchases.source_tier, 'CHAIN_PRIMARY', 'hype: repurchases source tier');
+assert(hype.chain_diagnostics, 'hype: missing chain diagnostics');
+assert.strictEqual(hype.chain_diagnostics.evidence_priority, 'CHAIN_PRIMARY', 'hype: chain diagnostic priority');
+assert.strictEqual(
+  hype.chain_diagnostics.assistance_fund.address,
+  '0xfefefefefefefefefefefefefefefefefefefefe',
+  'hype: wrong Assistance Fund address',
+);
+assert(hype.chain_diagnostics.fills_window.all_rows > 0, 'hype: empty official fills diagnostic');
+assert(
+  hype.chain_diagnostics.fills_window.purchase_consideration_usd > 0,
+  'hype: empty partial purchase diagnostic',
+);
+assert.strictEqual(
+  hype.chain_diagnostics.fills_window.complete_for_ttm,
+  false,
+  'hype: limited official API window must not be presented as complete TTM',
+);
+assert(
+  hype.chain_diagnostics.official_mechanism.fees_url.includes('hyperliquid.gitbook.io'),
+  'hype: missing official fee-mechanism documentation',
+);
+
+const generatedText = JSON.stringify(hype);
+assert(!generatedText.includes('792146570'), 'hype: withdrawn legacy revenue leaked into public data');
+assert(!generatedText.includes('918600640'), 'hype: withdrawn third-party repurchase leaked into public data');
+
 for (const file of PUBLIC_FILES) {
   const raw = fs.readFileSync(file, 'utf8');
   const source = path.basename(file) === 'index.html' && path.dirname(file) === ROOT
@@ -180,6 +231,10 @@ for (const file of PUBLIC_FILES) {
     assert(!term.test(source), `${path.relative(ROOT, file)} contains banned public term ${term}`);
   }
 }
+
+const publicDocs = fs.readFileSync(path.join(ROOT, 'tev', 'docs', 'index.html'), 'utf8');
+assert(publicDocs.includes('链上一手数据优先'), 'Public docs must state chain-first policy');
+assert(publicDocs.includes('第三方聚合数据仅作最后兜底'), 'Public docs must state third-party-last policy');
 
 console.log(
   `PASS: 26 protocols, Revenue ${data.coverage.revenue_count}, Cash P/E ${data.coverage.price_to_earnings_count}, Shareholder Yield ${data.coverage.shareholder_yield_count}; formulas, states, and public terminology validated.`,

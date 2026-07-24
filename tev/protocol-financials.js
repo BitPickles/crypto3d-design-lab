@@ -63,6 +63,14 @@
     }).format(value);
   }
 
+  function compactNumber(value, digits = 2) {
+    if (!Number.isFinite(value)) return '待核实';
+    return new Intl.NumberFormat('en-US', {
+      notation: 'compact',
+      maximumFractionDigits: digits,
+    }).format(value);
+  }
+
   function date(value) {
     if (!value) return '待核实';
     return new Intl.DateTimeFormat('zh-CN', {
@@ -100,12 +108,20 @@
     const valuation = protocol.valuation;
     const passed = protocol.review.status === 'independent_pass';
     const hasCashPE = Number.isFinite(valuation.price_to_earnings);
+    const hasPS = Number.isFinite(valuation.price_to_sales);
     const primary = hasCashPE
       ? multiple(valuation.price_to_earnings, 'price_to_earnings')
-      : multiple(valuation.price_to_sales, 'price_to_sales');
+      : hasPS
+        ? multiple(valuation.price_to_sales, 'price_to_sales')
+        : '待核实';
     const primaryLabel = hasCashPE
       ? 'Cash P/E · Market Cap ÷ Protocol Earnings TTM'
-      : 'Price / Sales · Market Cap ÷ Protocol Revenue TTM';
+      : hasPS
+        ? 'Price / Sales · Market Cap ÷ Protocol Revenue TTM'
+        : protocol.chain_diagnostics
+          ? 'CHAIN-FIRST · TTM 链上账本待闭合'
+          : 'VALUATION · 收入与收益证据待闭合';
+    const chain = protocol.chain_diagnostics;
 
     root.innerHTML = `
       <div class="breadcrumb"><a href="./">协议财务</a> / <span>${protocol.name}</span></div>
@@ -186,10 +202,17 @@
         <div class="source-grid">
           <div class="source-item"><span>数据观察时间</span><strong>${date(protocol.provenance.observed_at)}</strong></div>
           <div class="source-item"><span>既有审核登记时间</span><strong>${date(protocol.provenance.register_generated_at)}</strong></div>
-          <div class="source-item"><span>数据来源</span><strong>Crypto3D 已发布生产快照</strong></div>
+          <div class="source-item"><span>数据来源原则</span><strong>${chain ? '链上一手数据优先' : '链上 → 官方 → 第三方兜底'}</strong></div>
           <div class="source-item"><span>源提交</span><strong class="value">${protocol.provenance.source_commit}</strong></div>
+          ${chain ? `
+          <div class="source-item"><span>Assistance Fund 地址</span><strong class="value">${chain.assistance_fund.address}</strong></div>
+          <div class="source-item"><span>AF 链上 HYPE 余额</span><strong>${compactNumber(chain.assistance_fund.hype_balance, 4)} HYPE</strong></div>
+          <div class="source-item"><span>AF 累计持仓成本诊断</span><strong>${legacyMoney(chain.assistance_fund.entry_ntl_usd)}</strong></div>
+          <div class="source-item"><span>官方成交覆盖</span><strong>${chain.fills_window.observed_start.slice(0, 10)} 至 ${chain.fills_window.observed_end.slice(0, 10)}</strong></div>
+          <div class="source-item"><span>部分窗口链上买入</span><strong>${legacyMoney(chain.fills_window.purchase_consideration_usd)}</strong></div>
+          <div class="source-item"><span>完整 TTM</span><strong>${chain.fills_window.complete_for_ttm ? '已闭合' : '未闭合'}</strong></div>` : ''}
         </div>
-        <div class="section-note"><strong>待核实不等于 0，“~”代表估算。</strong> ${protocol.provenance.evidence_boundary}</div>
+        <div class="section-note"><strong>待核实不等于 0，“~”代表估算。</strong> ${protocol.provenance.evidence_boundary}${chain ? ` AF 的 entryNtl 是时点累计持仓成本，不是 TTM 收入或利润；当前官方 API 成交窗口仅作为链上诊断，不能年化冒充完整 TTM。` : ''}</div>
       </section>`;
   }
 

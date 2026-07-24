@@ -227,19 +227,22 @@
       "cash_pe_reason": "PRD locks HYPE to a trading-protocol economic perimeter, but HIP-3, HIP-4 Outcomes, HyperCore lending, HLP, AF and fee-recipient coverage must be reconciled.",
       "metrics": {
         "revenue_ttm_usd": {
-          "value": 792146570,
-          "state": "ESTIMATED",
-          "window": "Published TTM snapshot observed 2026-07-24",
-          "source": "data/valuation-meeting-snapshot.json; round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json",
-          "as_of": "2026-07-24T13:13:35.438Z",
-          "confidence": "low",
-          "reason": "The published $792,146,570 TTM total is retained as an indicative revenue estimate. It is not VERIFIED because discounts, rebates, referral/builder/deployer receipts, HLP allocations, HIP-3/HIP-4 Outcomes and lending supplier pass-through are not fully closed."
+          "value": null,
+          "state": "PENDING",
+          "block_fallback": true,
+          "window": "[2025-07-24T19:59:00.639Z,2026-07-24T19:59:00.639Z)",
+          "source": "Hyperliquid official info API chain diagnostics; P13-hype formal reviewed research package",
+          "source_tier": "CHAIN_PRIMARY",
+          "as_of": "2026-07-24T19:59:00.639Z",
+          "confidence": "high",
+          "reason": "Chain-first policy withdraws the legacy $792,146,570 third-party/snapshot proxy. Complete HyperCore fee, rebate, HLP, builder and deployer ledgers are not yet closed for the exact TTM window; DefiLlama is retained only as a cross-check."
         },
         "direct_economic_costs_ttm_usd": {
           "value": null,
           "state": "PENDING",
           "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
-          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "source": "Hyperliquid official fee documentation; P13-hype formal reviewed research package",
+          "source_tier": "OFFICIAL_PRIMARY",
           "as_of": "2026-07-23T21:16:34Z",
           "confidence": "high",
           "reason": "No entity-scoped protocol-borne cash settlement/service-cost ledger is available. HYPE staking, validator and contributor issuance is excluded from cash costs and disclosed separately as supply risk."
@@ -248,7 +251,8 @@
           "value": null,
           "state": "PENDING",
           "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
-          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "source": "Hyperliquid official mechanism documentation; P13-hype formal reviewed research package",
+          "source_tier": "OFFICIAL_PRIMARY",
           "as_of": "2026-07-23T21:16:34Z",
           "confidence": "medium",
           "reason": "Outcome settlement, lending credit/liquidation, HLP and security-loss ledgers are incomplete; no missing loss is defaulted to zero."
@@ -256,8 +260,10 @@
         "protocol_earnings_ttm_usd": {
           "value": null,
           "state": "PENDING",
+          "block_fallback": true,
           "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
-          "source": "Derived only after Hyperliquid revenue, direct-cost and realized-loss candidates close",
+          "source": "Derived only after chain-first Hyperliquid revenue, direct-cost and realized-loss ledgers close",
+          "source_tier": "CHAIN_PRIMARY",
           "as_of": "2026-07-23T21:16:34Z",
           "confidence": "high",
           "reason": "The PRD permits HYPE Cash P/E only when protocol revenue and costs close; AF balances, entryNtl and HLP PnL are not substitutes for earnings."
@@ -266,28 +272,32 @@
           "value": 0,
           "state": "ZERO",
           "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
-          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "source": "Hyperliquid official fee and staking documentation; P13-hype formal reviewed research package",
+          "source_tier": "OFFICIAL_PRIMARY",
           "as_of": "2026-07-23T21:16:34Z",
           "confidence": "high",
           "reason": "No qualifying passive HYPE dividend mechanism was identified in the accepted research. Staking rewards require active participation, and Assistance Fund purchases are classified under repurchases rather than dividends."
         },
         "repurchases_ttm_usd": {
-          "value": 918600640,
-          "state": "ESTIMATED",
-          "window": "Trailing record window 2025-03-21 through 2026-03-20; 363 daily records",
-          "source": "data/protocols/hype/tev-records.json (DefiLlama dailyHoldersRevenue labeled buyback_burn); round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json:AF diagnostics",
-          "as_of": "2026-03-21T01:03:10Z",
-          "confidence": "low",
-          "reason": "The local Assistance Fund series sums to $918,600,640 across its latest 365-day boundary and is retained as estimated fee-funded purchase value. It is not VERIFIED because two days are absent, the series is third-party mapped, and AF fills, fee-source reconciliation and final burn transition are incomplete. The same value is not repeated under qualifying fee burns."
+          "value": null,
+          "state": "PENDING",
+          "block_fallback": true,
+          "window": "[2025-07-24T19:59:00.639Z,2026-07-24T19:59:00.639Z)",
+          "source": "Hyperliquid official info API userFillsByTime and spotClearinghouseState",
+          "source_tier": "CHAIN_PRIMARY",
+          "as_of": "2026-07-24T19:59:00.639Z",
+          "confidence": "high",
+          "reason": "Official API diagnostics currently cover only a partial 2026-06-15 through 2026-07-24 fill window, not a complete TTM ledger. The generated chain diagnostic records the current partial amount; the legacy $918.60M DefiLlama-mapped estimate is withdrawn and retained only as a cross-check."
         },
         "qualifying_fee_burns_ttm_usd": {
           "value": null,
           "state": "PENDING",
           "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
-          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "source": "Hyperliquid official token and HyperEVM documentation; P13-hype formal reviewed research package",
+          "source_tier": "OFFICIAL_PRIMARY",
           "as_of": "2026-07-23T21:16:34Z",
           "confidence": "high",
-          "reason": "AF governance labels and HyperEVM burn mechanics do not provide complete acquisition-lot, raw-supply, fee-source and event-time valuation ledgers. The estimated AF purchase value is recorded once under repurchases and is not duplicated here; irreversible retirement still requires separate closure."
+          "reason": "AF holdings, direct raw-supply reductions, HIP-1 burns and HyperEVM fee burns require separate event-time ledgers. Point-in-time supply reduction is not substituted for TTM fee-funded burn value."
         }
       }
     },

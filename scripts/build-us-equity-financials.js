@@ -8,6 +8,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const INPUT = path.join(ROOT, 'data', 'valuation-meeting-snapshot.json');
 const CANDIDATE_DIR = path.join(ROOT, 'data', 'candidates');
+const HYPE_CHAIN_DIAGNOSTICS = path.join(CANDIDATE_DIR, 'hype-chain-diagnostics.json');
 const OUTPUT_JSON = path.join(ROOT, 'data', 'protocol-financials-us-equity.json');
 const OUTPUT_JS = path.join(ROOT, 'data', 'protocol-financials-us-equity.js');
 const VALID_STATES = new Set(['VERIFIED', 'ESTIMATED', 'ZERO', 'N/A', 'N/M', 'PENDING']);
@@ -43,6 +44,7 @@ function normalizeMetric(raw, fallback = {}) {
   const useNumericFallback =
     hasCandidate
     && raw.state === 'PENDING'
+    && raw.block_fallback !== true
     && !Number.isFinite(raw.value)
     && Number.isFinite(fallback.value);
   const candidate = useNumericFallback
@@ -67,11 +69,13 @@ function normalizeMetric(raw, fallback = {}) {
   return {
     value,
     state,
+    ...(candidate.block_fallback === true ? { block_fallback: true } : {}),
     window: candidate.window || defaults.window || null,
     source: candidate.source || defaults.source || null,
     source_url: candidate.source_url || defaults.source_url || null,
     as_of: candidate.as_of || defaults.as_of || null,
     confidence: candidate.confidence || defaults.confidence || 'low',
+    source_tier: candidate.source_tier || defaults.source_tier || null,
     reason: candidate.reason || defaults.reason || '',
     display_note:
       candidate.display_note
@@ -113,6 +117,13 @@ function loadCandidates() {
       candidates.set(protocol.id, { ...protocol, candidate_file: path.relative(ROOT, fullPath).replaceAll('\\', '/') });
     }
   }
+  if (candidates.has('hype') && fs.existsSync(HYPE_CHAIN_DIAGNOSTICS)) {
+    const diagnostics = JSON.parse(fs.readFileSync(HYPE_CHAIN_DIAGNOSTICS, 'utf8'));
+    candidates.set('hype', {
+      ...candidates.get('hype'),
+      chain_diagnostics: diagnostics,
+    });
+  }
   return candidates;
 }
 
@@ -132,7 +143,9 @@ function computeProtocolEarnings(protocolId, candidate, revenue, directCosts, re
   const explicit = candidateMetric(candidate, 'protocol_earnings_ttm_usd');
   if (explicit) {
     const normalizedExplicit = normalizeMetric(explicit);
-    if (normalizedExplicit.state !== 'PENDING') return normalizedExplicit;
+    if (normalizedExplicit.state !== 'PENDING' || explicit.block_fallback === true) {
+      return normalizedExplicit;
+    }
   }
   if (revenue.value === null) {
     return normalizeMetric({
@@ -178,6 +191,20 @@ function combineCapitalMetrics(metrics, label) {
   const applicable = metrics.filter((metric) => metric.state !== 'N/A');
   if (!applicable.length) return normalizeMetric({ state: 'N/A', reason: `${label}不适用。` });
 
+  const blocked = applicable.find((metric) => metric.state === 'PENDING' && metric.block_fallback);
+  if (blocked) {
+    return normalizeMetric({
+      state: 'PENDING',
+      block_fallback: true,
+      window: blocked.window,
+      source: blocked.source,
+      as_of: blocked.as_of,
+      confidence: blocked.confidence,
+      source_tier: blocked.source_tier,
+      reason: `${label}存在明确封锁的未闭合一手账本，不能以已知零值或第三方代理值代替。`,
+    });
+  }
+
   const known = applicable.filter((metric) => ['VERIFIED', 'ESTIMATED', 'ZERO'].includes(metric.state));
   if (!known.length) return normalizeMetric({ state: 'PENDING', reason: `${label}尚无可用执行金额。` });
 
@@ -211,6 +238,7 @@ function derivedRatioMetric(numerator, marketCap, formulaName) {
     state: numerator.state,
     window: numerator.window,
     source: numerator.source,
+    source_tier: numerator.source_tier,
     as_of: numerator.as_of,
     confidence: numerator.confidence,
     reason: `${formulaName}由基础金额与流通市值计算。`,
@@ -392,6 +420,7 @@ function buildProtocol(protocol, snapshot, candidate) {
       price_to_earnings: priceToEarningsMetric.value,
       free_cash_flow_yield_pct: null,
     },
+    chain_diagnostics: candidate?.chain_diagnostics || null,
     metric_meta: {
       market_cap: meta(marketCapMetric),
       gross_fees: meta(grossFees),
@@ -425,7 +454,7 @@ function buildProtocol(protocol, snapshot, candidate) {
       candidate_file: candidate?.candidate_file || null,
       metric_sources: [...new Set(metricSources)],
       evidence_boundary:
-        '首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。',
+        '证据优先级为链上一手数据、官方披露、第三方兜底。第三方聚合值不能覆盖链上或官方冲突，也不能在一手账本未闭合时冒充已核实 TTM。',
     },
     null_reasons: {
       income_statement: protocolEarnings.reason,
@@ -459,6 +488,17 @@ function main() {
       ...snapshot.review_snapshot,
       numeric_values_promoted: false,
       numeric_review_status: 'phase1_candidate',
+    },
+    source_policy: {
+      order: ['CHAIN_PRIMARY', 'OFFICIAL_PRIMARY', 'THIRD_PARTY_FALLBACK'],
+      chain_first:
+        '能从链上直接重建的执行金额，必须使用官方节点、RPC、API、合约事件、协议地址或原始账本作为主值。',
+      official_second:
+        '链上不可得或业务天然在链下时，使用项目官方公告、报告、治理执行记录、官方仪表盘或审计材料。',
+      third_party_last:
+        'DefiLlama、Token Terminal、Dune 等第三方只作兜底或交叉检查；必须标记为估算，不得覆盖链上或官方证据。',
+      conflict_policy:
+        '来源冲突时不取平均；保留链上主值、记录差异并触发人工复核。链上时点余额、累计成本和部分窗口不得冒充 TTM。',
     },
     expense_policy: {
       included:
