@@ -26,6 +26,34 @@
     #g-tip { display: none; position: fixed; background: #1c1c1e; color: #e4e4e7; font-size: 12px; font-weight: 400; line-height: 1.6; padding: 10px 14px; border-radius: 10px; border: 1px solid #2a2a2e; max-width: 320px; text-align: left; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,0.5); pointer-events: none; }
     [data-tip] { cursor: help; }
     .tip-trigger { font-size: 11px; color: #52525b; margin-left: 2px; vertical-align: middle; cursor: help; }
+    .meeting-snapshot { padding: 0 0 24px; }
+    .snapshot-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; }
+    .snapshot-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+    .snapshot-title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+    .snapshot-subtitle { margin-top: 4px; font-size: 12px; color: var(--text-secondary); }
+    .snapshot-badge { flex: none; padding: 5px 9px; border-radius: 999px; background: rgba(59,130,246,.12); color: #3b82f6; font-size: 11px; font-weight: 700; }
+    .snapshot-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .snapshot-metric { padding: 12px; border-radius: 12px; background: var(--bg-primary); border: 1px solid var(--border); }
+    .snapshot-metric strong { display: block; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 19px; }
+    .snapshot-metric span { display: block; margin-top: 3px; color: var(--text-secondary); font-size: 11px; line-height: 1.4; }
+    .snapshot-caveat { margin: 12px 0 0; color: var(--text-secondary); font-size: 12px; line-height: 1.65; }
+    #protocol-table { min-width: 1180px; }
+    .value-muted { color: var(--text-secondary); }
+    .method-card-wide { grid-column: 1 / -1; }
+    .formula-stack { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+    .formula-stack .formula-box { margin: 0; }
+    @media (max-width: 860px) {
+      .snapshot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .formula-stack { grid-template-columns: 1fr; }
+      .table-header { align-items: flex-start; flex-direction: column; gap: 12px; }
+      .table-title { white-space: nowrap; }
+      .table-filters { width: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+      .filter-btn { flex: none; }
+    }
+    @media (max-width: 520px) {
+      .snapshot-head { display: block; }
+      .snapshot-badge { display: inline-block; margin-top: 10px; }
+    }
 
   </style>
   <link rel="stylesheet" href="../css/theme-override.css">
@@ -56,11 +84,30 @@
     <section class="hero">
       <div class="container">
         <h1 data-i18n="hero.title">加密协议估值仪表盘</h1>
-        <p data-i18n="hero.subtitle">追踪协议收入真正流向代币持有者的比例。TEV Yield 是加密版的「股息率」。</p>
+        <p data-i18n="hero.subtitle">在既有 TEV 框架上补充 P/S 与 P/TEV（类 PE），并把严格 P/E 的缺口明确标成空值。</p>
       </div>
     </section>
 
-    
+    <section class="meeting-snapshot" aria-label="Meeting valuation snapshot">
+      <div class="container">
+        <div class="snapshot-card">
+          <div class="snapshot-head">
+            <div>
+              <div class="snapshot-title" data-i18n="snapshot.title">26 协议会议估值快照</div>
+              <div class="snapshot-subtitle"><span data-i18n="snapshot.asOf">数据截至</span> <span id="snapshot-as-of">—</span> · <span data-i18n="snapshot.source">来源：现有生产数据快照与审核登记表</span></div>
+            </div>
+            <span class="snapshot-badge" data-i18n="snapshot.badge">测试站 · 非生产</span>
+          </div>
+          <div class="snapshot-grid">
+            <div class="snapshot-metric"><strong id="snapshot-protocol-count">—</strong><span data-i18n="snapshot.protocols">协议覆盖</span></div>
+            <div class="snapshot-metric"><strong id="snapshot-ps-count">—</strong><span data-i18n="snapshot.ps">可计算 P/S（指示性）</span></div>
+            <div class="snapshot-metric"><strong id="snapshot-ptev-count">—</strong><span data-i18n="snapshot.ptev">可计算 P/TEV（类 PE）</span></div>
+            <div class="snapshot-metric"><strong id="snapshot-pe-count">—</strong><span data-i18n="snapshot.pe">严格 P/E（已审核净利润）</span></div>
+          </div>
+          <p class="snapshot-caveat" data-i18n="snapshot.caveat">严格 P/E = 市值 ÷ TTM 净利润。当前 26 个协议都没有闭合到可审核净利润，因此严格 P/E 不发布数字；会议比较使用 P/S 与 P/TEV 两个代理层，并保留“未验证 ≠ 0”。</p>
+        </div>
+      </div>
+    </section>
 
     <section class="table-section" id="protocols">
       <div class="container">
@@ -89,8 +136,10 @@
                 <th class="text-right sortable sorted desc" data-sort="tevStatus" data-i18n="th.tevStatus">TEV 状态</th>
                 <th class="text-right sortable" data-sort="tevRatio" data-i18n="th.tevRatio">分配比例</th>
                 <th class="text-right sortable" data-sort="mcap" data-i18n="th.mcap">市值</th>
-                <th class="text-right sortable" data-sort="earningYield" data-i18n="th.earningYield">收益率</th>
+                <th class="text-right sortable" data-sort="earningYield" data-i18n="th.earningYield">协议收入率</th>
+                <th class="text-right sortable" data-sort="priceToSales" data-i18n="th.ps">P/S</th>
                 <th class="text-right sortable" data-sort="tevYield" data-i18n="th.yield">TEV Yield</th>
+                <th class="text-right sortable" data-sort="pTev" data-i18n="th.pTev">P/TEV（类 PE）</th>
                 <th class="text-right" data-i18n="th.confidence">可信度</th>
               </tr>
             </thead>
@@ -107,7 +156,7 @@
           <div class="intro-card">
             <h2><span class="icon">📊</span> <span data-i18n="intro.what.title">什么是 TEV?</span></h2>
             <p data-i18n="intro.what.p1"><strong>TEV (Token Empowerment Value)</strong>，即「代币赋能价值」，是衡量加密协议向代币持有者分配价值能力的核心指标。</p>
-            <p data-i18n="intro.what.p2">不同于传统的「协议收入」，TEV 只计算真正赋能给代币持有者的那部分——包括回购销毁、质押分红、治理激励等。</p>
+            <p data-i18n="intro.what.p2">不同于传统的「协议收入」，TEV 只计算已经执行、可归属给代币持有者的价值，例如现金分配、现金回购及符合口径的销毁；代币排放和普通激励不自动计入。</p>
             <div class="formula-box">TEV Yield = TEV ÷ Market Cap × 100%</div>
             <p data-i18n="intro.what.p3">这个比率类似传统股票的「股息率」，帮助投资者用股东回报视角评估协议价值。</p>
           </div>
@@ -116,6 +165,15 @@
             <p data-i18n="intro.why.p1">加密行业发展了这么多年，大部分 Token 依然是「空气」——持有它们除了投机，几乎没有任何实际价值。这也是为什么越来越多的投资者对「持币」失去信心。</p>
             <p data-i18n="intro.why.p2">但并非所有项目都是如此。一些真正优秀的加密协议，正在通过回购、分红、销毁等方式，将协议收入回馈给代币持有者——这才是「持币者权益」应有的样子。</p>
             <p data-i18n="intro.why.p3">TEV 指标的核心目标，就是帮你筛选出那些真正在为持币者创造价值的协议，而不是只会画饼的「空气项目」。用数据说话，让赋能可量化。</p>
+          </div>
+          <div class="intro-card method-card-wide">
+            <h2><span class="icon">🧮</span> <span data-i18n="intro.valuation.title">会议估值口径</span></h2>
+            <p data-i18n="intro.valuation.body">三层指标并列展示，不互相冒充：P/S 看协议收入规模；P/TEV 看已分配给持币者的价值倍数；严格 P/E 只有在收入、支出和 TTM 净利润全部闭合后才发布。</p>
+            <div class="formula-stack">
+              <div class="formula-box">P/S = Market Cap ÷ TTM Protocol Revenue</div>
+              <div class="formula-box">P/TEV = Market Cap ÷ TTM Holder Value</div>
+              <div class="formula-box">P/E = Market Cap ÷ TTM Net Income</div>
+            </div>
           </div>
         </div>
       </div>
@@ -189,11 +247,15 @@
     const i18n = {
       zh: {
         'nav.home': '← 首页', 'nav.governance': '治理', 'nav.protocols': '协议数据', 'nav.methodology': '方法论', 'nav.about': '关于',
-        'hero.title': '加密协议估值仪表盘', 'hero.subtitle': '追踪协议收入真正流向代币持有者的比例。TEV Yield 是加密版的「股息率」。',
+        'hero.title': '加密协议估值仪表盘', 'hero.subtitle': '在既有 TEV 框架上补充 P/S 与 P/TEV（类 PE），并把严格 P/E 的缺口明确标成空值。',
+        'snapshot.title': '26 协议会议估值快照', 'snapshot.asOf': '数据截至', 'snapshot.source': '来源：现有生产数据快照与审核登记表', 'snapshot.badge': '测试站 · 非生产',
+        'snapshot.protocols': '协议覆盖', 'snapshot.ps': '可计算 P/S（指示性）', 'snapshot.ptev': '可计算 P/TEV（类 PE）', 'snapshot.pe': '严格 P/E（已审核净利润）',
+        'snapshot.caveat': '严格 P/E = 市值 ÷ TTM 净利润。当前 26 个协议都没有闭合到可审核净利润，因此严格 P/E 不发布数字；会议比较使用 P/S 与 P/TEV 两个代理层，并保留“未验证 ≠ 0”。',
         'intro.what.title': '什么是 TEV?',
         'intro.what.p1': '<strong>TEV (Token Empowerment Value)</strong>，即「代币赋能价值」，是衡量加密协议向代币持有者分配价值能力的核心指标。',
-        'intro.what.p2': '不同于传统的「协议收入」，TEV 只计算真正赋能给代币持有者的那部分——包括回购销毁、质押分红、治理激励等。',
+        'intro.what.p2': '不同于传统的「协议收入」，TEV 只计算已经执行、可归属给代币持有者的价值，例如现金分配、现金回购及符合口径的销毁；代币排放和普通激励不自动计入。',
         'intro.what.p3': '这个比率类似传统股票的「股息率」，帮助投资者用股东回报视角评估协议价值。',
+        'intro.valuation.title': '会议估值口径', 'intro.valuation.body': '三层指标并列展示，不互相冒充：P/S 看协议收入规模；P/TEV 看已分配给持币者的价值倍数；严格 P/E 只有在收入、支出和 TTM 净利润全部闭合后才发布。',
         'intro.why.title': '为什么需要这个指标?',
         'intro.why.p1': '加密行业发展了这么多年，大部分 Token 依然是「空气」——持有它们除了投机，几乎没有任何实际价值。这也是为什么越来越多的投资者对「持币」失去信心。',
         'intro.why.p2': '但并非所有项目都是如此。一些真正优秀的加密协议，正在通过回购、分红、销毁等方式，将协议收入回馈给代币持有者——这才是「持币者权益」应有的样子。',
@@ -204,19 +266,24 @@
         'stats.protocols': '追踪协议数', 'stats.mcap': '总市值', 'stats.fees': '30日总费用', 'stats.tev': '30日总 TEV',
         'table.title': '协议排名', 'table.loading': '加载协议数据中...',
         'filter.all': '全部', 'filter.lending': '借贷', 'filter.dex': 'DEX', 'filter.cex': 'CEX', 'filter.perps': 'Perps', 'filter.yield': '收益',
-        'th.protocol': '协议', 'th.earningYield': '收益率', 'th.tvl': 'TVL', 'th.tevStatus': 'TEV 状态', 'th.tevRatio': '分配比例', 'th.mcap': '市值', 'th.yield': 'TEV Yield', 'th.confidence': '可信度',
+        'th.protocol': '协议', 'th.earningYield': '协议收入率', 'th.ps': 'P/S', 'th.pTev': 'P/TEV（类 PE）', 'th.tvl': 'TVL', 'th.tevStatus': 'TEV 状态', 'th.tevRatio': '分配比例', 'th.mcap': '市值', 'th.yield': 'TEV Yield', 'th.confidence': '可信度',
         'tevStatus.active': '活跃', 'tevStatus.partial': '部分', 'tevStatus.none': '无',
         'confidence.high': '高', 'confidence.medium': '中', 'confidence.low': '低',
+        'review.pass': '模型已通过复核', 'review.pending': '模型复核未闭环', 'value.indicative': '指示性数据，尚未升级为已审核数值',
         'footer.loading': '加载数据中...', 'footer.updated': '数据更新时间：{date} · 维护者 3D', 'footer.methodology': '方法论', 'footer.sources': '数据来源',
         'ytbanner.title': '📺 订阅 3D 加密频道', 'ytbanner.desc': '更多 DeFi 深度分析、链上套利实战、低风险机会分享，尽在 YouTube', 'ytbanner.btn': '立即订阅',
       },
       en: {
         'nav.home': '← Home', 'nav.governance': 'Governance', 'nav.protocols': 'Protocols', 'nav.methodology': 'Methodology', 'nav.about': 'About',
-        'hero.title': 'Crypto Protocol Valuation Dashboard', 'hero.subtitle': 'Track how much protocol revenue actually flows to token holders. TEV Yield is the dividend yield for crypto.',
+        'hero.title': 'Crypto Protocol Valuation Dashboard', 'hero.subtitle': 'Extends the existing TEV framework with P/S and P/TEV proxies while keeping strict P/E gaps explicitly null.',
+        'snapshot.title': '26-Protocol Meeting Valuation Snapshot', 'snapshot.asOf': 'Data as of', 'snapshot.source': 'Source: existing production snapshot and audit register', 'snapshot.badge': 'Test site · Non-production',
+        'snapshot.protocols': 'Protocols covered', 'snapshot.ps': 'P/S available (indicative)', 'snapshot.ptev': 'P/TEV available (P/E proxy)', 'snapshot.pe': 'Strict P/E (reviewed net income)',
+        'snapshot.caveat': 'Strict P/E = market cap ÷ TTM net income. None of the 26 protocols currently has a closed, reviewable net-income ledger, so no strict P/E number is published. The meeting view uses P/S and P/TEV as separate proxies and preserves “unverified ≠ zero.”',
         'intro.what.title': 'What is TEV?',
         'intro.what.p1': '<strong>TEV (Token Empowerment Value)</strong> measures how much value a crypto protocol distributes to its token holders.',
-        'intro.what.p2': 'Unlike "protocol revenue", TEV only counts value that actually empowers token holders — including buybacks, staking rewards, and governance incentives.',
+        'intro.what.p2': 'Unlike protocol revenue, TEV only counts executed value attributable to token holders, such as cash distributions, cash-funded buybacks, and qualifying burns. Token emissions and ordinary incentives are not counted automatically.',
         'intro.what.p3': 'This ratio is similar to traditional dividend yield, helping investors evaluate protocols from a shareholder return perspective.',
+        'intro.valuation.title': 'Meeting Valuation Definitions', 'intro.valuation.body': 'The three layers stay separate: P/S measures protocol-revenue scale; P/TEV measures the multiple paid for holder value; strict P/E is published only after revenue, expenses, and TTM net income are fully closed.',
         'intro.why.title': 'Why This Metric?',
         'intro.why.p1': 'After years of crypto evolution, most tokens remain "vaporware" — holding them offers nothing beyond speculation. That\'s why more investors are losing faith in "holding tokens."',
         'intro.why.p2': 'But not all projects are the same. Some truly excellent DeFi protocols are giving back to token holders through buybacks, dividends, and burns — this is what "token holder equity" should look like.',
@@ -227,9 +294,10 @@
         'stats.protocols': 'Protocols Tracked', 'stats.mcap': 'Total Market Cap', 'stats.fees': '30d Total Fees', 'stats.tev': '30d Total TEV',
         'table.title': 'Protocol Rankings', 'table.loading': 'Loading protocol data...',
         'filter.all': 'All', 'filter.lending': 'Lending', 'filter.dex': 'DEX', 'filter.cex': 'CEX', 'filter.perps': 'Perps', 'filter.yield': 'Yield',
-        'th.protocol': 'Protocol', 'th.earningYield': 'Earning Yield', 'th.tvl': 'TVL', 'th.tevStatus': 'TEV Status', 'th.tevRatio': 'Distribution', 'th.mcap': 'Market Cap', 'th.yield': 'TEV Yield', 'th.confidence': 'Confidence',
+        'th.protocol': 'Protocol', 'th.earningYield': 'Protocol Yield', 'th.ps': 'P/S', 'th.pTev': 'P/TEV (P/E proxy)', 'th.tvl': 'TVL', 'th.tevStatus': 'TEV Status', 'th.tevRatio': 'Distribution', 'th.mcap': 'Market Cap', 'th.yield': 'TEV Yield', 'th.confidence': 'Confidence',
         'tevStatus.active': 'Active', 'tevStatus.partial': 'Partial', 'tevStatus.none': 'None',
         'confidence.high': 'High', 'confidence.medium': 'Medium', 'confidence.low': 'Low',
+        'review.pass': 'Model review passed', 'review.pending': 'Model review pending', 'value.indicative': 'Indicative value; not promoted as an audited number',
         'footer.loading': 'Loading data...', 'footer.updated': 'Data updated: {date} · Maintained by 3D', 'footer.methodology': 'Methodology', 'footer.sources': 'Data Sources',
         'ytbanner.title': '📺 Subscribe to 3D Crypto Channel', 'ytbanner.desc': 'More DeFi deep dives, on-chain arbitrage tactics, and low-risk opportunities on YouTube', 'ytbanner.btn': 'Subscribe Now',
       }
@@ -246,7 +314,7 @@
     window.addEventListener('langchange', function(e) { setLanguage(e.detail.lang); });
 
     // === Data & State ===
-    let PROTOCOLS = {}, LOGO_URLS = {};
+    let PROTOCOLS = {}, VALUATIONS = {}, SNAPSHOT_META = null, LOGO_URLS = {};
 
     // Header tooltips
     const headerTips = {
@@ -255,8 +323,10 @@
         tevStatus: '该协议是否有将收入分配给代币持有者的机制，如回购、销毁、质押分红等',
         tevRatio: '分配比例 = TEV ÷ 协议利润。衡量协议把多少比例的利润回馈给代币持有者，越高代表持有者获得的价值越多',
         mcap: '代币的流通市值 = 当前价格 × 流通量，是计算 TEV Yield 的分母',
-        earningYield: '收益率 = 协议年化利润 ÷ 市值。类似传统金融的市盈率倒数（1/PE），反映协议的盈利能力',
-        tevYield: 'TEV Yield = 年化 TEV ÷ 市值。TEV（Token Enabled Value）是协议实际分配给代币持有者的价值（回购/销毁/分红），类似股票的股息率',
+        earningYield: '协议收入率 = 已报告的 365 日协议收入 ÷ 流通市值。它是 P/S 的倒数，不是净利润率，也不是严格 P/E 的倒数',
+        priceToSales: 'P/S = 流通市值 ÷ 已报告的 365 日协议收入。当前数字为指示性快照，未闭合收入的协议保持空值',
+        tevYield: 'TEV Yield = 已发布的持币者价值代理 ÷ 市值。普通代币排放、未执行治理计划和未验证转账不自动计入',
+        pTev: 'P/TEV = 100 ÷ TEV Yield，是持币者现金流倍数代理。它不是严格 P/E；严格 P/E 需要已审核的 TTM 净利润',
         confidence: '数据可信度 — 基于数据来源是否可在链上验证、是否有公开 API、是否依赖第三方等因素综合判断'
       },
       en: {
@@ -264,8 +334,10 @@
         tevStatus: 'Whether the protocol has mechanisms to distribute revenue to token holders (buybacks, burns, staking rewards, etc.)',
         tevRatio: 'Distribution Ratio = TEV ÷ Protocol Revenue. Measures what share of profits goes back to token holders',
         mcap: 'Circulating market cap = current price × circulating supply, used as denominator for TEV Yield',
-        earningYield: 'Earning Yield = Annualized Revenue ÷ Market Cap. Similar to inverse P/E ratio in traditional finance',
-        tevYield: 'TEV Yield = Annualized TEV ÷ Market Cap. TEV (Token Enabled Value) is the actual value distributed to holders (buybacks/burns/dividends), similar to dividend yield in stocks',
+        earningYield: 'Protocol yield = reported trailing-365-day protocol revenue ÷ circulating market cap. It is the inverse of P/S, not the inverse of strict P/E',
+        priceToSales: 'P/S = circulating market cap ÷ reported trailing-365-day protocol revenue. Protocols without a closed revenue value remain null',
+        tevYield: 'TEV Yield = published holder-value proxy ÷ market cap. Token emissions, unexecuted governance plans, and unverified transfers are not counted automatically',
+        pTev: 'P/TEV = 100 ÷ TEV Yield, a holder-cash-flow multiple proxy. It is not strict P/E, which requires reviewed TTM net income',
         confidence: 'Data confidence — based on whether data is verifiable on-chain, has public APIs, or relies on third-party sources'
       }
     };
@@ -315,16 +387,28 @@
     const formatCurrency = (v, d = 0) => { if (v == null) return '—'; if (v >= 1e9) return '$' + (v / 1e9).toFixed(2) + 'B'; if (v >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M'; if (v >= 1e3) return '$' + (v / 1e3).toFixed(1) + 'K'; return '$' + v.toFixed(d); };
     // formatPercent: v 已经是百分比（如 6.21 表示 6.21%），直接格式化即可
     const formatPercent = v => v == null ? '—' : v.toFixed(2) + '%';
+    const formatMultiple = v => v == null ? '—' : v.toFixed(v >= 100 ? 0 : 1) + 'x';
+    const escapeAttr = value => String(value ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
     // === Data Loading ===
     async function loadProtocolData() {
+      try {
+        const valuationRes = await fetch('../data/valuation-meeting-snapshot.json');
+        if (!valuationRes.ok) throw new Error('valuation snapshot unavailable');
+        SNAPSHOT_META = await valuationRes.json();
+        VALUATIONS = Object.fromEntries((SNAPSHOT_META.protocols || []).map(protocol => [protocol.id, protocol]));
+        updateSnapshotSummary(SNAPSHOT_META);
+      } catch (e) {
+        console.warn('Failed to load valuation-meeting-snapshot.json', e);
+      }
       try {
         const baseRes = await fetch('../data/all-protocols.json');
         if (baseRes.ok) {
           const baseData = await baseRes.json();
           PROTOCOLS = baseData.protocols || {};
-          if (baseData.generated_at) {
-            const date = new Date(baseData.generated_at).toISOString().split('T')[0];
+          const dataTimestamp = SNAPSHOT_META?.source_snapshot?.data_generated_at || baseData.generated_at;
+          if (dataTimestamp) {
+            const date = new Date(dataTimestamp).toISOString().split('T')[0];
             document.getElementById('data-update-time').textContent = (currentLang === 'zh' ? '数据更新: ' : 'Data updated: ') + date;
           }
         }
@@ -338,9 +422,42 @@
           // 合并 metrics：优先用 daily 数据，回退到 all-protocols.json
           const mergedMetrics = { ...config.metrics, ...data.metrics };
           // tevRatio 直接使用 all-protocols.json 中的预计算值，不再动态计算
-          return { key, ...config, ...data, metrics: mergedMetrics, tevRatio: config.tevRatio };
-        } catch { return { key, ...config, error: true }; }
+          const valuation = VALUATIONS[key] || {};
+          return {
+            key,
+            ...config,
+            ...data,
+            ...valuation,
+            metrics: mergedMetrics,
+            tevRatio: Object.prototype.hasOwnProperty.call(valuation, 'distribution_ratio')
+              ? valuation.distribution_ratio
+              : config.tevRatio,
+            tevStatus: valuation.tev_mechanism_status || config.tevStatus
+          };
+        } catch {
+          const valuation = VALUATIONS[key] || {};
+          return {
+            key,
+            ...config,
+            ...valuation,
+            tevRatio: Object.prototype.hasOwnProperty.call(valuation, 'distribution_ratio')
+              ? valuation.distribution_ratio
+              : config.tevRatio,
+            tevStatus: valuation.tev_mechanism_status || config.tevStatus,
+            error: true
+          };
+        }
       }));
+    }
+
+    function updateSnapshotSummary(snapshot) {
+      const coverage = snapshot?.coverage || {};
+      const date = snapshot?.source_snapshot?.data_generated_at;
+      document.getElementById('snapshot-protocol-count').textContent = `${coverage.protocol_count ?? '—'}/26`;
+      document.getElementById('snapshot-ps-count').textContent = `${coverage.price_to_sales_count ?? '—'}/26`;
+      document.getElementById('snapshot-ptev-count').textContent = `${coverage.price_to_holder_cash_flow_count ?? '—'}/26`;
+      document.getElementById('snapshot-pe-count').textContent = `${coverage.strict_price_to_earnings_count ?? '—'}/26`;
+      document.getElementById('snapshot-as-of').textContent = date ? new Date(date).toISOString().split('T')[0] : '—';
     }
 
     // === Sorting ===
@@ -350,8 +467,10 @@
         case 'tevStatus': return TEV_STATUS_ORDER[p.tevStatus] || 0;
         case 'tevRatio': return p.tevRatio || 0;
         case 'mcap': return p.market_cap_usd || 0;
-        case 'earningYield': return p.earning_yield_percent || 0;
-        case 'tevYield': return p.tev_yield_percent || 0;
+        case 'earningYield': return p.protocol_earning_yield_pct;
+        case 'priceToSales': return p.price_to_sales;
+        case 'tevYield': return p.holder_yield_pct;
+        case 'pTev': return p.price_to_holder_cash_flow;
         default: return 0;
       }
     }
@@ -359,8 +478,8 @@
       return [...arr].sort((a, b) => {
         // 默认排序（tevStatus）：有 tev_yield > 0 的排前面，然后按市值
         if (f === 'tevStatus') {
-          const aYield = a.tev_yield_percent || 0;
-          const bYield = b.tev_yield_percent || 0;
+          const aYield = a.holder_yield_pct || 0;
+          const bYield = b.holder_yield_pct || 0;
           const aHasYield = aYield > 0 ? 1 : 0;
           const bHasYield = bYield > 0 ? 1 : 0;
           if (bHasYield !== aHasYield) return bHasYield - aHasYield;
@@ -372,10 +491,17 @@
           case 'tvl': aVal = a.tvl || 0; bVal = b.tvl || 0; break;
           case 'tevRatio': aVal = a.tevRatio || 0; bVal = b.tevRatio || 0; break;
           case 'mcap': aVal = a.market_cap_usd || 0; bVal = b.market_cap_usd || 0; break;
-          case 'earningYield': aVal = a.earning_yield_percent || 0; bVal = b.earning_yield_percent || 0; break;
-          case 'tevYield': aVal = a.tev_yield_percent || 0; bVal = b.tev_yield_percent || 0; break;
+          case 'earningYield': aVal = a.protocol_earning_yield_pct; bVal = b.protocol_earning_yield_pct; break;
+          case 'priceToSales': aVal = a.price_to_sales; bVal = b.price_to_sales; break;
+          case 'tevYield': aVal = a.holder_yield_pct; bVal = b.holder_yield_pct; break;
+          case 'pTev': aVal = a.price_to_holder_cash_flow; bVal = b.price_to_holder_cash_flow; break;
           default: aVal = a.market_cap_usd || 0; bVal = b.market_cap_usd || 0;
         }
+        const aMissing = !Number.isFinite(aVal);
+        const bMissing = !Number.isFinite(bVal);
+        if (aMissing && bMissing) return 0;
+        if (aMissing) return 1;
+        if (bMissing) return -1;
         // 根据方向排序
         const diff = bVal - aVal;  // 默认降序
         return d === 'asc' ? -diff : diff;
@@ -406,12 +532,18 @@
       updateSortIndicators();
 
       filtered.forEach((p, i) => {
-        // 直接使用 all-protocols.json 中的预计算值
-        const tevYield = p.tev_yield_percent || 0;
-        const earningYield = p.earning_yield_percent || 0;
+        const tevYield = p.holder_yield_pct ?? null;
+        const earningYield = p.protocol_earning_yield_pct ?? null;
+        const priceToSales = p.price_to_sales ?? null;
+        const priceToTev = p.price_to_holder_cash_flow ?? null;
         const tevStatus = p.tevStatus || 'none';
-        const tevRatio = p.tevRatio || 0;
-        const mcap = p.market_cap_usd || 0;
+        const tevRatio = p.tevRatio ?? null;
+        const mcap = p.market_cap_usd ?? null;
+        const qualityTip = [
+          (p.confidence_reason && p.confidence_reason[currentLang]) || '',
+          p.model_review?.status === 'pass' ? t('review.pass') : t('review.pending')
+        ].filter(Boolean).join(' · ');
+        const indicativeTip = t('value.indicative');
 
         // tevRatio 显示：处理 'dynamic' 字符串和数字
         let tevRatioDisplay = '—';
@@ -429,13 +561,15 @@
             <div class="protocol-icon"><img src="${LOGO_URLS[p.key] || p.icon}" alt="${p.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='${p.name.charAt(0)}'"></div>
             <div class="protocol-info"><span class="protocol-name">${p.name}</span><span class="protocol-ticker">${p.ticker}</span></div>
           </div></td>
-          <td class="text-right"><span class="value">${formatCurrency(p.tvl)}</span></td>
+          <td class="text-right"><span class="value ${p.tvl > 0 ? '' : 'value-muted'}">${p.tvl > 0 ? formatCurrency(p.tvl) : '—'}</span></td>
           <td class="text-right"><span class="badge badge-${tevStatus === 'active' ? 'active' : tevStatus === 'partial' ? 'partial' : 'none'}">${tevStatus === 'active' ? '✓' : tevStatus === 'partial' ? '~' : '✗'} ${t('tevStatus.' + tevStatus)}</span></td>
           <td class="text-right"><span class="value ${tevRatio >= 0.5 ? 'value-highlight' : tevRatio > 0 ? '' : 'value-zero'}">${tevRatioDisplay}</span></td>
           <td class="text-right"><span class="value">${formatCurrency(mcap)}</span></td>
-          <td class="text-right"><span class="value ${earningYield > 0.1 ? 'value-highlight' : earningYield === 0 ? 'value-zero' : ''}">${earningYield > 0 ? formatPercent(earningYield) : '—'}</span></td>
-          <td class="text-right"><span class="value ${tevYield > 10 ? 'value-highlight' : tevYield === 0 ? 'value-zero' : ''}">${formatPercent(tevYield)}</span></td>
-          <td class="text-right"><span class="badge badge-${p.confidence === 'high' ? 'high' : p.confidence === 'medium' ? 'medium' : 'low'}" data-tip="${(p.confidence_reason && p.confidence_reason[currentLang]) || ''}">${p.confidence === 'high' ? '✓' : '!'} ${t('confidence.' + p.confidence)}</span></td>
+          <td class="text-right"><span class="value ${earningYield != null ? 'value-highlight' : 'value-muted'}" data-tip="${escapeAttr(indicativeTip)}">${formatPercent(earningYield)}</span></td>
+          <td class="text-right"><span class="value ${priceToSales != null ? '' : 'value-muted'}" data-tip="${escapeAttr(indicativeTip)}">${priceToSales != null ? '~' + formatMultiple(priceToSales) : '—'}</span></td>
+          <td class="text-right"><span class="value ${tevYield > 10 ? 'value-highlight' : tevYield == null ? 'value-muted' : ''}" data-tip="${escapeAttr(indicativeTip)}">${formatPercent(tevYield)}</span></td>
+          <td class="text-right"><span class="value ${priceToTev != null ? '' : 'value-muted'}" data-tip="${escapeAttr(indicativeTip)}">${priceToTev != null ? '~' + formatMultiple(priceToTev) : '—'}</span></td>
+          <td class="text-right"><span class="badge badge-${p.confidence === 'high' ? 'high' : p.confidence === 'medium' ? 'medium' : 'low'}" data-tip="${escapeAttr(qualityTip)}">${p.confidence === 'high' ? '✓' : '!'} ${t('confidence.' + p.confidence)}</span></td>
         `;
         tbody.appendChild(row);
       });
@@ -447,7 +581,7 @@
     }
 
     function updateFooter(protocols) {
-      const latest = protocols.map(p => p.updated_at).filter(Boolean).sort().reverse()[0];
+      const latest = SNAPSHOT_META?.source_snapshot?.data_generated_at || protocols.map(p => p.updated_at).filter(Boolean).sort().reverse()[0];
       if (latest) {
         const dateStr = new Date(latest).toLocaleDateString(currentLang === 'zh' ? 'zh-CN' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
         document.getElementById('footer-updated').textContent = t('footer.updated').replace('{date}', dateStr);

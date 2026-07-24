@@ -174,8 +174,12 @@
         <div class="tev-summary-grid tev-grid-compact">
           <div class="tev-summary-item"><div class="tev-summary-label">TEV Ratio<br><span class="label-zh">分配比例</span></div><div class="tev-summary-value" id="summary-tevratio">—</div></div>
           <div class="tev-summary-item"><div class="tev-summary-label">Market Cap<br><span class="label-zh">市值</span></div><div class="tev-summary-value" id="summary-marketcap">—</div></div>
-          <div class="tev-summary-item"><div class="tev-summary-label">Earnings Yield<br><span class="label-zh">收益率</span></div><div class="tev-summary-value" id="summary-earningsyield">—</div></div>
+          <div class="tev-summary-item"><div class="tev-summary-label">Protocol Yield<br><span class="label-zh">协议收入率</span></div><div class="tev-summary-value" id="summary-earningsyield">—</div></div>
+          <div class="tev-summary-item"><div class="tev-summary-label">P/S<br><span class="label-zh">收入倍数</span></div><div class="tev-summary-value" id="summary-ps">—</div></div>
           <div class="tev-summary-item"><div class="tev-summary-label">TEV Yield<br><span class="label-zh">TEV 收益率</span></div><div class="tev-summary-value" id="summary-tevyield">—</div></div>
+          <div class="tev-summary-item"><div class="tev-summary-label">P/TEV<br><span class="label-zh">类 PE</span></div><div class="tev-summary-value" id="summary-ptev">—</div></div>
+          <div class="tev-summary-item"><div class="tev-summary-label">Strict P/E<br><span class="label-zh">严格市盈率</span></div><div class="tev-summary-value" id="summary-pe">—</div></div>
+          <div class="tev-summary-item"><div class="tev-summary-label">Model Review<br><span class="label-zh">模型复核</span></div><div class="tev-summary-value" id="summary-review">—</div></div>
           <div class="tev-summary-item"><div class="tev-summary-label">Buybacks<br><span class="label-zh">回购</span></div><div class="tev-summary-value" id="summary-buybacks">—</div></div>
           <div class="tev-summary-item"><div class="tev-summary-label">Dividends<br><span class="label-zh">分红</span></div><div class="tev-summary-value" id="summary-dividends">—</div></div>
           <div class="tev-summary-item"><div class="tev-summary-label">Burns<br><span class="label-zh">销毁</span></div><div class="tev-summary-value" id="summary-burns">—</div></div>
@@ -727,6 +731,17 @@
         const resp = await fetch(`../data/protocols/${pid}/config.json`);
         if (!resp.ok) throw new Error('Protocol not found');
         const cfg = await resp.json();
+        let valuation = {};
+        let valuationMeta = null;
+        try {
+          const valuationResp = await fetch('../data/valuation-meeting-snapshot.json');
+          if (valuationResp.ok) {
+            valuationMeta = await valuationResp.json();
+            valuation = (valuationMeta.protocols || []).find(protocol => protocol.id === pid) || {};
+          }
+        } catch (e) {
+          console.warn('Valuation meeting snapshot unavailable:', e);
+        }
         protocolConfig = cfg;
         document.title = `${cfg.name} — TEV Dashboard`;
         document.getElementById('breadcrumb-name').textContent = cfg.name;
@@ -737,7 +752,7 @@
         document.getElementById('protocol-name').textContent = cfg.name;
         const catMap = { lending: '借贷', dex: 'DEX', liquid_staking: '流动性质押', restaking: '再质押', perpetuals: '永续合约', yield: '收益' };
         document.getElementById('protocol-ticker').textContent = `${cfg.ticker} · ${currentLang === 'zh' ? (catMap[cfg.category] || cfg.category) : cfg.category}`;
-        const tevStatus = getTevStatus(cfg.tev_summary || {}, cfg);
+        const tevStatus = valuation.tev_mechanism_status || getTevStatus(cfg.tev_summary || {}, cfg);
         const badge = document.getElementById('tev-badge');
         badge.className = `badge badge-${tevStatus === 'active' ? 'active' : tevStatus === 'partial' ? 'partial' : 'none'}`;
         badge.textContent = tevStatus === 'active' ? 'TEV Active' : tevStatus === 'partial' ? 'TEV Partial' : 'No TEV';
@@ -747,23 +762,31 @@
         const statusText = document.getElementById('tev-status-text');
         statusText.textContent = tevStatus === 'active' ? 'TEV ACTIVE' : tevStatus === 'partial' ? 'TEV PARTIAL' : 'NO TEV';
         statusText.className = `tev-status ${tevStatus}`;
-        document.getElementById('primary-value').textContent = cfg.tev_summary?.fee_switch === 'ON' ? '✓ ON' : cfg.tev_summary?.fee_switch === 'PARTIAL' ? '~ PARTIAL' : '✗ OFF';
-        document.getElementById('primary-label').textContent = cfg.tev_summary?.primary_value_accrual || '—';
+        const publishedHolderYield = valuation.holder_yield_pct ?? null;
+        document.getElementById('primary-value').textContent = publishedHolderYield != null ? `${publishedHolderYield.toFixed(2)}%` : '—';
+        document.getElementById('primary-label').textContent = publishedHolderYield != null
+          ? (currentLang === 'zh' ? 'TEV Yield（指示性快照）' : 'TEV Yield (indicative snapshot)')
+          : (currentLang === 'zh' ? '暂无可发布持币者倍数' : 'No publishable holder multiple');
 
         // TEV 概览 - 新增字段
         const tevRatioEl = document.getElementById('summary-tevratio');
         const marketCapEl = document.getElementById('summary-marketcap');
         const earningsYieldEl = document.getElementById('summary-earningsyield');
+        const priceToSalesEl = document.getElementById('summary-ps');
         const tevYieldEl = document.getElementById('summary-tevyield');
+        const priceToTevEl = document.getElementById('summary-ptev');
+        const priceToEarningsEl = document.getElementById('summary-pe');
+        const reviewEl = document.getElementById('summary-review');
 
-        // 使用 config.json 中的值（直接读取，无需 fetch）
-        // FIX 2026-03-03: 不再从 all-protocols.json fetch，直接使用 cfg
-        const tevRatio = cfg.tevRatio;
-        const marketCap = cfg.market_cap_usd || cfg.tev_data?.market_cap_usd || 0;
-        const earningsYield = cfg.earning_yield_percent || 0;
-        const tevYield = cfg.tev_data?.tev_yield_percent || 0;
-
-        console.log('TEV Summary values:', { tevRatio, marketCap, earningsYield, tevYield });
+        const tevRatio = Object.prototype.hasOwnProperty.call(valuation, 'distribution_ratio')
+          ? valuation.distribution_ratio
+          : cfg.tevRatio;
+        const marketCap = valuation.market_cap_usd ?? cfg.market_cap_usd ?? cfg.tev_data?.market_cap_usd ?? null;
+        const earningsYield = valuation.protocol_earning_yield_pct ?? null;
+        const priceToSales = valuation.price_to_sales ?? null;
+        const tevYield = valuation.holder_yield_pct ?? null;
+        const priceToTev = valuation.price_to_holder_cash_flow ?? null;
+        const priceToEarnings = valuation.price_to_earnings ?? null;
 
         // 分配比例
         if (typeof tevRatio === 'string') {
@@ -775,14 +798,21 @@
         }
 
         // 市值
-        marketCapEl.textContent = marketCap ? `$${(marketCap / 1e9).toFixed(2)}B` : '—';
+        marketCapEl.textContent = marketCap ? fmtCurrency(marketCap) : '—';
 
-        // 收益率
-        earningsYieldEl.textContent = earningsYield ? `${earningsYield.toFixed(2)}%` : '—';
+        // 协议收入与持币者价值倍数均为会议快照中的指示性层；严格 P/E 保持 safe-null
+        earningsYieldEl.textContent = earningsYield != null ? `${earningsYield.toFixed(2)}%` : '—';
+        priceToSalesEl.textContent = priceToSales != null ? `~${priceToSales.toFixed(priceToSales >= 100 ? 0 : 1)}x` : '—';
 
         // TEV Yield
-        tevYieldEl.textContent = tevYield ? `${tevYield.toFixed(2)}%` : '—';
+        tevYieldEl.textContent = tevYield != null ? `${tevYield.toFixed(2)}%` : '—';
         tevYieldEl.className = `tev-summary-value ${tevYield > 5 ? 'value-on' : tevYield > 0 ? 'value-partial' : ''}`;
+        priceToTevEl.textContent = priceToTev != null ? `~${priceToTev.toFixed(priceToTev >= 100 ? 0 : 1)}x` : '—';
+        priceToEarningsEl.textContent = priceToEarnings != null ? `${priceToEarnings.toFixed(1)}x` : '—';
+        reviewEl.textContent = valuation.model_review?.status === 'pass'
+          ? (currentLang === 'zh' ? '已通过' : 'Passed')
+          : (currentLang === 'zh' ? '待闭环' : 'Pending');
+        reviewEl.className = `tev-summary-value ${valuation.model_review?.status === 'pass' ? 'value-on' : 'value-partial'}`;
         
         const s = cfg.tev_summary || {};
         ['buybacks', 'dividends', 'burns'].forEach(k => { const el = document.getElementById(`summary-${k}`); const v = s[k] || 'NONE'; el.textContent = t('status.' + v); el.className = `tev-summary-value ${getValueClass(v)}`; });
@@ -794,7 +824,7 @@
         renderReferences(cfg.references);
         const notes = cfg.analyst_notes || cfg.notes;
         if (notes) { document.getElementById('notes-section').style.display = 'block'; document.getElementById('protocol-notes').innerHTML = marked.parse ? marked.parse(notesToMarkdown(notes)) : notes.replace(/\n/g, '<br>').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\|(.+)\|/g, '<span style="font-family:monospace">$1</span>'); }
-        document.getElementById('last-updated').textContent = cfg.last_updated || '—';
+        document.getElementById('last-updated').textContent = valuationMeta?.source_snapshot?.data_generated_at?.split('T')[0] || cfg.last_updated || '—';
         document.getElementById('loading').style.display = 'none';
         document.getElementById('content').style.display = 'block';
         loadTevChart(pid);
