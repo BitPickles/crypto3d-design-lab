@@ -180,11 +180,18 @@ assert.deepStrictEqual(
 
 const hype = data.protocols.find((protocol) => protocol.id === 'hype');
 assert(hype, 'hype: missing protocol');
-assert.strictEqual(hype.income_statement.revenue_ttm_usd, 792146570, 'hype: DefiLlama Revenue mismatch');
-assert.strictEqual(hype.capital_returns.holders_revenue_ttm_usd, 792146570, 'hype: Holders Revenue mismatch');
-assert.strictEqual(hype.valuation.price_to_earnings, 16.33, 'hype: expected current DefiLlama P/E');
-assert.strictEqual(hype.capital_returns.shareholder_yield_pct, 6.1244, 'hype: expected current DefiLlama yield');
-assert.notStrictEqual(hype.valuation.price_to_earnings, 9.3, 'hype: stale 9.3x multiple leaked');
+assert(Number.isFinite(hype.income_statement.revenue_ttm_usd), 'hype: DefiLlama Revenue must be available');
+assert(Number.isFinite(hype.capital_returns.holders_revenue_ttm_usd), 'hype: Holders Revenue must be available');
+assert.strictEqual(
+  hype.valuation.price_to_earnings,
+  round(hype.market_data.market_cap_usd / hype.income_statement.revenue_ttm_usd),
+  'hype: P/E must follow the current DefiLlama market cap',
+);
+assert.strictEqual(
+  hype.capital_returns.shareholder_yield_pct,
+  round((hype.capital_returns.holders_revenue_ttm_usd / hype.market_data.market_cap_usd) * 100, 4),
+  'hype: Shareholder Yield must follow the current DefiLlama market cap',
+);
 assert.strictEqual(hype.chain_diagnostics, null, 'hype: chain diagnostics must not be a numeric source this round');
 
 const bgb = data.protocols.find((protocol) => protocol.id === 'bgb');

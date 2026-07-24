@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "source_policy": "DEFILLAMA_ONLY_ROUND",
-  "generated_at": "2026-07-24T20:47:19.311Z",
+  "generated_at": "2026-07-24T21:00:04.402Z",
   "freshness_policy": {
     "market_price_max_age_hours": 24,
     "financial_window": "DefiLlama total1y",
@@ -25,10 +25,10 @@
         "coin_key": "coingecko:aave"
       },
       "market": {
-        "price_usd": 93.62110814360967,
-        "market_cap_usd": 1445418194.5512114,
+        "price_usd": 93.62055433865038,
+        "market_cap_usd": 1443598233.106476,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-07-24T20:47:03.000Z",
+        "price_timestamp": "2026-07-24T20:59:06.000Z",
         "price_confidence": 0.99,
         "symbol": "AAVE",
         "circulating_supply_used": null,
@@ -76,7 +76,7 @@
       },
       "market": {
         "price_usd": 0.6321844626932381,
-        "market_cap_usd": 1703267692.6488519,
+        "market_cap_usd": 1698305773.4874682,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:45:02.000Z",
         "price_confidence": 0.99,
@@ -125,10 +125,10 @@
         "coin_key": "coingecko:bitget-token"
       },
       "market": {
-        "price_usd": 1.6515561914306065,
-        "market_cap_usd": 1156072818.4395103,
+        "price_usd": 1.6515650440747516,
+        "market_cap_usd": 1156079015.2018855,
         "market_cap_method": "DEFILLAMA_PRICE_X_DEFILLAMA_SUPPLY_SNAPSHOT",
-        "price_timestamp": "2026-07-24T19:59:05.000Z",
+        "price_timestamp": "2026-07-24T20:59:05.000Z",
         "price_confidence": 0.99,
         "symbol": "BGB",
         "circulating_supply_used": 699990000,
@@ -175,10 +175,10 @@
         "coin_key": "coingecko:binancecoin"
       },
       "market": {
-        "price_usd": 564.5639796230394,
-        "market_cap_usd": 75219887574.40746,
+        "price_usd": 564.461818345339,
+        "market_cap_usd": 75188944607.63802,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-07-24T20:47:04.000Z",
+        "price_timestamp": "2026-07-24T20:59:08.000Z",
         "price_confidence": 0.99,
         "symbol": "BNB",
         "circulating_supply_used": null,
@@ -225,10 +225,10 @@
         "coin_key": "coingecko:compound-governance-token"
       },
       "market": {
-        "price_usd": 17.17124481688549,
+        "price_usd": 17.204973165393756,
         "market_cap_usd": 166017654.4951397,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-07-24T19:59:06.000Z",
+        "price_timestamp": "2026-07-24T20:59:05.000Z",
         "price_confidence": 0.99,
         "symbol": "COMP",
         "circulating_supply_used": null,
@@ -276,7 +276,7 @@
       },
       "market": {
         "price_usd": 0.2025897986943961,
-        "market_cap_usd": 312097693.83443856,
+        "market_cap_usd": 312519406.33770525,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:45:03.000Z",
         "price_confidence": 0.99,
@@ -325,10 +325,10 @@
         "coin_key": "coingecko:dydx-chain"
       },
       "market": {
-        "price_usd": 0.12507694872476263,
+        "price_usd": 0.1251045523512859,
         "market_cap_usd": 106137856.6303428,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-07-24T19:58:50.000Z",
+        "price_timestamp": "2026-07-24T20:58:48.000Z",
         "price_confidence": 0.99,
         "symbol": "DYDX",
         "circulating_supply_used": null,
@@ -376,7 +376,7 @@
       },
       "market": {
         "price_usd": 0.2063409143847402,
-        "market_cap_usd": 153857854.9772552,
+        "market_cap_usd": 153818435.64795014,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:44:51.000Z",
         "price_confidence": 0.99,
@@ -426,7 +426,7 @@
       },
       "market": {
         "price_usd": 0.08716268126372761,
-        "market_cap_usd": 832439801.5953526,
+        "market_cap_usd": 834589409.0742121,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:44:51.000Z",
         "price_confidence": 0.99,
@@ -476,7 +476,7 @@
       },
       "market": {
         "price_usd": 0.43566596073159597,
-        "market_cap_usd": 424707366.7002479,
+        "market_cap_usd": 425963692.81271976,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:44:51.000Z",
         "price_confidence": 0.99,
@@ -525,10 +525,10 @@
         "coin_key": "coingecko:instadapp"
       },
       "market": {
-        "price_usd": 1.1445752359433703,
+        "price_usd": 1.1409425473146482,
         "market_cap_usd": 90074575.97876666,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-07-24T19:59:07.000Z",
+        "price_timestamp": "2026-07-24T20:59:07.000Z",
         "price_confidence": 0.99,
         "symbol": "FLUID",
         "circulating_supply_used": null,
@@ -575,10 +575,10 @@
         "coin_key": "coingecko:gmx"
       },
       "market": {
-        "price_usd": 6.882715802560837,
+        "price_usd": 6.928202577394036,
         "market_cap_usd": 71842441.17024082,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-07-24T19:59:08.000Z",
+        "price_timestamp": "2026-07-24T20:59:07.000Z",
         "price_confidence": 0.99,
         "symbol": "GMX",
         "circulating_supply_used": null,
@@ -625,10 +625,10 @@
         "coin_key": "coingecko:hyperliquid"
       },
       "market": {
-        "price_usd": 58.08723692473949,
-        "market_cap_usd": 12934168178.16994,
+        "price_usd": 58.0177148249357,
+        "market_cap_usd": 12914309855.034872,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-07-24T20:46:58.000Z",
+        "price_timestamp": "2026-07-24T20:58:51.000Z",
         "price_confidence": 0.99,
         "symbol": "HYPE",
         "circulating_supply_used": null,
@@ -676,7 +676,7 @@
       },
       "market": {
         "price_usd": 0.5918066537291574,
-        "market_cap_usd": 295160601.00040525,
+        "market_cap_usd": 295764002.98508483,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:45:01.000Z",
         "price_confidence": 0.99,
@@ -726,7 +726,7 @@
       },
       "market": {
         "price_usd": 0.10264324256728989,
-        "market_cap_usd": 843513723.2462587,
+        "market_cap_usd": 841355824.8162565,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:45:02.000Z",
         "price_confidence": 0.99,
@@ -775,10 +775,10 @@
         "coin_key": "coingecko:kamino"
       },
       "market": {
-        "price_usd": 0.0175680663496545,
+        "price_usd": 0.01776249313449515,
         "market_cap_usd": 90298827.15714529,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-07-24T19:59:07.000Z",
+        "price_timestamp": "2026-07-24T20:58:57.000Z",
         "price_confidence": 0.99,
         "symbol": "KMNO",
         "circulating_supply_used": null,
@@ -826,7 +826,7 @@
       },
       "market": {
         "price_usd": 0.3775988078892628,
-        "market_cap_usd": 318950917.81089723,
+        "market_cap_usd": 318070680.4152762,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:45:04.000Z",
         "price_confidence": 0.99,
@@ -875,10 +875,10 @@
         "coin_key": "coingecko:syrup"
       },
       "market": {
-        "price_usd": 0.1707907852663551,
+        "price_usd": 0.17095291370833138,
         "market_cap_usd": 198796407.31580427,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-07-24T19:58:54.000Z",
+        "price_timestamp": "2026-07-24T20:58:53.000Z",
         "price_confidence": 0.99,
         "symbol": "SYRUP",
         "circulating_supply_used": null,
@@ -925,10 +925,10 @@
         "coin_key": "coingecko:mantle"
       },
       "market": {
-        "price_usd": 0.4097448951874164,
+        "price_usd": 0.40937835334345113,
         "market_cap_usd": 1351877815.958425,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-07-24T20:46:52.000Z",
+        "price_timestamp": "2026-07-24T20:58:47.000Z",
         "price_confidence": 0.99,
         "symbol": "MNT",
         "circulating_supply_used": null,
@@ -976,7 +976,7 @@
       },
       "market": {
         "price_usd": 1.9437012277687693,
-        "market_cap_usd": 1273096435.266596,
+        "market_cap_usd": 1273789469.3698885,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:44:49.000Z",
         "price_confidence": 0.99,
@@ -1025,10 +1025,10 @@
         "coin_key": "coingecko:okb"
       },
       "market": {
-        "price_usd": 82.02732373925447,
-        "market_cap_usd": 1723966972.3197284,
+        "price_usd": 81.9179270717739,
+        "market_cap_usd": 1722573798.524344,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-07-24T20:14:53.000Z",
+        "price_timestamp": "2026-07-24T20:58:50.000Z",
         "price_confidence": 0.99,
         "symbol": "OKB",
         "circulating_supply_used": null,
@@ -1076,7 +1076,7 @@
       },
       "market": {
         "price_usd": 1.3911595482462402,
-        "market_cap_usd": 449272451.35084814,
+        "market_cap_usd": 448978204.032749,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:45:03.000Z",
         "price_confidence": 0.99,
@@ -1126,7 +1126,7 @@
       },
       "market": {
         "price_usd": 1.5046130416902195,
-        "market_cap_usd": 258407475.59695184,
+        "market_cap_usd": 258502367.81322223,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:45:04.000Z",
         "price_confidence": 0.99,
@@ -1176,7 +1176,7 @@
       },
       "market": {
         "price_usd": 0.05702614986128911,
-        "market_cap_usd": 1337282590.830041,
+        "market_cap_usd": 1335532045.6130834,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:44:54.000Z",
         "price_confidence": 0.99,
@@ -1226,7 +1226,7 @@
       },
       "market": {
         "price_usd": 0.017119636612999176,
-        "market_cap_usd": 50895695.861736156,
+        "market_cap_usd": 50925744.80914279,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
         "price_timestamp": "2026-07-24T20:44:52.000Z",
         "price_confidence": 0.99,
@@ -1275,10 +1275,10 @@
         "coin_key": "coingecko:uniswap"
       },
       "market": {
-        "price_usd": 3.8330226343842284,
-        "market_cap_usd": 2387854514.6618643,
+        "price_usd": 3.834782922592916,
+        "market_cap_usd": 2395647288.4631248,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-07-24T20:47:03.000Z",
+        "price_timestamp": "2026-07-24T20:59:06.000Z",
         "price_confidence": 0.99,
         "symbol": "UNI",
         "circulating_supply_used": null,
