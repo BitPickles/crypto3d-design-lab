@@ -42,6 +42,7 @@ const REQUIRED_META = [
   'fee_burns',
   'shareholder_yield',
 ];
+const PROTOCOL_EARNINGS_NA_IDS = new Set(['bnb', 'mnt']);
 
 function runBuild() {
   execFileSync(process.execPath, [path.join(__dirname, 'build-us-equity-financials.js')], {
@@ -132,14 +133,23 @@ for (const protocol of data.protocols) {
   const rawHolders = raw.financials.holders_revenue.total_1y_usd;
   assert.strictEqual(income.gross_fees_ttm_usd, Number.isFinite(rawFees) ? rawFees : null, `${protocol.id}: Fees mismatch`);
   assert.strictEqual(income.revenue_ttm_usd, Number.isFinite(rawRevenue) ? rawRevenue : null, `${protocol.id}: Revenue mismatch`);
-  assert.strictEqual(income.net_income_ttm_usd, Number.isFinite(rawRevenue) ? rawRevenue : null, `${protocol.id}: earnings proxy mismatch`);
+  assert.strictEqual(
+    income.net_income_ttm_usd,
+    PROTOCOL_EARNINGS_NA_IDS.has(protocol.id) ? null : Number.isFinite(rawRevenue) ? rawRevenue : null,
+    `${protocol.id}: earnings proxy mismatch`,
+  );
   assert.strictEqual(
     returns.holders_revenue_ttm_usd,
     Number.isFinite(rawHolders) ? rawHolders : null,
     `${protocol.id}: Holders Revenue mismatch`,
   );
 
-  if (Number.isFinite(rawRevenue) && rawRevenue > 0) {
+  if (PROTOCOL_EARNINGS_NA_IDS.has(protocol.id)) {
+    assert.strictEqual(valuation.price_to_sales, round(marketCap / rawRevenue), `${protocol.id}: P/S mismatch`);
+    assert.strictEqual(valuation.price_to_earnings, null, `${protocol.id}: public-chain P/E must be null`);
+    assert.strictEqual(protocol.metric_meta.protocol_earnings.state, 'N/A', `${protocol.id}: earnings must be N/A`);
+    assert.strictEqual(protocol.metric_meta.price_to_earnings.state, 'N/A', `${protocol.id}: P/E must be N/A`);
+  } else if (Number.isFinite(rawRevenue) && rawRevenue > 0) {
     assert.strictEqual(valuation.price_to_sales, round(marketCap / rawRevenue), `${protocol.id}: P/S mismatch`);
     assert.strictEqual(valuation.price_to_earnings, round(marketCap / rawRevenue), `${protocol.id}: Cash P/E mismatch`);
   } else {

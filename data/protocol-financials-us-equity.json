@@ -60,8 +60,8 @@
     "gross_fees_count": 24,
     "revenue_count": 23,
     "price_to_sales_count": 21,
-    "net_income_count": 23,
-    "price_to_earnings_count": 21,
+    "net_income_count": 21,
+    "price_to_earnings_count": 19,
     "holders_revenue_count": 22,
     "shareholder_yield_count": 22,
     "independent_pass_count": 13,
@@ -924,11 +924,11 @@
         "direct_economic_costs_ttm_usd": null,
         "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": 21262125,
+        "gross_profit_ttm_usd": null,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": 21262125,
-        "net_income_ttm_usd": 21262125,
-        "coverage": "defillama_revenue_proxy",
+        "operating_income_ttm_usd": null,
+        "net_income_ttm_usd": null,
+        "coverage": "pending",
         "organization_opex_policy": "excluded",
         "native_token_expense_policy": "excluded"
       },
@@ -958,7 +958,7 @@
       },
       "valuation": {
         "price_to_sales": 3536.29,
-        "price_to_earnings": 3536.29,
+        "price_to_earnings": null,
         "free_cash_flow_yield_pct": null
       },
       "chain_diagnostics": null,
@@ -1041,15 +1041,15 @@
           "display_note": "DefiLlama 未覆盖"
         },
         "protocol_earnings": {
-          "state": "ESTIMATED",
-          "window": "DefiLlama total1y",
-          "source": "DefiLlama Revenue proxy",
+          "state": "N/A",
+          "window": "TTM",
+          "source": "DefiLlama",
           "source_url": "https://api.llama.fi/summary/fees/bsc?dataType=dailyRevenue",
-          "as_of": "2026-07-23T00:00:00.000Z",
+          "as_of": null,
           "confidence": "medium",
           "source_tier": "THIRD_PARTY_FALLBACK",
-          "reason": "本轮 Protocol Earnings 代理值采用 DefiLlama Revenue；不再另扣项目方组织运营费和原生代币发行。DefiLlama 未单列的协议直接成本不作虚构扣除。",
-          "display_note": "Revenue 代理"
+          "reason": "该项目属于公链或网络型资产，DefiLlama Revenue 是网络收入，不代表代币持有者可索取的公司式净利润，因此不计算 P/E。",
+          "display_note": "N/A"
         },
         "price_to_sales": {
           "state": "ESTIMATED",
@@ -1063,15 +1063,15 @@
           "display_note": "DefiLlama"
         },
         "price_to_earnings": {
-          "state": "ESTIMATED",
-          "window": "DefiLlama total1y",
-          "source": "DefiLlama Market Cap + DefiLlama Revenue proxy",
+          "state": "N/A",
+          "window": "TTM",
+          "source": "DefiLlama",
           "source_url": "https://api.llama.fi/summary/fees/bsc?dataType=dailyRevenue",
           "as_of": "2026-07-24T21:01:56.353Z",
           "confidence": "medium",
           "source_tier": "THIRD_PARTY_FALLBACK",
-          "reason": "Cash P/E = DefiLlama 流通市值 ÷ DefiLlama Revenue proxy。",
-          "display_note": "DefiLlama"
+          "reason": "该项目属于公链或网络型资产，DefiLlama Revenue 是网络收入，不代表代币持有者可索取的公司式净利润，因此不计算 P/E。",
+          "display_note": "N/A"
         },
         "holders_revenue": {
           "state": "ESTIMATED",
@@ -1174,11 +1174,11 @@
         "evidence_boundary": "本轮按用户决策统一使用 DefiLlama。所有数值标记为第三方聚合估算；不以旧数据、链上重建或其他平台补缺。Holders Revenue 只作为聚合持币者收入，不冒充分红或回购明细。"
       },
       "null_reasons": {
-        "income_statement": "本轮 Protocol Earnings 代理值采用 DefiLlama Revenue；不再另扣项目方组织运营费和原生代币发行。DefiLlama 未单列的协议直接成本不作虚构扣除。",
+        "income_statement": "该项目属于公链或网络型资产，DefiLlama Revenue 是网络收入，不代表代币持有者可索取的公司式净利润，因此不计算 P/E。",
         "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮 DefiLlama 单一来源快照的覆盖范围。",
         "balance_sheet": "资产负债表不属于本轮 DefiLlama 单一来源快照的覆盖范围。",
         "capital_returns": "Holders Revenue 直接采用 DefiLlama summary API 的 total1y 字段；属于第三方聚合口径。",
-        "price_to_earnings": "Cash P/E = DefiLlama 流通市值 ÷ DefiLlama Revenue proxy。"
+        "price_to_earnings": "该项目属于公链或网络型资产，DefiLlama Revenue 是网络收入，不代表代币持有者可索取的公司式净利润，因此不计算 P/E。"
       }
     },
     {
@@ -4830,11 +4830,11 @@
         "direct_economic_costs_ttm_usd": null,
         "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": 433493,
+        "gross_profit_ttm_usd": null,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": 433493,
-        "net_income_ttm_usd": 433493,
-        "coverage": "defillama_revenue_proxy",
+        "operating_income_ttm_usd": null,
+        "net_income_ttm_usd": null,
+        "coverage": "pending",
         "organization_opex_policy": "excluded",
         "native_token_expense_policy": "excluded"
       },
@@ -4864,7 +4864,7 @@
       },
       "valuation": {
         "price_to_sales": 3122.04,
-        "price_to_earnings": 3122.04,
+        "price_to_earnings": null,
         "free_cash_flow_yield_pct": null
       },
       "chain_diagnostics": null,
@@ -4947,15 +4947,15 @@
           "display_note": "DefiLlama 未覆盖"
         },
         "protocol_earnings": {
-          "state": "ESTIMATED",
-          "window": "DefiLlama total1y",
-          "source": "DefiLlama Revenue proxy",
+          "state": "N/A",
+          "window": "TTM",
+          "source": "DefiLlama",
           "source_url": "https://api.llama.fi/summary/fees/mantle?dataType=dailyRevenue",
-          "as_of": "2026-07-23T00:00:00.000Z",
+          "as_of": null,
           "confidence": "medium",
           "source_tier": "THIRD_PARTY_FALLBACK",
-          "reason": "本轮 Protocol Earnings 代理值采用 DefiLlama Revenue；不再另扣项目方组织运营费和原生代币发行。DefiLlama 未单列的协议直接成本不作虚构扣除。",
-          "display_note": "Revenue 代理"
+          "reason": "该项目属于公链或网络型资产，DefiLlama Revenue 是网络收入，不代表代币持有者可索取的公司式净利润，因此不计算 P/E。",
+          "display_note": "N/A"
         },
         "price_to_sales": {
           "state": "ESTIMATED",
@@ -4969,15 +4969,15 @@
           "display_note": "DefiLlama"
         },
         "price_to_earnings": {
-          "state": "ESTIMATED",
-          "window": "DefiLlama total1y",
-          "source": "DefiLlama Market Cap + DefiLlama Revenue proxy",
+          "state": "N/A",
+          "window": "TTM",
+          "source": "DefiLlama",
           "source_url": "https://api.llama.fi/summary/fees/mantle?dataType=dailyRevenue",
           "as_of": "2026-07-24T21:01:56.353Z",
           "confidence": "medium",
           "source_tier": "THIRD_PARTY_FALLBACK",
-          "reason": "Cash P/E = DefiLlama 流通市值 ÷ DefiLlama Revenue proxy。",
-          "display_note": "DefiLlama"
+          "reason": "该项目属于公链或网络型资产，DefiLlama Revenue 是网络收入，不代表代币持有者可索取的公司式净利润，因此不计算 P/E。",
+          "display_note": "N/A"
         },
         "holders_revenue": {
           "state": "PENDING",
@@ -5080,11 +5080,11 @@
         "evidence_boundary": "本轮按用户决策统一使用 DefiLlama。所有数值标记为第三方聚合估算；不以旧数据、链上重建或其他平台补缺。Holders Revenue 只作为聚合持币者收入，不冒充分红或回购明细。"
       },
       "null_reasons": {
-        "income_statement": "本轮 Protocol Earnings 代理值采用 DefiLlama Revenue；不再另扣项目方组织运营费和原生代币发行。DefiLlama 未单列的协议直接成本不作虚构扣除。",
+        "income_statement": "该项目属于公链或网络型资产，DefiLlama Revenue 是网络收入，不代表代币持有者可索取的公司式净利润，因此不计算 P/E。",
         "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮 DefiLlama 单一来源快照的覆盖范围。",
         "balance_sheet": "资产负债表不属于本轮 DefiLlama 单一来源快照的覆盖范围。",
         "capital_returns": "DefiLlama 未提供 Holders Revenue 的 total1y；本轮禁止使用旧数据或其他来源回填。",
-        "price_to_earnings": "Cash P/E = DefiLlama 流通市值 ÷ DefiLlama Revenue proxy。"
+        "price_to_earnings": "该项目属于公链或网络型资产，DefiLlama Revenue 是网络收入，不代表代币持有者可索取的公司式净利润，因此不计算 P/E。"
       }
     },
     {

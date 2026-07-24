@@ -185,13 +185,13 @@
 
         <section class="doc-section" id="chains">
           <h2>6. 公链与特殊类型项目</h2>
-          <p>公链通常没有边界清晰的公司主体、完整运营费用账本或传统股东剩余索取权，因此这里的 Cash P/E 不是公司会计意义上的 P/E。本轮若 DefiLlama 提供 Revenue，则仍计算“流通市值 ÷ Revenue 代理”的协议经济倍数，方便横向比较，并明确标为估算。</p>
+          <p>公链通常没有边界清晰的公司主体、完整运营费用账本或传统股东剩余索取权，因此不计算公司式 P/E。DefiLlama 提供的 Revenue 仍可用于计算 P/S 或 P/Network Revenue，但不能冒充净利润。</p>
           <div class="doc-table-wrap">
             <table class="doc-table">
               <thead><tr><th>项目类型</th><th>主要指标</th><th>P/E 处理</th></tr></thead>
               <tbody>
                 <tr><td>DeFi 协议 / DAO</td><td>Revenue、Protocol Earnings、P/S、Cash P/E、Shareholder Yield</td><td>协议经济收益为正且直接成本口径可用时计算</td></tr>
-                <tr><td>公链 / L1 / L2</td><td>DefiLlama Revenue、费用留存、Holders Revenue</td><td>有 Revenue 时计算会议版代理倍数；不称传统公司 P/E</td></tr>
+                <tr><td>公链 / L1 / L2</td><td>DefiLlama Revenue、费用留存、Holders Revenue、P/Network Revenue</td><td>P/E 显示 N/A</td></tr>
                 <tr><td>CEX 平台币</td><td>DefiLlama Revenue 与 Holders Revenue</td><td>DefiLlama 缺失时显示待核实，不使用旧值回填</td></tr>
                 <tr><td>纯治理代币</td><td>协议收入与价值捕获机制</td><td>没有利润归属时为 N/A</td></tr>
               </tbody>

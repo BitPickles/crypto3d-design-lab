@@ -23,33 +23,26 @@
     .snapshot-title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
     .snapshot-subtitle { margin-top: 4px; font-size: 12px; color: var(--text-secondary); }
     .snapshot-badge { flex: none; padding: 5px 9px; border-radius: 999px; background: rgba(59,130,246,.12); color: #3b82f6; font-size: 11px; font-weight: 700; }
-    .snapshot-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .snapshot-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
     .snapshot-metric { padding: 12px; border-radius: 12px; background: var(--bg-primary); border: 1px solid var(--border); }
     .snapshot-metric strong { display: block; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 19px; }
     .snapshot-metric span { display: block; margin-top: 3px; color: var(--text-secondary); font-size: 11px; line-height: 1.4; }
     .snapshot-caveat { margin: 12px 0 0; color: var(--text-secondary); font-size: 12px; line-height: 1.65; }
     #protocol-table { min-width: 1180px; }
-    .table-scroll { overflow-x: auto; }
-    .value-muted { color: var(--text-tertiary); }
-    .value-estimated { color: var(--warning); }
-    .value-note { display: block; margin-top: 2px; color: var(--text-tertiary); font-family: 'Noto Sans SC', sans-serif; font-size: 9px; white-space: nowrap; }
+    .value-muted { color: var(--text-secondary); }
     .method-card-wide { grid-column: 1 / -1; }
     .formula-stack { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
     .formula-stack .formula-box { margin: 0; }
-    .review-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; white-space: nowrap; }
-    .review-badge.pass { color: var(--accent); background: var(--accent-dim); }
-    .review-badge.pending { color: var(--warning); background: var(--warning-dim); }
-    .review-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-    .research-frame { min-height: 210px; display: grid; align-content: center; gap: 12px; padding: 24px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-tertiary); }
-    .research-frame p { color: var(--text-secondary); font-size: 13px; line-height: 1.7; }
-    .research-frame .formula-box { margin: 0; }
-    @media (max-width: 900px) {
+    @media (max-width: 860px) {
       .snapshot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .snapshot-metric:first-child { grid-column: 1 / -1; }
       .formula-stack { grid-template-columns: 1fr; }
       .table-header { align-items: flex-start; flex-direction: column; gap: 12px; }
       .table-filters { width: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
       .filter-btn { flex: none; }
+    }
+    @media (max-width: 520px) {
+      .snapshot-head { display: block; }
+      .snapshot-badge { display: inline-block; margin-top: 10px; }
     }
     @media (max-width: 768px) { nav { display: none; } }
   </style>
@@ -72,7 +65,7 @@
     <section class="hero">
       <div class="container">
         <h1>加密协议财务与估值</h1>
-        <p>保留原有页面结构，本轮统一用 DefiLlama 的市场数据、Revenue 与 Holders Revenue 比较协议估值；项目方运营费用及原生代币支出不进入 Cash P/E。</p>
+        <p>用美股常用指标比较 26 个加密协议。</p>
       </div>
     </section>
 
@@ -80,17 +73,16 @@
       <div class="container">
         <div class="snapshot-card">
           <div class="snapshot-head">
-            <div><div class="snapshot-title">26 协议财务快照</div><div class="snapshot-subtitle">数据截至 <span id="snapshot-as-of">—</span> · 本轮来源：DefiLlama 单一来源 · 价格每日自动刷新</div></div>
+            <div><div class="snapshot-title">26 协议财务快照</div><div class="snapshot-subtitle">数据截至 <span id="snapshot-as-of">—</span> · DefiLlama · 每日更新</div></div>
             <span class="snapshot-badge">测试站 · 非生产</span>
           </div>
           <div class="snapshot-grid">
             <div class="snapshot-metric"><strong id="snapshot-protocol-count">—</strong><span>协议覆盖</span></div>
             <div class="snapshot-metric"><strong id="snapshot-market-count">—</strong><span>Market Cap 可用</span></div>
-            <div class="snapshot-metric"><strong id="snapshot-revenue-count">—</strong><span>Revenue 可用</span></div>
             <div class="snapshot-metric"><strong id="snapshot-ps-count">—</strong><span>P/S 可计算</span></div>
-            <div class="snapshot-metric"><strong id="snapshot-pe-count">—</strong><span>Cash P/E 可计算</span></div>
+            <div class="snapshot-metric"><strong id="snapshot-pe-count">—</strong><span>P/E 可计算</span></div>
           </div>
-          <p class="snapshot-caveat">本轮 Protocol Earnings 采用 DefiLlama Revenue total1y 代理；Cash P/E = DefiLlama 流通市值 ÷ Protocol Earnings。项目方组织运营费用与原生代币支出不扣除；DefiLlama 未覆盖的字段保持待核实，不使用旧数据回填。“~”表示第三方聚合估算。</p>
+          <p class="snapshot-caveat">详细定义和计算公式见<a href="docs/">口径文档</a>。</p>
         </div>
       </div>
     </section>
@@ -110,26 +102,24 @@
             </div>
           </div>
           <div id="table-loading" class="loading"><div class="loading-spinner"></div><div>加载协议数据中...</div></div>
-          <div class="table-scroll">
-            <table id="protocol-table" style="display:none">
-              <thead>
-                <tr>
-                  <th style="width:50px">#</th>
-                  <th>协议</th>
-                  <th class="text-right sortable sorted desc" data-sort="market_cap">Market Cap</th>
-                  <th class="text-right sortable" data-sort="revenue">Revenue TTM</th>
-                  <th class="text-right sortable" data-sort="net_income">Protocol Earnings TTM</th>
-                  <th class="text-right sortable" data-sort="price_to_sales">P/S</th>
-                  <th class="text-right sortable" data-sort="price_to_earnings">Cash P/E</th>
-                  <th class="text-right">Fees TTM</th>
-                  <th class="text-right">Holders Revenue TTM</th>
-                  <th class="text-right">Shareholder Yield</th>
-                  <th class="text-right">状态</th>
-                </tr>
-              </thead>
-              <tbody id="protocol-tbody"></tbody>
-            </table>
-          </div>
+          <table id="protocol-table" style="display:none">
+            <thead>
+              <tr>
+                <th style="width:50px">#</th>
+                <th>协议</th>
+                <th class="text-right sortable sorted desc" data-sort="market_cap">市值</th>
+                <th class="text-right sortable" data-sort="revenue">收入 TTM</th>
+                <th class="text-right sortable" data-sort="net_income">协议利润 TTM</th>
+                <th class="text-right sortable" data-sort="price_to_sales">P/S</th>
+                <th class="text-right sortable" data-sort="price_to_earnings">P/E</th>
+                <th class="text-right">费用 TTM</th>
+                <th class="text-right">持币者收入 TTM</th>
+                <th class="text-right">股息率</th>
+                <th class="text-right">可信度</th>
+              </tr>
+            </thead>
+            <tbody id="protocol-tbody"></tbody>
+          </table>
           <div class="data-update-time" id="data-update-time">数据更新: —</div>
         </div>
       </div>
@@ -139,23 +129,23 @@
       <div class="container">
         <div class="intro-grid">
           <div class="intro-card">
-            <h2><span class="icon">📊</span> 利润表与估值</h2>
-            <p><strong>Revenue</strong> 采用 DefiLlama dailyRevenue 的 total1y，不等于用户支付的全部 Fees。本轮 Protocol Earnings 使用同一 Revenue 作为简化代理，不扣项目方组织运营费用和原生代币发行。</p>
+            <h2><span class="icon">📊</span> 收入与利润</h2>
+            <p>收入采用协议留存收入；协议利润不扣项目方运营费用和代币增发。</p>
             <div class="formula-box">P/S = Market Cap ÷ Revenue (TTM)</div>
-            <div class="formula-box">Cash P/E = Market Cap ÷ Protocol Earnings (TTM)</div>
+            <div class="formula-box">P/E = Market Cap ÷ Protocol Earnings (TTM)</div>
           </div>
           <div class="intro-card">
             <h2><span class="icon">💡</span> 资本回报</h2>
-            <p>本轮 Shareholder Yield 直接使用 DefiLlama Holders Revenue total1y 与流通市值计算。Holders Revenue 是聚合口径，不强行拆成分红、回购或销毁；代币增发不从该指标扣减。</p>
-            <div class="formula-box">Shareholder Yield = Holders Revenue (total1y) ÷ Market Cap</div>
+            <p>持币者收入单独展示，不重复计入协议利润。</p>
+            <div class="formula-box">股息率 = Holders Revenue (TTM) ÷ Market Cap</div>
           </div>
           <div class="intro-card method-card-wide">
-            <h2><span class="icon">🧮</span> 空值与证据边界</h2>
-            <p>本轮会议版统一采用 DefiLlama 字段，便于横向比较。第三方聚合值统一显示为估算；DefiLlama 没有提供的字段显示待核实，绝不把空值当作零。</p>
+            <h2><span class="icon">🧮</span> 估值口径</h2>
+            <p>空值不等于零；没有利润或结构不适用时，不强行显示 P/E。</p>
             <div class="formula-stack">
-              <div class="formula-box">0 = 已确认确实为零</div>
-              <div class="formula-box">N/A = 结构上不适用</div>
-              <div class="formula-box">N/M = 倍数无经济意义</div>
+              <div class="formula-box">P/S = 市值 ÷ 收入</div>
+              <div class="formula-box">P/E = 市值 ÷ 协议利润</div>
+              <div class="formula-box">股息率 = 持币者收入 ÷ 市值</div>
             </div>
             <div class="author-links"><a href="docs/" class="author-link"><span>查看完整计算口径与公式 →</span></a></div>
           </div>
@@ -168,12 +158,12 @@
         <div class="author-video-grid">
           <div class="author-card">
             <div class="author-header"><div class="author-avatar">🔮</div><div class="author-meta"><h3>3D</h3><div class="tagline">DeFi 实战派 · 协议财务研究</div></div></div>
-            <p class="author-bio">专注 DeFi、链上套利及低风险机会的探索与实战。本页使用上市公司财务字段审视加密协议，并严格区分收入、协议收益、资本回报与估值；证据不足的字段明确标记为待核实。</p>
+            <p class="author-bio">专注 DeFi、链上套利及低风险机会的探索与实战，用数据和美股财务指标比较加密协议。</p>
             <div class="author-links"><a href="https://x.com/22333D" target="_blank" class="author-link"><span>@22333D</span></a><a href="https://www.youtube.com/@Crypto36D" target="_blank" class="author-link"><span>3D 加密频道</span></a></div>
           </div>
           <div class="video-card">
-            <h2>📘 协议财务研究框架</h2>
-            <div class="research-frame"><p>本轮先用 DefiLlama 的 Fees、Revenue 与 Holders Revenue 建立可重复的会议快照；项目方组织运营费用及原生代币支出不进入 Cash P/E。</p><div class="formula-box">Fees → Revenue proxy → Protocol Earnings proxy → Cash P/E</div><p>价格与市值每日从 DefiLlama 更新。平台缺失项保留待核实，不用旧值或其他平台拼接。</p></div>
+            <h2>📺 协议估值框架详解</h2>
+            <div class="video-container"><iframe src="https://www.youtube.com/embed/Gl8e_t2Zo6w" title="协议估值框架详解" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
           </div>
         </div>
       </div>

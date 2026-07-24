@@ -11,6 +11,7 @@ const DEFILLAMA_INPUT = path.join(ROOT, 'data', 'defillama-daily-snapshot.json')
 const OUTPUT_JSON = path.join(ROOT, 'data', 'protocol-financials-us-equity.json');
 const OUTPUT_JS = path.join(ROOT, 'data', 'protocol-financials-us-equity.js');
 const SOURCE_TIER = 'THIRD_PARTY_FALLBACK';
+const PROTOCOL_EARNINGS_NA_IDS = new Set(['bnb', 'mnt']);
 
 const NULL_REASONS = {
   cash_flow: '经营现金流、资本开支与自由现金流不属于本轮 DefiLlama 单一来源快照的覆盖范围。',
@@ -77,6 +78,20 @@ function pendingMetric(reason, sourceUrl = null, window = 'TTM') {
   };
 }
 
+function notApplicableMetric(reason, sourceUrl = null, window = 'TTM') {
+  return {
+    value: null,
+    meta: meta({
+      state: 'N/A',
+      window,
+      source: 'DefiLlama',
+      sourceUrl,
+      reason,
+      displayNote: 'N/A',
+    }),
+  };
+}
+
 function defillamaAmount(metric, label, asOf) {
   if (!metric || !Number.isFinite(metric.total_1y_usd)) {
     return pendingMetric(
@@ -101,6 +116,20 @@ function defillamaAmount(metric, label, asOf) {
 }
 
 function derivedMultiple(marketCap, denominator, label, asOf) {
+  if (denominator.meta.state === 'N/A') {
+    return {
+      value: null,
+      meta: meta({
+        state: 'N/A',
+        window: denominator.meta.window,
+        source: denominator.meta.source,
+        sourceUrl: denominator.meta.source_url,
+        asOf,
+        reason: denominator.meta.reason,
+        displayNote: 'N/A',
+      }),
+    };
+  }
   if (!Number.isFinite(denominator.value)) {
     return {
       value: null,
@@ -194,7 +223,12 @@ function buildProtocol(identity, llama, generatedAt) {
 
   // 用户确认的本轮简化口径：不扣项目方组织费用和原生代币发行。
   // DefiLlama Revenue 已是协议留存口径，因此作为 Protocol Earnings 代理。
-  const protocolEarnings = Number.isFinite(revenue.value)
+  const protocolEarnings = PROTOCOL_EARNINGS_NA_IDS.has(identity.id)
+    ? notApplicableMetric(
+        '该项目属于公链或网络型资产，DefiLlama Revenue 是网络收入，不代表代币持有者可索取的公司式净利润，因此不计算 P/E。',
+        revenue.meta.source_url,
+      )
+    : Number.isFinite(revenue.value)
     ? {
         value: revenue.value,
         meta: meta({

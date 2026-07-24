@@ -8,30 +8,7 @@
   let activeFilter = 'all';
   let sortKey = 'market_cap';
   let sortDirection = 'desc';
-
-  const categoryLabels = {
-    basis_trading: 'Basis Trading',
-    cdp: 'CDP / Stablecoin',
-    cex_token: 'Exchange Token',
-    dex: 'DEX',
-    l2_token: 'Layer 2',
-    lending: 'Lending',
-    liquid_staking: 'Liquid Staking',
-    perp_dex: 'Perpetual DEX',
-    perpetual_dex: 'Perpetual DEX',
-    perpetuals: 'Perpetual DEX',
-    restaking: 'Restaking',
-    yield: 'Yield',
-  };
-
-  const stateLabels = {
-    VERIFIED: '已核实',
-    ESTIMATED: '估算',
-    ZERO: '已核实为 0',
-    'N/A': '结构不适用',
-    'N/M': '收益≤0',
-    PENDING: '证据待补',
-  };
+  let logoUrls = {};
 
   function formatMoney(value) {
     if (value === null || value === undefined) return '待核实';
@@ -70,9 +47,8 @@
   function displayValue(value, state, formatter) {
     if (state === 'N/A') return 'N/A';
     if (state === 'N/M') return 'N/M';
-    if (state === 'PENDING' || value === null || value === undefined) return '待核实';
-    const formatted = formatter(value);
-    return state === 'ESTIMATED' ? `~${formatted}` : formatted;
+    if (state === 'PENDING' || value === null || value === undefined) return '—';
+    return formatter(value);
   }
 
   function metric(protocol, key) {
@@ -104,17 +80,25 @@
       });
   }
 
-  function valueMarkup(protocol, key, value, formatter, fallbackNote = '') {
+  function valueMarkup(protocol, key, value, formatter) {
     const meta = metricMeta(protocol, key, value);
     const unavailable = ['N/A', 'N/M', 'PENDING'].includes(meta.state) || value === null || value === undefined;
-    const estimated = meta.state === 'ESTIMATED';
-    const note = meta.display_note || fallbackNote || (meta.state === 'VERIFIED' ? '' : stateLabels[meta.state]);
-    return `<span class="value ${unavailable ? 'value-muted' : ''} ${estimated ? 'value-estimated' : ''}">${displayValue(value, meta.state, formatter)}</span>${note ? `<span class="value-note">${escapeHtml(note)}</span>` : ''}`;
+    return `<span class="value ${unavailable ? 'value-muted' : ''}">${displayValue(value, meta.state, formatter)}</span>`;
   }
 
   function reviewBadge(protocol) {
-    const passed = protocol.review.status === 'independent_pass';
-    return `<span class="review-badge ${passed ? 'pass' : 'pending'}">${passed ? '框架已复核' : '候选待复核'}</span>`;
+    const confidence = protocol.review.status === 'independent_pass'
+      ? 'high'
+      : protocol.review.confidence || 'medium';
+    const label = confidence === 'high' ? '高' : confidence === 'low' ? '低' : '中';
+    return `<span class="badge badge-${confidence}">${confidence === 'high' ? '✓' : '!'} ${label}</span>`;
+  }
+
+  function protocolLogo(protocol) {
+    const source = logoUrls[protocol.id];
+    const initial = escapeHtml(protocol.name.charAt(0));
+    if (!source) return initial;
+    return `<img src="${escapeHtml(source)}" alt="${escapeHtml(protocol.name)}" loading="lazy" onerror="this.style.display='none';this.parentElement.textContent='${initial}'">`;
   }
 
   function render() {
@@ -126,15 +110,15 @@
         <td><span class="value value-muted">${index + 1}</span></td>
         <td>
           <div class="protocol-cell">
-            <div class="protocol-icon"><span class="value">${protocol.ticker.slice(0, 4)}</span></div>
-            <div class="protocol-info"><span class="protocol-name">${protocol.name}</span><span class="protocol-ticker">${protocol.ticker} · ${categoryLabels[protocol.category] || protocol.category}</span></div>
+            <div class="protocol-icon">${protocolLogo(protocol)}</div>
+            <div class="protocol-info"><span class="protocol-name">${protocol.name}</span><span class="protocol-ticker">${protocol.ticker}</span></div>
           </div>
         </td>
         <td class="text-right">${valueMarkup(protocol, 'market_cap', protocol.market_data.market_cap_usd, formatMoney)}</td>
-        <td class="text-right">${valueMarkup(protocol, 'revenue', income.revenue_ttm_usd, formatMoney, 'TTM')}</td>
-        <td class="text-right">${valueMarkup(protocol, 'protocol_earnings', income.net_income_ttm_usd, formatMoney, '协议口径')}</td>
+        <td class="text-right">${valueMarkup(protocol, 'revenue', income.revenue_ttm_usd, formatMoney)}</td>
+        <td class="text-right">${valueMarkup(protocol, 'protocol_earnings', income.net_income_ttm_usd, formatMoney)}</td>
         <td class="text-right">${valueMarkup(protocol, 'price_to_sales', protocol.valuation.price_to_sales, formatMultiple)}</td>
-        <td class="text-right">${valueMarkup(protocol, 'price_to_earnings', protocol.valuation.price_to_earnings, formatMultiple, '协议口径')}</td>
+        <td class="text-right">${valueMarkup(protocol, 'price_to_earnings', protocol.valuation.price_to_earnings, formatMultiple)}</td>
         <td class="text-right">${valueMarkup(protocol, 'gross_fees', income.gross_fees_ttm_usd, formatMoney)}</td>
         <td class="text-right">${valueMarkup(protocol, 'holders_revenue', returns.holders_revenue_ttm_usd, formatMoney)}</td>
         <td class="text-right">${valueMarkup(protocol, 'shareholder_yield', returns.shareholder_yield_pct, formatPercent)}</td>
@@ -150,20 +134,26 @@
     if (row) window.location.href = `protocol.html?id=${encodeURIComponent(row.dataset.id)}`;
   }
 
-  function initialize() {
+  async function initialize() {
     if (!data?.protocols?.length) {
       loading.innerHTML = '财务数据加载失败。';
       return;
+    }
+
+    try {
+      const response = await fetch('../data/logo_urls.json');
+      if (response.ok) logoUrls = await response.json();
+    } catch {
+      logoUrls = {};
     }
 
     const date = new Intl.DateTimeFormat('zh-CN', { dateStyle: 'medium', timeZone: 'Asia/Shanghai' }).format(new Date(data.observed_at));
     document.querySelector('#snapshot-as-of').textContent = date;
     document.querySelector('#snapshot-protocol-count').textContent = `${data.coverage.protocol_count}/26`;
     document.querySelector('#snapshot-market-count').textContent = `${data.coverage.market_cap_count}/26`;
-    document.querySelector('#snapshot-revenue-count').textContent = `${data.coverage.revenue_count}/26`;
     document.querySelector('#snapshot-ps-count').textContent = `${data.coverage.price_to_sales_count}/26`;
     document.querySelector('#snapshot-pe-count').textContent = `${data.coverage.price_to_earnings_count}/26`;
-    document.querySelector('#data-update-time').textContent = `数据更新: ${date} · DefiLlama 每日快照 · 缺失项不使用旧数据回填`;
+    document.querySelector('#data-update-time').textContent = `数据更新: ${date} · DefiLlama`;
     document.querySelector('#footer-updated').textContent = `Crypto3D Research · DefiLlama 数据截至 ${date}`;
 
     document.querySelectorAll('.filter-btn').forEach((button) => {

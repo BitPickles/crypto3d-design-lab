@@ -6,21 +6,6 @@
   const protocol = data?.protocols?.find((item) => item.id === id);
   const root = document.querySelector('#detail-root');
 
-  const categoryLabels = {
-    basis_trading: 'Basis Trading',
-    cdp: 'CDP / Stablecoin',
-    cex_token: 'Exchange Token',
-    dex: 'DEX',
-    l2_token: 'Layer 2',
-    lending: 'Lending',
-    liquid_staking: 'Liquid Staking',
-    perp_dex: 'Perpetual DEX',
-    perpetual_dex: 'Perpetual DEX',
-    perpetuals: 'Perpetual DEX',
-    restaking: 'Restaking',
-    yield: 'Yield',
-  };
-
   function stateMeta(key, value) {
     return protocol?.metric_meta?.[key] || {
       state: value === null || value === undefined ? 'PENDING' : 'VERIFIED',
@@ -94,10 +79,21 @@
     return `<section class="section"><div class="section-title"><span class="icon">${icon}</span><span>${title}</span></div><table class="financial-table"><thead><tr><th>字段</th><th class="formula-col">定义 / 公式</th><th class="text-right">数值</th></tr></thead><tbody>${rows.join('')}</tbody></table>${note ? `<div class="section-note">${note}</div>` : ''}</section>`;
   }
 
-  function render() {
+  async function render() {
     if (!protocol) {
       root.innerHTML = '<div class="empty-detail">没有找到该协议。<br><a href="./">返回协议排名</a></div>';
       return;
+    }
+
+    let logoUrl = '';
+    try {
+      const response = await fetch('../data/logo_urls.json');
+      if (response.ok) {
+        const logos = await response.json();
+        logoUrl = logos[protocol.id] || '';
+      }
+    } catch {
+      logoUrl = '';
     }
 
     document.title = `${protocol.name} 财务详情 — Crypto3D`;
@@ -125,10 +121,10 @@
       <div class="breadcrumb"><a href="./">协议财务</a> / <span>${protocol.name}</span></div>
       <div class="protocol-header">
         <div class="protocol-title">
-          <div class="protocol-icon-lg">${protocol.ticker.slice(0, 4)}</div>
+          <div class="protocol-icon-lg">${logoUrl ? `<img src="${logoUrl}" alt="${protocol.name}">` : protocol.name.charAt(0)}</div>
           <div class="protocol-info">
             <h1>${protocol.name}<span class="metric-status ${passed ? 'pass' : 'pending'}">${passed ? '框架已复核' : '候选待复核'}</span></h1>
-            <div class="protocol-subtitle">${protocol.ticker} · ${categoryLabels[protocol.category] || protocol.category}</div>
+            <div class="protocol-subtitle">${protocol.ticker}</div>
             <div class="protocol-meta"><span>数据截至 ${date(protocol.as_of)}</span><span>来源：DefiLlama</span><span>数值状态：第三方聚合估算</span></div>
           </div>
         </div>
