@@ -21,8 +21,40 @@
     yield: 'Yield',
   };
 
-  function money(value) {
-    if (value === null || value === undefined) return '未覆盖';
+  function stateMeta(key, value) {
+    return protocol?.metric_meta?.[key] || {
+      state: value === null || value === undefined ? 'PENDING' : 'VERIFIED',
+    };
+  }
+
+  function stateValue(key, value, formatter) {
+    const meta = stateMeta(key, value);
+    if (meta.state === 'N/A') return 'N/A';
+    if (meta.state === 'N/M') return 'N/M';
+    if (meta.state === 'PENDING' || value === null || value === undefined) return '待核实';
+    const formatted = formatter(value);
+    return meta.state === 'ESTIMATED' ? `~${formatted}` : formatted;
+  }
+
+  function money(value, key = '') {
+    return stateValue(key, value, (number) => new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      notation: 'compact',
+      maximumFractionDigits: 2,
+    }).format(number));
+  }
+
+  function multiple(value, key = '') {
+    return stateValue(key, value, (number) => `${number.toFixed(number >= 100 ? 1 : 2)}×`);
+  }
+
+  function percent(value, key = '') {
+    return stateValue(key, value, (number) => `${number.toFixed(2)}%`);
+  }
+
+  function legacyMoney(value) {
+    if (value === null || value === undefined) return '待核实';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -31,16 +63,8 @@
     }).format(value);
   }
 
-  function multiple(value) {
-    return value === null || value === undefined ? '未覆盖' : `${value.toFixed(value >= 100 ? 1 : 2)}×`;
-  }
-
-  function percent(value) {
-    return value === null || value === undefined ? '未覆盖' : `${value.toFixed(2)}%`;
-  }
-
   function date(value) {
-    if (!value) return '未覆盖';
+    if (!value) return '待核实';
     return new Intl.DateTimeFormat('zh-CN', {
       dateStyle: 'medium',
       timeStyle: 'short',
@@ -49,12 +73,12 @@
   }
 
   function summaryItem(label, zh, value) {
-    const missing = value === '未覆盖';
+    const missing = ['待核实', 'N/A', 'N/M'].includes(value);
     return `<div class="tev-summary-item"><div class="tev-summary-label">${label}<br><span class="label-zh">${zh}</span></div><div class="tev-summary-value ${missing ? 'value-zero' : ''}">${value}</div></div>`;
   }
 
   function row(label, value, formula) {
-    const missing = value === '未覆盖';
+    const missing = ['待核实', 'N/A', 'N/M'].includes(value);
     return `<tr><td>${label}</td><td class="formula-col">${formula}</td><td class="value-col ${missing ? 'na' : ''}">${value}</td></tr>`;
   }
 
@@ -75,7 +99,13 @@
     const returns = protocol.capital_returns;
     const valuation = protocol.valuation;
     const passed = protocol.review.status === 'independent_pass';
-    const primary = valuation.price_to_sales === null ? '未覆盖' : multiple(valuation.price_to_sales);
+    const hasCashPE = Number.isFinite(valuation.price_to_earnings);
+    const primary = hasCashPE
+      ? multiple(valuation.price_to_earnings, 'price_to_earnings')
+      : multiple(valuation.price_to_sales, 'price_to_sales');
+    const primaryLabel = hasCashPE
+      ? 'Cash P/E · Market Cap ÷ Protocol Earnings TTM'
+      : 'Price / Sales · Market Cap ÷ Protocol Revenue TTM';
 
     root.innerHTML = `
       <div class="breadcrumb"><a href="./">协议财务</a> / <span>${protocol.name}</span></div>
@@ -83,82 +113,83 @@
         <div class="protocol-title">
           <div class="protocol-icon-lg">${protocol.ticker.slice(0, 4)}</div>
           <div class="protocol-info">
-            <h1>${protocol.name}<span class="metric-status ${passed ? 'pass' : 'pending'}">${passed ? '独立审核通过' : '待审核'}</span></h1>
+            <h1>${protocol.name}<span class="metric-status ${passed ? 'pass' : 'pending'}">${passed ? '框架已复核' : '候选待复核'}</span></h1>
             <div class="protocol-subtitle">${protocol.ticker} · ${categoryLabels[protocol.category] || protocol.category}</div>
-            <div class="protocol-meta"><span>数据截至 ${date(protocol.as_of)}</span><span>置信度 ${protocol.review.confidence.toUpperCase()}</span><span>数值晋级：${protocol.review.numeric_values_promoted ? '已晋级' : '未晋级'}</span></div>
+            <div class="protocol-meta"><span>数据截至 ${date(protocol.as_of)}</span><span>既有框架置信度 ${protocol.review.confidence.toUpperCase()}</span><span>数值状态：首版候选</span></div>
           </div>
         </div>
         <div class="tev-highlight">
           <div class="tev-status">PRIMARY VALUATION</div>
-          <div class="tev-value ${primary === '未覆盖' ? 'na' : ''}">${primary}</div>
-          <div class="tev-label">Price / Sales · Market Cap ÷ Revenue TTM</div>
+          <div class="tev-value ${['待核实', 'N/A', 'N/M'].includes(primary) ? 'na' : ''}">${primary}</div>
+          <div class="tev-label">${primaryLabel}</div>
         </div>
       </div>
 
       <section class="section">
         <div class="section-title"><span class="icon">📊</span><span>财务概览</span></div>
         <div class="tev-summary-grid tev-grid-compact">
-          ${summaryItem('Market Cap', '总市值', money(protocol.market_data.market_cap_usd))}
-          ${summaryItem('Revenue TTM', '营业收入', money(income.revenue_ttm_usd))}
-          ${summaryItem('Cash Net Income TTM', '现金净利润', money(income.net_income_ttm_usd))}
-          ${summaryItem('P/S', '市销率', multiple(valuation.price_to_sales))}
-          ${summaryItem('Cash P/E', '现金市盈率', multiple(valuation.price_to_earnings))}
-          ${summaryItem('Dividends TTM', '股息', money(returns.dividends_ttm_usd))}
-          ${summaryItem('Repurchases TTM', '股票回购', money(returns.share_repurchases_ttm_usd))}
-          ${summaryItem('Dividend Yield', '股息率', percent(returns.dividend_yield_pct))}
-          ${summaryItem('Buyback / Fee-burn Yield', '回购与费用销毁收益率', percent(returns.buyback_yield_pct))}
-          ${summaryItem('Shareholder Yield', '持币者回报率', percent(returns.shareholder_yield_pct))}
+          ${summaryItem('Market Cap', '总市值', money(protocol.market_data.market_cap_usd, 'market_cap'))}
+          ${summaryItem('Revenue TTM', '协议留存收入', money(income.revenue_ttm_usd, 'revenue'))}
+          ${summaryItem('Protocol Earnings TTM', '协议经济收益', money(income.net_income_ttm_usd, 'protocol_earnings'))}
+          ${summaryItem('P/S', '市销率', multiple(valuation.price_to_sales, 'price_to_sales'))}
+          ${summaryItem('Cash P/E', '协议口径市盈率', multiple(valuation.price_to_earnings, 'price_to_earnings'))}
+          ${summaryItem('Dividends TTM', '股息', money(returns.dividends_ttm_usd, 'dividends'))}
+          ${summaryItem('Repurchases TTM', '代币回购', money(returns.share_repurchases_ttm_usd, 'repurchases'))}
+          ${summaryItem('Dividend Yield', '股息率', percent(returns.dividend_yield_pct, 'dividend_yield'))}
+          ${summaryItem('Buyback / Fee-burn Yield', '回购与费用销毁收益率', percent(returns.buyback_yield_pct, 'buyback_yield'))}
+          ${summaryItem('Shareholder Yield', '持币者回报率', percent(returns.shareholder_yield_pct, 'shareholder_yield'))}
         </div>
       </section>
 
-      ${section('Income Statement / 利润表', '📄', [
-        row('Revenue / 营业收入', money(income.revenue_ttm_usd), '协议保留收入，TTM'),
-        row('Cost of Revenue / 营业成本', money(income.cost_of_revenue_ttm_usd), '已复核直接成本'),
-        row('Gross Profit / 毛利润', money(income.gross_profit_ttm_usd), 'Revenue − Cost of Revenue'),
-        row('Cash Expenses / 现金费用', money(income.operating_expenses_ttm_usd), '现金、稳定币及外部资产支出；不含原生代币发行'),
-        row('Operating Income / 营业利润', money(income.operating_income_ttm_usd), 'Gross Profit − Operating Expenses'),
-        row('Cash Net Income / 现金净利润', money(income.net_income_ttm_usd), 'Revenue − 已复核现金及外部资产支出'),
-      ], '尚无经过协议级复核的现金、稳定币及外部资产支出台账，因此不能闭合现金净利润。')}
+      ${section('Protocol Earnings / 协议经济收益', '📄', [
+        row('Gross Fees / 用户总费用', money(income.gross_fees_ttm_usd, 'gross_fees'), '用户支付的 TTM 总费用'),
+        row('Supply-side Payouts / 供应方分成', money(income.supply_side_payouts_ttm_usd, 'supply_side_payouts'), '存款人、LP、验证者、运营商及返佣分成'),
+        row('Protocol Revenue / 协议留存收入', money(income.revenue_ttm_usd, 'revenue'), 'Gross Fees − 供应方分成 − 返佣/退款'),
+        row('Direct Economic Costs / 直接经济成本', money(income.direct_economic_costs_ttm_usd, 'direct_economic_costs'), '必要网络、结算及收入直接成本'),
+        row('Realized Protocol Losses / 已实现协议损失', money(income.realized_protocol_losses_ttm_usd, 'realized_protocol_losses'), '坏账、赔付及已实现风险损失'),
+        row('Protocol Earnings / 协议经济收益', money(income.net_income_ttm_usd, 'protocol_earnings'), 'Revenue − Direct Economic Costs − Realized Losses'),
+      ], '不统计项目方、基金会或开发公司的组织运营费用；原生代币激励、解锁和归属不进入 Cash P/E。')}
 
       ${section('Cash Flow / 现金流量表', '💵', [
-        row('Operating Cash Flow / 经营现金流', money(cash.operating_cash_flow_ttm_usd), '经营现金流入 − 流出'),
-        row('Capital Expenditures / 资本开支', money(cash.capital_expenditures_ttm_usd), '已复核长期投入'),
-        row('Free Cash Flow / 自由现金流', money(cash.free_cash_flow_ttm_usd), 'Operating Cash Flow − CapEx'),
+        row('Operating Cash Flow / 经营现金流', legacyMoney(cash.operating_cash_flow_ttm_usd), '经营现金流入 − 流出'),
+        row('Capital Expenditures / 资本开支', legacyMoney(cash.capital_expenditures_ttm_usd), '已复核长期投入'),
+        row('Free Cash Flow / 自由现金流', legacyMoney(cash.free_cash_flow_ttm_usd), 'Operating Cash Flow − CapEx'),
         row('FCF Yield / 自由现金流收益率', percent(valuation.free_cash_flow_yield_pct), 'Free Cash Flow ÷ Market Cap'),
       ], protocol.null_reasons.cash_flow)}
 
       ${section('Balance Sheet / 资产负债表', '🏦', [
-        row('Cash & Equivalents / 现金及等价物', money(balance.cash_and_equivalents_usd), '不含协议自身代币'),
-        row('Treasury Assets / 国库资产', money(balance.treasury_assets_usd), '按资产与控制权分类'),
-        row('Debt & Liabilities / 债务及负债', money(balance.debt_and_liabilities_usd), '债务、应付款与赎回义务'),
-        row('Enterprise Value / 企业价值', money(protocol.market_data.enterprise_value_usd), 'Market Cap + Debt − Cash'),
+        row('Cash & Equivalents / 现金及等价物', legacyMoney(balance.cash_and_equivalents_usd), '不含协议自身代币'),
+        row('Treasury Assets / 国库资产', legacyMoney(balance.treasury_assets_usd), '按资产与控制权分类'),
+        row('Debt & Liabilities / 债务及负债', legacyMoney(balance.debt_and_liabilities_usd), '债务、应付款与赎回义务'),
+        row('Enterprise Value / 企业价值', legacyMoney(protocol.market_data.enterprise_value_usd), 'Market Cap + Debt − Cash'),
       ], protocol.null_reasons.balance_sheet)}
 
       ${section('Capital Returns / 资本回报', '↩️', [
-        row('Dividends / 股息', money(returns.dividends_ttm_usd), 'TTM 已执行分配'),
-        row('Share Repurchases / 股票回购', money(returns.share_repurchases_ttm_usd), 'TTM 协议出资市场购买'),
-        row('Share Retirement / 注销股份', money(returns.share_retirement_ttm_usd), 'TTM 不可逆退出流通'),
-        row('Treasury Stock / 库存股', money(returns.treasury_stock_usd), '回购后仍由国库控制'),
-        row('Supply Growth / 供应增长', money(returns.share_issuance_ttm_usd), '仅作供应风险披露，不进入 Cash P/E'),
-        row('Shareholder Yield / 持币者回报率', percent(returns.shareholder_yield_pct), 'Dividend Yield + Buyback / Fee-burn Yield'),
-      ], '分红、协议出资回购与费用支持销毁必须逐笔完成协议级证据复核；原生代币发行只作供应风险披露。')}
+        row('Dividends / 股息', money(returns.dividends_ttm_usd, 'dividends'), 'TTM 已执行外部资产分配'),
+        row('Share Repurchases / 代币回购', money(returns.share_repurchases_ttm_usd, 'repurchases'), 'TTM 协议出资市场购买'),
+        row('Qualifying Fee Burns / 合格费用销毁', money(returns.qualifying_fee_burns_ttm_usd, 'fee_burns'), '费用支持且不可逆退出供应'),
+        row('Share Retirement / 注销价值', legacyMoney(returns.share_retirement_ttm_usd), 'TTM 不可逆退出流通'),
+        row('Treasury Stock / 国库回购库存', legacyMoney(returns.treasury_stock_usd), '回购后仍由国库控制'),
+        row('Supply Growth / 供应增长', legacyMoney(returns.share_issuance_ttm_usd), '仅作供应风险披露，不进入 Cash P/E'),
+        row('Shareholder Yield / 持币者回报率', percent(returns.shareholder_yield_pct, 'shareholder_yield'), 'Dividend Yield + Buyback / Fee-burn Yield'),
+      ], '只统计已执行分红、市场回购与合格费用销毁；预算、内部转账和原生代币发行不计入资本回报。')}
 
       ${section('Valuation / 估值', '🧮', [
-        row('Market Capitalization / 总市值', money(protocol.market_data.market_cap_usd), '流通价格 × 流通股本'),
-        row('Price / Sales / 市销率', multiple(valuation.price_to_sales), 'Market Cap ÷ Revenue TTM'),
-        row('Cash Price / Earnings / 现金市盈率', multiple(valuation.price_to_earnings), 'Market Cap ÷ Cash Net Income TTM'),
+        row('Market Capitalization / 总市值', money(protocol.market_data.market_cap_usd, 'market_cap'), '流通价格 × 流通供应'),
+        row('Price / Sales / 市销率', multiple(valuation.price_to_sales, 'price_to_sales'), 'Market Cap ÷ Protocol Revenue TTM'),
+        row('Cash Price / Earnings / 协议口径市盈率', multiple(valuation.price_to_earnings, 'price_to_earnings'), 'Market Cap ÷ Protocol Earnings TTM'),
         row('Free Cash Flow Yield / 自由现金流收益率', percent(valuation.free_cash_flow_yield_pct), 'Free Cash Flow ÷ Market Cap'),
-      ], 'Cash P/E = Market Cap ÷ TTM Cash Net Income；当前缺少已复核的现金净利润。')}
+      ], 'Cash P/E 为协议经济口径，不包含项目方、基金会或开发公司的完整组织运营费用。')}
 
       <section class="section">
         <div class="section-title"><span class="icon">🔗</span><span>数据来源与审核边界</span></div>
         <div class="source-grid">
           <div class="source-item"><span>数据观察时间</span><strong>${date(protocol.provenance.observed_at)}</strong></div>
-          <div class="source-item"><span>审核登记时间</span><strong>${date(protocol.provenance.register_generated_at)}</strong></div>
+          <div class="source-item"><span>既有审核登记时间</span><strong>${date(protocol.provenance.register_generated_at)}</strong></div>
           <div class="source-item"><span>数据来源</span><strong>Crypto3D 已发布生产快照</strong></div>
           <div class="source-item"><span>源提交</span><strong class="value">${protocol.provenance.source_commit}</strong></div>
         </div>
-        <div class="section-note"><strong>未覆盖不等于 0。</strong> ${protocol.provenance.evidence_boundary}</div>
+        <div class="section-note"><strong>待核实不等于 0，“~”代表估算。</strong> ${protocol.provenance.evidence_boundary}</div>
       </section>`;
   }
 

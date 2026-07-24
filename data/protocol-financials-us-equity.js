@@ -1,9 +1,9 @@
 window.CRYPTO3D_PUBLIC_EQUITY = {
-  "schema_version": "3.0.0-test",
-  "terminology": "public-equity",
+  "schema_version": "4.0.0-test-candidate",
+  "terminology": "public-equity-protocol-economics",
   "generated_at": "2026-07-24T15:59:17.600Z",
   "observed_at": "2026-07-24T13:13:35.438Z",
-  "intended_use": "Crypto3D test-site public-equity financial comparison",
+  "intended_use": "Crypto3D test-site phase-1 protocol economics comparison",
   "source_snapshot": {
     "repository": "BitPickles/tev-dashboard",
     "ref": "origin/main",
@@ -13,29 +13,41 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
   "review_snapshot": {
     "register_generated_at": "2026-07-23T21:16:34Z",
     "model_review_passed_protocols": 13,
-    "numeric_values_promoted": false
+    "numeric_values_promoted": false,
+    "numeric_review_status": "phase1_candidate"
+  },
+  "expense_policy": {
+    "included": "供应方分成、返佣、必要网络/结算成本以及已实现坏账、赔付和协议风险损失。",
+    "excluded": "项目方、基金会和开发公司的组织运营费用，以及原生代币发行、激励、解锁和归属。"
   },
   "null_policy": {
-    "null": "尚无足够证据可靠计算。",
-    "zero": "只有经过复核并确认数值为零时才使用 0。",
-    "display": "页面将 null 显示为“未覆盖”，不得替换为 0。"
+    "PENDING": "证据不足，待核实；不等于 0。",
+    "ZERO": "已有证据确认数值为 0。",
+    "N/A": "项目结构上不适用。",
+    "N/M": "分母小于或等于 0，倍数无经济意义。",
+    "ESTIMATED": "使用现有快照、官方汇总、第三方映射或首版代理估算，以“~”显示。"
   },
   "formulas": {
-    "price_to_sales": "P/S = Market Cap ÷ Revenue (TTM)",
-    "price_to_earnings": "P/E = Market Cap ÷ Net Income (TTM)",
-    "dividend_yield": "Dividend Yield = Dividends (TTM) ÷ Market Cap × 100%",
-    "buyback_yield": "Buyback Yield = Share Repurchases (TTM) ÷ Market Cap × 100%",
-    "shareholder_yield": "Shareholder Yield = Dividend Yield + Buyback Yield",
-    "free_cash_flow": "Free Cash Flow = Operating Cash Flow − Capital Expenditures"
+    "protocol_revenue": "Protocol Revenue = Gross Fees − Supply-side / Participant Payouts − Rebates / Refunds",
+    "protocol_earnings": "Protocol Earnings = Protocol Revenue − Direct Economic Costs − Realized Protocol Losses",
+    "price_to_sales": "P/S = Circulating Market Cap ÷ Protocol Revenue TTM",
+    "price_to_earnings": "Cash P/E = Circulating Market Cap ÷ Protocol Earnings TTM",
+    "dividend_yield": "Dividend Yield = Executed Dividends TTM ÷ Circulating Market Cap × 100%",
+    "buyback_yield": "Buyback Yield = (Executed Repurchases + Qualifying Fee Burns) TTM ÷ Circulating Market Cap × 100%",
+    "shareholder_yield": "Shareholder Yield = Dividend Yield + Buyback / Fee-burn Yield"
   },
   "coverage": {
     "protocol_count": 26,
     "market_cap_count": 26,
-    "revenue_count": 18,
-    "price_to_sales_count": 18,
-    "net_income_count": 0,
-    "price_to_earnings_count": 0,
-    "independent_pass_count": 13
+    "revenue_count": 19,
+    "price_to_sales_count": 19,
+    "net_income_count": 19,
+    "price_to_earnings_count": 18,
+    "dividends_count": 12,
+    "repurchases_count": 18,
+    "shareholder_yield_count": 23,
+    "independent_pass_count": 13,
+    "candidate_file_count": 26
   },
   "protocols": [
     {
@@ -52,13 +64,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 117728831,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 117728831,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 117728831,
+        "net_income_ttm_usd": 117728831,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -75,6 +93,7 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "period": "TTM",
         "dividends_ttm_usd": null,
         "share_repurchases_ttm_usd": null,
+        "qualifying_fee_burns_ttm_usd": null,
         "share_retirement_ttm_usd": null,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
@@ -84,14 +103,167 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "valuation": {
         "price_to_sales": 15.28,
-        "price_to_earnings": null,
+        "price_to_earnings": 15.28,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/economic-flow-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "medium",
+          "reason": "Published protocol-revenue TTM candidate retained for first-pass use. It is not audit-grade because the round-two archive keeps borrower interest, supplier pass-through, rebates, liquidation, flash-loan, GHO, V4 and treasury realization inputs safe-null.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/formula-registry.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete exact-window ledger for necessary oracle, keeper, settlement or other protocol-level direct economic costs; foundation and contributor operating expenses and native-token budgets are excluded.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/capital-allocation-ledger.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Umbrella and legacy Safety Module mechanisms are documented, but realized deficits, slashing, compensation and recoveries are not reconciled for the full window; configured capacity is not treated as a realized loss.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/economic-flow-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/formula-registry.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/capital-allocation-ledger.json + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/economic-flow-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "medium",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/economic-flow-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/formula-registry.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/capital-allocation-ledger.json + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "N/A",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/economic-flow-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "The archive does not establish an automatic passive AAVE-holder cash right; staking and Merit rewards are participation incentives, not dividends.",
+          "display_note": "结构不适用"
+        },
+        "repurchases": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/capital-allocation-ledger.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "The program was officially paused from 2026-04-19, but pre-pause payments, fills, receipts and custody disposition are not fully reconciled. Budgets and treasury funding are not execution values.",
+          "display_note": "证据待补"
+        },
+        "fee_burns": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/capital-allocation-ledger.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete fee-funded irreversible AAVE retirement ledger is available; buyback inventory is not treated as a burn.",
+          "display_note": "证据待补"
+        },
+        "dividend_yield": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield不适用。",
+          "display_note": "结构不适用"
+        },
+        "buyback_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "shareholder_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Shareholder Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        }
       },
       "review": {
         "status": "independent_pass",
         "confidence": "high",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -99,14 +271,22 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p01-p09.json",
+        "metric_sources": [
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/economic-flow-map.json",
+          "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/formula-registry.json",
+          "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/capital-allocation-ledger.json",
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/economic-flow-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/formula-registry.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/capital-allocation-ledger.json + Crypto3D phase-1 protocol-earnings proxy",
+          "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/economic-flow-map.json"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报尚无可用执行金额。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -123,13 +303,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 24694726,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 24694726,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 24694726,
+        "net_income_ttm_usd": 24694726,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -145,24 +331,178 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       "capital_returns": {
         "period": "TTM",
         "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
+        "share_repurchases_ttm_usd": 46705717.6,
+        "qualifying_fee_burns_ttm_usd": null,
         "share_retirement_ttm_usd": null,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
         "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "buyback_yield_pct": 2.7814,
+        "shareholder_yield_pct": 2.7814
       },
       "valuation": {
         "price_to_sales": 68,
-        "price_to_earnings": null,
+        "price_to_earnings": 68,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Published protocol-revenue TTM candidate retained for first-pass use. Complete realized trading-fee, discount, maker/rebate, referral, LP, validator, insurance and other pass-through ledgers remain incomplete.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Necessary network, settlement and execution costs have no complete TTM ledger. Project-company operating costs and native-token incentive budgets are excluded.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete realized insurance, bad-debt, compensation, security-loss and recovery ledger is available.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Eligible veASTER Loyalty Rewards are described, but the complete executed allocation, claim, recipient and USD-pricing ledger is absent.",
+          "display_note": "证据待补"
+        },
+        "repurchases": {
+          "state": "ESTIMATED",
+          "window": "Observed local execution interval 2025-12-25 through 2026-03-02",
+          "source": "data/protocols/aster/tev-records.json; data/aster-onchain.json; data/aster-buybacks.json",
+          "source_url": null,
+          "as_of": "2026-03-02",
+          "confidence": "low",
+          "reason": "Sum of 68 local USD-valued buyback_burn records whose dates overlap the on-chain Stage 5-6 transfer series. Classified here only as an executed-repurchase candidate; Stage 1-4 estimates are excluded, wallet ownership and payment-to-fill reconciliation remain incomplete, and the same value is not double-counted as a burn.",
+          "display_note": "估算"
+        },
+        "fee_burns": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "One bounded 3,083,815.69 ASTER dead-address transfer is verified, but the complete TTM fee-funding, acquisition, inventory-cancellation and USD valuation chain is not. The local repurchase estimate is not double-counted as a qualifying burn.",
+          "display_note": "证据待补"
+        },
+        "dividend_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "buyback_yield": {
+          "state": "ESTIMATED",
+          "window": "Observed local execution interval 2025-12-25 through 2026-03-02",
+          "source": "data/protocols/aster/tev-records.json; data/aster-onchain.json; data/aster-buybacks.json",
+          "source_url": null,
+          "as_of": "2026-03-02",
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "Observed local execution interval 2025-12-25 through 2026-03-02",
+          "source": "data/protocols/aster/tev-records.json; data/aster-onchain.json; data/aster-buybacks.json",
+          "source_url": null,
+          "as_of": "2026-03-02",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "independent_pass",
         "confidence": "high",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -170,14 +510,21 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p01-p09.json",
+        "metric_sources": [
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "data/protocols/aster/tev-records.json; data/aster-onchain.json; data/aster-buybacks.json"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报为已识别执行部分的下限估算。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -194,13 +541,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": null,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
         "gross_profit_ttm_usd": null,
         "operating_expenses_ttm_usd": null,
         "operating_income_ttm_usd": null,
         "net_income_ttm_usd": null,
-        "coverage": "unavailable"
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -217,6 +570,7 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "period": "TTM",
         "dividends_ttm_usd": null,
         "share_repurchases_ttm_usd": null,
+        "qualifying_fee_burns_ttm_usd": null,
         "share_retirement_ttm_usd": null,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
@@ -229,11 +583,164 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "price_to_earnings": null,
         "free_cash_flow_yield_pct": null
       },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Bitget entities, Morph Foundation/network and BGB holders are separate economic domains. Complete Morph gross fees, L1 data costs, operator pass-throughs, rebates and retaining-recipient ownership are not available.",
+          "display_note": "证据待补"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Complete Morph L1 data, sequencer/operator and other necessary protocol settlement costs are missing; Bitget corporate operating expenses are outside the protocol boundary.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete holder-attributable or Morph protocol realized security-loss, compensation and recovery ledger exists.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少适用的协议/公司收益主体边界。",
+          "display_note": "结构不适用"
+        },
+        "price_to_sales": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少正的 Revenue TTM。",
+          "display_note": "证据待补"
+        },
+        "price_to_earnings": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少适用的协议/公司收益主体边界。",
+          "display_note": "结构不适用"
+        },
+        "dividends": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Equity, dividend, residual-profit and redemption rights are unverified, and no complete executed holder-distribution ledger is available.",
+          "display_note": "证据待补"
+        },
+        "repurchases": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Named burn transfers do not prove open-market repurchases, consideration paid or a complete TTM execution ledger.",
+          "display_note": "证据待补"
+        },
+        "fee_burns": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Several BGB retirements are transaction-verified, but fee funding, full-window completeness, bridge conservation and cutoff-effective future-burn configuration are not verified; token retirement alone is not a qualifying fee burn.",
+          "display_note": "证据待补"
+        },
+        "dividend_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "buyback_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "shareholder_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Shareholder Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        }
+      },
       "review": {
         "status": "independent_pass",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "partial_safe_null"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -241,14 +748,18 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p01-p09.json",
+        "metric_sources": [
+          "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "缺少适用的协议/公司收益主体边界。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报尚无可用执行金额。",
+        "price_to_earnings": "缺少适用的协议/公司收益主体边界。"
       }
     },
     {
@@ -265,13 +776,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": null,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
         "gross_profit_ttm_usd": null,
         "operating_expenses_ttm_usd": null,
         "operating_income_ttm_usd": null,
         "net_income_ttm_usd": null,
-        "coverage": "unavailable"
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -288,23 +805,177 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "period": "TTM",
         "dividends_ttm_usd": null,
         "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "qualifying_fee_burns_ttm_usd": 10200000,
+        "share_retirement_ttm_usd": 10200000,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
         "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "buyback_yield_pct": 0.0137,
+        "shareholder_yield_pct": 0.0137
       },
       "valuation": {
         "price_to_sales": null,
         "price_to_earnings": null,
         "free_cash_flow_yield_pct": null
       },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/economic-flow-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "BSC fee-split mechanics are verified, but the full TTM transaction-fee ledger and validator, delegator, system-reward and BEP-95 allocations are not reconciled in USD. Binance platform revenue is excluded.",
+          "display_note": "证据待补"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/economic-flow-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Complete validator, delegator, operator and system-reward settlement ledgers are missing; these required network payouts cannot be assumed to be zero.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/capital-allocation-ledger.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete BSC protocol bad-debt, security compensation, slash and recovery ledger is available.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少适用的协议/公司收益主体边界。",
+          "display_note": "结构不适用"
+        },
+        "price_to_sales": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少正的 Revenue TTM。",
+          "display_note": "证据待补"
+        },
+        "price_to_earnings": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少适用的协议/公司收益主体边界。",
+          "display_note": "结构不适用"
+        },
+        "dividends": {
+          "state": "N/A",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/capital-allocation-ledger.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Validator and delegator staking rewards are opt-in network compensation, not universal holder dividends; no binding universal payment right is evidenced.",
+          "display_note": "结构不适用"
+        },
+        "repurchases": {
+          "state": "N/A",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/capital-allocation-ledger.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Auto-Burn is formulaic supply retirement, not an open-market repurchase; Binance platform buyback or revenue is outside the unverified entity boundary.",
+          "display_note": "结构不适用"
+        },
+        "fee_burns": {
+          "state": "ESTIMATED",
+          "window": "Annualized local snapshot estimate, approximately one year",
+          "source": "data/all-protocols.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/formula-registry.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/capital-allocation-ledger.json",
+          "source_url": null,
+          "as_of": "2026-03-21",
+          "confidence": "low",
+          "reason": "Legacy local snapshot estimates BEP-95 at about 16,327 BNB or USD 10.2 million per year, while the round-two archive verifies the 10% fee-burn mechanism but not the exact TTM ledger. The separate 5,998,120.2155 BNB Auto-Burn is excluded because it is not fee-funded.",
+          "display_note": "估算"
+        },
+        "dividend_yield": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield不适用。",
+          "display_note": "结构不适用"
+        },
+        "buyback_yield": {
+          "state": "ESTIMATED",
+          "window": "Annualized local snapshot estimate, approximately one year",
+          "source": "data/all-protocols.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/formula-registry.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/capital-allocation-ledger.json",
+          "source_url": null,
+          "as_of": "2026-03-21",
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "Annualized local snapshot estimate, approximately one year",
+          "source": "data/all-protocols.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/formula-registry.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/capital-allocation-ledger.json",
+          "source_url": null,
+          "as_of": "2026-03-21",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
+      },
       "review": {
         "status": "independent_pass",
         "confidence": "high",
         "numeric_values_promoted": false,
-        "data_state": "partial_safe_null"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -312,14 +983,20 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p01-p09.json",
+        "metric_sources": [
+          "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/economic-flow-map.json",
+          "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/capital-allocation-ledger.json",
+          "data/all-protocols.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/formula-registry.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/capital-allocation-ledger.json"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "缺少适用的协议/公司收益主体边界。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报由已识别执行金额汇总。",
+        "price_to_earnings": "缺少适用的协议/公司收益主体边界。"
       }
     },
     {
@@ -336,13 +1013,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 177463,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 177463,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 177463,
+        "net_income_ttm_usd": 177463,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -357,25 +1040,179 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "capital_returns": {
         "period": "TTM",
-        "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "dividends_ttm_usd": 0,
+        "share_repurchases_ttm_usd": 0,
+        "qualifying_fee_burns_ttm_usd": 0,
+        "share_retirement_ttm_usd": 0,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
-        "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "dividend_yield_pct": 0,
+        "buyback_yield_pct": 0,
+        "shareholder_yield_pct": 0
       },
       "valuation": {
         "price_to_sales": 961.45,
-        "price_to_earnings": null,
+        "price_to_earnings": 961.45,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Published protocol-revenue TTM candidate retained for first-pass use. The archive still lacks complete market-by-market gross borrower interest, supplier pass-through, liquidation and reserve-accrual ledgers across 28 Comets and 20 V2 markets.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete protocol-level necessary cost ledger is available. Foundation operating expenses and COMP incentive issuance are excluded from direct economic costs.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete market-by-market bad-debt, reserve absorption, security compensation and recovery ledger is available.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/compound/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Frozen configuration states dividends NONE and the fee switch is off; no executed COMP-holder cash distribution candidate exists in the frozen TTM materials.",
+          "display_note": "已核实为 0"
+        },
+        "repurchases": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/compound/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Frozen configuration states buybacks NONE; the only identified item is a community RFC, not governance approval or execution, so executed repurchases are zero in the frozen window.",
+          "display_note": "已核实为 0"
+        },
+        "fee_burns": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/compound/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Frozen configuration states burns NONE and identifies no fee-funded COMP retirement mechanism or execution candidate. This zero is limited to qualifying fee burns and does not assert that every possible supply event was globally indexed.",
+          "display_note": "已核实为 0"
+        },
+        "dividend_yield": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/compound/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Dividend Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "buyback_yield": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/compound/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "shareholder_yield": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/compound/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        }
       },
       "review": {
         "status": "independent_pass",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -383,14 +1220,21 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p01-p09.json",
+        "metric_sources": [
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "data/protocols/compound/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报由已识别执行金额汇总。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -407,13 +1251,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 15701857,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 15701857,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 15701857,
+        "net_income_ttm_usd": 15701857,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -428,25 +1278,179 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "capital_returns": {
         "period": "TTM",
-        "dividends_ttm_usd": null,
+        "dividends_ttm_usd": 13123022,
         "share_repurchases_ttm_usd": null,
+        "qualifying_fee_burns_ttm_usd": null,
         "share_retirement_ttm_usd": null,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
-        "dividend_yield_pct": null,
+        "dividend_yield_pct": 4.1038,
         "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "shareholder_yield_pct": 4.1038
       },
       "valuation": {
         "price_to_sales": 20.37,
-        "price_to_earnings": null,
+        "price_to_earnings": 20.37,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Published protocol-revenue TTM candidate retained for first-pass use. Gross fees, pass-throughs and the FeeAllocator/FeeSplitter retained-revenue path are not independently reconciled for the complete TTM window.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Necessary protocol-level settlement, execution and other direct economic costs were not fetched for the full TTM; organization operating costs and CRV issuance are excluded.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete realized exploit, bad-debt, compensation and recovery ledger was fetched; absence of a value is not zero.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "ESTIMATED",
+          "window": "Latest 12 complete local monthly records, 2025-03-01 through 2026-02-01",
+          "source": "data/protocols/curve/tev-records.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-02-13",
+          "confidence": "medium",
+          "reason": "Sum of 12 local DefiLlama dailyHoldersRevenue monthly aggregates classified as executed veCRV fee distributions. This is a locked-participant distribution candidate, not a passive bare-CRV dividend, and its window is older than the revenue snapshot.",
+          "display_note": "估算"
+        },
+        "repurchases": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete DAO-funded secondary-market CRV purchase ledger is available.",
+          "display_note": "证据待补"
+        },
+        "fee_burns": {
+          "state": "N/A",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Curve fee burning is asset conversion and distribution, not irreversible CRV retirement; it therefore does not qualify as a fee-funded CRV burn.",
+          "display_note": "结构不适用"
+        },
+        "dividend_yield": {
+          "state": "ESTIMATED",
+          "window": "Latest 12 complete local monthly records, 2025-03-01 through 2026-02-01",
+          "source": "data/protocols/curve/tev-records.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-02-13",
+          "confidence": "medium",
+          "reason": "Dividend Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "buyback_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "Latest 12 complete local monthly records, 2025-03-01 through 2026-02-01",
+          "source": "data/protocols/curve/tev-records.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-02-13",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "independent_pass",
         "confidence": "high",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -454,14 +1458,21 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p01-p09.json",
+        "metric_sources": [
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "data/protocols/curve/tev-records.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报为已识别执行部分的下限估算。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -478,13 +1489,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 9094297,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 9094297,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 9094297,
+        "net_income_ttm_usd": 9094297,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -499,25 +1516,179 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "capital_returns": {
         "period": "TTM",
-        "dividends_ttm_usd": null,
+        "dividends_ttm_usd": 13257717,
         "share_repurchases_ttm_usd": null,
+        "qualifying_fee_burns_ttm_usd": null,
         "share_retirement_ttm_usd": null,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
-        "dividend_yield_pct": null,
+        "dividend_yield_pct": 12.5407,
         "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "shareholder_yield_pct": 12.5407
       },
       "valuation": {
         "price_to_sales": 11.62,
-        "price_to_earnings": null,
+        "price_to_earnings": 11.62,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Published protocol-revenue TTM candidate retained for first-pass use. Maker rebates, affiliates, order routers, MegaVault, market mapper, residual routes and recipient/controller ownership are not fully reconciled.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete TTM ledger for necessary chain, oracle, keeper, router and settlement costs is available; foundation operating expenses and DYDX incentives are excluded.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete realized security, credit, bad-debt, insurance compensation and recovery ledger is available.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "ESTIMATED",
+          "window": "Latest 12 complete local monthly records, 2025-03-01 through 2026-02-01",
+          "source": "data/protocols/dydx/tev-records.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-02-13",
+          "confidence": "low",
+          "reason": "Sum of 12 local DefiLlama dailyHoldersRevenue monthly aggregates labeled DYDX staker fee distribution. Retained as an executed distribution candidate, but validator/security-service compensation and other third-party shares are not independently separated, and its window is older than the revenue snapshot.",
+          "display_note": "估算"
+        },
+        "repurchases": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Operator-reported DYDX acquisition context exists, but payment, fill, custody and inventory reconciliation is incomplete; allocation percentages are not execution values.",
+          "display_note": "证据待补"
+        },
+        "fee_burns": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Buyback inventory is explicitly not a burn, and no complete fee-funded irreversible DYDX retirement ledger is available.",
+          "display_note": "证据待补"
+        },
+        "dividend_yield": {
+          "state": "ESTIMATED",
+          "window": "Latest 12 complete local monthly records, 2025-03-01 through 2026-02-01",
+          "source": "data/protocols/dydx/tev-records.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-02-13",
+          "confidence": "low",
+          "reason": "Dividend Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "buyback_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "Latest 12 complete local monthly records, 2025-03-01 through 2026-02-01",
+          "source": "data/protocols/dydx/tev-records.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-02-13",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "pending",
         "confidence": "medium",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -525,14 +1696,21 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p01-p09.json",
+        "metric_sources": [
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "data/protocols/dydx/tev-records.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报为已识别执行部分的下限估算。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -549,13 +1727,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": null,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
         "gross_profit_ttm_usd": null,
         "operating_expenses_ttm_usd": null,
         "operating_income_ttm_usd": null,
         "net_income_ttm_usd": null,
-        "coverage": "unavailable"
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -570,25 +1754,179 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "capital_returns": {
         "period": "TTM",
-        "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "dividends_ttm_usd": 0,
+        "share_repurchases_ttm_usd": 0,
+        "qualifying_fee_burns_ttm_usd": 0,
+        "share_retirement_ttm_usd": 0,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
-        "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "dividend_yield_pct": 0,
+        "buyback_yield_pct": 0,
+        "shareholder_yield_pct": 0
       },
       "valuation": {
         "price_to_sales": null,
         "price_to_earnings": null,
         "free_cash_flow_yield_pct": null
       },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Gross on-chain consideration, AVS service compensation, operator and restaker payouts, protocol fee retention and off-platform product revenue are not reconciled. A legacy zero is not promoted.",
+          "display_note": "证据待补"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Operator, restaker, task-settlement and other required protocol economic costs were not fetched for the complete TTM; organization costs and EIGEN emissions are excluded.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete realized slashing, security compensation and recovery ledger is available; slashing capability is not a realized loss.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Protocol Revenue 尚无可用值，无法计算 Protocol Earnings。",
+          "display_note": "证据待补"
+        },
+        "price_to_sales": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少正的 Revenue TTM。",
+          "display_note": "证据待补"
+        },
+        "price_to_earnings": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少可用 Protocol Earnings。",
+          "display_note": "证据待补"
+        },
+        "dividends": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/eigenlayer/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Frozen configuration states dividends NONE, and EIGEN is documented as a stakeable work token without passive-holder cash entitlement; operator and restaker rewards are participant compensation, not dividends.",
+          "display_note": "已核实为 0"
+        },
+        "repurchases": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/eigenlayer/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The frozen archive classifies the Foundation statement as future fee-to-buyback direction with no executed purchase evidence, while frozen configuration states buybacks NONE.",
+          "display_note": "已核实为 0"
+        },
+        "fee_burns": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/eigenlayer/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Frozen configuration states burns NONE and the frozen archive contains no fee-funded EIGEN retirement execution candidate. The zero is scoped to qualifying fee burns.",
+          "display_note": "已核实为 0"
+        },
+        "dividend_yield": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/eigenlayer/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Dividend Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "buyback_yield": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/eigenlayer/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "shareholder_yield": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/eigenlayer/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        }
+      },
       "review": {
         "status": "independent_pass",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "partial_safe_null"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -596,14 +1934,20 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p01-p09.json",
+        "metric_sources": [
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "data/protocols/eigenlayer/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "Protocol Revenue 尚无可用值，无法计算 Protocol Earnings。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报由已识别执行金额汇总。",
+        "price_to_earnings": "缺少可用 Protocol Earnings。"
       }
     },
     {
@@ -620,13 +1964,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 10747499,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 10747499,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 10747499,
+        "net_income_ttm_usd": 10747499,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -641,25 +1991,179 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "capital_returns": {
         "period": "TTM",
-        "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "dividends_ttm_usd": 0,
+        "share_repurchases_ttm_usd": 0,
+        "qualifying_fee_burns_ttm_usd": 0,
+        "share_retirement_ttm_usd": 0,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
-        "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "dividend_yield_pct": 0,
+        "buyback_yield_pct": 0,
+        "shareholder_yield_pct": 0
       },
       "valuation": {
         "price_to_sales": 77.43,
-        "price_to_earnings": null,
+        "price_to_earnings": 77.43,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Published protocol-revenue TTM candidate retained for first-pass use. Source-defined income, supplier pass-through, sUSDe depositor rewards, program distributions and reserve allocation are not independently reconciled for the complete TTM.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Necessary hedging, exchange, custody, settlement and other protocol economic costs were not fetched as a complete TTM ledger; company operating expenses and ENA incentives are excluded.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete realized basis, exchange, custody, depeg, security compensation, one-time loss and recovery ledger is available; reserve balances are not realized losses.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/ethena/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Frozen configuration reports ENA/sENA token-holder income of zero and no live fee switch. sUSDe depositor yield is supplier pass-through and is not relabeled as an ENA dividend.",
+          "display_note": "已核实为 0"
+        },
+        "repurchases": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/ethena/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "The disclosed StablecoinX purchases and programs are frozen as corporate or treasury capital transactions funded outside recurring protocol revenue and therefore do not qualify as protocol repurchases under the new metric.",
+          "display_note": "已核实为 0"
+        },
+        "fee_burns": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/ethena/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Frozen configuration states burns NONE and contains no fee-funded irreversible ENA retirement mechanism or execution candidate; corporate buyback inventory is not treated as a burn.",
+          "display_note": "已核实为 0"
+        },
+        "dividend_yield": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/ethena/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Dividend Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "buyback_yield": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/ethena/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "shareholder_yield": {
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/ethena/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        }
       },
       "review": {
         "status": "independent_pass",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -667,14 +2171,21 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p01-p09.json",
+        "metric_sources": [
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json + C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json + Crypto3D phase-1 protocol-earnings proxy",
+          "data/protocols/ethena/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报由已识别执行金额汇总。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -691,13 +2202,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
-        "revenue_ttm_usd": null,
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
+        "revenue_ttm_usd": 53095936,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 53095936,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "unavailable"
+        "operating_income_ttm_usd": 53095936,
+        "net_income_ttm_usd": 53095936,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -713,24 +2230,178 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       "capital_returns": {
         "period": "TTM",
         "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
+        "share_repurchases_ttm_usd": 12789757.32,
+        "qualifying_fee_burns_ttm_usd": null,
         "share_retirement_ttm_usd": null,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
         "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "buyback_yield_pct": 2.943,
+        "shareholder_yield_pct": 2.943
       },
       "valuation": {
-        "price_to_sales": null,
-        "price_to_earnings": null,
+        "price_to_sales": 8.18,
+        "price_to_earnings": 8.18,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "Trailing 365 days ending 2026-02-13",
+          "source": "data/daily/ether.fi/latest.json and monthly daily archive; round2-audit/P10-etherfi/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-02-14T06:57:40.357Z",
+          "confidence": "medium",
+          "reason": "The local daily archive reports $53,095,936 of trailing-365-day DefiLlama dailyRevenue and is retained as a practical estimate. It is not VERIFIED because the mapping does not close Stake, Liquid, Cash, withdrawal, beHYPE and eBTC payer/beneficiary ledgers or the documented 90%/5%/5% Stake split.",
+          "display_note": "估算"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P10-etherfi/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Node-operator and staker shares are participant payouts, not direct costs. Protocol-borne settlement, security and other external cash costs were not reconstructed; organization operating costs and ETHFI incentives are excluded by PRD.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P10-etherfi/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "No complete security, slashing, credit-loss, compensation or backstop ledger was retained in the existing archive; missing evidence is not zero.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "Trailing 365 days ending 2026-02-13",
+          "source": "data/daily/ether.fi/latest.json and monthly daily archive; round2-audit/P10-etherfi/streamlined/economic-review.md + round2-audit/P10-etherfi/streamlined/economic-review.md + round2-audit/P10-etherfi/streamlined/economic-review.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-02-14T06:57:40.357Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "Trailing 365 days ending 2026-02-13",
+          "source": "data/daily/ether.fi/latest.json and monthly daily archive; round2-audit/P10-etherfi/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "medium",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "Trailing 365 days ending 2026-02-13",
+          "source": "data/daily/ether.fi/latest.json and monthly daily archive; round2-audit/P10-etherfi/streamlined/economic-review.md + round2-audit/P10-etherfi/streamlined/economic-review.md + round2-audit/P10-etherfi/streamlined/economic-review.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "N/A",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P10-etherfi/streamlined/economic-review.md:E10-CHAIN-OUT,E10-BUYBACK",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "A verified wallet transferred 7,836,265.59 ETHFI to the mainnet sETHFI contract, but acquisition/funding provenance, USD basis, L2 synchronization, eligibility and final holder claimability are incomplete.",
+          "display_note": "结构不适用"
+        },
+        "repurchases": {
+          "state": "ESTIMATED",
+          "window": "Observed target-TTM subset: 95 dated records from 2025-07-25 through 2026-03-01; no records after 2026-03-01",
+          "source": "data/protocols/etherfi/tev-records.json; round2-audit/P10-etherfi/streamlined/economic-review.md:E10-CHAIN-IN,E10-GOV3178",
+          "source_url": null,
+          "as_of": "2026-03-03T07:40:56.528929Z",
+          "confidence": "low",
+          "reason": "The retained records identify 95 ETHFI buyback-address inflow days and publisher-valued consideration of $12,789,757.32 inside the target TTM. It remains ESTIMATED because address inflow classification, event-time prices, order ownership, sell assets, fees and Treasury funding are not fully reconciled; the conditional $50m authorization is excluded.",
+          "display_note": "估算"
+        },
+        "fee_burns": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P10-etherfi/streamlined/economic-review.md:E10-SUPPLY-BOUNDARY,E10-CHAIN-OUT",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The boundary supply decrease was 1,464,001 ETHFI while the named wallet sent 1,464,000 ETHFI to the zero address. The 1 ETHFI difference, complete mint/burn ledger and fee-funding lineage are unresolved, so no USD fee burn is promoted.",
+          "display_note": "证据待补"
+        },
+        "dividend_yield": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield不适用。",
+          "display_note": "结构不适用"
+        },
+        "buyback_yield": {
+          "state": "ESTIMATED",
+          "window": "Observed target-TTM subset: 95 dated records from 2025-07-25 through 2026-03-01; no records after 2026-03-01",
+          "source": "data/protocols/etherfi/tev-records.json; round2-audit/P10-etherfi/streamlined/economic-review.md:E10-CHAIN-IN,E10-GOV3178",
+          "source_url": null,
+          "as_of": "2026-03-03T07:40:56.528929Z",
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "Observed target-TTM subset: 95 dated records from 2025-07-25 through 2026-03-01; no records after 2026-03-01",
+          "source": "data/protocols/etherfi/tev-records.json; round2-audit/P10-etherfi/streamlined/economic-review.md:E10-CHAIN-IN,E10-GOV3178",
+          "source_url": null,
+          "as_of": "2026-03-03T07:40:56.528929Z",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "independent_pass",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "partial_safe_null"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -738,14 +2409,23 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p10-p18.json",
+        "metric_sources": [
+          "data/daily/ether.fi/latest.json and monthly daily archive; round2-audit/P10-etherfi/streamlined/economic-review.md",
+          "round2-audit/P10-etherfi/streamlined/economic-review.md",
+          "data/daily/ether.fi/latest.json and monthly daily archive; round2-audit/P10-etherfi/streamlined/economic-review.md + round2-audit/P10-etherfi/streamlined/economic-review.md + round2-audit/P10-etherfi/streamlined/economic-review.md + Crypto3D phase-1 protocol-earnings proxy",
+          "round2-audit/P10-etherfi/streamlined/economic-review.md:E10-CHAIN-OUT,E10-BUYBACK",
+          "data/protocols/etherfi/tev-records.json; round2-audit/P10-etherfi/streamlined/economic-review.md:E10-CHAIN-IN,E10-GOV3178",
+          "round2-audit/P10-etherfi/streamlined/economic-review.md:E10-SUPPLY-BOUNDARY,E10-CHAIN-OUT"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报为已识别执行部分的下限估算。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -762,13 +2442,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
-        "revenue_ttm_usd": 4745308,
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
+        "revenue_ttm_usd": 12380928,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": 21000000,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": -8619072,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": -8619072,
+        "net_income_ttm_usd": -8619072,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -783,25 +2469,179 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "capital_returns": {
         "period": "TTM",
-        "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "dividends_ttm_usd": 0,
+        "share_repurchases_ttm_usd": 4745304.885739369,
+        "qualifying_fee_burns_ttm_usd": 0,
+        "share_retirement_ttm_usd": 0,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
-        "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "dividend_yield_pct": 0,
+        "buyback_yield_pct": 5.4883,
+        "shareholder_yield_pct": 5.4883
       },
       "valuation": {
-        "price_to_sales": 18.22,
+        "price_to_sales": 6.98,
         "price_to_earnings": null,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "Legacy published trailing 365 days, snapshot generated 2026-03-21",
+          "source": "data/all-protocols.json; round2-audit/P11-fluid/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-03-21T13:05:24.776Z",
+          "confidence": "low",
+          "reason": "The older published snapshot's $12,380,928 revenue value is retained as a practical TTM estimate. It is distinct from the rejected $4,745,308 buyback amountUsd field, but complete lender/LP/partner/referral pass-through and JupLend/Venus Flux perimeter closure are still missing.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P11-fluid/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Oracle, keeper, necessary settlement and other protocol-borne external cash costs were not reconstructed. Grants, partner incentives and FLUID issuance are not direct cash costs under the PRD.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "ESTIMATED",
+          "window": "Single Resolv-related incident reported in May 2026, within target TTM [2025-07-23T21:16:34Z,2026-07-23T21:16:34Z); exact recognition date and recovery basis not frozen",
+          "source": "round2-audit/P11-fluid/streamlined/economic-review.md:E11-GOV1774",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Fluid governance described approximately $21m of Resolv-related bad debt. This is an official rounded estimate suitable only as a Phase-1 candidate; exact bearer, recovery, execution and recognition ledgers are still required before VERIFIED status.",
+          "display_note": "估算"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "Legacy published trailing 365 days, snapshot generated 2026-03-21",
+          "source": "data/all-protocols.json; round2-audit/P11-fluid/streamlined/economic-review.md and evidence-map.json + round2-audit/P11-fluid/streamlined/economic-review.md + round2-audit/P11-fluid/streamlined/economic-review.md:E11-GOV1774 + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-03-21T13:05:24.776Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "Legacy published trailing 365 days, snapshot generated 2026-03-21",
+          "source": "data/all-protocols.json; round2-audit/P11-fluid/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "N/M",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Protocol Earnings 小于或等于零。",
+          "display_note": "收益≤0"
+        },
+        "dividends": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P11-fluid/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The accepted research identifies an executed Treasury/reserve buyback mechanism but no qualifying pro-rata holder distribution. Bought FLUID held as inventory is not a dividend.",
+          "display_note": "已核实为 0"
+        },
+        "repurchases": {
+          "state": "ESTIMATED",
+          "window": "TTM target [2025-07-23T21:16:34Z,2026-07-23T21:16:34Z); API observed fills 2025-10-03T18:54:11Z through 2026-03-20T10:43:23Z",
+          "source": "round2-audit/P11-fluid/streamlined/evidence-map.json:E11-BUY-API,E11-FIRST-TX",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "The official API reports 125 executed fill rows, 104 transactions, 1,306,296.831064963095675540 FLUID and $4,745,304.885739369236502633 in publisher-valued amountUsd; the first transaction has independent chain evidence. The numeric candidate uses the publisher valuation, not reconstructed cash consideration, so it remains ESTIMATED.",
+          "display_note": "估算"
+        },
+        "fee_burns": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P11-fluid/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The identified capital-return mechanism is Treasury/reserve repurchase, not irreversible fee-funded retirement. Treasury inventory, governance discretion and supply-point observations are excluded from qualifying fee burns.",
+          "display_note": "已核实为 0"
+        },
+        "dividend_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P11-fluid/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Dividend Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "buyback_yield": {
+          "state": "ESTIMATED",
+          "window": "TTM target [2025-07-23T21:16:34Z,2026-07-23T21:16:34Z); API observed fills 2025-10-03T18:54:11Z through 2026-03-20T10:43:23Z",
+          "source": "round2-audit/P11-fluid/streamlined/evidence-map.json:E11-BUY-API,E11-FIRST-TX + round2-audit/P11-fluid/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P11-fluid/streamlined/economic-review.md + round2-audit/P11-fluid/streamlined/evidence-map.json:E11-BUY-API,E11-FIRST-TX + round2-audit/P11-fluid/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "pending",
         "confidence": "medium",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -809,14 +2649,23 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p10-p18.json",
+        "metric_sources": [
+          "data/all-protocols.json; round2-audit/P11-fluid/streamlined/economic-review.md and evidence-map.json",
+          "round2-audit/P11-fluid/streamlined/economic-review.md",
+          "round2-audit/P11-fluid/streamlined/economic-review.md:E11-GOV1774",
+          "data/all-protocols.json; round2-audit/P11-fluid/streamlined/economic-review.md and evidence-map.json + round2-audit/P11-fluid/streamlined/economic-review.md + round2-audit/P11-fluid/streamlined/economic-review.md:E11-GOV1774 + Crypto3D phase-1 protocol-earnings proxy",
+          "round2-audit/P11-fluid/streamlined/evidence-map.json:E11-BUY-API,E11-FIRST-TX",
+          "round2-audit/P11-fluid/streamlined/economic-review.md and evidence-map.json"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报由已识别执行金额汇总。",
+        "price_to_earnings": "Protocol Earnings 小于或等于零。"
       }
     },
     {
@@ -833,13 +2682,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 13247188,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 13247188,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 13247188,
+        "net_income_ttm_usd": 13247188,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -854,25 +2709,179 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "capital_returns": {
         "period": "TTM",
-        "dividends_ttm_usd": null,
+        "dividends_ttm_usd": 17058614,
         "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "qualifying_fee_burns_ttm_usd": 0,
+        "share_retirement_ttm_usd": 0,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
-        "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "dividend_yield_pct": 22.568,
+        "buyback_yield_pct": 0,
+        "shareholder_yield_pct": 22.568
       },
       "valuation": {
         "price_to_sales": 5.71,
-        "price_to_earnings": null,
+        "price_to_earnings": 5.71,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P12-gmx/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "The published $13,247,188 TTM value is retained as an indicative protocol-revenue estimate rather than discarded. The current 63% pool/37% receiver rule, actual receiver receipts, referrals, rebates/refunds, third-party pass-through and active/legacy chain coverage are not fully reconciled.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P12-gmx/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Actual external Chainlink, oracle, keeper and necessary service payments borne by GMX are not reconciled. The documented 10% allocation is a routing rule, not an expense amount.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P12-gmx/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "No complete security, credit, compensation or backstop loss ledger is present in the existing package; missing loss data is not zero.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P12-gmx/streamlined/economic-review.md and evidence-map.json + round2-audit/P12-gmx/streamlined/economic-review.md + round2-audit/P12-gmx/streamlined/economic-review.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P12-gmx/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P12-gmx/streamlined/economic-review.md and evidence-map.json + round2-audit/P12-gmx/streamlined/economic-review.md + round2-audit/P12-gmx/streamlined/economic-review.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "ESTIMATED",
+          "window": "Approximate trailing 12 monthly records from 2025-03 through partial 2026-02; latest month contains 12 days",
+          "source": "data/protocols/gmx/tev-records.json (DefiLlama dailyHoldersRevenue monthly aggregates); round2-audit/P12-gmx/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-02-13T20:05:36.066Z",
+          "confidence": "low",
+          "reason": "The local holder-revenue series sums to $17,058,614 over the latest 12 monthly records and is retained as an estimated fee-funded holder distribution. It is not VERIFIED cash received: the last month is partial, the adapter uses a legacy staking-reward methodology, and official current materials say bought GMX accumulates in Treasury while distribution is suspended.",
+          "display_note": "估算"
+        },
+        "repurchases": {
+          "state": "PENDING",
+          "window": "Official API-tracked weeks 2026-03-04 through 2026-07-22 within the target TTM",
+          "source": "round2-audit/P12-gmx/streamlined/economic-review.md and evidence-map.json:official buyback APIs",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Arbitrum reports 371,941 GMX accrued across 21 weeks, while Avalanche and MegaETH report zero. Accrued units do not prove market-purchase consideration, Treasury receipt or final disposition.",
+          "display_note": "证据待补"
+        },
+        "fee_burns": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P12-gmx/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The current documented mechanism accumulates bought GMX in Treasury while distribution is suspended. Treasury accumulation is not an irreversible fee-funded burn, so no separate qualifying burn is recorded.",
+          "display_note": "已核实为 0"
+        },
+        "dividend_yield": {
+          "state": "ESTIMATED",
+          "window": "Approximate trailing 12 monthly records from 2025-03 through partial 2026-02; latest month contains 12 days",
+          "source": "data/protocols/gmx/tev-records.json (DefiLlama dailyHoldersRevenue monthly aggregates); round2-audit/P12-gmx/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-02-13T20:05:36.066Z",
+          "confidence": "low",
+          "reason": "Dividend Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "buyback_yield": {
+          "state": "ESTIMATED",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P12-gmx/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "Approximate trailing 12 monthly records from 2025-03 through partial 2026-02; latest month contains 12 days",
+          "source": "data/protocols/gmx/tev-records.json (DefiLlama dailyHoldersRevenue monthly aggregates); round2-audit/P12-gmx/streamlined/economic-review.md + round2-audit/P12-gmx/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-02-13T20:05:36.066Z",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "pending",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -880,14 +2889,22 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p10-p18.json",
+        "metric_sources": [
+          "data/protocol-financials-us-equity.json; round2-audit/P12-gmx/streamlined/economic-review.md and evidence-map.json",
+          "round2-audit/P12-gmx/streamlined/economic-review.md",
+          "data/protocol-financials-us-equity.json; round2-audit/P12-gmx/streamlined/economic-review.md and evidence-map.json + round2-audit/P12-gmx/streamlined/economic-review.md + round2-audit/P12-gmx/streamlined/economic-review.md + Crypto3D phase-1 protocol-earnings proxy",
+          "data/protocols/gmx/tev-records.json (DefiLlama dailyHoldersRevenue monthly aggregates); round2-audit/P12-gmx/streamlined/economic-review.md",
+          "round2-audit/P12-gmx/streamlined/economic-review.md and evidence-map.json:official buyback APIs"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报为已识别执行部分的下限估算。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -904,13 +2921,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 792146570,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 792146570,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 792146570,
+        "net_income_ttm_usd": 792146570,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -925,25 +2948,179 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "capital_returns": {
         "period": "TTM",
-        "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
+        "dividends_ttm_usd": 0,
+        "share_repurchases_ttm_usd": 918600640,
+        "qualifying_fee_burns_ttm_usd": null,
         "share_retirement_ttm_usd": null,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
-        "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "dividend_yield_pct": 0,
+        "buyback_yield_pct": 12.4673,
+        "shareholder_yield_pct": 12.4673
       },
       "valuation": {
         "price_to_sales": 9.3,
-        "price_to_earnings": null,
+        "price_to_earnings": 9.3,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/valuation-meeting-snapshot.json; round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "The published $792,146,570 TTM total is retained as an indicative revenue estimate. It is not VERIFIED because discounts, rebates, referral/builder/deployer receipts, HLP allocations, HIP-3/HIP-4 Outcomes and lending supplier pass-through are not fully closed.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "No entity-scoped protocol-borne cash settlement/service-cost ledger is available. HYPE staking, validator and contributor issuance is excluded from cash costs and disclosed separately as supply risk.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Outcome settlement, lending credit/liquidation, HLP and security-loss ledgers are incomplete; no missing loss is defaulted to zero.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/valuation-meeting-snapshot.json; round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json + round2-audit/P13-hype/streamlined/economic-review.md + round2-audit/P13-hype/streamlined/economic-review.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/valuation-meeting-snapshot.json; round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/valuation-meeting-snapshot.json; round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json + round2-audit/P13-hype/streamlined/economic-review.md + round2-audit/P13-hype/streamlined/economic-review.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "No qualifying passive HYPE dividend mechanism was identified in the accepted research. Staking rewards require active participation, and Assistance Fund purchases are classified under repurchases rather than dividends.",
+          "display_note": "已核实为 0"
+        },
+        "repurchases": {
+          "state": "ESTIMATED",
+          "window": "Trailing record window 2025-03-21 through 2026-03-20; 363 daily records",
+          "source": "data/protocols/hype/tev-records.json (DefiLlama dailyHoldersRevenue labeled buyback_burn); round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json:AF diagnostics",
+          "source_url": null,
+          "as_of": "2026-03-21T01:03:10Z",
+          "confidence": "low",
+          "reason": "The local Assistance Fund series sums to $918,600,640 across its latest 365-day boundary and is retained as estimated fee-funded purchase value. It is not VERIFIED because two days are absent, the series is third-party mapped, and AF fills, fee-source reconciliation and final burn transition are incomplete. The same value is not repeated under qualifying fee burns.",
+          "display_note": "估算"
+        },
+        "fee_burns": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "AF governance labels and HyperEVM burn mechanics do not provide complete acquisition-lot, raw-supply, fee-source and event-time valuation ledgers. The estimated AF purchase value is recorded once under repurchases and is not duplicated here; irreversible retirement still requires separate closure.",
+          "display_note": "证据待补"
+        },
+        "dividend_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Dividend Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "buyback_yield": {
+          "state": "ESTIMATED",
+          "window": "Trailing record window 2025-03-21 through 2026-03-20; 363 daily records",
+          "source": "data/protocols/hype/tev-records.json (DefiLlama dailyHoldersRevenue labeled buyback_burn); round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json:AF diagnostics",
+          "source_url": null,
+          "as_of": "2026-03-21T01:03:10Z",
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P13-hype/streamlined/economic-review.md + data/protocols/hype/tev-records.json (DefiLlama dailyHoldersRevenue labeled buyback_burn); round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json:AF diagnostics",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "independent_pass",
         "confidence": "high",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -951,14 +3128,21 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p10-p18.json",
+        "metric_sources": [
+          "data/valuation-meeting-snapshot.json; round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json",
+          "round2-audit/P13-hype/streamlined/economic-review.md",
+          "data/valuation-meeting-snapshot.json; round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json + round2-audit/P13-hype/streamlined/economic-review.md + round2-audit/P13-hype/streamlined/economic-review.md + Crypto3D phase-1 protocol-earnings proxy",
+          "data/protocols/hype/tev-records.json (DefiLlama dailyHoldersRevenue labeled buyback_burn); round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json:AF diagnostics"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报为已识别执行部分的下限估算。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -975,13 +3159,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 14662309,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 14662309,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 14662309,
+        "net_income_ttm_usd": 14662309,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -996,25 +3186,179 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "capital_returns": {
         "period": "TTM",
-        "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "dividends_ttm_usd": 0,
+        "share_repurchases_ttm_usd": 0,
+        "qualifying_fee_burns_ttm_usd": 0,
+        "share_retirement_ttm_usd": 0,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
-        "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "dividend_yield_pct": 0,
+        "buyback_yield_pct": 0,
+        "shareholder_yield_pct": 0
       },
       "valuation": {
         "price_to_sales": 20.62,
-        "price_to_earnings": null,
+        "price_to_earnings": 20.62,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P14-jito/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "The published $14,662,309 TTM value is retained as an indicative revenue estimate. JIP-25 and JIP-31 routing changes, complete receipts, validator/staker/restaker/operator payouts and subsidy-lot origins remain unclosed.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P14-jito/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The BAM subsidy is participant pass-through, not a second direct cost. Protocol-borne cash service and settlement costs are not reconstructed; Foundation organization costs and JTO issuance are excluded.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P14-jito/streamlined/economic-review.md:JIP-20 boundary",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "JIP-20 is a routing correction with no expected DAO-revenue change, not a realized loss after corrected retention. No complete independent security/risk-loss ledger exists.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P14-jito/streamlined/economic-review.md and evidence-map.json + round2-audit/P14-jito/streamlined/economic-review.md + round2-audit/P14-jito/streamlined/economic-review.md:JIP-20 boundary + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P14-jito/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P14-jito/streamlined/economic-review.md and evidence-map.json + round2-audit/P14-jito/streamlined/economic-review.md + round2-audit/P14-jito/streamlined/economic-review.md:JIP-20 boundary + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P14-jito/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Ordinary JTO governance ownership is not a passive dividend right. Restaker eligibility routes require separate participation and are not classified as universal holder dividends.",
+          "display_note": "已核实为 0"
+        },
+        "repurchases": {
+          "state": "ZERO",
+          "window": "Official aggregate through cutoff; exact purchase dates and complete TTM fill coverage not frozen",
+          "source": "round2-audit/P14-jito/streamlined/evidence-map.json:E14-JIP26",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "JIP-26's CSD acquisition is not established as an ordinary-holder capital return: execution wallets, fills, receipts, exact dates and retirement/distribution are missing, and Treasury/CSD inventory is excluded. JIP-37 matching buybacks are proposal-only.",
+          "display_note": "已核实为 0"
+        },
+        "fee_burns": {
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P14-jito/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "CSD-acquired or Treasury-held JTO is inventory, not irreversible retirement. No qualifying fee-funded JTO burn mechanism was identified in the accepted research.",
+          "display_note": "已核实为 0"
+        },
+        "dividend_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P14-jito/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Dividend Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "buyback_yield": {
+          "state": "ZERO",
+          "window": "Official aggregate through cutoff; exact purchase dates and complete TTM fill coverage not frozen",
+          "source": "round2-audit/P14-jito/streamlined/evidence-map.json:E14-JIP26 + round2-audit/P14-jito/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "shareholder_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P14-jito/streamlined/economic-review.md + round2-audit/P14-jito/streamlined/evidence-map.json:E14-JIP26 + round2-audit/P14-jito/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        }
       },
       "review": {
         "status": "pending",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1022,14 +3366,23 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p10-p18.json",
+        "metric_sources": [
+          "data/protocol-financials-us-equity.json; round2-audit/P14-jito/streamlined/economic-review.md and evidence-map.json",
+          "round2-audit/P14-jito/streamlined/economic-review.md",
+          "round2-audit/P14-jito/streamlined/economic-review.md:JIP-20 boundary",
+          "data/protocol-financials-us-equity.json; round2-audit/P14-jito/streamlined/economic-review.md and evidence-map.json + round2-audit/P14-jito/streamlined/economic-review.md + round2-audit/P14-jito/streamlined/economic-review.md:JIP-20 boundary + Crypto3D phase-1 protocol-earnings proxy",
+          "round2-audit/P14-jito/streamlined/evidence-map.json:E14-JIP26",
+          "round2-audit/P14-jito/streamlined/economic-review.md and evidence-map.json"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报由已识别执行金额汇总。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -1046,13 +3399,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": null,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
         "gross_profit_ttm_usd": null,
         "operating_expenses_ttm_usd": null,
         "operating_income_ttm_usd": null,
         "net_income_ttm_usd": null,
-        "coverage": "unavailable"
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -1069,6 +3428,7 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "period": "TTM",
         "dividends_ttm_usd": null,
         "share_repurchases_ttm_usd": null,
+        "qualifying_fee_burns_ttm_usd": null,
         "share_retirement_ttm_usd": null,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
@@ -1081,11 +3441,164 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "price_to_earnings": null,
         "free_cash_flow_yield_pct": null
       },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "round2-audit/P15-justlend/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Borrower interest, supplier interest, effective reserve factors, flash/liquidation fees, refunds and beneficiaries are not reconstructed across all markets. sTRX/Energy Rental yield is not automatically JST protocol revenue.",
+          "display_note": "证据待补"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "round2-audit/P15-justlend/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Supplier interest and liquidator incentives are participant payouts, not direct costs. Protocol-borne necessary settlement/service costs are not available; JST mining and grants are excluded from cash costs.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "round2-audit/P15-justlend/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Bad-debt, Risk DAO, compensation and collateral-disposition loss ledgers are incomplete; missing realized losses are not recorded as zero.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Protocol Revenue 尚无可用值，无法计算 Protocol Earnings。",
+          "display_note": "证据待补"
+        },
+        "price_to_sales": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少正的 Revenue TTM。",
+          "display_note": "证据待补"
+        },
+        "price_to_earnings": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少可用 Protocol Earnings。",
+          "display_note": "证据待补"
+        },
+        "dividends": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "round2-audit/P15-justlend/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "No verified pro-rata cash/token distribution to ordinary JST holders was reconstructed. sTRX holder yield and program retirements are not JST dividends.",
+          "display_note": "证据待补"
+        },
+        "repurchases": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "round2-audit/P15-justlend/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The archive verifies 1,604,586,131 JST transferred to the registered black-hole address, but not market-purchase funding, consideration, fills or USD pricing. Retirement units are not repurchase cash.",
+          "display_note": "证据待补"
+        },
+        "fee_burns": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "round2-audit/P15-justlend/streamlined/economic-review.md:F15-PROGRAM-RETIRE",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The verified 1,604,586,131 JST is address-level retirement only. Contract totalSupply reduction, fee source, market purchase and event-time USD value are not proven.",
+          "display_note": "证据待补"
+        },
+        "dividend_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "buyback_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "shareholder_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Shareholder Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        }
+      },
       "review": {
         "status": "pending",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "partial_safe_null"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1093,14 +3606,20 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p10-p18.json",
+        "metric_sources": [
+          "round2-audit/P15-justlend/streamlined/economic-review.md and evidence-map.json",
+          "round2-audit/P15-justlend/streamlined/economic-review.md",
+          "round2-audit/P15-justlend/streamlined/economic-review.md:F15-PROGRAM-RETIRE"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "Protocol Revenue 尚无可用值，无法计算 Protocol Earnings。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报尚无可用执行金额。",
+        "price_to_earnings": "缺少可用 Protocol Earnings。"
       }
     },
     {
@@ -1117,13 +3636,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 12445934,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 12445934,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 12445934,
+        "net_income_ttm_usd": 12445934,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -1138,25 +3663,179 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "capital_returns": {
         "period": "TTM",
-        "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "dividends_ttm_usd": 0,
+        "share_repurchases_ttm_usd": 0,
+        "qualifying_fee_burns_ttm_usd": 0,
+        "share_retirement_ttm_usd": 0,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
-        "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "dividend_yield_pct": 0,
+        "buyback_yield_pct": 0,
+        "shareholder_yield_pct": 0
       },
       "valuation": {
         "price_to_sales": 7.17,
-        "price_to_earnings": null,
+        "price_to_earnings": 7.17,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "Published TTM/annualized snapshot observed 2026-07-24; underlying short-window mapping not frozen",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P16-kamino/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "The published $12,445,934 value is retained as a practical indicative estimate. It may annualize short-window or third-party fee data and does not fully reconcile products, recipients, reserve configurations, curator/referral shares or pass-through.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Supplier, LP, curator, referral and host amounts are pass-through. Necessary protocol-borne settlement/service costs are not reconstructed; KMNO Seasons/farm/grant issuance is excluded from cash costs.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Security, K-Lend credit/bad-debt, collateral-disposition, compensation and backstop loss ledgers are incomplete.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "Published TTM/annualized snapshot observed 2026-07-24; underlying short-window mapping not frozen",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P16-kamino/streamlined/economic-review.md and evidence-map.json + round2-audit/P16-kamino/streamlined/economic-review.md + round2-audit/P16-kamino/streamlined/economic-review.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "Published TTM/annualized snapshot observed 2026-07-24; underlying short-window mapping not frozen",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P16-kamino/streamlined/economic-review.md and evidence-map.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "Published TTM/annualized snapshot observed 2026-07-24; underlying short-window mapping not frozen",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P16-kamino/streamlined/economic-review.md and evidence-map.json + round2-audit/P16-kamino/streamlined/economic-review.md + round2-audit/P16-kamino/streamlined/economic-review.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Seasons rewards, farming rewards and staking boosts are native KMNO incentives excluded by the new methodology, not fee-funded dividends. No qualifying holder dividend mechanism was identified.",
+          "display_note": "已核实为 0"
+        },
+        "repurchases": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "No qualifying executed KMNO repurchase mechanism was identified in the accepted research. Native-token Seasons, farm and grant budgets are excluded rather than treated as capital returns.",
+          "display_note": "已核实为 0"
+        },
+        "fee_burns": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "A point KMNO mint supply is not a period burn, and no qualifying fee-funded irreversible KMNO retirement mechanism was identified in the accepted research.",
+          "display_note": "已核实为 0"
+        },
+        "dividend_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Dividend Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "buyback_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "shareholder_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        }
       },
       "review": {
         "status": "pending",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1164,14 +3843,20 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p10-p18.json",
+        "metric_sources": [
+          "data/protocol-financials-us-equity.json; round2-audit/P16-kamino/streamlined/economic-review.md and evidence-map.json",
+          "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "data/protocol-financials-us-equity.json; round2-audit/P16-kamino/streamlined/economic-review.md and evidence-map.json + round2-audit/P16-kamino/streamlined/economic-review.md + round2-audit/P16-kamino/streamlined/economic-review.md + Crypto3D phase-1 protocol-earnings proxy"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报由已识别执行金额汇总。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -1188,13 +3873,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 39449664,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 39449664,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 39449664,
+        "net_income_ttm_usd": 39449664,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -1209,25 +3900,179 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "capital_returns": {
         "period": "TTM",
-        "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "dividends_ttm_usd": 0,
+        "share_repurchases_ttm_usd": 0,
+        "qualifying_fee_burns_ttm_usd": 0,
+        "share_retirement_ttm_usd": 0,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
-        "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "dividend_yield_pct": 0,
+        "buyback_yield_pct": 0,
+        "shareholder_yield_pct": 0
       },
       "valuation": {
         "price_to_sales": 8.17,
-        "price_to_earnings": null,
+        "price_to_earnings": 8.17,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P17-lido/current-state.md and formula-registry.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "The published $39,449,664 TTM value is retained as an indicative Lido protocol-revenue estimate. It does not fully close the current Core 10% fee split, weighted module/operator shares, DAO Treasury receipts or V3 vault-specific settlements.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P17-lido/current-state.md and formula-registry.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Node-operator/module shares and stETH holder returns are participant payouts, not direct costs. Protocol-borne oracle/settlement/service costs are not reconstructed; organization costs and LDO grants are excluded.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P17-lido/capital-allocation-ledger.json:CA-KELP,CA-KELP-FIRST-LOSS",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "A 2,500 stETH Treasury relief transfer and 2,499.99 stETH forwarding leg are verified, leaving 0.01 stETH unreconciled; event-time USD pricing and exact bearer classification are missing. The separate 143.98/144 ETH first-loss figure remains an official claim.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P17-lido/current-state.md and formula-registry.json + round2-audit/P17-lido/current-state.md and formula-registry.json + round2-audit/P17-lido/capital-allocation-ledger.json:CA-KELP,CA-KELP-FIRST-LOSS + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P17-lido/current-state.md and formula-registry.json",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P17-lido/current-state.md and formula-registry.json + round2-audit/P17-lido/current-state.md and formula-registry.json + round2-audit/P17-lido/capital-allocation-ledger.json:CA-KELP,CA-KELP-FIRST-LOSS + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P17-lido/current-state.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "LDO provides governance rights, not a universal dividend or redemption claim. stETH holder yield belongs to the staking receipt product and is not an LDO holder dividend.",
+          "display_note": "已核实为 0"
+        },
+        "repurchases": {
+          "state": "ZERO",
+          "window": "Executed Batch 1 from 2026-06-01T14:34:59Z through 2026-06-12T17:07:46Z within the target TTM",
+          "source": "round2-audit/P17-lido/capital-allocation-ledger.json:CA-BATCH1",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Batch 1 used 1,000 stETH to accumulate LDO in Treasury, but Treasury inventory is not classified as an ordinary-holder capital return under this candidate. No qualifying distributed or retired repurchase amount is recorded.",
+          "display_note": "已核实为 0"
+        },
+        "fee_burns": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P17-lido/current-state.md and capital-allocation-ledger.json:CA-NEST",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Batch 1 LDO is Treasury inventory, not burn. NEST remained implementation or vote pending in accepted evidence, so no executed qualifying fee-funded irreversible retirement is recorded.",
+          "display_note": "已核实为 0"
+        },
+        "dividend_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P17-lido/current-state.md",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Dividend Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "buyback_yield": {
+          "state": "ZERO",
+          "window": "Executed Batch 1 from 2026-06-01T14:34:59Z through 2026-06-12T17:07:46Z within the target TTM",
+          "source": "round2-audit/P17-lido/capital-allocation-ledger.json:CA-BATCH1 + round2-audit/P17-lido/current-state.md and capital-allocation-ledger.json:CA-NEST",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "shareholder_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P17-lido/current-state.md + round2-audit/P17-lido/capital-allocation-ledger.json:CA-BATCH1 + round2-audit/P17-lido/current-state.md and capital-allocation-ledger.json:CA-NEST",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        }
       },
       "review": {
         "status": "independent_pass",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1235,14 +4080,24 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p10-p18.json",
+        "metric_sources": [
+          "data/protocol-financials-us-equity.json; round2-audit/P17-lido/current-state.md and formula-registry.json",
+          "round2-audit/P17-lido/current-state.md and formula-registry.json",
+          "round2-audit/P17-lido/capital-allocation-ledger.json:CA-KELP,CA-KELP-FIRST-LOSS",
+          "data/protocol-financials-us-equity.json; round2-audit/P17-lido/current-state.md and formula-registry.json + round2-audit/P17-lido/current-state.md and formula-registry.json + round2-audit/P17-lido/capital-allocation-ledger.json:CA-KELP,CA-KELP-FIRST-LOSS + Crypto3D phase-1 protocol-earnings proxy",
+          "round2-audit/P17-lido/current-state.md",
+          "round2-audit/P17-lido/capital-allocation-ledger.json:CA-BATCH1",
+          "round2-audit/P17-lido/current-state.md and capital-allocation-ledger.json:CA-NEST"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报由已识别执行金额汇总。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -1259,13 +4114,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": null,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
         "gross_profit_ttm_usd": null,
         "operating_expenses_ttm_usd": null,
         "operating_income_ttm_usd": null,
         "net_income_ttm_usd": null,
-        "coverage": "unavailable"
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -1281,24 +4142,178 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       "capital_returns": {
         "period": "TTM",
         "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "share_repurchases_ttm_usd": 0,
+        "qualifying_fee_burns_ttm_usd": 0,
+        "share_retirement_ttm_usd": 0,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
         "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "buyback_yield_pct": 0,
+        "shareholder_yield_pct": 0
       },
       "valuation": {
         "price_to_sales": null,
         "price_to_earnings": null,
         "free_cash_flow_yield_pct": null
       },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/current-state.md and formula-registry.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Four fee-vault balances are inventories, not period revenue. Receipt/event replay, withdrawals and internal Treasury sweeps are not reconciled. mETH/cmETH protocol fees are separate product economics and not automatically MNT-holder revenue.",
+          "display_note": "证据待补"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/current-state.md and formula-registry.json:F-L2-NET",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Ethereum blob/calldata, post-Arsia DA, proof, sequencer and operator cash costs are not reconciled for TTM. Removed EigenDA costs are not carried forward without evidence; organization costs and MNT incentives are excluded.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/current-state.md and capital-allocation-ledger.json",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "No complete realized network, bridge, treasury-strategy, compensation or backstop loss ledger was retained. Passed credit facilities and unrealized Treasury changes are not realized losses.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少适用的协议/公司收益主体边界。",
+          "display_note": "结构不适用"
+        },
+        "price_to_sales": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少正的 Revenue TTM。",
+          "display_note": "证据待补"
+        },
+        "price_to_earnings": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少适用的协议/公司收益主体边界。",
+          "display_note": "结构不适用"
+        },
+        "dividends": {
+          "state": "N/A",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/current-state.md:MNT-C13,MNT-C15",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "MNT has no contractual ownership or profit-participation right, so a universal holder dividend is structurally not applicable. Eligibility-scoped Rewards Station campaigns are not perpetual dividends.",
+          "display_note": "结构不适用"
+        },
+        "repurchases": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/capital-allocation-ledger.json:CA07",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "No qualifying executed MNT market repurchase was identified. Governance authorization, Treasury transfers, native-token budgets and credit facilities are excluded from repurchases.",
+          "display_note": "已核实为 0"
+        },
+        "fee_burns": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/formula-registry.json:F-MNT-BURN",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "BIT non-conversion, bridge lock/mint/burn, Treasury movement and proposals are excluded. No qualifying fee-funded irreversible MNT supply retirement was identified in the accepted research.",
+          "display_note": "已核实为 0"
+        },
+        "dividend_yield": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield不适用。",
+          "display_note": "结构不适用"
+        },
+        "buyback_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/capital-allocation-ledger.json:CA07 + round2-audit/P18-mnt/formula-registry.json:F-MNT-BURN",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "shareholder_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/capital-allocation-ledger.json:CA07 + round2-audit/P18-mnt/formula-registry.json:F-MNT-BURN",
+          "source_url": null,
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        }
+      },
       "review": {
         "status": "independent_pass",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "partial_safe_null"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1306,14 +4321,23 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p10-p18.json",
+        "metric_sources": [
+          "round2-audit/P18-mnt/current-state.md and formula-registry.json",
+          "round2-audit/P18-mnt/current-state.md and formula-registry.json:F-L2-NET",
+          "round2-audit/P18-mnt/current-state.md and capital-allocation-ledger.json",
+          "round2-audit/P18-mnt/current-state.md:MNT-C13,MNT-C15",
+          "round2-audit/P18-mnt/capital-allocation-ledger.json:CA07",
+          "round2-audit/P18-mnt/formula-registry.json:F-MNT-BURN"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "缺少适用的协议/公司收益主体边界。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报由已识别执行金额汇总。",
+        "price_to_earnings": "缺少适用的协议/公司收益主体边界。"
       }
     },
     {
@@ -1330,13 +4354,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 2561369,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 2561369,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 2561369,
+        "net_income_ttm_usd": 2561369,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -1352,24 +4382,178 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       "capital_returns": {
         "period": "TTM",
         "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
+        "share_repurchases_ttm_usd": 1565000,
+        "qualifying_fee_burns_ttm_usd": null,
         "share_retirement_ttm_usd": null,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
         "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "buyback_yield_pct": 0.7566,
+        "shareholder_yield_pct": 0.7566
       },
       "valuation": {
         "price_to_sales": 80.76,
-        "price_to_earnings": null,
+        "price_to_earnings": 80.76,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "TTM",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "medium",
+          "reason": "Borrower interest, lender income, Pool Delegate fees and Maple Treasury fees are different beneficiary layers. Base and off-chain coverage plus payment-time fee routing are incomplete, while the old-site value was a fixed 25% SSF/holders proxy rather than PRD Protocol Revenue.",
+          "display_note": "首版候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Protocol-borne unavoidable settlement and servicing costs have not been isolated from excluded foundation or organization spending. Pool Delegate fees and lender payouts belong before Protocol Revenue and must not be counted again here.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "The TTM impairment, default, Pool Delegate cover, lender loss and recovery ledger is absent, so realized losses attributable to the protocol cannot be separated from participant losses or unrealized impairment.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71 + outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md + outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "TTM",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "medium",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71 + outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md + outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "The pre-sunset stSYRUP reward stream overlaps the TTM window, but actual holder distributions and event-time USD valuation were not reconstructed. SSF allocations are not dividends.",
+          "display_note": "证据待补"
+        },
+        "repurchases": {
+          "state": "ESTIMATED",
+          "window": "identified governance records for 2025-Q1 through 2025-Q3; partial-period candidate, not a complete canonical TTM",
+          "source": "work/crypto3d-design-lab/data/protocols/maple/tev-records.json; Maple MIP-016, MIP-018 and MIP-020 archive records; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "source_url": null,
+          "as_of": "2026-03-03T02:22:23.355183Z",
+          "confidence": "low",
+          "reason": "The local governance snapshot identifies $1,565,000 across disclosed Q1, H1 and Q3 buyback records. This is a practical first-pass executed/identified amount, not an audit-closed TTM: the H1 disclosure may overlap Q1, the Q3 amount still needs fill-level verification, and Q4 SSF cash allocation is excluded because allocation alone is not execution.",
+          "display_note": "估算"
+        },
+        "fee_burns": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "SYRUP purchased or transferred to the SSF is treasury inventory, not a burn. No fee-funded irreversible retirement ledger or event-time USD valuation is proven.",
+          "display_note": "证据待补"
+        },
+        "dividend_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "buyback_yield": {
+          "state": "ESTIMATED",
+          "window": "identified governance records for 2025-Q1 through 2025-Q3; partial-period candidate, not a complete canonical TTM",
+          "source": "work/crypto3d-design-lab/data/protocols/maple/tev-records.json; Maple MIP-016, MIP-018 and MIP-020 archive records; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "source_url": null,
+          "as_of": "2026-03-03T02:22:23.355183Z",
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "identified governance records for 2025-Q1 through 2025-Q3; partial-period candidate, not a complete canonical TTM",
+          "source": "work/crypto3d-design-lab/data/protocols/maple/tev-records.json; Maple MIP-016, MIP-018 and MIP-020 archive records; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "source_url": null,
+          "as_of": "2026-03-03T02:22:23.355183Z",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "pending",
         "confidence": "medium",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1377,14 +4561,21 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p19-p26.json",
+        "metric_sources": [
+          "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71 + outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md + outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "work/crypto3d-design-lab/data/protocols/maple/tev-records.json; Maple MIP-016, MIP-018 and MIP-020 archive records; outputs/crypto3d-protocol-research/P19-maple/research.md"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报为已识别执行部分的下限估算。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -1401,13 +4592,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": null,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
         "gross_profit_ttm_usd": null,
         "operating_expenses_ttm_usd": null,
         "operating_income_ttm_usd": null,
         "net_income_ttm_usd": null,
-        "coverage": "unavailable"
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -1422,25 +4619,179 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "capital_returns": {
         "period": "TTM",
-        "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "dividends_ttm_usd": 0,
+        "share_repurchases_ttm_usd": 0,
+        "qualifying_fee_burns_ttm_usd": 0,
+        "share_retirement_ttm_usd": 0,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
-        "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "dividend_yield_pct": 0,
+        "buyback_yield_pct": 0,
+        "shareholder_yield_pct": 0
       },
       "valuation": {
         "price_to_sales": null,
         "price_to_earnings": null,
         "free_cash_flow_yield_pct": null
       },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/model-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Borrower interest and lender yield are participant economics. Morpho Blue and vault fees enter PRD Revenue only when the effective fee recipient is a Morpho-controlled entity; the 365-day recipient, configuration and event ledger is incomplete, so the old hard zero is not reused.",
+          "display_note": "证据待补"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/model-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "DAO-borne unavoidable protocol settlement, oracle or other direct costs were not reconstructed. Third-party curator or vault-owner fees are participant payouts, while contributor grants and native-token incentives are excluded organization costs.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/model-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Market and vault loss allocation has not been reconciled to a Morpho-controlled balance sheet. Lender or vault losses cannot be silently treated as protocol losses or as zero.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Protocol Revenue 尚无可用值，无法计算 Protocol Earnings。",
+          "display_note": "证据待补"
+        },
+        "price_to_sales": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少正的 Revenue TTM。",
+          "display_note": "证据待补"
+        },
+        "price_to_earnings": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少可用 Protocol Earnings。",
+          "display_note": "证据待补"
+        },
+        "dividends": {
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "The existing TTM mechanism review identifies no MORPHO-holder or MORPHO-staker cash-distribution mechanism or executed distribution. Governance utility and token transferability are not dividends, so the qualifying executed amount is zero.",
+          "display_note": "已核实为 0"
+        },
+        "repurchases": {
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "The existing TTM review finds discussions, treasury budgets and POL activity but no executed MORPHO market purchase. Budgets and POL are excluded by the PRD, leaving zero qualifying repurchase consideration in the reviewed window.",
+          "display_note": "已核实为 0"
+        },
+        "fee_burns": {
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "The reviewed MORPHO deployment, bridge and burn activity does not identify a fee-funded irreversible retirement mechanism or qualifying event in the TTM window. Bridge and administrative burn events are excluded, so the qualifying fee-burn amount is zero.",
+          "display_note": "已核实为 0"
+        },
+        "dividend_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "Dividend Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "buyback_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "shareholder_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        }
+      },
       "review": {
         "status": "pending",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "partial_safe_null"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1448,14 +4799,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p19-p26.json",
+        "metric_sources": [
+          "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/model-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "Protocol Revenue 尚无可用值，无法计算 Protocol Earnings。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报由已识别执行金额汇总。",
+        "price_to_earnings": "缺少可用 Protocol Earnings。"
       }
     },
     {
@@ -1472,13 +4828,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": null,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
         "gross_profit_ttm_usd": null,
         "operating_expenses_ttm_usd": null,
         "operating_income_ttm_usd": null,
         "net_income_ttm_usd": null,
-        "coverage": "unavailable"
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -1494,24 +4856,178 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       "capital_returns": {
         "period": "TTM",
         "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "share_repurchases_ttm_usd": 0,
+        "qualifying_fee_burns_ttm_usd": 0,
+        "share_retirement_ttm_usd": 0,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
         "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "buyback_yield_pct": 0,
+        "shareholder_yield_pct": 0
       },
       "valuation": {
         "price_to_sales": null,
         "price_to_earnings": null,
         "free_cash_flow_yield_pct": null
       },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "N/A",
+          "window": "TTM",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; PRD section 5 locked treatment for OKB",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "high",
+          "reason": "OKB is a CEX/platform token and the exact same-entity OKX income statement is unavailable; the PRD explicitly locks traditional Cash P/E for OKB as structurally not applicable.",
+          "display_note": "结构不适用"
+        },
+        "direct_economic_costs": {
+          "state": "N/A",
+          "window": "TTM",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; PRD section 5",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "high",
+          "reason": "Without a comparable same-entity protocol revenue boundary, direct costs cannot form a Cash P/E denominator; OKX corporate operating expenses are outside the PRD.",
+          "display_note": "结构不适用"
+        },
+        "realized_protocol_losses": {
+          "state": "N/A",
+          "window": "TTM",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; PRD section 5",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "high",
+          "reason": "The CEX/platform-token structure lacks a comparable public protocol earnings perimeter; exchange-company losses are not imputed to OKB.",
+          "display_note": "结构不适用"
+        },
+        "protocol_earnings": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少适用的协议/公司收益主体边界。",
+          "display_note": "结构不适用"
+        },
+        "price_to_sales": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Revenue 不适用。",
+          "display_note": "结构不适用"
+        },
+        "price_to_earnings": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "缺少适用的协议/公司收益主体边界。",
+          "display_note": "结构不适用"
+        },
+        "dividends": {
+          "state": "N/A",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "high",
+          "reason": "No pro-rata OKB-holder cash distribution mechanism is established. Simple Earn is a lending or bonus product, not an OKB dividend.",
+          "display_note": "结构不适用"
+        },
+        "repurchases": {
+          "state": "ZERO",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; archived OKX upgrade and migration FAQ locators",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "The August 2025 retirement is a mixed-source cancellation of historical repurchase inventory and treasury reserves, not TTM executed market consideration. With that inventory event excluded, the reviewed window contains zero qualifying OKB repurchase consideration.",
+          "display_note": "已核实为 0"
+        },
+        "fee_burns": {
+          "state": "ZERO",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; archived X Layer network and point-state locators",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "The reviewed TTM evidence identifies no X Layer fee-funded irreversible OKB retirement. The August 2025 mixed inventory/treasury cancellation is not a qualifying fee burn, so the qualifying amount is zero; this does not imply global token-supply reconciliation.",
+          "display_note": "已核实为 0"
+        },
+        "dividend_yield": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield不适用。",
+          "display_note": "结构不适用"
+        },
+        "buyback_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; archived OKX upgrade and migration FAQ locators + outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; archived X Layer network and point-state locators",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        },
+        "shareholder_yield": {
+          "state": "ZERO",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; archived OKX upgrade and migration FAQ locators + outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; archived X Layer network and point-state locators",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "已核实为 0"
+        }
+      },
       "review": {
         "status": "pending",
         "confidence": "high",
         "numeric_values_promoted": false,
-        "data_state": "partial_safe_null"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1519,14 +5035,22 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p19-p26.json",
+        "metric_sources": [
+          "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; PRD section 5 locked treatment for OKB",
+          "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; PRD section 5",
+          "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md",
+          "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; archived OKX upgrade and migration FAQ locators",
+          "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; archived X Layer network and point-state locators"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "缺少适用的协议/公司收益主体边界。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报由已识别执行金额汇总。",
+        "price_to_earnings": "缺少适用的协议/公司收益主体边界。"
       }
     },
     {
@@ -1543,13 +5067,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
-        "revenue_ttm_usd": 59450459,
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
+        "revenue_ttm_usd": 92942089,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 92942089,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 92942089,
+        "net_income_ttm_usd": 92942089,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -1565,24 +5095,178 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       "capital_returns": {
         "period": "TTM",
         "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
+        "share_repurchases_ttm_usd": 58168707,
+        "qualifying_fee_burns_ttm_usd": null,
         "share_retirement_ttm_usd": null,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
         "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "buyback_yield_pct": 13.0339,
+        "shareholder_yield_pct": 13.0339
       },
       "valuation": {
-        "price_to_sales": 7.51,
-        "price_to_earnings": null,
+        "price_to_sales": 4.8,
+        "price_to_earnings": 4.8,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/research.md section 8; archived DefiLlama parent dailyRevenue, dailyFees and dailySupplySideRevenue APIs E16-E20",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "This reclassifies the third-party aggregate retained after LP supply-side payouts; it includes Treasury and burn-allocation revenue before capital allocation. It is an estimate because Perpetuals and CAKE.PAD are omitted, Infinity and chain coverage are incomplete, and recipient, rebate and execution ledgers are not fully reconciled.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Protocol-borne settlement, oracle, partner or other unavoidable direct costs have not been separated from LP payouts, treasury allocation or excluded organization spending.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "A complete realized exploit-compensation, partner-settlement, backstop and other protocol loss ledger was not assembled; missing losses are not treated as zero.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/research.md section 8; archived DefiLlama parent dailyRevenue, dailyFees and dailySupplySideRevenue APIs E16-E20 + outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md + outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/research.md section 8; archived DefiLlama parent dailyRevenue, dailyFees and dailySupplySideRevenue APIs E16-E20",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/research.md section 8; archived DefiLlama parent dailyRevenue, dailyFees and dailySupplySideRevenue APIs E16-E20 + outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md + outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "The veCAKE revenue-sharing sunset and any residual current holder distribution were not frozen with complete execution and receipt evidence, so no zero or dividend amount is asserted.",
+          "display_note": "证据待补"
+        },
+        "repurchases": {
+          "state": "ESTIMATED",
+          "window": "2025-08-01 through 2026-07-19 local monthly aggregates; 353 observed days across 12 records, approximating but not exactly matching canonical TTM",
+          "source": "work/tev-dashboard/data/protocols/pancakeswap/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "source_url": null,
+          "as_of": "2026-07-19T13:22:37.545Z",
+          "confidence": "low",
+          "reason": "The 12 local records sum to $58,168,707 and map DefiLlama holdersRevenue to the CAKE buyback-and-burn route. It is classified once as an estimated repurchase proxy, not again as a fee burn. The source reflects the 0.0575% routing formula rather than fill-level execution and mixes market buyback, direct-burn and chain/product coverage limits.",
+          "display_note": "估算"
+        },
+        "fee_burns": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md; archived Lottery and CAKE.PAD documentation locators",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Lottery and CAKE.PAD describe direct CAKE fee burns, but complete fee events, irreversible retirements, cross-chain deduplication and event-time USD valuation are unavailable. Emission-offset burns are excluded.",
+          "display_note": "证据待补"
+        },
+        "dividend_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "buyback_yield": {
+          "state": "ESTIMATED",
+          "window": "2025-08-01 through 2026-07-19 local monthly aggregates; 353 observed days across 12 records, approximating but not exactly matching canonical TTM",
+          "source": "work/tev-dashboard/data/protocols/pancakeswap/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "source_url": null,
+          "as_of": "2026-07-19T13:22:37.545Z",
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "2025-08-01 through 2026-07-19 local monthly aggregates; 353 observed days across 12 records, approximating but not exactly matching canonical TTM",
+          "source": "work/tev-dashboard/data/protocols/pancakeswap/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "source_url": null,
+          "as_of": "2026-07-19T13:22:37.545Z",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "pending",
         "confidence": "high",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1590,14 +5274,22 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p19-p26.json",
+        "metric_sources": [
+          "outputs/crypto3d-protocol-research/P22-pancakeswap/research.md section 8; archived DefiLlama parent dailyRevenue, dailyFees and dailySupplySideRevenue APIs E16-E20",
+          "outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "outputs/crypto3d-protocol-research/P22-pancakeswap/research.md section 8; archived DefiLlama parent dailyRevenue, dailyFees and dailySupplySideRevenue APIs E16-E20 + outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md + outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "work/tev-dashboard/data/protocols/pancakeswap/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md; archived Lottery and CAKE.PAD documentation locators"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报为已识别执行部分的下限估算。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -1614,13 +5306,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
-        "revenue_ttm_usd": 19809032,
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
+        "revenue_ttm_usd": 23601566,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 23601566,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 23601566,
+        "net_income_ttm_usd": 23601566,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -1636,24 +5334,178 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       "capital_returns": {
         "period": "TTM",
         "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "share_repurchases_ttm_usd": 18578140,
+        "qualifying_fee_burns_ttm_usd": 0,
+        "share_retirement_ttm_usd": 0,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
         "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "buyback_yield_pct": 7.0884,
+        "shareholder_yield_pct": 7.0884
       },
       "valuation": {
-        "price_to_sales": 13.23,
-        "price_to_earnings": null,
+        "price_to_sales": 11.1,
+        "price_to_earnings": 11.1,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/research.md section 8; archived DefiLlama Pendle dailyRevenue and dailySupplySideRevenue APIs E13-E17",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "The third-party Pendle V2 estimate is after LP supply-side revenue and before the 80% buyback-fund, 10% Treasury and 10% operations allocation. It remains low confidence because Boros is omitted, exact governance segments are incomplete, and it is not a primary full-project TTM ledger.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Protocol-borne unavoidable execution, oracle, settlement and other direct costs across Pendle V2 and Boros are not separately reconstructed. The 10% operations allocation is a policy split, not evidence of realized PRD direct cost.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "No complete realized bad-debt, compensation, backstop or protocol-loss ledger was found for Pendle V2 and Boros; missing data is not zero.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/research.md section 8; archived DefiLlama Pendle dailyRevenue and dailySupplySideRevenue APIs E13-E17 + outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md + outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/research.md section 8; archived DefiLlama Pendle dailyRevenue and dailySupplySideRevenue APIs E13-E17",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/research.md section 8; archived DefiLlama Pendle dailyRevenue and dailySupplySideRevenue APIs E13-E17 + outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md + outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md; official sPENDLE API archive E27",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "The official sPENDLE API covers only 12 recent epochs and does not provide a frozen formal schema or full TTM claimable/payment ledger. Buyback allocation, PENDLE acquired and holder distribution remain separate.",
+          "display_note": "证据待补"
+        },
+        "repurchases": {
+          "state": "ESTIMATED",
+          "window": "2025-08-01 through 2026-07-19 local monthly aggregates; 353 observed days across 12 records, approximating but not exactly matching canonical TTM",
+          "source": "work/tev-dashboard/data/protocols/pendle/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P23-pendle/research.md; official executor and sPENDLE API archive E27",
+          "source_url": null,
+          "as_of": "2026-07-19T13:22:21.285Z",
+          "confidence": "low",
+          "reason": "The 12 local records sum to $18,578,140 and map the vePENDLE/sPENDLE holder-revenue route to a repurchase proxy. It is counted only here because the current flow buys PENDLE before distribution. The estimate benefits vePENDLE/sPENDLE participants rather than all holders, crosses the September 2025 mechanism change, and lacks consideration, fill, fee and custody reconciliation.",
+          "display_note": "估算"
+        },
+        "fee_burns": {
+          "state": "ZERO",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "The reviewed mechanism distributes acquired PENDLE to vePENDLE/sPENDLE participants rather than irreversibly retiring it. The same estimated flow is classified as repurchase above, and no separate qualifying fee burn is identified in the TTM window.",
+          "display_note": "已核实为 0"
+        },
+        "dividend_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "buyback_yield": {
+          "state": "ESTIMATED",
+          "window": "2025-08-01 through 2026-07-19 local monthly aggregates; 353 observed days across 12 records, approximating but not exactly matching canonical TTM",
+          "source": "work/tev-dashboard/data/protocols/pendle/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P23-pendle/research.md; official executor and sPENDLE API archive E27 + outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md",
+          "source_url": null,
+          "as_of": "2026-07-19T13:22:21.285Z",
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "2025-08-01 through 2026-07-19 local monthly aggregates; 353 observed days across 12 records, approximating but not exactly matching canonical TTM",
+          "source": "work/tev-dashboard/data/protocols/pendle/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P23-pendle/research.md; official executor and sPENDLE API archive E27 + outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md",
+          "source_url": null,
+          "as_of": "2026-07-19T13:22:21.285Z",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "pending",
         "confidence": "medium",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1661,14 +5513,22 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p19-p26.json",
+        "metric_sources": [
+          "outputs/crypto3d-protocol-research/P23-pendle/research.md section 8; archived DefiLlama Pendle dailyRevenue and dailySupplySideRevenue APIs E13-E17",
+          "outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md",
+          "outputs/crypto3d-protocol-research/P23-pendle/research.md section 8; archived DefiLlama Pendle dailyRevenue and dailySupplySideRevenue APIs E13-E17 + outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md + outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md; official sPENDLE API archive E27",
+          "work/tev-dashboard/data/protocols/pendle/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P23-pendle/research.md; official executor and sPENDLE API archive E27"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报为已识别执行部分的下限估算。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -1685,13 +5545,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
-        "revenue_ttm_usd": 238224433,
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
+        "revenue_ttm_usd": 238073032,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 238073032,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 238073032,
+        "net_income_ttm_usd": 238073032,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -1707,24 +5573,178 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       "capital_returns": {
         "period": "TTM",
         "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
+        "share_repurchases_ttm_usd": 77871272,
+        "qualifying_fee_burns_ttm_usd": null,
         "share_retirement_ttm_usd": null,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
         "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "buyback_yield_pct": 4.2911,
+        "shareholder_yield_pct": 4.2911
       },
       "valuation": {
         "price_to_sales": 7.62,
-        "price_to_earnings": null,
+        "price_to_earnings": 7.62,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/research.md sections 6-8; archived DefiLlama dailyRevenue endpoint E-LLAMA-REVENUE",
+          "source_url": null,
+          "as_of": "2026-07-23T00:28:52Z",
+          "confidence": "low",
+          "reason": "DefiLlama Revenue is directionally aligned with fees net of saver payments, so it is retained as a low-confidence phase-1 estimate. Complete Agent, RWA, off-chain settlement, governance-segment and cross-chain coverage is missing, and the endpoint-defined 1y is not the exact canonical half-open TTM.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:28:52Z",
+          "confidence": "low",
+          "reason": "Oracle, custody, settlement and other unavoidable protocol costs are not separated from contributor, Agent, legal and other organization expenses that the PRD excludes.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:28:52Z",
+          "confidence": "low",
+          "reason": "The global realized bad-debt, credit-loss, impairment, liquidation shortfall and compensation ledger across Core, Agents and RWAs is incomplete.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/research.md sections 6-8; archived DefiLlama dailyRevenue endpoint E-LLAMA-REVENUE + outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md + outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-23T00:28:52Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/research.md sections 6-8; archived DefiLlama dailyRevenue endpoint E-LLAMA-REVENUE",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/research.md sections 6-8; archived DefiLlama dailyRevenue endpoint E-LLAMA-REVENUE + outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md + outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md; archived DefiLlama dailyHoldersRevenue endpoint E-LLAMA-HOLDERS",
+          "source_url": null,
+          "as_of": "2026-07-23T00:28:52Z",
+          "confidence": "low",
+          "reason": "The third-party holdersRevenue endpoint mixes SKY buybacks and SKY-staker rewards. No complete unconditional holder cash, claimable or payment ledger is available.",
+          "display_note": "证据待补"
+        },
+        "repurchases": {
+          "state": "ESTIMATED",
+          "window": "2025-08-01 through 2026-07-19 local monthly aggregates; 352 observed days across 12 records, approximating but not exactly matching canonical TTM",
+          "source": "work/tev-dashboard/data/protocols/sky/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P24-sky/research.md; dss-flappers and Sky governance archives",
+          "source_url": null,
+          "as_of": "2026-07-19T13:22:19.469Z",
+          "confidence": "low",
+          "reason": "The 12 local records sum to $77,871,272 and are retained as a first-pass Smart Burn Engine repurchase proxy. DefiLlama holdersRevenue mixes SKY buybacks with SKY-staker rewards, so this is not a clean executed-buyback ledger; beneficiaries include stakers and engine receiver/LP paths rather than unconditional SKY holders. It is not duplicated into dividends or fee burns.",
+          "display_note": "估算"
+        },
+        "fee_burns": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:28:52Z",
+          "confidence": "low",
+          "reason": "A SKY purchase, treasury receipt or LP deposit is not an irreversible retirement. No complete fee-funded burn ledger and event-time USD value is proven.",
+          "display_note": "证据待补"
+        },
+        "dividend_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "buyback_yield": {
+          "state": "ESTIMATED",
+          "window": "2025-08-01 through 2026-07-19 local monthly aggregates; 352 observed days across 12 records, approximating but not exactly matching canonical TTM",
+          "source": "work/tev-dashboard/data/protocols/sky/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P24-sky/research.md; dss-flappers and Sky governance archives",
+          "source_url": null,
+          "as_of": "2026-07-19T13:22:19.469Z",
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "2025-08-01 through 2026-07-19 local monthly aggregates; 352 observed days across 12 records, approximating but not exactly matching canonical TTM",
+          "source": "work/tev-dashboard/data/protocols/sky/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P24-sky/research.md; dss-flappers and Sky governance archives",
+          "source_url": null,
+          "as_of": "2026-07-19T13:22:19.469Z",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "independent_pass",
         "confidence": "high",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1732,14 +5752,22 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p19-p26.json",
+        "metric_sources": [
+          "outputs/crypto3d-protocol-research/P24-sky/research.md sections 6-8; archived DefiLlama dailyRevenue endpoint E-LLAMA-REVENUE",
+          "outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md",
+          "outputs/crypto3d-protocol-research/P24-sky/research.md sections 6-8; archived DefiLlama dailyRevenue endpoint E-LLAMA-REVENUE + outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md + outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md; archived DefiLlama dailyHoldersRevenue endpoint E-LLAMA-HOLDERS",
+          "work/tev-dashboard/data/protocols/sky/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P24-sky/research.md; dss-flappers and Sky governance archives"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报为已识别执行部分的下限估算。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -1756,13 +5784,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
-        "revenue_ttm_usd": 23785347,
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
+        "revenue_ttm_usd": 24135769,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 24135769,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 24135769,
+        "net_income_ttm_usd": 24135769,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -1778,24 +5812,178 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       "capital_returns": {
         "period": "TTM",
         "dividends_ttm_usd": null,
-        "share_repurchases_ttm_usd": null,
+        "share_repurchases_ttm_usd": 1975520.7475913304,
+        "qualifying_fee_burns_ttm_usd": null,
         "share_retirement_ttm_usd": null,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
         "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "buyback_yield_pct": 3.8041,
+        "shareholder_yield_pct": 3.8041
       },
       "valuation": {
-        "price_to_sales": 2.18,
-        "price_to_earnings": null,
+        "price_to_sales": 2.15,
+        "price_to_earnings": 2.15,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json noncanonical diagnostics; archived DefiLlama Spark dailyProtocolRevenue API E25; outputs/crypto3d-protocol-research/P25-spark/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "low",
+          "reason": "The third-party protocol-revenue estimate is after lending supplier economics and, for SLL, Sky Base Rate settlement. It remains low confidence because SparkLend and SLL are combined, off-chain rebate and chain coverage are incomplete, and the API-defined 1y is not the exact canonical window.",
+          "display_note": "TTM 候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; official Spark Financials methodology archive E17",
+          "source_url": null,
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "low",
+          "reason": "Unavoidable protocol settlement, oracle and servicing costs are not isolated from Spark Foundation or contributor opex, which the PRD excludes. The published $14.4 million annual opex override is projected organization spending, not realized TTM direct cost.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; SAEP-06 and SAEP-09 archives",
+          "source_url": null,
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "low",
+          "reason": "RRC and product backstop targets are reserves and budgets, not realized losses. Actual bad debt, compensation, backstop use and recoveries were not reconstructed.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json noncanonical diagnostics; archived DefiLlama Spark dailyProtocolRevenue API E25; outputs/crypto3d-protocol-research/P25-spark/research.md + outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; official Spark Financials methodology archive E17 + outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; SAEP-06 and SAEP-09 archives + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json noncanonical diagnostics; archived DefiLlama Spark dailyProtocolRevenue API E25; outputs/crypto3d-protocol-research/P25-spark/research.md",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json noncanonical diagnostics; archived DefiLlama Spark dailyProtocolRevenue API E25; outputs/crypto3d-protocol-research/P25-spark/research.md + outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; official Spark Financials methodology archive E17 + outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; SAEP-06 and SAEP-09 archives + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "N/A",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; current Spark Atlas buyback-recipient rule",
+          "source_url": null,
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "high",
+          "reason": "Current executed SPK buybacks return SPK to the Spark SubDAO Proxy as treasury inventory; they do not create a pro-rata SPK-holder cash distribution.",
+          "display_note": "结构不适用"
+        },
+        "repurchases": {
+          "state": "ESTIMATED",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; official buyback event pages E19-E21; sampled Blockscout transaction E22",
+          "source_url": null,
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "medium",
+          "reason": "The 1,920-event ledger verifies 1,975,520.747591330437508148 USDS spent and 90,684,036.397559204293711305 SPK received. The USD candidate uses the disclosed 1 USDS = 1 USD proxy because transaction-time USDS/USD marks are absent; it is therefore estimated, not verified USD.",
+          "display_note": "估算"
+        },
+        "fee_burns": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "low",
+          "reason": "Repurchased SPK is sent to the Spark SubDAO Proxy and is not burned. An exhaustive fee-source, irreversible retirement and event-time USD ledger was not fetched.",
+          "display_note": "证据待补"
+        },
+        "dividend_yield": {
+          "state": "N/A",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield不适用。",
+          "display_note": "结构不适用"
+        },
+        "buyback_yield": {
+          "state": "ESTIMATED",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; official buyback event pages E19-E21; sampled Blockscout transaction E22",
+          "source_url": null,
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; official buyback event pages E19-E21; sampled Blockscout transaction E22",
+          "source_url": null,
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "pending",
         "confidence": "low",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1803,14 +5991,24 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p19-p26.json",
+        "metric_sources": [
+          "outputs/crypto3d-protocol-research/P25-spark/candidate.json noncanonical diagnostics; archived DefiLlama Spark dailyProtocolRevenue API E25; outputs/crypto3d-protocol-research/P25-spark/research.md",
+          "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; official Spark Financials methodology archive E17",
+          "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; SAEP-06 and SAEP-09 archives",
+          "outputs/crypto3d-protocol-research/P25-spark/candidate.json noncanonical diagnostics; archived DefiLlama Spark dailyProtocolRevenue API E25; outputs/crypto3d-protocol-research/P25-spark/research.md + outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; official Spark Financials methodology archive E17 + outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; SAEP-06 and SAEP-09 archives + Crypto3D phase-1 protocol-earnings proxy",
+          "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; current Spark Atlas buyback-recipient rule",
+          "outputs/crypto3d-protocol-research/P25-spark/candidate.json; official buyback event pages E19-E21; sampled Blockscout transaction E22",
+          "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报为已识别执行部分的下限估算。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     },
     {
@@ -1827,13 +6025,19 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
       },
       "income_statement": {
         "period": "TTM",
+        "gross_fees_ttm_usd": null,
+        "supply_side_payouts_ttm_usd": null,
         "revenue_ttm_usd": 16892047,
+        "direct_economic_costs_ttm_usd": null,
+        "realized_protocol_losses_ttm_usd": null,
         "cost_of_revenue_ttm_usd": null,
-        "gross_profit_ttm_usd": null,
+        "gross_profit_ttm_usd": 16892047,
         "operating_expenses_ttm_usd": null,
-        "operating_income_ttm_usd": null,
-        "net_income_ttm_usd": null,
-        "coverage": "protocol_revenue_only"
+        "operating_income_ttm_usd": 16892047,
+        "net_income_ttm_usd": 16892047,
+        "coverage": "protocol_earnings_candidate",
+        "organization_opex_policy": "excluded",
+        "native_token_expense_policy": "excluded"
       },
       "cash_flow": {
         "period": "TTM",
@@ -1850,23 +6054,177 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "period": "TTM",
         "dividends_ttm_usd": null,
         "share_repurchases_ttm_usd": null,
-        "share_retirement_ttm_usd": null,
+        "qualifying_fee_burns_ttm_usd": 16163852,
+        "share_retirement_ttm_usd": 16163852,
         "treasury_stock_usd": null,
         "share_issuance_ttm_usd": null,
         "dividend_yield_pct": null,
-        "buyback_yield_pct": null,
-        "shareholder_yield_pct": null
+        "buyback_yield_pct": 0.6857,
+        "shareholder_yield_pct": 0.6857
       },
       "valuation": {
         "price_to_sales": 139.55,
-        "price_to_earnings": null,
+        "price_to_earnings": 139.55,
         "free_cash_flow_yield_pct": null
+      },
+      "metric_meta": {
+        "market_cap": {
+          "state": "VERIFIED",
+          "window": "point-in-time",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "流通市值来自当前测试快照，用作估值公式分母。",
+          "display_note": "已核实"
+        },
+        "gross_fees": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Gross Fees 尚未单列；Revenue 已按协议留存口径使用。",
+          "display_note": "证据待补"
+        },
+        "supply_side_payouts": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "供应方分成已尽可能体现在 Revenue 口径，但尚未单列金额。",
+          "display_note": "证据待补"
+        },
+        "revenue": {
+          "state": "ESTIMATED",
+          "window": "TTM",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "TokenJar and other protocol-controlled receipt ledgers are incomplete by version, pool, hook and chain. Unichain sequencer revenue also lacks the required L1 data cost and 15% Optimism-share deduction, so the $26.749 million third-party comparator is not promoted.",
+          "display_note": "首版候选"
+        },
+        "direct_economic_costs": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Unichain L1 data cost and the Optimism revenue share are necessary network settlement costs and remain unfetched. Other protocol-borne direct execution costs are not closed, while Labs and Foundation operating expenses are excluded.",
+          "display_note": "证据待补"
+        },
+        "realized_protocol_losses": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "No complete realized exploit compensation, bad debt, backstop or other protocol-loss ledger across AMM and Unichain surfaces is available.",
+          "display_note": "证据待补"
+        },
+        "protocol_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71 + outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md + outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+          "display_note": "首版协议口径估算"
+        },
+        "price_to_sales": {
+          "state": "ESTIMATED",
+          "window": "TTM",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "high",
+          "reason": "Market Cap ÷ Protocol Revenue TTM。",
+          "display_note": "收入候选"
+        },
+        "price_to_earnings": {
+          "state": "ESTIMATED",
+          "window": "TTM",
+          "source": "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71 + outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md + outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "source_url": null,
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Market Cap ÷ Protocol Earnings TTM。",
+          "display_note": "首版协议口径估算"
+        },
+        "dividends": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "No recurring UNI-holder cash distribution is documented in the package, but the TTM holder-distribution universe was not proven complete enough to assert ZERO.",
+          "display_note": "证据待补"
+        },
+        "repurchases": {
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md; archived TokenJar and Firepit mechanism references",
+          "source_url": null,
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Complete TokenJar release assets, fair-value consideration, fills, fees and refunds were not reconstructed. The claimed one-time 100 million UNI Treasury retirement is not recurring executed repurchase consideration.",
+          "display_note": "证据待补"
+        },
+        "fee_burns": {
+          "state": "ESTIMATED",
+          "window": "identified onchain records from 2025-10-22 through 2026-07-19 within the canonical TTM; partial Ethereum retirement coverage",
+          "source": "work/tev-dashboard/data/protocols/uniswap/tev-records.json; Etherscan V2 UNI-to-0xdead snapshot; outputs/crypto3d-protocol-research/P26-uniswap/research.md",
+          "source_url": null,
+          "as_of": "2026-07-19T13:19:17.384977Z",
+          "confidence": "low",
+          "reason": "The local chain snapshot identifies 4,592,003.34 UNI sent to 0xdead and values it at $16,163,852 after excluding the at-least-10-million-UNI one-time inventory event. This is a provisional fee-burn candidate, not a verified cash-flow value: sender attribution and cross-chain deduplication are incomplete, tiny transfers are rounded, and every event uses a fixed current-price proxy rather than event-time USD. It is not also counted as repurchase consideration.",
+          "display_note": "估算"
+        },
+        "dividend_yield": {
+          "state": "PENDING",
+          "window": null,
+          "source": null,
+          "source_url": null,
+          "as_of": null,
+          "confidence": "low",
+          "reason": "Dividend Yield分子尚无可用值。",
+          "display_note": "证据待补"
+        },
+        "buyback_yield": {
+          "state": "ESTIMATED",
+          "window": "identified onchain records from 2025-10-22 through 2026-07-19 within the canonical TTM; partial Ethereum retirement coverage",
+          "source": "work/tev-dashboard/data/protocols/uniswap/tev-records.json; Etherscan V2 UNI-to-0xdead snapshot; outputs/crypto3d-protocol-research/P26-uniswap/research.md",
+          "source_url": null,
+          "as_of": "2026-07-19T13:19:17.384977Z",
+          "confidence": "low",
+          "reason": "Buyback / Fee-burn Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        },
+        "shareholder_yield": {
+          "state": "ESTIMATED",
+          "window": "identified onchain records from 2025-10-22 through 2026-07-19 within the canonical TTM; partial Ethereum retirement coverage",
+          "source": "work/tev-dashboard/data/protocols/uniswap/tev-records.json; Etherscan V2 UNI-to-0xdead snapshot; outputs/crypto3d-protocol-research/P26-uniswap/research.md",
+          "source_url": null,
+          "as_of": "2026-07-19T13:19:17.384977Z",
+          "confidence": "low",
+          "reason": "Shareholder Yield由基础金额与流通市值计算。",
+          "display_note": "估算"
+        }
       },
       "review": {
         "status": "pending",
         "confidence": "high",
         "numeric_values_promoted": false,
-        "data_state": "provisional_snapshot"
+        "numeric_review_status": "phase1_candidate",
+        "data_state": "phase1_candidate"
       },
       "provenance": {
         "repository": "BitPickles/tev-dashboard",
@@ -1874,14 +6232,22 @@ window.CRYPTO3D_PUBLIC_EQUITY = {
         "source_commit": "972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
         "observed_at": "2026-07-24T13:13:35.438Z",
         "register_generated_at": "2026-07-23T21:16:34Z",
-        "evidence_boundary": "Market Cap 与 Revenue 来自现有发布快照；其余财务字段在协议级模型复核完成前保持 null。"
+        "candidate_file": "data/candidates/phase1-p19-p26.json",
+        "metric_sources": [
+          "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71",
+          "outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md",
+          "BitPickles/tev-dashboard@972d82b9a94cac0794fc6aa5dce6cae9a7dbda71 + outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md + outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md + Crypto3D phase-1 protocol-earnings proxy",
+          "outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md; archived TokenJar and Firepit mechanism references",
+          "work/tev-dashboard/data/protocols/uniswap/tev-records.json; Etherscan V2 UNI-to-0xdead snapshot; outputs/crypto3d-protocol-research/P26-uniswap/research.md"
+        ],
+        "evidence_boundary": "首版候选允许使用现有发布快照、官方汇总和经口径映射的第三方数据；估算值用“~”标记，尚未完成独立数值审核。"
       },
       "null_reasons": {
-        "income_statement": "尚无经过协议级复核的完整收入、成本与费用台账，因此不能闭合为净利润。",
-        "cash_flow": "尚无经过协议级复核的经营现金流与资本开支分类。",
-        "balance_sheet": "尚无按统一控制权和负债边界复核的资产负债表。",
-        "capital_returns": "回购、分红、注销和发行必须逐笔完成协议级证据复核；迁移层不发布替代值。",
-        "price_to_earnings": "P/E = Market Cap ÷ TTM Net Income；当前缺少已复核的 TTM 净利润。"
+        "income_statement": "首版候选使用协议留存收入减已知直接成本；尚未单列的增量直接成本暂按 0 估算，后续审核更新。",
+        "cash_flow": "经营现金流、资本开支与自由现金流不属于本轮协议 P/E 数据优化的强制覆盖范围。",
+        "balance_sheet": "资产负债表需要另一套控制权与负债边界，本轮不强行补值。",
+        "capital_returns": "持币者回报为已识别执行部分的下限估算。",
+        "price_to_earnings": "Market Cap ÷ Protocol Earnings TTM。"
       }
     }
   ]

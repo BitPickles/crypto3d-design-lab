@@ -24,8 +24,17 @@
     yield: 'Yield',
   };
 
+  const stateLabels = {
+    VERIFIED: '已核实',
+    ESTIMATED: '估算',
+    ZERO: '已核实为 0',
+    'N/A': '结构不适用',
+    'N/M': '收益≤0',
+    PENDING: '证据待补',
+  };
+
   function formatMoney(value) {
-    if (value === null || value === undefined) return '未覆盖';
+    if (value === null || value === undefined) return '待核实';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -35,11 +44,35 @@
   }
 
   function formatMultiple(value) {
-    return value === null || value === undefined ? '未覆盖' : `${value.toFixed(value >= 100 ? 1 : 2)}×`;
+    return value === null || value === undefined ? '待核实' : `${value.toFixed(value >= 100 ? 1 : 2)}×`;
   }
 
   function formatPercent(value) {
-    return value === null || value === undefined ? '未覆盖' : `${value.toFixed(2)}%`;
+    return value === null || value === undefined ? '待核实' : `${value.toFixed(2)}%`;
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  function metricMeta(protocol, key, value) {
+    return protocol.metric_meta?.[key] || {
+      state: value === null || value === undefined ? 'PENDING' : 'VERIFIED',
+      display_note: value === null || value === undefined ? '证据待补' : '',
+    };
+  }
+
+  function displayValue(value, state, formatter) {
+    if (state === 'N/A') return 'N/A';
+    if (state === 'N/M') return 'N/M';
+    if (state === 'PENDING' || value === null || value === undefined) return '待核实';
+    const formatted = formatter(value);
+    return state === 'ESTIMATED' ? `~${formatted}` : formatted;
   }
 
   function metric(protocol, key) {
@@ -71,14 +104,17 @@
       });
   }
 
-  function valueMarkup(value, formatter, note = '') {
-    const missing = value === null || value === undefined;
-    return `<span class="value ${missing ? 'value-muted' : ''}">${formatter(value)}</span>${note ? `<span class="value-note">${note}</span>` : ''}`;
+  function valueMarkup(protocol, key, value, formatter, fallbackNote = '') {
+    const meta = metricMeta(protocol, key, value);
+    const unavailable = ['N/A', 'N/M', 'PENDING'].includes(meta.state) || value === null || value === undefined;
+    const estimated = meta.state === 'ESTIMATED';
+    const note = meta.display_note || fallbackNote || (meta.state === 'VERIFIED' ? '' : stateLabels[meta.state]);
+    return `<span class="value ${unavailable ? 'value-muted' : ''} ${estimated ? 'value-estimated' : ''}">${displayValue(value, meta.state, formatter)}</span>${note ? `<span class="value-note">${escapeHtml(note)}</span>` : ''}`;
   }
 
   function reviewBadge(protocol) {
     const passed = protocol.review.status === 'independent_pass';
-    return `<span class="review-badge ${passed ? 'pass' : 'pending'}">${passed ? '已通过' : '待审核'}</span>`;
+    return `<span class="review-badge ${passed ? 'pass' : 'pending'}">${passed ? '框架已复核' : '候选待复核'}</span>`;
   }
 
   function render() {
@@ -94,14 +130,14 @@
             <div class="protocol-info"><span class="protocol-name">${protocol.name}</span><span class="protocol-ticker">${protocol.ticker} · ${categoryLabels[protocol.category] || protocol.category}</span></div>
           </div>
         </td>
-        <td class="text-right">${valueMarkup(protocol.market_data.market_cap_usd, formatMoney)}</td>
-        <td class="text-right">${valueMarkup(income.revenue_ttm_usd, formatMoney, income.revenue_ttm_usd === null ? '来源未覆盖' : 'TTM 快照')}</td>
-        <td class="text-right">${valueMarkup(income.net_income_ttm_usd, formatMoney, '缺少现金支出台账')}</td>
-        <td class="text-right">${valueMarkup(protocol.valuation.price_to_sales, formatMultiple)}</td>
-        <td class="text-right">${valueMarkup(protocol.valuation.price_to_earnings, formatMultiple, '现金口径')}</td>
-        <td class="text-right">${valueMarkup(returns.dividends_ttm_usd, formatMoney)}</td>
-        <td class="text-right">${valueMarkup(returns.share_repurchases_ttm_usd, formatMoney)}</td>
-        <td class="text-right">${valueMarkup(returns.shareholder_yield_pct, formatPercent)}</td>
+        <td class="text-right">${valueMarkup(protocol, 'market_cap', protocol.market_data.market_cap_usd, formatMoney)}</td>
+        <td class="text-right">${valueMarkup(protocol, 'revenue', income.revenue_ttm_usd, formatMoney, 'TTM')}</td>
+        <td class="text-right">${valueMarkup(protocol, 'protocol_earnings', income.net_income_ttm_usd, formatMoney, '协议口径')}</td>
+        <td class="text-right">${valueMarkup(protocol, 'price_to_sales', protocol.valuation.price_to_sales, formatMultiple)}</td>
+        <td class="text-right">${valueMarkup(protocol, 'price_to_earnings', protocol.valuation.price_to_earnings, formatMultiple, '协议口径')}</td>
+        <td class="text-right">${valueMarkup(protocol, 'dividends', returns.dividends_ttm_usd, formatMoney)}</td>
+        <td class="text-right">${valueMarkup(protocol, 'repurchases', returns.share_repurchases_ttm_usd, formatMoney)}</td>
+        <td class="text-right">${valueMarkup(protocol, 'shareholder_yield', returns.shareholder_yield_pct, formatPercent)}</td>
         <td class="text-right">${reviewBadge(protocol)}</td>
       </tr>`;
     }).join('');
@@ -127,7 +163,7 @@
     document.querySelector('#snapshot-revenue-count').textContent = `${data.coverage.revenue_count}/26`;
     document.querySelector('#snapshot-ps-count').textContent = `${data.coverage.price_to_sales_count}/26`;
     document.querySelector('#snapshot-pe-count').textContent = `${data.coverage.price_to_earnings_count}/26`;
-    document.querySelector('#data-update-time').textContent = `数据更新: ${date} · 独立审核通过 ${data.coverage.independent_pass_count}/26`;
+    document.querySelector('#data-update-time').textContent = `数据更新: ${date} · 既有框架复核 ${data.coverage.independent_pass_count}/26 · 本轮数值均为首版候选`;
     document.querySelector('#footer-updated').textContent = `Crypto3D Research · 数据截至 ${date}`;
 
     document.querySelectorAll('.filter-btn').forEach((button) => {

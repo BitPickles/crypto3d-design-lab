@@ -1,0 +1,655 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-24T19:17:27Z",
+  "scope": "Practical Phase-1 candidate data for P10-P18. Existing daily/TEV datasets, published snapshots and first/second-round research archives only; estimates are not full audits and no production promotion is authorized.",
+  "protocols": [
+    {
+      "id": "etherfi",
+      "name": "ether.fi",
+      "ticker": "ETHFI",
+      "cash_pe_applicability": "ELIGIBLE",
+      "cash_pe_reason": "DeFi protocol economics are structurally eligible, but the complete Stake, Liquid, Cash, withdrawal, beHYPE and eBTC revenue/cost perimeter is not closed.",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 53095936,
+          "state": "ESTIMATED",
+          "window": "Trailing 365 days ending 2026-02-13",
+          "source": "data/daily/ether.fi/latest.json and monthly daily archive; round2-audit/P10-etherfi/streamlined/economic-review.md",
+          "as_of": "2026-02-14T06:57:40.357Z",
+          "confidence": "medium",
+          "reason": "The local daily archive reports $53,095,936 of trailing-365-day DefiLlama dailyRevenue and is retained as a practical estimate. It is not VERIFIED because the mapping does not close Stake, Liquid, Cash, withdrawal, beHYPE and eBTC payer/beneficiary ledgers or the documented 90%/5%/5% Stake split."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P10-etherfi/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Node-operator and staker shares are participant payouts, not direct costs. Protocol-borne settlement, security and other external cash costs were not reconstructed; organization operating costs and ETHFI incentives are excluded by PRD."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P10-etherfi/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "No complete security, slashing, credit-loss, compensation or backstop ledger was retained in the existing archive; missing evidence is not zero."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "Derived only after ether.fi revenue, direct-cost and realized-loss candidates close",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Protocol Revenue, Direct Economic Costs and Realized Protocol Losses are not simultaneously available; no missing component is defaulted to zero."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P10-etherfi/streamlined/economic-review.md:E10-CHAIN-OUT,E10-BUYBACK",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "A verified wallet transferred 7,836,265.59 ETHFI to the mainnet sETHFI contract, but acquisition/funding provenance, USD basis, L2 synchronization, eligibility and final holder claimability are incomplete."
+        },
+        "repurchases_ttm_usd": {
+          "value": 12789757.32,
+          "state": "ESTIMATED",
+          "window": "Observed target-TTM subset: 95 dated records from 2025-07-25 through 2026-03-01; no records after 2026-03-01",
+          "source": "data/protocols/etherfi/tev-records.json; round2-audit/P10-etherfi/streamlined/economic-review.md:E10-CHAIN-IN,E10-GOV3178",
+          "as_of": "2026-03-03T07:40:56.528929Z",
+          "confidence": "low",
+          "reason": "The retained records identify 95 ETHFI buyback-address inflow days and publisher-valued consideration of $12,789,757.32 inside the target TTM. It remains ESTIMATED because address inflow classification, event-time prices, order ownership, sell assets, fees and Treasury funding are not fully reconciled; the conditional $50m authorization is excluded."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P10-etherfi/streamlined/economic-review.md:E10-SUPPLY-BOUNDARY,E10-CHAIN-OUT",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The boundary supply decrease was 1,464,001 ETHFI while the named wallet sent 1,464,000 ETHFI to the zero address. The 1 ETHFI difference, complete mint/burn ledger and fee-funding lineage are unresolved, so no USD fee burn is promoted."
+        }
+      }
+    },
+    {
+      "id": "fluid",
+      "name": "Fluid",
+      "ticker": "FLUID",
+      "cash_pe_applicability": "ELIGIBLE",
+      "cash_pe_reason": "Fluid is a DeFi protocol, but Liquidity, Lending/Vaults, DEX, StETH Redemption, JupLend and Venus Flux must close on a common payer/beneficiary/cost basis.",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 12380928,
+          "state": "ESTIMATED",
+          "window": "Legacy published trailing 365 days, snapshot generated 2026-03-21",
+          "source": "data/all-protocols.json; round2-audit/P11-fluid/streamlined/economic-review.md and evidence-map.json",
+          "as_of": "2026-03-21T13:05:24.776Z",
+          "confidence": "low",
+          "reason": "The older published snapshot's $12,380,928 revenue value is retained as a practical TTM estimate. It is distinct from the rejected $4,745,308 buyback amountUsd field, but complete lender/LP/partner/referral pass-through and JupLend/Venus Flux perimeter closure are still missing."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P11-fluid/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Oracle, keeper, necessary settlement and other protocol-borne external cash costs were not reconstructed. Grants, partner incentives and FLUID issuance are not direct cash costs under the PRD."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": 21000000,
+          "state": "ESTIMATED",
+          "window": "Single Resolv-related incident reported in May 2026, within target TTM [2025-07-23T21:16:34Z,2026-07-23T21:16:34Z); exact recognition date and recovery basis not frozen",
+          "source": "round2-audit/P11-fluid/streamlined/economic-review.md:E11-GOV1774",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Fluid governance described approximately $21m of Resolv-related bad debt. This is an official rounded estimate suitable only as a Phase-1 candidate; exact bearer, recovery, execution and recognition ledgers are still required before VERIFIED status."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "Derived only after Fluid revenue, direct-cost and realized-loss candidates close",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Protocol Revenue, direct costs and the Resolv loss cannot yet be combined without inventing missing values or double-counting Liquidity-layer charges."
+        },
+        "dividends_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P11-fluid/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The accepted research identifies an executed Treasury/reserve buyback mechanism but no qualifying pro-rata holder distribution. Bought FLUID held as inventory is not a dividend."
+        },
+        "repurchases_ttm_usd": {
+          "value": 4745304.885739369,
+          "state": "ESTIMATED",
+          "window": "TTM target [2025-07-23T21:16:34Z,2026-07-23T21:16:34Z); API observed fills 2025-10-03T18:54:11Z through 2026-03-20T10:43:23Z",
+          "source": "round2-audit/P11-fluid/streamlined/evidence-map.json:E11-BUY-API,E11-FIRST-TX",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "The official API reports 125 executed fill rows, 104 transactions, 1,306,296.831064963095675540 FLUID and $4,745,304.885739369236502633 in publisher-valued amountUsd; the first transaction has independent chain evidence. The numeric candidate uses the publisher valuation, not reconstructed cash consideration, so it remains ESTIMATED."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P11-fluid/streamlined/economic-review.md and evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The identified capital-return mechanism is Treasury/reserve repurchase, not irreversible fee-funded retirement. Treasury inventory, governance discretion and supply-point observations are excluded from qualifying fee burns."
+        }
+      }
+    },
+    {
+      "id": "gmx",
+      "name": "GMX",
+      "ticker": "GMX",
+      "cash_pe_applicability": "ELIGIBLE",
+      "cash_pe_reason": "The trading protocol is eligible, but active/legacy chains, fee-receiver pass-through, oracle/keeper costs and risk losses are not closed for TTM.",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 13247188,
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P12-gmx/streamlined/economic-review.md and evidence-map.json",
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "The published $13,247,188 TTM value is retained as an indicative protocol-revenue estimate rather than discarded. The current 63% pool/37% receiver rule, actual receiver receipts, referrals, rebates/refunds, third-party pass-through and active/legacy chain coverage are not fully reconciled."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P12-gmx/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Actual external Chainlink, oracle, keeper and necessary service payments borne by GMX are not reconciled. The documented 10% allocation is a routing rule, not an expense amount."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P12-gmx/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "No complete security, credit, compensation or backstop loss ledger is present in the existing package; missing loss data is not zero."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "Derived only after GMX revenue, direct-cost and realized-loss candidates close",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Receiver revenue is not the same as retained revenue, and operating costs/losses remain incomplete; Cash P/E cannot yet be calculated."
+        },
+        "dividends_ttm_usd": {
+          "value": 17058614,
+          "state": "ESTIMATED",
+          "window": "Approximate trailing 12 monthly records from 2025-03 through partial 2026-02; latest month contains 12 days",
+          "source": "data/protocols/gmx/tev-records.json (DefiLlama dailyHoldersRevenue monthly aggregates); round2-audit/P12-gmx/streamlined/economic-review.md",
+          "as_of": "2026-02-13T20:05:36.066Z",
+          "confidence": "low",
+          "reason": "The local holder-revenue series sums to $17,058,614 over the latest 12 monthly records and is retained as an estimated fee-funded holder distribution. It is not VERIFIED cash received: the last month is partial, the adapter uses a legacy staking-reward methodology, and official current materials say bought GMX accumulates in Treasury while distribution is suspended."
+        },
+        "repurchases_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "Official API-tracked weeks 2026-03-04 through 2026-07-22 within the target TTM",
+          "source": "round2-audit/P12-gmx/streamlined/economic-review.md and evidence-map.json:official buyback APIs",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Arbitrum reports 371,941 GMX accrued across 21 weeks, while Avalanche and MegaETH report zero. Accrued units do not prove market-purchase consideration, Treasury receipt or final disposition."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P12-gmx/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The current documented mechanism accumulates bought GMX in Treasury while distribution is suspended. Treasury accumulation is not an irreversible fee-funded burn, so no separate qualifying burn is recorded."
+        }
+      }
+    },
+    {
+      "id": "hype",
+      "name": "Hyperliquid",
+      "ticker": "HYPE",
+      "cash_pe_applicability": "ELIGIBLE",
+      "cash_pe_reason": "PRD locks HYPE to a trading-protocol economic perimeter, but HIP-3, HIP-4 Outcomes, HyperCore lending, HLP, AF and fee-recipient coverage must be reconciled.",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 792146570,
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/valuation-meeting-snapshot.json; round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json",
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "The published $792,146,570 TTM total is retained as an indicative revenue estimate. It is not VERIFIED because discounts, rebates, referral/builder/deployer receipts, HLP allocations, HIP-3/HIP-4 Outcomes and lending supplier pass-through are not fully closed."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "No entity-scoped protocol-borne cash settlement/service-cost ledger is available. HYPE staking, validator and contributor issuance is excluded from cash costs and disclosed separately as supply risk."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Outcome settlement, lending credit/liquidation, HLP and security-loss ledgers are incomplete; no missing loss is defaulted to zero."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "Derived only after Hyperliquid revenue, direct-cost and realized-loss candidates close",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The PRD permits HYPE Cash P/E only when protocol revenue and costs close; AF balances, entryNtl and HLP PnL are not substitutes for earnings."
+        },
+        "dividends_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "No qualifying passive HYPE dividend mechanism was identified in the accepted research. Staking rewards require active participation, and Assistance Fund purchases are classified under repurchases rather than dividends."
+        },
+        "repurchases_ttm_usd": {
+          "value": 918600640,
+          "state": "ESTIMATED",
+          "window": "Trailing record window 2025-03-21 through 2026-03-20; 363 daily records",
+          "source": "data/protocols/hype/tev-records.json (DefiLlama dailyHoldersRevenue labeled buyback_burn); round2-audit/P13-hype/streamlined/economic-review.md and evidence-map.json:AF diagnostics",
+          "as_of": "2026-03-21T01:03:10Z",
+          "confidence": "low",
+          "reason": "The local Assistance Fund series sums to $918,600,640 across its latest 365-day boundary and is retained as estimated fee-funded purchase value. It is not VERIFIED because two days are absent, the series is third-party mapped, and AF fills, fee-source reconciliation and final burn transition are incomplete. The same value is not repeated under qualifying fee burns."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P13-hype/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "AF governance labels and HyperEVM burn mechanics do not provide complete acquisition-lot, raw-supply, fee-source and event-time valuation ledgers. The estimated AF purchase value is recorded once under repurchases and is not duplicated here; irreversible retirement still requires separate closure."
+        }
+      }
+    },
+    {
+      "id": "jito",
+      "name": "Jito",
+      "ticker": "JTO",
+      "cash_pe_applicability": "ELIGIBLE",
+      "cash_pe_reason": "Jito is a DeFi/MEV protocol, but versioned stake-pool, TipRouter, Block Engine, BAM subsidy and restaking routes require common-window gross and participant-payout closure.",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 14662309,
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P14-jito/streamlined/economic-review.md and evidence-map.json",
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "The published $14,662,309 TTM value is retained as an indicative revenue estimate. JIP-25 and JIP-31 routing changes, complete receipts, validator/staker/restaker/operator payouts and subsidy-lot origins remain unclosed."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P14-jito/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The BAM subsidy is participant pass-through, not a second direct cost. Protocol-borne cash service and settlement costs are not reconstructed; Foundation organization costs and JTO issuance are excluded."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P14-jito/streamlined/economic-review.md:JIP-20 boundary",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "JIP-20 is a routing correction with no expected DAO-revenue change, not a realized loss after corrected retention. No complete independent security/risk-loss ledger exists."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "Derived only after Jito revenue, direct-cost and realized-loss candidates close",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "DAO retained revenue and complete direct costs/losses are unavailable; the existing test value cannot support Cash P/E."
+        },
+        "dividends_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P14-jito/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Ordinary JTO governance ownership is not a passive dividend right. Restaker eligibility routes require separate participation and are not classified as universal holder dividends."
+        },
+        "repurchases_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "Official aggregate through cutoff; exact purchase dates and complete TTM fill coverage not frozen",
+          "source": "round2-audit/P14-jito/streamlined/evidence-map.json:E14-JIP26",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "JIP-26's CSD acquisition is not established as an ordinary-holder capital return: execution wallets, fills, receipts, exact dates and retirement/distribution are missing, and Treasury/CSD inventory is excluded. JIP-37 matching buybacks are proposal-only."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "round2-audit/P14-jito/streamlined/economic-review.md and evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "CSD-acquired or Treasury-held JTO is inventory, not irreversible retirement. No qualifying fee-funded JTO burn mechanism was identified in the accepted research."
+        }
+      }
+    },
+    {
+      "id": "justlend",
+      "name": "JustLend",
+      "ticker": "JST",
+      "cash_pe_applicability": "ELIGIBLE",
+      "cash_pe_reason": "The lending protocol is structurally eligible, but V1/V2/SBM reserve-factor epochs, sTRX/Energy Rental routes and Risk DAO losses are not closed.",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "round2-audit/P15-justlend/streamlined/economic-review.md and evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Borrower interest, supplier interest, effective reserve factors, flash/liquidation fees, refunds and beneficiaries are not reconstructed across all markets. sTRX/Energy Rental yield is not automatically JST protocol revenue."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "round2-audit/P15-justlend/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Supplier interest and liquidator incentives are participant payouts, not direct costs. Protocol-borne necessary settlement/service costs are not available; JST mining and grants are excluded from cash costs."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "round2-audit/P15-justlend/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Bad-debt, Risk DAO, compensation and collateral-disposition loss ledgers are incomplete; missing realized losses are not recorded as zero."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "Derived only after JustLend revenue, direct-cost and realized-loss candidates close",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Protocol Revenue and direct loss/cost components are unavailable on a common beneficiary and window basis."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "round2-audit/P15-justlend/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "No verified pro-rata cash/token distribution to ordinary JST holders was reconstructed. sTRX holder yield and program retirements are not JST dividends."
+        },
+        "repurchases_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "round2-audit/P15-justlend/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The archive verifies 1,604,586,131 JST transferred to the registered black-hole address, but not market-purchase funding, consideration, fills or USD pricing. Retirement units are not repurchase cash."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "round2-audit/P15-justlend/streamlined/economic-review.md:F15-PROGRAM-RETIRE",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The verified 1,604,586,131 JST is address-level retirement only. Contract totalSupply reduction, fee source, market purchase and event-time USD value are not proven."
+        }
+      }
+    },
+    {
+      "id": "kamino",
+      "name": "Kamino Finance",
+      "ticker": "KMNO",
+      "cash_pe_applicability": "ELIGIBLE",
+      "cash_pe_reason": "Kamino is a DeFi protocol, but K-Lend, Liquidity, KVault curator, referral/host and Multiply economics are not closed on a common TTM basis.",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 12445934,
+          "state": "ESTIMATED",
+          "window": "Published TTM/annualized snapshot observed 2026-07-24; underlying short-window mapping not frozen",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P16-kamino/streamlined/economic-review.md and evidence-map.json",
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "The published $12,445,934 value is retained as a practical indicative estimate. It may annualize short-window or third-party fee data and does not fully reconcile products, recipients, reserve configurations, curator/referral shares or pass-through."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Supplier, LP, curator, referral and host amounts are pass-through. Necessary protocol-borne settlement/service costs are not reconstructed; KMNO Seasons/farm/grant issuance is excluded from cash costs."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Security, K-Lend credit/bad-debt, collateral-disposition, compensation and backstop loss ledgers are incomplete."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "Derived only after Kamino revenue, direct-cost and realized-loss candidates close",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The rejected annualized revenue and missing direct costs/losses cannot support Protocol Earnings or Cash P/E."
+        },
+        "dividends_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Seasons rewards, farming rewards and staking boosts are native KMNO incentives excluded by the new methodology, not fee-funded dividends. No qualifying holder dividend mechanism was identified."
+        },
+        "repurchases_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "No qualifying executed KMNO repurchase mechanism was identified in the accepted research. Native-token Seasons, farm and grant budgets are excluded rather than treated as capital returns."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P16-kamino/streamlined/economic-review.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "A point KMNO mint supply is not a period burn, and no qualifying fee-funded irreversible KMNO retirement mechanism was identified in the accepted research."
+        }
+      }
+    },
+    {
+      "id": "lido",
+      "name": "Lido",
+      "ticker": "LDO",
+      "cash_pe_applicability": "ELIGIBLE",
+      "cash_pe_reason": "Lido protocol economics are structurally eligible, but Core and V3 fee routes, operator shares, realized relief/loss and Treasury capital allocation need common-window closure.",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 39449664,
+          "state": "ESTIMATED",
+          "window": "Published TTM snapshot observed 2026-07-24",
+          "source": "data/protocol-financials-us-equity.json; round2-audit/P17-lido/current-state.md and formula-registry.json",
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "The published $39,449,664 TTM value is retained as an indicative Lido protocol-revenue estimate. It does not fully close the current Core 10% fee split, weighted module/operator shares, DAO Treasury receipts or V3 vault-specific settlements."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P17-lido/current-state.md and formula-registry.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Node-operator/module shares and stETH holder returns are participant payouts, not direct costs. Protocol-borne oracle/settlement/service costs are not reconstructed; organization costs and LDO grants are excluded."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P17-lido/capital-allocation-ledger.json:CA-KELP,CA-KELP-FIRST-LOSS",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "A 2,500 stETH Treasury relief transfer and 2,499.99 stETH forwarding leg are verified, leaving 0.01 stETH unreconciled; event-time USD pricing and exact bearer classification are missing. The separate 143.98/144 ETH first-loss figure remains an official claim."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "Derived only after Lido DAO revenue, direct-cost and realized-loss candidates close",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Core/V3 retained revenue and realized relief/loss are not available in aligned USD terms; no missing component is set to zero."
+        },
+        "dividends_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P17-lido/current-state.md",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "LDO provides governance rights, not a universal dividend or redemption claim. stETH holder yield belongs to the staking receipt product and is not an LDO holder dividend."
+        },
+        "repurchases_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "Executed Batch 1 from 2026-06-01T14:34:59Z through 2026-06-12T17:07:46Z within the target TTM",
+          "source": "round2-audit/P17-lido/capital-allocation-ledger.json:CA-BATCH1",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Batch 1 used 1,000 stETH to accumulate LDO in Treasury, but Treasury inventory is not classified as an ordinary-holder capital return under this candidate. No qualifying distributed or retired repurchase amount is recorded."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P17-lido/current-state.md and capital-allocation-ledger.json:CA-NEST",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Batch 1 LDO is Treasury inventory, not burn. NEST remained implementation or vote pending in accepted evidence, so no executed qualifying fee-funded irreversible retirement is recorded."
+        }
+      }
+    },
+    {
+      "id": "mnt",
+      "name": "Mantle",
+      "ticker": "MNT",
+      "cash_pe_applicability": "N/A",
+      "cash_pe_reason": "PRD explicitly locks MNT as an L2/network token for which traditional Cash P/E is not forced. Network revenue, direct network costs and capital returns remain displayable when evidenced.",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/current-state.md and formula-registry.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Four fee-vault balances are inventories, not period revenue. Receipt/event replay, withdrawals and internal Treasury sweeps are not reconciled. mETH/cmETH protocol fees are separate product economics and not automatically MNT-holder revenue."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/current-state.md and formula-registry.json:F-L2-NET",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Ethereum blob/calldata, post-Arsia DA, proof, sequencer and operator cash costs are not reconciled for TTM. Removed EigenDA costs are not carried forward without evidence; organization costs and MNT incentives are excluded."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/current-state.md and capital-allocation-ledger.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "No complete realized network, bridge, treasury-strategy, compensation or backstop loss ledger was retained. Passed credit facilities and unrealized Treasury changes are not realized losses."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "PRD section 5 locked treatment for MNT; round2-audit/P18-mnt/formula-registry.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "A traditional protocol Cash P/E denominator is not applied to MNT. Mantle should instead show network revenue and direct network-cost metrics when those amounts become available."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/current-state.md:MNT-C13,MNT-C15",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "MNT has no contractual ownership or profit-participation right, so a universal holder dividend is structurally not applicable. Eligibility-scoped Rewards Station campaigns are not perpetual dividends."
+        },
+        "repurchases_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/capital-allocation-ledger.json:CA07",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "No qualifying executed MNT market repurchase was identified. Governance authorization, Treasury transfers, native-token budgets and credit facilities are excluded from repurchases."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T21:16:34Z,2026-07-23T21:16:34Z)",
+          "source": "round2-audit/P18-mnt/formula-registry.json:F-MNT-BURN",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "BIT non-conversion, bridge lock/mint/burn, Treasury movement and proposals are excluded. No qualifying fee-funded irreversible MNT supply retirement was identified in the accepted research."
+        }
+      }
+    }
+  ]
+}

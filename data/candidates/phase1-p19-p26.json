@@ -1,0 +1,557 @@
+{
+  "schema_version": "1.0",
+  "protocols": [
+    {
+      "id": "maple",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md; work/crypto3d-design-lab/data/daily/maple/latest.json",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Borrower interest, lender income, Pool Delegate fees and Maple Treasury fees are different beneficiary layers. Base and off-chain coverage plus payment-time fee routing are incomplete, while the old-site value was a fixed 25% SSF/holders proxy rather than PRD Protocol Revenue."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Protocol-borne unavoidable settlement and servicing costs have not been isolated from excluded foundation or organization spending. Pool Delegate fees and lender payouts belong before Protocol Revenue and must not be counted again here."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "The TTM impairment, default, Pool Delegate cover, lender loss and recovery ledger is absent, so realized losses attributable to the protocol cannot be separated from participant losses or unrealized impairment."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Revenue, direct economic costs and realized protocol losses are all pending on the same window; organization operating expenses and native-token incentives are excluded rather than assumed."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "The pre-sunset stSYRUP reward stream overlaps the TTM window, but actual holder distributions and event-time USD valuation were not reconstructed. SSF allocations are not dividends."
+        },
+        "repurchases_ttm_usd": {
+          "value": 1565000,
+          "state": "ESTIMATED",
+          "window": "identified governance records for 2025-Q1 through 2025-Q3; partial-period candidate, not a complete canonical TTM",
+          "source": "work/crypto3d-design-lab/data/protocols/maple/tev-records.json; Maple MIP-016, MIP-018 and MIP-020 archive records; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "as_of": "2026-03-03T02:22:23.355183Z",
+          "confidence": "low",
+          "reason": "The local governance snapshot identifies $1,565,000 across disclosed Q1, H1 and Q3 buyback records. This is a practical first-pass executed/identified amount, not an audit-closed TTM: the H1 disclosure may overlap Q1, the Q3 amount still needs fill-level verification, and Q4 SSF cash allocation is excluded because allocation alone is not execution."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P19-maple/candidate.json; outputs/crypto3d-protocol-research/P19-maple/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "SYRUP purchased or transferred to the SSF is treasury inventory, not a burn. No fee-funded irreversible retirement ledger or event-time USD valuation is proven."
+        }
+      }
+    },
+    {
+      "id": "morpho",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/model-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Borrower interest and lender yield are participant economics. Morpho Blue and vault fees enter PRD Revenue only when the effective fee recipient is a Morpho-controlled entity; the 365-day recipient, configuration and event ledger is incomplete, so the old hard zero is not reused."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/model-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "DAO-borne unavoidable protocol settlement, oracle or other direct costs were not reconstructed. Third-party curator or vault-owner fees are participant payouts, while contributor grants and native-token incentives are excluded organization costs."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/model-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Market and vault loss allocation has not been reconciled to a Morpho-controlled balance sheet. Lender or vault losses cannot be silently treated as protocol losses or as zero."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/model-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Protocol Revenue, direct economic costs and realized protocol losses are not closed on one window, so Cash P/E is eligible in structure but not calculable."
+        },
+        "dividends_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "The existing TTM mechanism review identifies no MORPHO-holder or MORPHO-staker cash-distribution mechanism or executed distribution. Governance utility and token transferability are not dividends, so the qualifying executed amount is zero."
+        },
+        "repurchases_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "The existing TTM review finds discussions, treasury budgets and POL activity but no executed MORPHO market purchase. Budgets and POL are excluded by the PRD, leaving zero qualifying repurchase consideration in the reviewed window."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P20-morpho/candidate-v2.json; outputs/crypto3d-protocol-research/P20-morpho/research-v2.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "The reviewed MORPHO deployment, bridge and burn activity does not identify a fee-funded irreversible retirement mechanism or qualifying event in the TTM window. Bridge and administrative burn events are excluded, so the qualifying fee-burn amount is zero."
+        }
+      }
+    },
+    {
+      "id": "okb",
+      "cash_pe_applicability": "N/A",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "TTM",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; PRD section 5 locked treatment for OKB",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "high",
+          "reason": "OKB is a CEX/platform token and the exact same-entity OKX income statement is unavailable; the PRD explicitly locks traditional Cash P/E for OKB as structurally not applicable."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "TTM",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; PRD section 5",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "high",
+          "reason": "Without a comparable same-entity protocol revenue boundary, direct costs cannot form a Cash P/E denominator; OKX corporate operating expenses are outside the PRD."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "TTM",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; PRD section 5",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "high",
+          "reason": "The CEX/platform-token structure lacks a comparable public protocol earnings perimeter; exchange-company losses are not imputed to OKB."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "TTM",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; PRD section 5 locked treatment for OKB",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "high",
+          "reason": "Traditional Cash P/E is structurally N/A for OKB because no same-entity revenue and direct-cost statement is available."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "high",
+          "reason": "No pro-rata OKB-holder cash distribution mechanism is established. Simple Earn is a lending or bonus product, not an OKB dividend."
+        },
+        "repurchases_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; archived OKX upgrade and migration FAQ locators",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "The August 2025 retirement is a mixed-source cancellation of historical repurchase inventory and treasury reserves, not TTM executed market consideration. With that inventory event excluded, the reviewed window contains zero qualifying OKB repurchase consideration."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P21-okb/candidate.json; outputs/crypto3d-protocol-research/P21-okb/research.md; archived X Layer network and point-state locators",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "The reviewed TTM evidence identifies no X Layer fee-funded irreversible OKB retirement. The August 2025 mixed inventory/treasury cancellation is not a qualifying fee burn, so the qualifying amount is zero; this does not imply global token-supply reconciliation."
+        }
+      }
+    },
+    {
+      "id": "pancakeswap",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 92942089,
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/research.md section 8; archived DefiLlama parent dailyRevenue, dailyFees and dailySupplySideRevenue APIs E16-E20",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "This reclassifies the third-party aggregate retained after LP supply-side payouts; it includes Treasury and burn-allocation revenue before capital allocation. It is an estimate because Perpetuals and CAKE.PAD are omitted, Infinity and chain coverage are incomplete, and recipient, rebate and execution ledgers are not fully reconciled."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Protocol-borne settlement, oracle, partner or other unavoidable direct costs have not been separated from LP payouts, treasury allocation or excluded organization spending."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "A complete realized exploit-compensation, partner-settlement, backstop and other protocol loss ledger was not assembled; missing losses are not treated as zero."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Revenue is only a low-confidence third-party estimate and direct economic costs and realized losses remain pending; organization expenses and CAKE incentives are excluded."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "The veCAKE revenue-sharing sunset and any residual current holder distribution were not frozen with complete execution and receipt evidence, so no zero or dividend amount is asserted."
+        },
+        "repurchases_ttm_usd": {
+          "value": 58168707,
+          "state": "ESTIMATED",
+          "window": "2025-08-01 through 2026-07-19 local monthly aggregates; 353 observed days across 12 records, approximating but not exactly matching canonical TTM",
+          "source": "work/tev-dashboard/data/protocols/pancakeswap/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P22-pancakeswap/research.md",
+          "as_of": "2026-07-19T13:22:37.545Z",
+          "confidence": "low",
+          "reason": "The 12 local records sum to $58,168,707 and map DefiLlama holdersRevenue to the CAKE buyback-and-burn route. It is classified once as an estimated repurchase proxy, not again as a fee burn. The source reflects the 0.0575% routing formula rather than fill-level execution and mixes market buyback, direct-burn and chain/product coverage limits."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P22-pancakeswap/candidate.json; outputs/crypto3d-protocol-research/P22-pancakeswap/research.md; archived Lottery and CAKE.PAD documentation locators",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Lottery and CAKE.PAD describe direct CAKE fee burns, but complete fee events, irreversible retirements, cross-chain deduplication and event-time USD valuation are unavailable. Emission-offset burns are excluded."
+        }
+      }
+    },
+    {
+      "id": "pendle",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 23601566,
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/research.md section 8; archived DefiLlama Pendle dailyRevenue and dailySupplySideRevenue APIs E13-E17",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "The third-party Pendle V2 estimate is after LP supply-side revenue and before the 80% buyback-fund, 10% Treasury and 10% operations allocation. It remains low confidence because Boros is omitted, exact governance segments are incomplete, and it is not a primary full-project TTM ledger."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Protocol-borne unavoidable execution, oracle, settlement and other direct costs across Pendle V2 and Boros are not separately reconstructed. The 10% operations allocation is a policy split, not evidence of realized PRD direct cost."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "No complete realized bad-debt, compensation, backstop or protocol-loss ledger was found for Pendle V2 and Boros; missing data is not zero."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Revenue is estimated while direct costs and realized losses are pending; PENDLE emissions, airdrops and project-team operating costs are excluded."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md; official sPENDLE API archive E27",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "The official sPENDLE API covers only 12 recent epochs and does not provide a frozen formal schema or full TTM claimable/payment ledger. Buyback allocation, PENDLE acquired and holder distribution remain separate."
+        },
+        "repurchases_ttm_usd": {
+          "value": 18578140,
+          "state": "ESTIMATED",
+          "window": "2025-08-01 through 2026-07-19 local monthly aggregates; 353 observed days across 12 records, approximating but not exactly matching canonical TTM",
+          "source": "work/tev-dashboard/data/protocols/pendle/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P23-pendle/research.md; official executor and sPENDLE API archive E27",
+          "as_of": "2026-07-19T13:22:21.285Z",
+          "confidence": "low",
+          "reason": "The 12 local records sum to $18,578,140 and map the vePENDLE/sPENDLE holder-revenue route to a repurchase proxy. It is counted only here because the current flow buys PENDLE before distribution. The estimate benefits vePENDLE/sPENDLE participants rather than all holders, crosses the September 2025 mechanism change, and lacks consideration, fill, fee and custody reconciliation."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "[2025-07-22T16:00:00Z,2026-07-22T16:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P23-pendle/candidate.json; outputs/crypto3d-protocol-research/P23-pendle/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "medium",
+          "reason": "The reviewed mechanism distributes acquired PENDLE to vePENDLE/sPENDLE participants rather than irreversibly retiring it. The same estimated flow is classified as repurchase above, and no separate qualifying fee burn is identified in the TTM window."
+        }
+      }
+    },
+    {
+      "id": "sky",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 238073032,
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/research.md sections 6-8; archived DefiLlama dailyRevenue endpoint E-LLAMA-REVENUE",
+          "as_of": "2026-07-23T00:28:52Z",
+          "confidence": "low",
+          "reason": "DefiLlama Revenue is directionally aligned with fees net of saver payments, so it is retained as a low-confidence phase-1 estimate. Complete Agent, RWA, off-chain settlement, governance-segment and cross-chain coverage is missing, and the endpoint-defined 1y is not the exact canonical half-open TTM."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md",
+          "as_of": "2026-07-23T00:28:52Z",
+          "confidence": "low",
+          "reason": "Oracle, custody, settlement and other unavoidable protocol costs are not separated from contributor, Agent, legal and other organization expenses that the PRD excludes."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md",
+          "as_of": "2026-07-23T00:28:52Z",
+          "confidence": "low",
+          "reason": "The global realized bad-debt, credit-loss, impairment, liquidation shortfall and compensation ledger across Core, Agents and RWAs is incomplete."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md",
+          "as_of": "2026-07-23T00:28:52Z",
+          "confidence": "low",
+          "reason": "Revenue is estimated while PRD direct costs and realized losses are not closed. Smart Burn Engine capital allocation is disclosed after earnings and is not deducted as an operating expense."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md; archived DefiLlama dailyHoldersRevenue endpoint E-LLAMA-HOLDERS",
+          "as_of": "2026-07-23T00:28:52Z",
+          "confidence": "low",
+          "reason": "The third-party holdersRevenue endpoint mixes SKY buybacks and SKY-staker rewards. No complete unconditional holder cash, claimable or payment ledger is available."
+        },
+        "repurchases_ttm_usd": {
+          "value": 77871272,
+          "state": "ESTIMATED",
+          "window": "2025-08-01 through 2026-07-19 local monthly aggregates; 352 observed days across 12 records, approximating but not exactly matching canonical TTM",
+          "source": "work/tev-dashboard/data/protocols/sky/tev-records.json (DefiLlama dailyHoldersRevenue monthly snapshot); outputs/crypto3d-protocol-research/P24-sky/research.md; dss-flappers and Sky governance archives",
+          "as_of": "2026-07-19T13:22:19.469Z",
+          "confidence": "low",
+          "reason": "The 12 local records sum to $77,871,272 and are retained as a first-pass Smart Burn Engine repurchase proxy. DefiLlama holdersRevenue mixes SKY buybacks with SKY-staker rewards, so this is not a clean executed-buyback ledger; beneficiaries include stakers and engine receiver/LP paths rather than unconditional SKY holders. It is not duplicated into dividends or fee burns."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P24-sky/candidate-payload.json; outputs/crypto3d-protocol-research/P24-sky/research.md",
+          "as_of": "2026-07-23T00:28:52Z",
+          "confidence": "low",
+          "reason": "A SKY purchase, treasury receipt or LP deposit is not an irreversible retirement. No complete fee-funded burn ledger and event-time USD value is proven."
+        }
+      }
+    },
+    {
+      "id": "spark",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 24135769,
+          "state": "ESTIMATED",
+          "window": "DefiLlama API-defined rolling 1y retrieved 2026-07-23; not proven identical to [2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json noncanonical diagnostics; archived DefiLlama Spark dailyProtocolRevenue API E25; outputs/crypto3d-protocol-research/P25-spark/research.md",
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "low",
+          "reason": "The third-party protocol-revenue estimate is after lending supplier economics and, for SLL, Sky Base Rate settlement. It remains low confidence because SparkLend and SLL are combined, off-chain rebate and chain coverage are incomplete, and the API-defined 1y is not the exact canonical window."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; official Spark Financials methodology archive E17",
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "low",
+          "reason": "Unavoidable protocol settlement, oracle and servicing costs are not isolated from Spark Foundation or contributor opex, which the PRD excludes. The published $14.4 million annual opex override is projected organization spending, not realized TTM direct cost."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; SAEP-06 and SAEP-09 archives",
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "low",
+          "reason": "RRC and product backstop targets are reserves and budgets, not realized losses. Actual bad debt, compensation, backstop use and recoveries were not reconstructed."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md",
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "low",
+          "reason": "Revenue is estimated while PRD direct costs and realized protocol losses are pending. Foundation opex, SPK airdrops, vesting and incentives are excluded."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md; current Spark Atlas buyback-recipient rule",
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "high",
+          "reason": "Current executed SPK buybacks return SPK to the Spark SubDAO Proxy as treasury inventory; they do not create a pro-rata SPK-holder cash distribution."
+        },
+        "repurchases_ttm_usd": {
+          "value": 1975520.7475913304,
+          "state": "ESTIMATED",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; official buyback event pages E19-E21; sampled Blockscout transaction E22",
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "medium",
+          "reason": "The 1,920-event ledger verifies 1,975,520.747591330437508148 USDS spent and 90,684,036.397559204293711305 SPK received. The USD candidate uses the disclosed 1 USDS = 1 USD proxy because transaction-time USDS/USD marks are absent; it is therefore estimated, not verified USD."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P25-spark/candidate.json; outputs/crypto3d-protocol-research/P25-spark/research.md",
+          "as_of": "2026-07-23T00:45:14.604743Z",
+          "confidence": "low",
+          "reason": "Repurchased SPK is sent to the Spark SubDAO Proxy and is not burned. An exhaustive fee-source, irreversible retirement and event-time USD ledger was not fetched."
+        }
+      }
+    },
+    {
+      "id": "uniswap",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md; archived protocol-fees code and DefiLlama comparator APIs",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "TokenJar and other protocol-controlled receipt ledgers are incomplete by version, pool, hook and chain. Unichain sequencer revenue also lacks the required L1 data cost and 15% Optimism-share deduction, so the $26.749 million third-party comparator is not promoted."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Unichain L1 data cost and the Optimism revenue share are necessary network settlement costs and remain unfetched. Other protocol-borne direct execution costs are not closed, while Labs and Foundation operating expenses are excluded."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "No complete realized exploit compensation, bad debt, backstop or other protocol-loss ledger across AMM and Unichain surfaces is available."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Revenue, necessary Unichain settlement costs and realized protocol losses are pending on the same TTM window. UNI growth budgets and incentives are excluded native-token spending."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "No recurring UNI-holder cash distribution is documented in the package, but the TTM holder-distribution universe was not proven complete enough to assert ZERO."
+        },
+        "repurchases_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "[2025-07-23T00:00:00Z,2026-07-23T00:00:00Z)",
+          "source": "outputs/crypto3d-protocol-research/P26-uniswap/candidate.json; outputs/crypto3d-protocol-research/P26-uniswap/research.md; archived TokenJar and Firepit mechanism references",
+          "as_of": "2026-07-23T00:00:00Z",
+          "confidence": "low",
+          "reason": "Complete TokenJar release assets, fair-value consideration, fills, fees and refunds were not reconstructed. The claimed one-time 100 million UNI Treasury retirement is not recurring executed repurchase consideration."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 16163852,
+          "state": "ESTIMATED",
+          "window": "identified onchain records from 2025-10-22 through 2026-07-19 within the canonical TTM; partial Ethereum retirement coverage",
+          "source": "work/tev-dashboard/data/protocols/uniswap/tev-records.json; Etherscan V2 UNI-to-0xdead snapshot; outputs/crypto3d-protocol-research/P26-uniswap/research.md",
+          "as_of": "2026-07-19T13:19:17.384977Z",
+          "confidence": "low",
+          "reason": "The local chain snapshot identifies 4,592,003.34 UNI sent to 0xdead and values it at $16,163,852 after excluding the at-least-10-million-UNI one-time inventory event. This is a provisional fee-burn candidate, not a verified cash-flow value: sender attribution and cross-chain deduplication are incomplete, tiny transfers are rounded, and every event uses a fixed current-price proxy rather than event-time USD. It is not also counted as repurchase consideration."
+        }
+      }
+    }
+  ]
+}

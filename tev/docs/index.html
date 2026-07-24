@@ -84,10 +84,10 @@
     <section class="docs-hero">
       <div class="container">
         <h1>协议财务口径文档</h1>
-        <p>本页定义 Crypto3D 如何计算 26 个协议的收入、现金净利润、Cash P/E、股息率、回购收益率与持币者回报率。公共展示字段保持一致，但每个协议仍按其业务、治理与资金流独立建模。</p>
-        <div class="docs-meta"><span>口径版本 v1.0</span><span>生效日期 2026-07-25</span><span>适用范围：Crypto3D 测试站</span><span>旧 TEV Yield → Shareholder Yield</span></div>
+        <p>本页定义 Crypto3D 如何计算 26 个协议的收入、协议经济收益、Cash P/E、股息率、回购收益率与持币者回报率。公共展示字段保持一致，但每个协议仍按其业务、治理与资金流独立建模。</p>
+        <div class="docs-meta"><span>口径版本 v1.1</span><span>生效日期 2026-07-25</span><span>适用范围：Crypto3D 测试站</span><span>持币者收益指标：Shareholder Yield</span></div>
         <div class="rule-grid">
-          <div class="rule-card"><strong>只扣真实现金支出</strong><p>现金、稳定币及外部资产支出进入现金利润；协议原生代币发行、奖励和解锁不作为现金成本。</p></div>
+          <div class="rule-card"><strong>只扣直接经济成本</strong><p>供应方分成、必要网络/结算成本及已实现协议损失必须扣除；项目方组织运营费用不进入 Cash P/E。</p></div>
           <div class="rule-card"><strong>持币者回报单独计算</strong><p>分红、协议出资回购和合格的费用销毁属于资本回报，不重复加进协议利润。</p></div>
           <div class="rule-card"><strong>公链不强行套传统 P/E</strong><p>无法界定公司边界或剩余索取权时，P/E 显示 N/A，并改看网络收入与费用价值捕获。</p></div>
         </div>
@@ -118,12 +118,12 @@
               <tbody>
                 <tr><td>Market Cap</td><td>流通代币的市场价值</td><td>当前价格 × 流通量</td><td>估值分母</td></tr>
                 <tr><td>Revenue TTM</td><td>过去十二个月协议及其有权主体真正保留的外部收入</td><td>Fees − Supply-side Fees − Pass-through</td><td>P/S 与利润起点</td></tr>
-                <tr><td>Cash Net Income TTM</td><td>协议收入扣除现金、稳定币和外部资产支出后的余额</td><td>Revenue − Cash Expenses</td><td>Cash P/E 分母</td></tr>
+                <tr><td>Protocol Earnings TTM</td><td>协议留存收入扣除直接经济成本和已实现协议损失后的余额</td><td>Revenue − Direct Economic Costs − Realized Losses</td><td>Cash P/E 分母</td></tr>
                 <tr><td>P/S</td><td>市值相对协议收入的倍数</td><td>Market Cap ÷ Revenue TTM</td><td>收入估值</td></tr>
-                <tr><td>Cash P/E</td><td>市值相对现金净利润的倍数</td><td>Market Cap ÷ Cash Net Income TTM</td><td>盈利估值</td></tr>
+                <tr><td>Cash P/E</td><td>市值相对协议经济收益的倍数</td><td>Market Cap ÷ Protocol Earnings TTM</td><td>盈利估值</td></tr>
                 <tr><td>Dividend Yield</td><td>已执行的外部资产分红相对市值的比例</td><td>Dividends TTM ÷ Market Cap</td><td>直接现金回报</td></tr>
                 <tr><td>Buyback / Fee-burn Yield</td><td>已执行回购和合格费用销毁相对市值的比例</td><td>(Buybacks + Qualifying Fee Burns) ÷ Market Cap</td><td>间接资本回报</td></tr>
-                <tr><td>Shareholder Yield</td><td>持币者获得的全部合格资本回报</td><td>Dividend Yield + Buyback / Fee-burn Yield</td><td>替代旧 TEV Yield</td></tr>
+                <tr><td>Shareholder Yield</td><td>持币者获得的全部合格资本回报</td><td>Dividend Yield + Buyback / Fee-burn Yield</td><td>持币者总回报</td></tr>
                 <tr><td>Supply Growth</td><td>流通供应量的期间变化</td><td>(期末流通量 ÷ 期初流通量) − 1</td><td>独立风险提示</td></tr>
               </tbody>
             </table>
@@ -136,10 +136,11 @@
           <p>用户支付的全部费用不是协议收入。支付给 LP、验证者、Keeper、做市商、前端、渠道或其他供应方的部分属于供应侧分成或过手资金，必须先扣除。</p>
           <div class="formula">Revenue TTM = Fees TTM − Supply-side Fees TTM − Other Pass-through TTM</div>
 
-          <h3>2.2 现金支出</h3>
-          <p>只有使用现金、稳定币或非本项目原生代币等外部资产支付的经营支出，才进入 Cash Expenses。可包括经过验证的团队、审计、安全、预言机、基础设施、法律、服务商及风险处置支出。</p>
-          <div class="formula">Cash Net Income TTM = Revenue TTM − Cash / Stablecoin / External-asset Expenses TTM</div>
-          <div class="callout">项目使用自己的原生代币支付团队、用户激励、流动性奖励或验证者奖励时，不从 Cash Net Income 扣除。原因是本指标衡量协议真实现金创造能力，而不是完全稀释后的持币者总回报。</div>
+          <h3>2.2 直接经济成本与项目方费用边界</h3>
+          <p>Cash P/E 只扣协议业务本身不可避免的直接经济成本，包括必要的 L1/DA/结算成本、明确归属于收入的 oracle 或 keeper 成本，以及协议已经实际承担的坏账、赔付和风险损失。</p>
+          <div class="formula">Protocol Earnings TTM = Revenue TTM − Direct Economic Costs TTM − Realized Protocol Losses TTM</div>
+          <div class="callout">团队工资、基金会管理、市场、法律、办公室、一般基础设施、DAO 资助和战略投资等项目方组织运营费用不纳入本指标。项目方可以使用或出售自身代币覆盖这些支出，而多数项目又没有完整、统一的公司费用账本，因此 Crypto3D 不把它们伪装成可比的协议成本。</div>
+          <p>项目原生代币发行、奖励、解锁、归属、空投和流动性挖矿也不扣减 Protocol Earnings。供应增长仍单独披露，用于反映稀释风险。</p>
 
           <h3>2.3 不重复计算持币者收益</h3>
           <p>分红、回购和费用销毁是现金利润的分配方式，不是新增利润。协议赚取 1 亿美元并分配其中 5,000 万美元时，现金利润不会因此变成 1.5 亿美元。</p>
@@ -148,15 +149,15 @@
         <section class="doc-section" id="valuation">
           <h2>3. P/S、Cash P/E 与利润收益率</h2>
           <div class="formula">P/S = Market Cap ÷ Revenue TTM</div>
-          <div class="formula">Cash P/E = Market Cap ÷ Cash Net Income TTM</div>
-          <div class="formula">Cash Earnings Yield = Cash Net Income TTM ÷ Market Cap = 1 ÷ Cash P/E</div>
-          <p>旧页面的 Earning Yield 实际使用 Revenue ÷ Market Cap，属于 Revenue Yield，也就是 P/S 的倒数。新口径下只有 Cash Net Income ÷ Market Cap 才称为 Cash Earnings Yield。</p>
-          <div class="callout warning">Cash Net Income 小于或等于零时不显示负 P/E，而显示 N/M。缺少现金支出台账时显示“待核实”，不能用 Revenue 直接替代利润。</div>
+          <div class="formula">Cash P/E = Market Cap ÷ Protocol Earnings TTM</div>
+          <div class="formula">Cash Earnings Yield = Protocol Earnings TTM ÷ Market Cap = 1 ÷ Cash P/E</div>
+          <p>旧页面的 Earning Yield 实际使用 Revenue ÷ Market Cap，属于 Revenue Yield，也就是 P/S 的倒数。新口径下只有 Protocol Earnings ÷ Market Cap 才称为 Cash Earnings Yield。</p>
+          <div class="callout warning">这里的 Cash P/E 是协议经济口径，不是项目公司或基金会的 GAAP/IFRS P/E。Protocol Earnings 小于或等于零时显示 N/M；估算数据用“~”标记；证据不足时显示“待核实”，不能用零替代。</div>
         </section>
 
         <section class="doc-section" id="returns">
-          <h2>4. 持币者回报：旧 TEV Yield 的新口径</h2>
-          <p>旧 TEV Yield 不直接改名为股息率，因为它同时包含分红、回购和销毁。统一名称为 <strong>Shareholder Yield / 持币者回报率</strong>。</p>
+          <h2>4. 持币者回报：Shareholder Yield</h2>
+          <p>持币者回报不直接等于股息率，因为它同时包含分红、回购和合格费用销毁。统一名称为 <strong>Shareholder Yield / 持币者回报率</strong>。</p>
 
           <h3>4.1 股息</h3>
           <p>计入实际向合格持币者或质押者分配的现金、稳定币、ETH 或其他外部资产。新发行的本币质押奖励、空投和流动性挖矿不计入股息。</p>
@@ -169,13 +170,13 @@
 
           <h3>4.3 持币者回报率</h3>
           <div class="formula">Shareholder Yield = Dividend Yield + Buyback / Fee-burn Yield</div>
-          <div class="formula">Payout Ratio = Qualified Holder Returns TTM ÷ Cash Net Income TTM</div>
+          <div class="formula">Payout Ratio = Qualified Holder Returns TTM ÷ Protocol Earnings TTM</div>
           <p>Payout Ratio 只在现金净利润为正且回报金额来源可验证时计算；回购若由历史国库余额出资，比例可能超过 100%，页面必须说明资金来源。</p>
         </section>
 
         <section class="doc-section" id="supply">
           <h2>5. 代币增发与供应增长</h2>
-          <p>原生代币增发、激励、归属和解锁不进入 Cash Expenses，也不扣减 Cash Net Income、Cash P/E 或页面主显示的 Shareholder Yield。</p>
+          <p>原生代币增发、激励、归属和解锁不进入 Direct Economic Costs，也不扣减 Protocol Earnings、Cash P/E 或页面主显示的 Shareholder Yield。</p>
           <div class="formula">Supply Growth = (Ending Circulating Supply ÷ Beginning Circulating Supply) − 1</div>
           <p>供应变化只作为独立风险字段披露，用于解释新项目高通胀、团队与投资人解锁，以及验证者奖励对流通结构的影响。它不会把高增长项目机械计算成经营亏损。</p>
         </section>
@@ -187,7 +188,7 @@
             <table class="doc-table">
               <thead><tr><th>项目类型</th><th>主要指标</th><th>P/E 处理</th></tr></thead>
               <tbody>
-                <tr><td>DeFi 协议 / DAO</td><td>Revenue、Cash Net Income、P/S、Cash P/E、Shareholder Yield</td><td>现金利润为正且证据闭合时可计算</td></tr>
+                <tr><td>DeFi 协议 / DAO</td><td>Revenue、Protocol Earnings、P/S、Cash P/E、Shareholder Yield</td><td>协议经济收益为正且直接成本口径可用时计算</td></tr>
                 <tr><td>公链 / L1 / L2</td><td>Network Revenue、费用留存、费用销毁、P/Network Revenue</td><td>传统 P/E 通常为 N/A</td></tr>
                 <tr><td>CEX 平台币</td><td>可验证回购、销毁与外部收入披露</td><td>缺少公司收入和支出时为 N/A</td></tr>
                 <tr><td>纯治理代币</td><td>协议收入与价值捕获机制</td><td>没有利润归属时为 N/A</td></tr>
@@ -213,7 +214,7 @@
             <li>链上执行记录、合约事件与可验证资金流。</li>
             <li>协议官方文档、治理提案、已执行投票和基金会披露。</li>
             <li>官方或授权的财务、国库和回购仪表盘。</li>
-            <li>DefiLlama 等聚合数据，用于补充 Fees、Revenue 和 Holders Revenue，但必须核对字段含义。</li>
+            <li>DefiLlama、Token Terminal、Dune 等聚合数据，用于补充 Fees、Revenue 和 Holders Revenue，但必须核对字段含义、受益人和执行状态。</li>
             <li>CoinGecko、CoinMarketCap 等市场数据，用于价格与流通市值，并核对正确的代币映射。</li>
           </ol>
           <p>每个非空数字至少记录来源、观察日期、计算窗口、公式版本和证据状态。聚合平台的 Holders Revenue 不会自动等同于分红、已执行回购或现金净利润。</p>
@@ -226,22 +227,23 @@
             <div class="status-card"><strong>N/A</strong><span>指标在项目结构上不适用，例如多数公链的传统 P/E。</span></div>
             <div class="status-card"><strong>N/M</strong><span>分母为零或负数，倍数没有经济意义。</span></div>
             <div class="status-card"><strong>待核实</strong><span>数据缺失、来源冲突或证据尚未闭合，不能用零替代。</span></div>
+            <div class="status-card"><strong>~估算</strong><span>使用允许的第三方映射、官方比例或短窗口估算，不冒充已核实 TTM。</span></div>
           </div>
         </section>
 
         <section class="doc-section" id="display">
           <h2>10. 页面展示与字段分层</h2>
           <h3>主对比表</h3>
-          <p>协议、流通市值、Revenue TTM、Cash Net Income TTM、P/S、Cash P/E、Dividends TTM、Repurchases TTM、Shareholder Yield 与审核状态。</p>
+          <p>协议、流通市值、Revenue TTM、Protocol Earnings TTM、P/S、Cash P/E、Dividends TTM、Repurchases TTM、Shareholder Yield 与审核状态。</p>
           <h3>协议详情页</h3>
-          <p>进一步展示 Fees、Supply-side Fees、现金支出、分红、回购、费用销毁、Payout Ratio、供应增长、适用口径、来源链接、数据日期和审核说明。</p>
+          <p>进一步展示 Fees、Supply-side Fees、直接经济成本、已实现协议损失、分红、回购、费用销毁、供应增长、适用口径、来源链接、数据日期和审核说明。</p>
           <div class="callout">本页定义展示合同，不要求 26 个协议使用完全相同的底层计算模型。协议级公式必须尊重各自业务、治理版本和资金流，最终统一映射到上述字段。</div>
         </section>
       </article>
     </div>
   </main>
 
-  <footer><div class="container"><div class="footer-content"><div class="footer-text">Crypto3D Research · 口径版本 v1.0 · 2026-07-25</div><div class="footer-links"><a href="../">返回协议财务</a><a href="../../governance/">治理</a><a href="https://x.com/22333D" target="_blank">@22333D</a></div></div></div></footer>
+  <footer><div class="container"><div class="footer-content"><div class="footer-text">Crypto3D Research · 口径版本 v1.1 · 2026-07-25</div><div class="footer-links"><a href="../">返回协议财务</a><a href="../../governance/">治理</a><a href="https://x.com/22333D" target="_blank">@22333D</a></div></div></div></footer>
   <script src="../../js/theme.js"></script>
 </body>
 </html>

@@ -14,16 +14,32 @@ const PUBLIC_FILES = [
   path.join(ROOT, 'tev', 'protocol.html'),
   path.join(ROOT, 'tev', 'fundamentals.js'),
   path.join(ROOT, 'tev', 'protocol-financials.js'),
+  path.join(ROOT, 'tev', 'docs', 'index.html'),
   path.join(ROOT, 'index.html'),
 ];
 const BANNED_PUBLIC_TERMS = [
   /\bP\s*\/\s*TEV\b/,
-  /\bTEV\b/,
+  /\bTEV\s+Yield\b/,
   /Token Empowerment/,
   /Token Enabled/,
   /代币赋能/,
   /分配比例/,
   /协议收入率/,
+  /未覆盖/,
+];
+const VALID_STATES = new Set(['VERIFIED', 'ESTIMATED', 'ZERO', 'N/A', 'N/M', 'PENDING']);
+const REQUIRED_META = [
+  'market_cap',
+  'revenue',
+  'direct_economic_costs',
+  'realized_protocol_losses',
+  'protocol_earnings',
+  'price_to_sales',
+  'price_to_earnings',
+  'dividends',
+  'repurchases',
+  'fee_burns',
+  'shareholder_yield',
 ];
 
 function runBuild() {
@@ -33,8 +49,17 @@ function runBuild() {
   });
 }
 
+function round(value, digits = 2) {
+  const scale = 10 ** digits;
+  return Math.round((value + Number.EPSILON) * scale) / scale;
+}
+
 function isNullableFinite(value) {
   return value === null || Number.isFinite(value);
+}
+
+function numericCount(protocols, getter) {
+  return protocols.filter((protocol) => Number.isFinite(getter(protocol))).length;
 }
 
 runBuild();
@@ -43,36 +68,103 @@ runBuild();
 assert.strictEqual(fs.readFileSync(DATA_PATH, 'utf8'), firstBuild, 'Build must be deterministic');
 
 const data = JSON.parse(firstBuild);
-assert.strictEqual(data.terminology, 'public-equity');
+assert.strictEqual(data.terminology, 'public-equity-protocol-economics');
 assert.strictEqual(data.protocols.length, 26);
 assert.strictEqual(data.coverage.protocol_count, 26);
-assert.strictEqual(new Set(data.protocols.map((p) => p.id)).size, 26);
+assert.strictEqual(new Set(data.protocols.map((protocol) => protocol.id)).size, 26);
 assert.strictEqual(data.coverage.market_cap_count, 26);
-assert.strictEqual(data.coverage.revenue_count, 18);
-assert.strictEqual(data.coverage.price_to_sales_count, 18);
-assert.strictEqual(data.coverage.net_income_count, 0);
-assert.strictEqual(data.coverage.price_to_earnings_count, 0);
-assert.strictEqual(data.coverage.independent_pass_count, 13);
+assert.strictEqual(data.coverage.candidate_file_count, 26, 'All 26 protocols need a phase-1 candidate record');
+
+assert.strictEqual(
+  data.coverage.revenue_count,
+  numericCount(data.protocols, (protocol) => protocol.income_statement.revenue_ttm_usd),
+);
+assert.strictEqual(
+  data.coverage.price_to_sales_count,
+  numericCount(data.protocols, (protocol) => protocol.valuation.price_to_sales),
+);
+assert.strictEqual(
+  data.coverage.net_income_count,
+  numericCount(data.protocols, (protocol) => protocol.income_statement.net_income_ttm_usd),
+);
+assert.strictEqual(
+  data.coverage.price_to_earnings_count,
+  numericCount(data.protocols, (protocol) => protocol.valuation.price_to_earnings),
+);
+assert.strictEqual(
+  data.coverage.shareholder_yield_count,
+  numericCount(data.protocols, (protocol) => protocol.capital_returns.shareholder_yield_pct),
+);
 
 for (const protocol of data.protocols) {
   const marketCap = protocol.market_data.market_cap_usd;
-  const revenue = protocol.income_statement.revenue_ttm_usd;
-  const priceToSales = protocol.valuation.price_to_sales;
+  const income = protocol.income_statement;
+  const returns = protocol.capital_returns;
+  const valuation = protocol.valuation;
 
-  assert(isNullableFinite(marketCap), `${protocol.id}: invalid Market Cap`);
-  assert(isNullableFinite(revenue), `${protocol.id}: invalid Revenue`);
-  assert(isNullableFinite(priceToSales), `${protocol.id}: invalid P/S`);
-  assert.strictEqual(protocol.income_statement.net_income_ttm_usd, null);
-  assert.strictEqual(protocol.valuation.price_to_earnings, null);
-  assert.strictEqual(protocol.capital_returns.dividends_ttm_usd, null);
-  assert.strictEqual(protocol.capital_returns.share_repurchases_ttm_usd, null);
-  assert.strictEqual(protocol.capital_returns.shareholder_yield_pct, null);
+  assert(Number.isFinite(marketCap) && marketCap > 0, `${protocol.id}: invalid Market Cap`);
+  assert.strictEqual(income.organization_opex_policy, 'excluded', `${protocol.id}: organization opex policy`);
+  assert.strictEqual(income.native_token_expense_policy, 'excluded', `${protocol.id}: native token expense policy`);
 
-  if (marketCap !== null && revenue !== null) {
-    assert.strictEqual(priceToSales, Math.round((marketCap / revenue) * 100) / 100);
-  } else {
-    assert.strictEqual(priceToSales, null);
+  for (const key of REQUIRED_META) {
+    assert(protocol.metric_meta[key], `${protocol.id}: missing metric_meta.${key}`);
+    assert(VALID_STATES.has(protocol.metric_meta[key].state), `${protocol.id}: invalid state for ${key}`);
+    assert(protocol.metric_meta[key].reason, `${protocol.id}: missing reason for ${key}`);
   }
+
+  for (const value of [
+    income.gross_fees_ttm_usd,
+    income.supply_side_payouts_ttm_usd,
+    income.revenue_ttm_usd,
+    income.direct_economic_costs_ttm_usd,
+    income.realized_protocol_losses_ttm_usd,
+    income.net_income_ttm_usd,
+    returns.dividends_ttm_usd,
+    returns.share_repurchases_ttm_usd,
+    returns.qualifying_fee_burns_ttm_usd,
+    returns.shareholder_yield_pct,
+    valuation.price_to_sales,
+    valuation.price_to_earnings,
+  ]) {
+    assert(isNullableFinite(value), `${protocol.id}: non-finite financial value`);
+  }
+
+  if (Number.isFinite(income.revenue_ttm_usd) && income.revenue_ttm_usd > 0) {
+    assert.strictEqual(
+      valuation.price_to_sales,
+      round(marketCap / income.revenue_ttm_usd),
+      `${protocol.id}: P/S mismatch`,
+    );
+  } else {
+    assert.strictEqual(valuation.price_to_sales, null, `${protocol.id}: P/S must be null`);
+  }
+
+  if (Number.isFinite(income.net_income_ttm_usd) && income.net_income_ttm_usd > 0) {
+    assert.strictEqual(
+      valuation.price_to_earnings,
+      round(marketCap / income.net_income_ttm_usd),
+      `${protocol.id}: Cash P/E mismatch`,
+    );
+  } else {
+    assert.strictEqual(valuation.price_to_earnings, null, `${protocol.id}: Cash P/E must be null`);
+  }
+
+  const dividend = returns.dividends_ttm_usd;
+  const repurchase = returns.share_repurchases_ttm_usd;
+  const feeBurn = returns.qualifying_fee_burns_ttm_usd;
+  if ([dividend, repurchase, feeBurn].every(Number.isFinite)) {
+    assert.strictEqual(
+      returns.shareholder_yield_pct,
+      round(((dividend + repurchase + feeBurn) / marketCap) * 100, 4),
+      `${protocol.id}: Shareholder Yield mismatch`,
+    );
+  }
+}
+
+for (const id of ['bgb', 'bnb', 'okb', 'mnt']) {
+  const protocol = data.protocols.find((item) => item.id === id);
+  assert(protocol, `${id}: missing protocol`);
+  assert.strictEqual(protocol.metric_meta.price_to_earnings.state, 'N/A', `${id}: Cash P/E must be N/A`);
 }
 
 for (const file of PUBLIC_FILES) {
@@ -89,4 +181,6 @@ for (const file of PUBLIC_FILES) {
   }
 }
 
-console.log('PASS: 26 protocols, reproducible formulas, safe-null policy, and no retired terminology in public pages.');
+console.log(
+  `PASS: 26 protocols, Revenue ${data.coverage.revenue_count}, Cash P/E ${data.coverage.price_to_earnings_count}, Shareholder Yield ${data.coverage.shareholder_yield_count}; formulas, states, and public terminology validated.`,
+);

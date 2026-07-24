@@ -1,0 +1,626 @@
+{
+  "schema_version": "1.0",
+  "protocols": [
+    {
+      "id": "aave",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 117728831,
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/economic-flow-map.json",
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "medium",
+          "reason": "Published protocol-revenue TTM candidate retained for first-pass use. It is not audit-grade because the round-two archive keeps borrower interest, supplier pass-through, rebates, liquidation, flash-loan, GHO, V4 and treasury realization inputs safe-null."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/formula-registry.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete exact-window ledger for necessary oracle, keeper, settlement or other protocol-level direct economic costs; foundation and contributor operating expenses and native-token budgets are excluded."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/capital-allocation-ledger.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Umbrella and legacy Safety Module mechanisms are documented, but realized deficits, slashing, compensation and recoveries are not reconciled for the full window; configured capacity is not treated as a realized loss."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/formula-registry.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Revenue, direct economic costs and realized protocol losses are not simultaneously closed, so protocol earnings cannot be calculated."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/economic-flow-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "The archive does not establish an automatic passive AAVE-holder cash right; staking and Merit rewards are participation incentives, not dividends."
+        },
+        "repurchases_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/capital-allocation-ledger.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "The program was officially paused from 2026-04-19, but pre-pause payments, fills, receipts and custody disposition are not fully reconciled. Budgets and treasury funding are not execution values."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P01-aave/repaired-candidate-v4/capital-allocation-ledger.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete fee-funded irreversible AAVE retirement ledger is available; buyback inventory is not treated as a burn."
+        }
+      }
+    },
+    {
+      "id": "aster",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 24694726,
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Published protocol-revenue TTM candidate retained for first-pass use. Complete realized trading-fee, discount, maker/rebate, referral, LP, validator, insurance and other pass-through ledgers remain incomplete."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Necessary network, settlement and execution costs have no complete TTM ledger. Project-company operating costs and native-token incentive budgets are excluded."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete realized insurance, bad-debt, compensation, security-loss and recovery ledger is available."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Revenue deductions, direct economic costs and realized protocol losses are incomplete."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Eligible veASTER Loyalty Rewards are described, but the complete executed allocation, claim, recipient and USD-pricing ledger is absent."
+        },
+        "repurchases_ttm_usd": {
+          "value": 46705717.6,
+          "state": "ESTIMATED",
+          "window": "Observed local execution interval 2025-12-25 through 2026-03-02",
+          "source": "data/protocols/aster/tev-records.json; data/aster-onchain.json; data/aster-buybacks.json",
+          "as_of": "2026-03-02",
+          "confidence": "low",
+          "reason": "Sum of 68 local USD-valued buyback_burn records whose dates overlap the on-chain Stage 5-6 transfer series. Classified here only as an executed-repurchase candidate; Stage 1-4 estimates are excluded, wallet ownership and payment-to-fill reconciliation remain incomplete, and the same value is not double-counted as a burn."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P02-aster/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "One bounded 3,083,815.69 ASTER dead-address transfer is verified, but the complete TTM fee-funding, acquisition, inventory-cancellation and USD valuation chain is not. The local repurchase estimate is not double-counted as a qualifying burn."
+        }
+      }
+    },
+    {
+      "id": "bgb",
+      "cash_pe_applicability": "N/A",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Bitget entities, Morph Foundation/network and BGB holders are separate economic domains. Complete Morph gross fees, L1 data costs, operator pass-throughs, rebates and retaining-recipient ownership are not available."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Complete Morph L1 data, sequencer/operator and other necessary protocol settlement costs are missing; Bitget corporate operating expenses are outside the protocol boundary."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete holder-attributable or Morph protocol realized security-loss, compensation and recovery ledger exists."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "A consolidated BGB cash-earnings perimeter cannot be formed across the separate CEX, Morph network/foundation and token-holder domains without unsupported entity consolidation."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Equity, dividend, residual-profit and redemption rights are unverified, and no complete executed holder-distribution ledger is available."
+        },
+        "repurchases_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Named burn transfers do not prove open-market repurchases, consideration paid or a complete TTM execution ledger."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P03-bgb/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Several BGB retirements are transaction-verified, but fee funding, full-window completeness, bridge conservation and cutoff-effective future-burn configuration are not verified; token retirement alone is not a qualifying fee burn."
+        }
+      }
+    },
+    {
+      "id": "bnb",
+      "cash_pe_applicability": "N/A",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/economic-flow-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "BSC fee-split mechanics are verified, but the full TTM transaction-fee ledger and validator, delegator, system-reward and BEP-95 allocations are not reconciled in USD. Binance platform revenue is excluded."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/economic-flow-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Complete validator, delegator, operator and system-reward settlement ledgers are missing; these required network payouts cannot be assumed to be zero."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/capital-allocation-ledger.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete BSC protocol bad-debt, security compensation, slash and recovery ledger is available."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/formula-registry.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "BNB is the native asset of a public-chain fee and staking system, not a conventional equity-like claim on a consolidated entity; Binance platform earnings are outside the verified boundary."
+        },
+        "dividends_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/capital-allocation-ledger.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Validator and delegator staking rewards are opt-in network compensation, not universal holder dividends; no binding universal payment right is evidenced."
+        },
+        "repurchases_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/capital-allocation-ledger.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Auto-Burn is formulaic supply retirement, not an open-market repurchase; Binance platform buyback or revenue is outside the unverified entity boundary."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 10200000,
+          "state": "ESTIMATED",
+          "window": "Annualized local snapshot estimate, approximately one year",
+          "source": "data/all-protocols.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/formula-registry.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P04-bnb/capital-allocation-ledger.json",
+          "as_of": "2026-03-21",
+          "confidence": "low",
+          "reason": "Legacy local snapshot estimates BEP-95 at about 16,327 BNB or USD 10.2 million per year, while the round-two archive verifies the 10% fee-burn mechanism but not the exact TTM ledger. The separate 5,998,120.2155 BNB Auto-Burn is excluded because it is not fee-funded."
+        }
+      }
+    },
+    {
+      "id": "compound",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 177463,
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Published protocol-revenue TTM candidate retained for first-pass use. The archive still lacks complete market-by-market gross borrower interest, supplier pass-through, liquidation and reserve-accrual ledgers across 28 Comets and 20 V2 markets."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete protocol-level necessary cost ledger is available. Foundation operating expenses and COMP incentive issuance are excluded from direct economic costs."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete market-by-market bad-debt, reserve absorption, security compensation and recovery ledger is available."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Retained revenue, direct economic costs and realized credit/security losses are not closed for the full protocol universe."
+        },
+        "dividends_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/compound/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Frozen configuration states dividends NONE and the fee switch is off; no executed COMP-holder cash distribution candidate exists in the frozen TTM materials."
+        },
+        "repurchases_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/compound/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Frozen configuration states buybacks NONE; the only identified item is a community RFC, not governance approval or execution, so executed repurchases are zero in the frozen window."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/compound/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P05-compound/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Frozen configuration states burns NONE and identifies no fee-funded COMP retirement mechanism or execution candidate. This zero is limited to qualifying fee burns and does not assert that every possible supply event was globally indexed."
+        }
+      }
+    },
+    {
+      "id": "curve",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 15701857,
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Published protocol-revenue TTM candidate retained for first-pass use. Gross fees, pass-throughs and the FeeAllocator/FeeSplitter retained-revenue path are not independently reconciled for the complete TTM window."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Necessary protocol-level settlement, execution and other direct economic costs were not fetched for the full TTM; organization operating costs and CRV issuance are excluded."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete realized exploit, bad-debt, compensation and recovery ledger was fetched; absence of a value is not zero."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Retained revenue, direct economic costs and realized protocol losses remain unresolved."
+        },
+        "dividends_ttm_usd": {
+          "value": 13123022,
+          "state": "ESTIMATED",
+          "window": "Latest 12 complete local monthly records, 2025-03-01 through 2026-02-01",
+          "source": "data/protocols/curve/tev-records.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "as_of": "2026-02-13",
+          "confidence": "medium",
+          "reason": "Sum of 12 local DefiLlama dailyHoldersRevenue monthly aggregates classified as executed veCRV fee distributions. This is a locked-participant distribution candidate, not a passive bare-CRV dividend, and its window is older than the revenue snapshot."
+        },
+        "repurchases_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete DAO-funded secondary-market CRV purchase ledger is available."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": null,
+          "state": "N/A",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P06-curve/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Curve fee burning is asset conversion and distribution, not irreversible CRV retirement; it therefore does not qualify as a fee-funded CRV burn."
+        }
+      }
+    },
+    {
+      "id": "dydx",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 9094297,
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Published protocol-revenue TTM candidate retained for first-pass use. Maker rebates, affiliates, order routers, MegaVault, market mapper, residual routes and recipient/controller ownership are not fully reconciled."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete TTM ledger for necessary chain, oracle, keeper, router and settlement costs is available; foundation operating expenses and DYDX incentives are excluded."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete realized security, credit, bad-debt, insurance compensation and recovery ledger is available."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Revenue recipients and third-party pass-throughs, direct economic costs and realized losses are not closed; Cash P/E becomes usable only after these scopes close."
+        },
+        "dividends_ttm_usd": {
+          "value": 13257717,
+          "state": "ESTIMATED",
+          "window": "Latest 12 complete local monthly records, 2025-03-01 through 2026-02-01",
+          "source": "data/protocols/dydx/tev-records.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "as_of": "2026-02-13",
+          "confidence": "low",
+          "reason": "Sum of 12 local DefiLlama dailyHoldersRevenue monthly aggregates labeled DYDX staker fee distribution. Retained as an executed distribution candidate, but validator/security-service compensation and other third-party shares are not independently separated, and its window is older than the revenue snapshot."
+        },
+        "repurchases_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Operator-reported DYDX acquisition context exists, but payment, fill, custody and inventory reconciliation is incomplete; allocation percentages are not execution values."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P07-dydx/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Buyback inventory is explicitly not a burn, and no complete fee-funded irreversible DYDX retirement ledger is available."
+        }
+      }
+    },
+    {
+      "id": "eigenlayer",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Gross on-chain consideration, AVS service compensation, operator and restaker payouts, protocol fee retention and off-platform product revenue are not reconciled. A legacy zero is not promoted."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Operator, restaker, task-settlement and other required protocol economic costs were not fetched for the complete TTM; organization costs and EIGEN emissions are excluded."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete realized slashing, security compensation and recovery ledger is available; slashing capability is not a realized loss."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Retained protocol revenue, direct economic costs and realized losses are unresolved."
+        },
+        "dividends_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/eigenlayer/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Frozen configuration states dividends NONE, and EIGEN is documented as a stakeable work token without passive-holder cash entitlement; operator and restaker rewards are participant compensation, not dividends."
+        },
+        "repurchases_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/eigenlayer/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "The frozen archive classifies the Foundation statement as future fee-to-buyback direction with no executed purchase evidence, while frozen configuration states buybacks NONE."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/eigenlayer/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P08-eigenlayer/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Frozen configuration states burns NONE and the frozen archive contains no fee-funded EIGEN retirement execution candidate. The zero is scoped to qualifying fee burns."
+        }
+      }
+    },
+    {
+      "id": "ethena",
+      "cash_pe_applicability": "ELIGIBLE",
+      "metrics": {
+        "revenue_ttm_usd": {
+          "value": 10747499,
+          "state": "ESTIMATED",
+          "window": "TTM reported as of 2026-07-24T13:13:35.438Z",
+          "source": "data/valuation-meeting-snapshot.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "as_of": "2026-07-24T13:13:35.438Z",
+          "confidence": "low",
+          "reason": "Published protocol-revenue TTM candidate retained for first-pass use. Source-defined income, supplier pass-through, sUSDe depositor rewards, program distributions and reserve allocation are not independently reconciled for the complete TTM."
+        },
+        "direct_economic_costs_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Necessary hedging, exchange, custody, settlement and other protocol economic costs were not fetched as a complete TTM ledger; company operating expenses and ENA incentives are excluded."
+        },
+        "realized_protocol_losses_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "No complete realized basis, exchange, custody, depeg, security compensation, one-time loss and recovery ledger is available; reserve balances are not realized losses."
+        },
+        "protocol_earnings_ttm_usd": {
+          "value": null,
+          "state": "PENDING",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "low",
+          "reason": "Protocol-retained revenue, necessary direct economic costs and realized gains or losses are not closed."
+        },
+        "dividends_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/ethena/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "high",
+          "reason": "Frozen configuration reports ENA/sENA token-holder income of zero and no live fee switch. sUSDe depositor yield is supplier pass-through and is not relabeled as an ENA dividend."
+        },
+        "repurchases_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/ethena/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "The disclosed StablecoinX purchases and programs are frozen as corporate or treasury capital transactions funded outside recurring protocol revenue and therefore do not qualify as protocol repurchases under the new metric."
+        },
+        "qualifying_fee_burns_ttm_usd": {
+          "value": 0,
+          "state": "ZERO",
+          "window": "TTM ending 2026-07-23T21:16:34Z",
+          "source": "data/protocols/ethena/config.json; C:/Users/Binan/Documents/Crypto3D/round2-audit/P09-ethena/streamlined/evidence-map.json",
+          "as_of": "2026-07-23T21:16:34Z",
+          "confidence": "medium",
+          "reason": "Frozen configuration states burns NONE and contains no fee-funded irreversible ENA retirement mechanism or execution candidate; corporate buyback inventory is not treated as a burn."
+        }
+      }
+    }
+  ]
+}

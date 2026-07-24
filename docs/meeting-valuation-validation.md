@@ -1,61 +1,88 @@
-# 26-Protocol Meeting Valuation Validation
+# 26 协议会议估值首版验收记录
 
-## Overall assessment
+## 结论
 
-**Share with caveats.** The test-site view is suitable for a meeting comparison if the presenter keeps the three valuation layers separate:
+**可在测试站预览，会议使用时必须保留“首版候选”说明。**
 
-- `P/S` is an indicative protocol-revenue multiple.
-- `P/TEV` is an indicative holder-value multiple and a **P/E proxy**, not strict P/E.
-- strict `P/E` remains unavailable for all 26 protocols because reviewed TTM net income is not closed.
+本轮先完成结果，不把完整独立审核作为测试站首版发布的前置条件。页面已经按新口径重算 Revenue、Protocol Earnings、P/S、Cash P/E 和 Shareholder Yield；所有估算值显示 `~`，证据不足显示“待核实”，不适用显示 `N/A`，亏损或零收益显示 `N/M`。
 
-## Dataset and grain
+## 覆盖率
 
-- Grain: one row per tracked protocol/token pair.
-- Protocols: 26 unique IDs.
-- Market-cap coverage: 26/26.
-- Indicative P/S coverage: 18/26.
-- Indicative P/TEV coverage: 12/26.
-- Strict P/E coverage: 0/26.
-- Source snapshot: `BitPickles/tev-dashboard` commit `972d82b9a94cac0794fc6aa5dce6cae9a7dbda71`.
-- Source data timestamp: `2026-07-24T13:13:35.438Z`.
-- Model-review register: 13/26 protocols have a closed second-round model review. This does not promote the displayed legacy numeric values to audited figures.
+| 项目 | 覆盖 |
+|---|---:|
+| 协议 | 26/26 |
+| 流通市值 | 26/26 |
+| Revenue TTM | 19/26 |
+| P/S | 19/26 |
+| Cash P/E | 18/26 |
+| Shareholder Yield（含明确零值） | 23/26 |
 
-## Issues found and remediation
+Cash P/E 的其余状态：
 
-1. **High — P/S, holder multiples, and strict P/E were previously easy to conflate.**
-   - Remediation: the dashboard now displays P/S and P/TEV separately and states that strict P/E is 0/26 available.
+- `N/M`：Fluid（首版已知直接损失使 Protocol Earnings 小于零）。
+- `N/A`：BGB、BNB、OKB、MNT（缺少同一经济主体的可比收入与成本边界，不强行套传统 P/E）。
+- `待核实`：EigenLayer、JustLend、Morpho。
 
-2. **High — legacy zero values mixed confirmed zero with missing or unverified data.**
-   - Remediation: missing, unverified, and not-calculable revenue, yield, and multiple fields render as `—`, not `0`.
+Shareholder Yield 的 23 个可用值中，14 个为正值候选，9 个为已识别的零值；Aave、BGB、JustLend 仍待核实。
 
-3. **High — the legacy GMX data contained conflicting holder-yield values.**
-   - Remediation: the meeting snapshot publishes GMX P/S as indicative but keeps P/TEV null while the current holder-value field is partial/unresolved.
+## 计算口径
 
-4. **Medium — shorter-window or legacy annualized metrics could be mistaken for TTM.**
-   - Remediation: only reported trailing-365-day protocol revenue is used for the meeting P/S calculation. No shorter-window annualization is relabeled TTM.
+```text
+Protocol Revenue TTM
+= Gross Fees TTM
+− Supply-side / Participant Payouts TTM
+− Rebates / Refunds TTM
 
-5. **Medium — ordinary token emissions and incentives could be read as holder cash flow.**
-   - Remediation: the methodology copy now says emissions and ordinary incentives are not counted automatically.
+Protocol Earnings TTM
+= Protocol Revenue TTM
+− Direct Economic Costs TTM
+− Realized Protocol Losses TTM
 
-## Calculation spot checks
+P/S
+= Circulating Market Cap ÷ Protocol Revenue TTM
 
-- Aave P/S: `1,799,059,173.84 / 117,728,831 = 15.28x`.
-- Aave P/TEV proxy: `100 / 3.26 = 30.67x`.
-- Sky P/S: `1,814,725,241.45 / 238,224,433 = 7.62x`.
-- Sky P/TEV proxy: `100 / 4.48 = 22.32x`.
-- All published P/S and P/TEV values were independently recomputed by the validator within a `0.01x` tolerance.
+Cash P/E
+= Circulating Market Cap ÷ Protocol Earnings TTM
 
-## Render and interaction checks
+Shareholder Yield
+= (Dividends + Executed Repurchases + Qualifying Fee Burns) ÷ Circulating Market Cap
+```
 
-- Desktop dashboard: 26 rows, 11 columns, no console warnings or errors.
-- Mobile dashboard: no page-wide horizontal overflow; the wide comparison table scrolls inside its container.
-- Sorting: P/S ascending and descending keeps unavailable values at the bottom.
-- Language switch: Chinese and English labels both render.
-- Detail pages: Aave, GMX, and BGB were spot-checked for available, partial, and safe-null states.
+直接经济成本包括支付给外部参与者的必要分成、返佣、网络/结算/预言机/keeper 成本和已实现协议损失。团队工资、市场、法律、办公室、基金会管理等组织运营费用不进入 Protocol Earnings；原生代币发行、激励、解锁和归属也不作为现金成本。
 
-## Required meeting caveats
+资本回报在 Protocol Earnings 之后单独记录，未执行预算、国库内部转账、库存退休、普通代币激励和无法证明由费用支持的销毁不计入。
 
-- Do not call P/S or P/TEV “strict P/E.”
-- A `—` means unavailable, unverified, or not calculable; it does not mean zero.
-- `~` marks an indicative legacy-derived multiple, not an audited financial statement value.
-- Market cap is current to the source snapshot date; protocol revenue and holder-value inputs use the existing published dataset and retain its coverage limitations.
+## 首版估算规则
+
+- 现有研究、链上数据、官方汇总和经过口径核对的第三方聚合数据可以作为候选来源。
+- Revenue 有可用值、但必要直接成本或已实现损失尚未单列时，首版以 Revenue 减去已知成本和损失计算 Protocol Earnings；未单列的增量成本暂按零估算，并以 `~` 和低置信度标记。
+- 短于 TTM 的已执行资本回报可以按已识别期间金额或明确年化规则迁移，但必须保留窗口、来源和限制。
+- 未知、结构不适用、没有经济意义和真实零值使用不同状态，不互相替代。
+
+## 公式抽查
+
+- Aave：`$1,799,059,173.84 ÷ $117,728,831 = 15.28x`。
+- ether.fi：`$434,586,989.58 ÷ $53,095,936 = 8.18x`。
+- Fluid：`$86,461,826.56 ÷ ($12,380,928 − $21,000,000)`，Protocol Earnings 为负，因此 Cash P/E 为 `N/M`。
+- HYPE：`$7,368,065,201 ÷ $792,146,570 = 9.30x`。
+- Spark Shareholder Yield：`$1,975,520.75 ÷ $51,931,258.30 = 3.8041%`。
+
+生成器对全部可计算的 P/S、Cash P/E 和 Shareholder Yield 逐项复算，允许误差为 `0.01x` 或 `0.0001` 个百分点。
+
+## 已知限制
+
+- 本轮是结果优先的首版迁移，不等同于完成协议级独立审核。
+- Maple 的回购候选存在期间重叠风险。
+- PancakeSwap、Pendle、Sky 的部分第三方映射尚未做到逐笔执行闭合。
+- Sky 的候选金额混合回购与质押奖励代理，需要在审核阶段继续拆分。
+- Uniswap 的费用销毁仍有固定价格换算、跨链归因和去重限制。
+- HYPE、GMX、Aster 等执行金额较大的资本回报将在下一阶段作为高优先级复核项。
+
+## 首版发布门槛
+
+- 数据构建结果必须可重复。
+- 26 个协议 ID 必须唯一且全部存在。
+- 每个核心指标必须有状态、原因、来源窗口和置信度。
+- P/S、Cash P/E、Shareholder Yield 必须可以从基础金额复算。
+- 页面不得出现旧 TEV 术语或把“待核实”显示成零。
+- 仅发布测试站；未经用户验收，不进入生产站。

@@ -31,6 +31,7 @@
     #protocol-table { min-width: 1180px; }
     .table-scroll { overflow-x: auto; }
     .value-muted { color: var(--text-tertiary); }
+    .value-estimated { color: var(--warning); }
     .value-note { display: block; margin-top: 2px; color: var(--text-tertiary); font-family: 'Noto Sans SC', sans-serif; font-size: 9px; white-space: nowrap; }
     .method-card-wide { grid-column: 1 / -1; }
     .formula-stack { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
@@ -71,7 +72,7 @@
     <section class="hero">
       <div class="container">
         <h1>加密协议财务与估值</h1>
-        <p>保留原有页面结构，以真实现金收入、现金利润与持币者回报衡量协议价值；原生代币支出单独披露，不进入 Cash P/E。</p>
+        <p>保留原有页面结构，以协议留存收入、直接经济成本与持币者回报衡量协议价值；项目方运营费用及原生代币支出不进入 Cash P/E。</p>
       </div>
     </section>
 
@@ -89,7 +90,7 @@
             <div class="snapshot-metric"><strong id="snapshot-ps-count">—</strong><span>P/S 可计算</span></div>
             <div class="snapshot-metric"><strong id="snapshot-pe-count">—</strong><span>Cash P/E 可计算</span></div>
           </div>
-          <p class="snapshot-caveat">Cash P/E = Market Cap ÷ TTM Cash Net Income。现金净利润只扣除现金、稳定币及外部资产支出；原生代币发行与激励不作为现金成本。“未覆盖”代表证据不足，不等于 0。</p>
+          <p class="snapshot-caveat">Cash P/E = Market Cap ÷ TTM Protocol Earnings。只扣除供应方分成、返佣、必要网络/结算成本及已实现协议损失；不统计项目方组织运营费用与原生代币支出。“~”为估算，待核实不等于 0。</p>
         </div>
       </div>
     </section>
@@ -117,13 +118,13 @@
                   <th>协议</th>
                   <th class="text-right sortable sorted desc" data-sort="market_cap">Market Cap</th>
                   <th class="text-right sortable" data-sort="revenue">Revenue TTM</th>
-                  <th class="text-right sortable" data-sort="net_income">Cash Net Income TTM</th>
+                  <th class="text-right sortable" data-sort="net_income">Protocol Earnings TTM</th>
                   <th class="text-right sortable" data-sort="price_to_sales">P/S</th>
                   <th class="text-right sortable" data-sort="price_to_earnings">Cash P/E</th>
                   <th class="text-right">Dividends TTM</th>
                   <th class="text-right">Repurchases TTM</th>
                   <th class="text-right">Shareholder Yield</th>
-                  <th class="text-right">审核</th>
+                  <th class="text-right">状态</th>
                 </tr>
               </thead>
               <tbody id="protocol-tbody"></tbody>
@@ -139,9 +140,9 @@
         <div class="intro-grid">
           <div class="intro-card">
             <h2><span class="icon">📊</span> 利润表与估值</h2>
-            <p><strong>Revenue</strong> 是协议保留的 TTM 收入，不等于用户支付的全部 Fees。Cash Net Income 只扣除现金、稳定币及外部资产支出；原生代币发行与激励不进入利润。</p>
+            <p><strong>Revenue</strong> 是协议保留的 TTM 收入，不等于用户支付的全部 Fees。Protocol Earnings 使用协议经济口径，只扣直接经济成本与已实现协议损失，不扣项目方组织运营费用。</p>
             <div class="formula-box">P/S = Market Cap ÷ Revenue (TTM)</div>
-            <div class="formula-box">Cash P/E = Market Cap ÷ Cash Net Income (TTM)</div>
+            <div class="formula-box">Cash P/E = Market Cap ÷ Protocol Earnings (TTM)</div>
           </div>
           <div class="intro-card">
             <h2><span class="icon">💡</span> 资本回报</h2>
@@ -150,7 +151,7 @@
           </div>
           <div class="intro-card method-card-wide">
             <h2><span class="icon">🧮</span> 空值与证据边界</h2>
-            <p>公共字段统一，协议计算模型不强行统一。每个协议仍按自身业务、治理版本、资金流和支出边界独立计算；缺少可验证证据时显示“未覆盖”，确认数值为零时才显示 0。</p>
+            <p>公共字段统一，协议计算模型不强行统一。每个协议仍按自身业务、治理版本、资金流和支出边界独立计算；页面区分估算、待核实、结构不适用和已核实为零。</p>
             <div class="formula-stack">
               <div class="formula-box">0 = 已确认确实为零</div>
               <div class="formula-box">N/A = 结构上不适用</div>
@@ -167,12 +168,12 @@
         <div class="author-video-grid">
           <div class="author-card">
             <div class="author-header"><div class="author-avatar">🔮</div><div class="author-meta"><h3>3D</h3><div class="tagline">DeFi 实战派 · 协议财务研究</div></div></div>
-            <p class="author-bio">专注 DeFi、链上套利及低风险机会的探索与实战。本页使用上市公司财务字段审视加密协议，并严格区分收入、净利润、现金流、资本回报与估值；没有足够证据的数字保持为空。</p>
+            <p class="author-bio">专注 DeFi、链上套利及低风险机会的探索与实战。本页使用上市公司财务字段审视加密协议，并严格区分收入、协议收益、资本回报与估值；证据不足的字段明确标记为待核实。</p>
             <div class="author-links"><a href="https://x.com/22333D" target="_blank" class="author-link"><span>@22333D</span></a><a href="https://www.youtube.com/@Crypto36D" target="_blank" class="author-link"><span>3D 加密频道</span></a></div>
           </div>
           <div class="video-card">
             <h2>📘 协议财务研究框架</h2>
-            <div class="research-frame"><p>先确认收入归属，再扣除真实现金支出，得到现金净利润；原生代币支出不进入 Cash P/E。</p><div class="formula-box">Revenue → Cash Expenses → Cash Net Income → Cash P/E</div><p>股息、回购、费用销毁和供应增长分别记录，Shareholder Yield 表示持币者回报率。</p></div>
+            <div class="research-frame"><p>先确认收入归属，再扣除供应方分成、必要结算成本与已实现协议损失；项目方组织运营费用及原生代币支出不进入 Cash P/E。</p><div class="formula-box">Fees → Protocol Revenue → Protocol Earnings → Cash P/E</div><p>股息、回购、费用销毁和供应增长分别记录，Shareholder Yield 表示持币者回报率。</p></div>
           </div>
         </div>
       </div>
