@@ -60,7 +60,7 @@
       <div class="header-content">
         <a href="../" class="logo"><img src="../logo.svg" alt="3D" class="logo-icon"><span class="logo-text">Crypto3D</span></a>
         <div class="header-right">
-          <nav><a href="../">首页</a><a href="../governance/">治理</a></nav>
+          <nav><a href="../">首页</a><a href="./" class="active">协议财务</a><a href="docs/">口径文档</a><a href="../governance/">治理</a></nav>
           <div class="lang-switch-tev"><button class="lang-btn active" type="button">中文</button><button class="lang-btn" type="button">EN</button></div>
         </div>
       </div>
@@ -71,7 +71,7 @@
     <section class="hero">
       <div class="container">
         <h1>加密协议财务与估值</h1>
-        <p>保留原有页面结构，统一改用 Revenue、Net Income、P/S、P/E、Dividends、Repurchases 与 Shareholder Yield 等上市公司财务字段。</p>
+        <p>保留原有页面结构，以真实现金收入、现金利润与持币者回报衡量协议价值；原生代币支出单独披露，不进入 Cash P/E。</p>
       </div>
     </section>
 
@@ -87,9 +87,9 @@
             <div class="snapshot-metric"><strong id="snapshot-market-count">—</strong><span>Market Cap 可用</span></div>
             <div class="snapshot-metric"><strong id="snapshot-revenue-count">—</strong><span>Revenue 可用</span></div>
             <div class="snapshot-metric"><strong id="snapshot-ps-count">—</strong><span>P/S 可计算</span></div>
-            <div class="snapshot-metric"><strong id="snapshot-pe-count">—</strong><span>P/E 可计算</span></div>
+            <div class="snapshot-metric"><strong id="snapshot-pe-count">—</strong><span>Cash P/E 可计算</span></div>
           </div>
-          <p class="snapshot-caveat">P/E = Market Cap ÷ TTM Net Income。当前 26 个协议尚未闭合到可审核净利润，因此不发布 P/E 数字；“未覆盖”代表证据不足，不等于 0，也不会使用替代倍数冒充市盈率。</p>
+          <p class="snapshot-caveat">Cash P/E = Market Cap ÷ TTM Cash Net Income。现金净利润只扣除现金、稳定币及外部资产支出；原生代币发行与激励不作为现金成本。“未覆盖”代表证据不足，不等于 0。</p>
         </div>
       </div>
     </section>
@@ -117,9 +117,9 @@
                   <th>协议</th>
                   <th class="text-right sortable sorted desc" data-sort="market_cap">Market Cap</th>
                   <th class="text-right sortable" data-sort="revenue">Revenue TTM</th>
-                  <th class="text-right sortable" data-sort="net_income">Net Income TTM</th>
+                  <th class="text-right sortable" data-sort="net_income">Cash Net Income TTM</th>
                   <th class="text-right sortable" data-sort="price_to_sales">P/S</th>
-                  <th class="text-right sortable" data-sort="price_to_earnings">P/E</th>
+                  <th class="text-right sortable" data-sort="price_to_earnings">Cash P/E</th>
                   <th class="text-right">Dividends TTM</th>
                   <th class="text-right">Repurchases TTM</th>
                   <th class="text-right">Shareholder Yield</th>
@@ -139,23 +139,24 @@
         <div class="intro-grid">
           <div class="intro-card">
             <h2><span class="icon">📊</span> 利润表与估值</h2>
-            <p><strong>Revenue</strong> 是协议保留的 TTM 收入，不等于用户支付的全部 Fees。只有收入、成本、运营费用及其他协议级支出全部闭合后，才发布 Net Income 与 P/E。</p>
+            <p><strong>Revenue</strong> 是协议保留的 TTM 收入，不等于用户支付的全部 Fees。Cash Net Income 只扣除现金、稳定币及外部资产支出；原生代币发行与激励不进入利润。</p>
             <div class="formula-box">P/S = Market Cap ÷ Revenue (TTM)</div>
-            <div class="formula-box">P/E = Market Cap ÷ Net Income (TTM)</div>
+            <div class="formula-box">Cash P/E = Market Cap ÷ Cash Net Income (TTM)</div>
           </div>
           <div class="intro-card">
             <h2><span class="icon">💡</span> 资本回报</h2>
-            <p>Dividends、Share Repurchases、Share Retirement、Treasury Stock 与 Share Issuance 分开记录。质押收益、公式销毁和供应收缩不会自动归类成股息或回购。</p>
-            <div class="formula-box">Shareholder Yield = Dividend Yield + Buyback Yield</div>
+            <p>Shareholder Yield 统一表示持币者回报率。实际分红、协议出资回购与合格的费用支持销毁分别记录；代币增发不扣减该指标，只作为供应风险披露。</p>
+            <div class="formula-box">Shareholder Yield = Dividend Yield + Buyback / Fee-burn Yield</div>
           </div>
           <div class="intro-card method-card-wide">
             <h2><span class="icon">🧮</span> 空值与证据边界</h2>
             <p>公共字段统一，协议计算模型不强行统一。每个协议仍按自身业务、治理版本、资金流和支出边界独立计算；缺少可验证证据时显示“未覆盖”，确认数值为零时才显示 0。</p>
             <div class="formula-stack">
-              <div class="formula-box">Free Cash Flow = Operating Cash Flow − CapEx</div>
-              <div class="formula-box">EV = Market Cap + Debt − Cash</div>
-              <div class="formula-box">未覆盖 ≠ 0</div>
+              <div class="formula-box">0 = 已确认确实为零</div>
+              <div class="formula-box">N/A = 结构上不适用</div>
+              <div class="formula-box">N/M = 倍数无经济意义</div>
             </div>
+            <div class="author-links"><a href="docs/" class="author-link"><span>查看完整计算口径与公式 →</span></a></div>
           </div>
         </div>
       </div>
@@ -171,7 +172,7 @@
           </div>
           <div class="video-card">
             <h2>📘 协议财务研究框架</h2>
-            <div class="research-frame"><p>先确认收入归属，再闭合成本与支出；净利润未完成审核前，不发布 P/E。</p><div class="formula-box">Revenue → Expenses → Net Income → P/E</div><p>回购、股息、注销、库存股和新增发行分别记录，不合并成一个模糊指标。</p></div>
+            <div class="research-frame"><p>先确认收入归属，再扣除真实现金支出，得到现金净利润；原生代币支出不进入 Cash P/E。</p><div class="formula-box">Revenue → Cash Expenses → Cash Net Income → Cash P/E</div><p>股息、回购、费用销毁和供应增长分别记录，Shareholder Yield 表示持币者回报率。</p></div>
           </div>
         </div>
       </div>
@@ -180,7 +181,7 @@
 
   <section class="yt-banner"><div class="container"><div class="yt-banner-content"><div class="yt-banner-icon"></div><div class="yt-banner-text"><h3>📺 订阅 3D 加密频道</h3><p>更多 DeFi 深度分析、链上套利实战与协议财务研究</p></div><a href="https://www.youtube.com/@Crypto36D?sub_confirmation=1" target="_blank" class="yt-banner-btn">立即订阅</a></div></div></section>
 
-  <footer><div class="container"><div class="footer-content"><div class="footer-text" id="footer-updated">加载数据中...</div><div class="footer-links"><a href="#methodology">方法论</a><a href="../governance/">治理</a><a href="https://x.com/22333D" target="_blank">@22333D</a></div></div></div></footer>
+  <footer><div class="container"><div class="footer-content"><div class="footer-text" id="footer-updated">加载数据中...</div><div class="footer-links"><a href="docs/">完整口径文档</a><a href="../governance/">治理</a><a href="https://x.com/22333D" target="_blank">@22333D</a></div></div></div></footer>
   <script src="../data/protocol-financials-us-equity.js"></script>
   <script src="fundamentals.js"></script>
   <script src="../js/theme.js"></script>

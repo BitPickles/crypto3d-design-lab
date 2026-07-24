@@ -96,9 +96,9 @@
         </td>
         <td class="text-right">${valueMarkup(protocol.market_data.market_cap_usd, formatMoney)}</td>
         <td class="text-right">${valueMarkup(income.revenue_ttm_usd, formatMoney, income.revenue_ttm_usd === null ? '来源未覆盖' : 'TTM 快照')}</td>
-        <td class="text-right">${valueMarkup(income.net_income_ttm_usd, formatMoney, '缺少完整费用台账')}</td>
+        <td class="text-right">${valueMarkup(income.net_income_ttm_usd, formatMoney, '缺少现金支出台账')}</td>
         <td class="text-right">${valueMarkup(protocol.valuation.price_to_sales, formatMultiple)}</td>
-        <td class="text-right">${valueMarkup(protocol.valuation.price_to_earnings, formatMultiple, '严格口径')}</td>
+        <td class="text-right">${valueMarkup(protocol.valuation.price_to_earnings, formatMultiple, '现金口径')}</td>
         <td class="text-right">${valueMarkup(returns.dividends_ttm_usd, formatMoney)}</td>
         <td class="text-right">${valueMarkup(returns.share_repurchases_ttm_usd, formatMoney)}</td>
         <td class="text-right">${valueMarkup(returns.shareholder_yield_pct, formatPercent)}</td>

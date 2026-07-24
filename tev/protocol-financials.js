@@ -100,14 +100,14 @@
         <div class="tev-summary-grid tev-grid-compact">
           ${summaryItem('Market Cap', '总市值', money(protocol.market_data.market_cap_usd))}
           ${summaryItem('Revenue TTM', '营业收入', money(income.revenue_ttm_usd))}
-          ${summaryItem('Net Income TTM', '净利润', money(income.net_income_ttm_usd))}
+          ${summaryItem('Cash Net Income TTM', '现金净利润', money(income.net_income_ttm_usd))}
           ${summaryItem('P/S', '市销率', multiple(valuation.price_to_sales))}
-          ${summaryItem('P/E', '市盈率', multiple(valuation.price_to_earnings))}
+          ${summaryItem('Cash P/E', '现金市盈率', multiple(valuation.price_to_earnings))}
           ${summaryItem('Dividends TTM', '股息', money(returns.dividends_ttm_usd))}
           ${summaryItem('Repurchases TTM', '股票回购', money(returns.share_repurchases_ttm_usd))}
           ${summaryItem('Dividend Yield', '股息率', percent(returns.dividend_yield_pct))}
-          ${summaryItem('Buyback Yield', '回购收益率', percent(returns.buyback_yield_pct))}
-          ${summaryItem('Shareholder Yield', '股东回报率', percent(returns.shareholder_yield_pct))}
+          ${summaryItem('Buyback / Fee-burn Yield', '回购与费用销毁收益率', percent(returns.buyback_yield_pct))}
+          ${summaryItem('Shareholder Yield', '持币者回报率', percent(returns.shareholder_yield_pct))}
         </div>
       </section>
 
@@ -115,10 +115,10 @@
         row('Revenue / 营业收入', money(income.revenue_ttm_usd), '协议保留收入，TTM'),
         row('Cost of Revenue / 营业成本', money(income.cost_of_revenue_ttm_usd), '已复核直接成本'),
         row('Gross Profit / 毛利润', money(income.gross_profit_ttm_usd), 'Revenue − Cost of Revenue'),
-        row('Operating Expenses / 营业费用', money(income.operating_expenses_ttm_usd), '已复核运营费用'),
+        row('Cash Expenses / 现金费用', money(income.operating_expenses_ttm_usd), '现金、稳定币及外部资产支出；不含原生代币发行'),
         row('Operating Income / 营业利润', money(income.operating_income_ttm_usd), 'Gross Profit − Operating Expenses'),
-        row('Net Income / 净利润', money(income.net_income_ttm_usd), 'Revenue − 全部已复核支出'),
-      ], protocol.null_reasons.income_statement)}
+        row('Cash Net Income / 现金净利润', money(income.net_income_ttm_usd), 'Revenue − 已复核现金及外部资产支出'),
+      ], '尚无经过协议级复核的现金、稳定币及外部资产支出台账，因此不能闭合现金净利润。')}
 
       ${section('Cash Flow / 现金流量表', '💵', [
         row('Operating Cash Flow / 经营现金流', money(cash.operating_cash_flow_ttm_usd), '经营现金流入 − 流出'),
@@ -139,16 +139,16 @@
         row('Share Repurchases / 股票回购', money(returns.share_repurchases_ttm_usd), 'TTM 协议出资市场购买'),
         row('Share Retirement / 注销股份', money(returns.share_retirement_ttm_usd), 'TTM 不可逆退出流通'),
         row('Treasury Stock / 库存股', money(returns.treasury_stock_usd), '回购后仍由国库控制'),
-        row('Share Issuance / 股份发行', money(returns.share_issuance_ttm_usd), 'TTM 发行、激励与解锁稀释'),
-        row('Shareholder Yield / 股东回报率', percent(returns.shareholder_yield_pct), 'Dividend Yield + Buyback Yield'),
-      ], protocol.null_reasons.capital_returns)}
+        row('Supply Growth / 供应增长', money(returns.share_issuance_ttm_usd), '仅作供应风险披露，不进入 Cash P/E'),
+        row('Shareholder Yield / 持币者回报率', percent(returns.shareholder_yield_pct), 'Dividend Yield + Buyback / Fee-burn Yield'),
+      ], '分红、协议出资回购与费用支持销毁必须逐笔完成协议级证据复核；原生代币发行只作供应风险披露。')}
 
       ${section('Valuation / 估值', '🧮', [
         row('Market Capitalization / 总市值', money(protocol.market_data.market_cap_usd), '流通价格 × 流通股本'),
         row('Price / Sales / 市销率', multiple(valuation.price_to_sales), 'Market Cap ÷ Revenue TTM'),
-        row('Price / Earnings / 市盈率', multiple(valuation.price_to_earnings), 'Market Cap ÷ Net Income TTM'),
+        row('Cash Price / Earnings / 现金市盈率', multiple(valuation.price_to_earnings), 'Market Cap ÷ Cash Net Income TTM'),
         row('Free Cash Flow Yield / 自由现金流收益率', percent(valuation.free_cash_flow_yield_pct), 'Free Cash Flow ÷ Market Cap'),
-      ], protocol.null_reasons.price_to_earnings)}
+      ], 'Cash P/E = Market Cap ÷ TTM Cash Net Income；当前缺少已复核的现金净利润。')}
 
       <section class="section">
         <div class="section-title"><span class="icon">🔗</span><span>数据来源与审核边界</span></div>
