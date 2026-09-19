@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "source_policy": "DEFILLAMA_ONLY_ROUND",
-  "generated_at": "2026-09-18T04:52:13.599Z",
+  "generated_at": "2026-09-19T04:44:23.154Z",
   "freshness_policy": {
     "market_price_max_age_hours": 24,
     "financial_window": "DefiLlama total1y",
@@ -25,10 +25,10 @@
         "coin_key": "coingecko:aave"
       },
       "market": {
-        "price_usd": 134.38675424319018,
-        "market_cap_usd": 2055435126.2938516,
+        "price_usd": 141.85007135890763,
+        "market_cap_usd": 2220839639.150245,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:49:40.000Z",
+        "price_timestamp": "2026-09-19T04:41:40.000Z",
         "price_confidence": 0.99,
         "symbol": "AAVE",
         "circulating_supply_used": null,
@@ -39,29 +39,29 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 766700698,
-          "total_30d_usd": 35374107,
-          "total_7d_usd": 8495101,
-          "total_24h_usd": 1172562,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 763827974,
+          "total_30d_usd": 35545772,
+          "total_7d_usd": 8477954,
+          "total_24h_usd": 1186382,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/aave?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 99483334,
-          "total_30d_usd": 5017180,
-          "total_7d_usd": 1297059,
-          "total_24h_usd": 152566,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 99067577,
+          "total_30d_usd": 5036438,
+          "total_7d_usd": 1294944,
+          "total_24h_usd": 153873,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/aave?dataType=dailyRevenue"
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 21724384,
+          "total_1y_usd": 21581638,
           "total_30d_usd": 0,
           "total_7d_usd": 0,
           "total_24h_usd": 0,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/aave?dataType=dailyHoldersRevenue"
         }
       }
@@ -75,10 +75,10 @@
         "coin_key": "coingecko:aster-2"
       },
       "market": {
-        "price_usd": 0.7436563203608051,
-        "market_cap_usd": 2012163013.1975574,
+        "price_usd": 0.7683993453811262,
+        "market_cap_usd": 2110968730.0548337,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:49:40.000Z",
+        "price_timestamp": "2026-09-19T04:41:40.000Z",
         "price_confidence": 0.99,
         "symbol": "ASTER",
         "circulating_supply_used": null,
@@ -89,11 +89,11 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 440697208,
-          "total_30d_usd": 6692051,
-          "total_7d_usd": 1547422,
-          "total_24h_usd": 222910,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 440594051,
+          "total_30d_usd": 6784759,
+          "total_7d_usd": 1637550,
+          "total_24h_usd": 373593,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/aster?dataType=dailyFees"
         },
         "revenue": {
@@ -107,11 +107,11 @@
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 24740063,
-          "total_30d_usd": 5071505,
-          "total_7d_usd": 1126156,
-          "total_24h_usd": 233426,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 24917113,
+          "total_30d_usd": 5158641,
+          "total_7d_usd": 1175849,
+          "total_24h_usd": 177050,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/aster?dataType=dailyHoldersRevenue"
         }
       }
@@ -125,10 +125,10 @@
         "coin_key": "coingecko:bitget-token"
       },
       "market": {
-        "price_usd": 1.9393516463387819,
-        "market_cap_usd": 1357526758.9206839,
+        "price_usd": 1.9830605017422474,
+        "market_cap_usd": 1388122520.6145558,
         "market_cap_method": "DEFILLAMA_PRICE_X_DEFILLAMA_SUPPLY_SNAPSHOT",
-        "price_timestamp": "2026-09-18T04:21:50.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "BGB",
         "circulating_supply_used": 699990000,
@@ -175,10 +175,10 @@
         "coin_key": "coingecko:binancecoin"
       },
       "market": {
-        "price_usd": 751.5835563465847,
-        "market_cap_usd": 100022744563.56564,
+        "price_usd": 760.9221015632843,
+        "market_cap_usd": 101120885042.12953,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:49:40.000Z",
+        "price_timestamp": "2026-09-19T04:41:40.000Z",
         "price_confidence": 0.99,
         "symbol": "BNB",
         "circulating_supply_used": null,
@@ -189,29 +189,29 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 224512304,
-          "total_30d_usd": 21421406,
-          "total_7d_usd": 4835693,
-          "total_24h_usd": 819968,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 224662574,
+          "total_30d_usd": 21582492,
+          "total_7d_usd": 5011285,
+          "total_24h_usd": 850831,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/bsc?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 22451232,
-          "total_30d_usd": 2142140,
-          "total_7d_usd": 483569,
-          "total_24h_usd": 81997,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 22466259,
+          "total_30d_usd": 2158249,
+          "total_7d_usd": 501128,
+          "total_24h_usd": 85083,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/bsc?dataType=dailyRevenue"
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 22451232,
-          "total_30d_usd": 2142140,
-          "total_7d_usd": 483569,
-          "total_24h_usd": 81997,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 22466259,
+          "total_30d_usd": 2158249,
+          "total_7d_usd": 501128,
+          "total_24h_usd": 85083,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/bsc?dataType=dailyHoldersRevenue"
         }
       }
@@ -225,10 +225,10 @@
         "coin_key": "coingecko:compound-governance-token"
       },
       "market": {
-        "price_usd": 20.161621663800368,
-        "market_cap_usd": 200327873.8782245,
+        "price_usd": 21.433429693347026,
+        "market_cap_usd": 212403673.00334856,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:50.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "COMP",
         "circulating_supply_used": null,
@@ -239,19 +239,19 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 30454033,
-          "total_30d_usd": 2519190,
-          "total_7d_usd": 568388,
-          "total_24h_usd": 96475,
+          "total_1y_usd": 30400479,
+          "total_30d_usd": 2533505,
+          "total_7d_usd": 590354,
+          "total_24h_usd": 91396,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/compound-finance?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 2586442,
-          "total_30d_usd": 301450,
-          "total_7d_usd": 91933,
-          "total_24h_usd": 14323,
+          "total_1y_usd": 2593466,
+          "total_30d_usd": 304401,
+          "total_7d_usd": 90978,
+          "total_24h_usd": 10602,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/compound-finance?dataType=dailyRevenue"
         },
@@ -275,10 +275,10 @@
         "coin_key": "coingecko:curve-dao-token"
       },
       "market": {
-        "price_usd": 0.3407389988643693,
-        "market_cap_usd": 529776415.31501055,
+        "price_usd": 0.34359891965893286,
+        "market_cap_usd": 533450090.0045399,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:50.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "CRV",
         "circulating_supply_used": null,
@@ -289,28 +289,28 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 62501108.669999994,
-          "total_30d_usd": 4755042.270000001,
-          "total_7d_usd": 841716.12,
-          "total_24h_usd": 7215.11,
+          "total_1y_usd": 62415497.96999999,
+          "total_30d_usd": 4075642.1800000006,
+          "total_7d_usd": 610625.25,
+          "total_24h_usd": 2285.3,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/curve-finance?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 30643920.009999998,
-          "total_30d_usd": 1195567,
-          "total_7d_usd": 251334,
-          "total_24h_usd": 4168,
+          "total_1y_usd": 30580359.009999998,
+          "total_30d_usd": 1165295,
+          "total_7d_usd": 237863,
+          "total_24h_usd": 225,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/curve-finance?dataType=dailyRevenue"
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 29979886,
-          "total_30d_usd": 1134753,
-          "total_7d_usd": 238675,
-          "total_24h_usd": 3547,
+          "total_1y_usd": 29918202,
+          "total_30d_usd": 1107426,
+          "total_7d_usd": 226559,
+          "total_24h_usd": 0,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/curve-finance?dataType=dailyHoldersRevenue"
         }
@@ -325,10 +325,10 @@
         "coin_key": "coingecko:dydx-chain"
       },
       "market": {
-        "price_usd": 0.1200581297337106,
-        "market_cap_usd": 101585150.87801622,
+        "price_usd": 0.12971159052490092,
+        "market_cap_usd": 109501396.6275441,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:21:50.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "DYDX",
         "circulating_supply_used": null,
@@ -339,29 +339,29 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 6209014,
-          "total_30d_usd": 288652,
-          "total_7d_usd": 36858,
-          "total_24h_usd": 6387,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 6162191,
+          "total_30d_usd": 271203,
+          "total_7d_usd": 50624,
+          "total_24h_usd": 18897,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/dydx?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 6209014,
-          "total_30d_usd": 288652,
-          "total_7d_usd": 36858,
-          "total_24h_usd": 6387,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 6162191,
+          "total_30d_usd": 271203,
+          "total_7d_usd": 50624,
+          "total_24h_usd": 18897,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/dydx?dataType=dailyRevenue"
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 6209014,
-          "total_30d_usd": 288652,
-          "total_7d_usd": 36858,
-          "total_24h_usd": 6387,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 6162191,
+          "total_30d_usd": 271203,
+          "total_7d_usd": 50624,
+          "total_24h_usd": 18897,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/dydx?dataType=dailyHoldersRevenue"
         }
       }
@@ -375,10 +375,10 @@
         "coin_key": "coingecko:eigenlayer"
       },
       "market": {
-        "price_usd": 0.20987754008800408,
-        "market_cap_usd": 193429234.31945348,
+        "price_usd": 0.23881980238929018,
+        "market_cap_usd": 221015862.47456732,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:40.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "EIGEN",
         "circulating_supply_used": null,
@@ -389,10 +389,10 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 33570288.31,
-          "total_30d_usd": 234877.66999999998,
-          "total_7d_usd": 25209,
-          "total_24h_usd": 4737,
+          "total_1y_usd": 32359985.310000006,
+          "total_30d_usd": 246502.66999999998,
+          "total_7d_usd": 34674,
+          "total_24h_usd": 22459,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/eigenlayer?dataType=dailyFees"
         },
@@ -425,10 +425,10 @@
         "coin_key": "coingecko:ethena"
       },
       "market": {
-        "price_usd": 0.16268126760224919,
-        "market_cap_usd": 1658965728.066268,
+        "price_usd": 0.1751946868752406,
+        "market_cap_usd": 1831083050.3252647,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:49:40.000Z",
+        "price_timestamp": "2026-09-19T04:41:40.000Z",
         "price_confidence": 0.99,
         "symbol": "ENA",
         "circulating_supply_used": null,
@@ -439,20 +439,20 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 287971094.6999998,
-          "total_30d_usd": 21783429.36,
-          "total_7d_usd": 4247754.73,
-          "total_24h_usd": 4146893,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 275809161.69999987,
+          "total_30d_usd": 22956304.25,
+          "total_7d_usd": 5326023.73,
+          "total_24h_usd": 1172959,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/ethena?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 3655485.03,
-          "total_30d_usd": 14405.02,
-          "total_7d_usd": 5554.45,
-          "total_24h_usd": 4323,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 3381369.03,
+          "total_30d_usd": 15298.91,
+          "total_7d_usd": 6462.73,
+          "total_24h_usd": 978,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/ethena?dataType=dailyRevenue"
         },
         "holders_revenue": {
@@ -475,10 +475,10 @@
         "coin_key": "coingecko:ether-fi"
       },
       "market": {
-        "price_usd": 0.6494412911833455,
-        "market_cap_usd": 628517887.8483924,
+        "price_usd": 0.7296971355474503,
+        "market_cap_usd": 702761386.5745413,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:40.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "ETHFI",
         "circulating_supply_used": null,
@@ -489,19 +489,19 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 200949827,
-          "total_30d_usd": 13812792,
-          "total_7d_usd": 2718015,
-          "total_24h_usd": 356739,
+          "total_1y_usd": 200075441,
+          "total_30d_usd": 13797462,
+          "total_7d_usd": 2736086,
+          "total_24h_usd": 441555,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/ether.fi?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 46745888,
-          "total_30d_usd": 3630574,
-          "total_7d_usd": 829120,
-          "total_24h_usd": 114599,
+          "total_1y_usd": 46332088,
+          "total_30d_usd": 3650967,
+          "total_7d_usd": 841687,
+          "total_24h_usd": 134992,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/ether.fi?dataType=dailyRevenue"
         },
@@ -525,10 +525,10 @@
         "coin_key": "coingecko:instadapp"
       },
       "market": {
-        "price_usd": 1.126477566086344,
-        "market_cap_usd": 94287633.47773866,
+        "price_usd": 1.309422765199202,
+        "market_cap_usd": 109036396.0983582,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:21:50.000Z",
+        "price_timestamp": "2026-09-19T04:21:40.000Z",
         "price_confidence": 0.99,
         "symbol": "FLUID",
         "circulating_supply_used": null,
@@ -539,20 +539,20 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 65400203.84000004,
-          "total_30d_usd": 3654332.889999999,
-          "total_7d_usd": 719920,
-          "total_24h_usd": 11968,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 65226788.84000004,
+          "total_30d_usd": 3648299.4899999998,
+          "total_7d_usd": 718717,
+          "total_24h_usd": 18613,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/fluid?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 10681859.840000005,
-          "total_30d_usd": 540648.89,
-          "total_7d_usd": 108893,
-          "total_24h_usd": 4139,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 10621928.840000004,
+          "total_30d_usd": 544339.49,
+          "total_7d_usd": 108349,
+          "total_24h_usd": 5645,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/fluid?dataType=dailyRevenue"
         },
         "holders_revenue": {
@@ -561,7 +561,7 @@
           "total_30d_usd": 0,
           "total_7d_usd": 0,
           "total_24h_usd": 0,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/fluid?dataType=dailyHoldersRevenue"
         }
       }
@@ -575,10 +575,10 @@
         "coin_key": "coingecko:gmx"
       },
       "market": {
-        "price_usd": 7.530529270326057,
-        "market_cap_usd": 78717136.63100953,
+        "price_usd": 7.699616354062094,
+        "market_cap_usd": 80588330.59421419,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:21:50.000Z",
+        "price_timestamp": "2026-09-19T04:21:40.000Z",
         "price_confidence": 0.99,
         "symbol": "GMX",
         "circulating_supply_used": null,
@@ -589,28 +589,28 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 28764996,
-          "total_30d_usd": 1727959,
-          "total_7d_usd": 219217,
-          "total_24h_usd": 27446,
+          "total_1y_usd": 28521708,
+          "total_30d_usd": 1636104,
+          "total_7d_usd": 214460,
+          "total_24h_usd": 50586,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/gmx?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 10643174,
-          "total_30d_usd": 639344,
-          "total_7d_usd": 81111,
-          "total_24h_usd": 10155,
+          "total_1y_usd": 10553158,
+          "total_30d_usd": 605358,
+          "total_7d_usd": 79351,
+          "total_24h_usd": 18717,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/gmx?dataType=dailyRevenue"
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 7766466,
-          "total_30d_usd": 466549,
-          "total_7d_usd": 59187,
-          "total_24h_usd": 7410,
+          "total_1y_usd": 7700778,
+          "total_30d_usd": 441748,
+          "total_7d_usd": 57903,
+          "total_24h_usd": 13658,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/gmx?dataType=dailyHoldersRevenue"
         }
@@ -625,10 +625,10 @@
         "coin_key": "coingecko:hyperliquid"
       },
       "market": {
-        "price_usd": 86.71221891751219,
-        "market_cap_usd": 19248767330.830696,
+        "price_usd": 91.8640770785089,
+        "market_cap_usd": 20814784695.19423,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:49:40.000Z",
+        "price_timestamp": "2026-09-19T04:41:40.000Z",
         "price_confidence": 0.99,
         "symbol": "HYPE",
         "circulating_supply_used": null,
@@ -639,29 +639,29 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 922687636,
-          "total_30d_usd": 83391147,
-          "total_7d_usd": 14803854,
-          "total_24h_usd": 2501579,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 922108215,
+          "total_30d_usd": 82254307,
+          "total_7d_usd": 17319312,
+          "total_24h_usd": 3958435,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/hyperliquid?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 696444030,
-          "total_30d_usd": 65333474,
-          "total_7d_usd": 11529833,
-          "total_24h_usd": 1941723,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 696415341,
+          "total_30d_usd": 64339681,
+          "total_7d_usd": 13472143,
+          "total_24h_usd": 3071417,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/hyperliquid?dataType=dailyRevenue"
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 696444030,
-          "total_30d_usd": 65333474,
-          "total_7d_usd": 11529833,
-          "total_24h_usd": 1941723,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 696415341,
+          "total_30d_usd": 64339681,
+          "total_7d_usd": 13472143,
+          "total_24h_usd": 3071417,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/hyperliquid?dataType=dailyHoldersRevenue"
         }
       }
@@ -675,10 +675,10 @@
         "coin_key": "coingecko:jito-governance-token"
       },
       "market": {
-        "price_usd": 0.4528868705167552,
-        "market_cap_usd": 236702868.86064765,
+        "price_usd": 0.4559203727312123,
+        "market_cap_usd": 241572373.96350205,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:50.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "JTO",
         "circulating_supply_used": null,
@@ -689,19 +689,19 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 159892122,
-          "total_30d_usd": 8987004,
-          "total_7d_usd": 1870017,
-          "total_24h_usd": 186702,
+          "total_1y_usd": 158336955,
+          "total_30d_usd": 9069873,
+          "total_7d_usd": 1956505,
+          "total_24h_usd": 461147,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/jito?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 9934218,
-          "total_30d_usd": 554778,
-          "total_7d_usd": 99176,
-          "total_24h_usd": 17469,
+          "total_1y_usd": 9824934,
+          "total_30d_usd": 566353,
+          "total_7d_usd": 120677,
+          "total_24h_usd": 31331,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/jito?dataType=dailyRevenue"
         },
@@ -725,10 +725,10 @@
         "coin_key": "coingecko:just"
       },
       "market": {
-        "price_usd": 0.1161327591813819,
-        "market_cap_usd": 951272853.9953483,
+        "price_usd": 0.1174543932646727,
+        "market_cap_usd": 956490184.6307962,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:50.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "JST",
         "circulating_supply_used": null,
@@ -739,19 +739,19 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 12596866,
-          "total_30d_usd": 1651084,
-          "total_7d_usd": 391253,
-          "total_24h_usd": 56571,
+          "total_1y_usd": 12638288,
+          "total_30d_usd": 1656102,
+          "total_7d_usd": 401732,
+          "total_24h_usd": 60665,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/justlend?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 519031,
-          "total_30d_usd": 47557,
-          "total_7d_usd": 10976,
-          "total_24h_usd": 1597,
+          "total_1y_usd": 519378,
+          "total_30d_usd": 47479,
+          "total_7d_usd": 11167,
+          "total_24h_usd": 1644,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/justlend?dataType=dailyRevenue"
         },
@@ -775,10 +775,10 @@
         "coin_key": "coingecko:kamino"
       },
       "market": {
-        "price_usd": 0.02772176600144335,
-        "market_cap_usd": 153979786.02135587,
+        "price_usd": 0.02810251742217345,
+        "market_cap_usd": 156574613.24079326,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:40.000Z",
+        "price_timestamp": "2026-09-19T04:21:40.000Z",
         "price_confidence": 0.99,
         "symbol": "KMNO",
         "circulating_supply_used": null,
@@ -789,20 +789,20 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 69725140,
-          "total_30d_usd": 4442245,
-          "total_7d_usd": 887221,
-          "total_24h_usd": 147525,
-          "latest_daily_at": "2026-09-16T00:00:00.000Z",
+          "total_1y_usd": 69487599,
+          "total_30d_usd": 4455745,
+          "total_7d_usd": 886933,
+          "total_24h_usd": 155934,
+          "latest_daily_at": "2026-09-17T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/kamino?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 10486663,
-          "total_30d_usd": 603149,
-          "total_7d_usd": 115563,
-          "total_24h_usd": 19150,
-          "latest_daily_at": "2026-09-16T00:00:00.000Z",
+          "total_1y_usd": 10443194,
+          "total_30d_usd": 604340,
+          "total_7d_usd": 115486,
+          "total_24h_usd": 20095,
+          "latest_daily_at": "2026-09-17T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/kamino?dataType=dailyRevenue"
         },
         "holders_revenue": {
@@ -811,7 +811,7 @@
           "total_30d_usd": 0,
           "total_7d_usd": 0,
           "total_24h_usd": 0,
-          "latest_daily_at": "2026-09-16T00:00:00.000Z",
+          "latest_daily_at": "2026-09-17T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/kamino?dataType=dailyHoldersRevenue"
         }
       }
@@ -825,10 +825,10 @@
         "coin_key": "coingecko:lido-dao"
       },
       "market": {
-        "price_usd": 0.3793567242299505,
-        "market_cap_usd": 316486568.89520556,
+        "price_usd": 0.39676107888572987,
+        "market_cap_usd": 332933571.31309193,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:50.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "LDO",
         "circulating_supply_used": null,
@@ -839,20 +839,20 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 638113252,
-          "total_30d_usd": 48140366,
-          "total_7d_usd": 11493716,
-          "total_24h_usd": 1630626,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 636618201,
+          "total_30d_usd": 48590171,
+          "total_7d_usd": 11554910,
+          "total_24h_usd": 1667283,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/lido?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 36207462,
-          "total_30d_usd": 2990757,
-          "total_7d_usd": 714474,
-          "total_24h_usd": 101363,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 36156944,
+          "total_30d_usd": 3018718,
+          "total_7d_usd": 718278,
+          "total_24h_usd": 103642,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/lido?dataType=dailyRevenue"
         },
         "holders_revenue": {
@@ -861,7 +861,7 @@
           "total_30d_usd": 775187,
           "total_7d_usd": 0,
           "total_24h_usd": 0,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/lido?dataType=dailyHoldersRevenue"
         }
       }
@@ -875,10 +875,10 @@
         "coin_key": "coingecko:syrup"
       },
       "market": {
-        "price_usd": 0.21204062824320946,
-        "market_cap_usd": 247497242.42833978,
+        "price_usd": 0.221654251190384,
+        "market_cap_usd": 260039808.2691776,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:21:50.000Z",
+        "price_timestamp": "2026-09-19T04:21:40.000Z",
         "price_confidence": 0.99,
         "symbol": "SYRUP",
         "circulating_supply_used": null,
@@ -889,27 +889,27 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 112157561.05,
-          "total_30d_usd": 8925739,
-          "total_7d_usd": 2597171,
+          "total_1y_usd": 111790818.05,
+          "total_30d_usd": 8208394,
+          "total_7d_usd": 2422875,
           "total_24h_usd": 406091,
           "latest_daily_at": "2026-09-17T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/maple?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 14550281.01,
-          "total_30d_usd": 1278641,
-          "total_7d_usd": 380819,
+          "total_1y_usd": 14509833.01,
+          "total_30d_usd": 1194860,
+          "total_7d_usd": 360628,
           "total_24h_usd": 58673,
           "latest_daily_at": "2026-09-17T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/maple?dataType=dailyRevenue"
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 3181868,
-          "total_30d_usd": 127866,
-          "total_7d_usd": 38081,
+          "total_1y_usd": 3171756,
+          "total_30d_usd": 119488,
+          "total_7d_usd": 36062,
           "total_24h_usd": 5867,
           "latest_daily_at": "2026-09-17T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/maple?dataType=dailyHoldersRevenue"
@@ -925,10 +925,10 @@
         "coin_key": "coingecko:mantle"
       },
       "market": {
-        "price_usd": 0.58474914862861,
-        "market_cap_usd": 1923432707.4063866,
+        "price_usd": 0.620815434571823,
+        "market_cap_usd": 2049411587.5226855,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:50.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "MNT",
         "circulating_supply_used": null,
@@ -939,20 +939,20 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 263868,
-          "total_30d_usd": 12224,
-          "total_7d_usd": 2540,
-          "total_24h_usd": 372,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 262847,
+          "total_30d_usd": 12489,
+          "total_7d_usd": 2684,
+          "total_24h_usd": 614,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/mantle?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 263868,
-          "total_30d_usd": 12224,
-          "total_7d_usd": 2540,
-          "total_24h_usd": 372,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 262847,
+          "total_30d_usd": 12489,
+          "total_7d_usd": 2684,
+          "total_24h_usd": 614,
+          "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/mantle?dataType=dailyRevenue"
         },
         "holders_revenue": {
@@ -975,10 +975,10 @@
         "coin_key": "coingecko:morpho"
       },
       "market": {
-        "price_usd": 2.316222110037525,
-        "market_cap_usd": 1628607456.0601091,
+        "price_usd": 2.7573118715795224,
+        "market_cap_usd": 1893401298.067475,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:40.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "MORPHO",
         "circulating_supply_used": null,
@@ -989,11 +989,11 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 202219292.81,
-          "total_30d_usd": 15450194.36,
-          "total_7d_usd": 614832.99,
-          "total_24h_usd": 62.77,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 201356967.81,
+          "total_30d_usd": 14876018.040000001,
+          "total_7d_usd": 234.55,
+          "total_24h_usd": 122,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/morpho?dataType=dailyFees"
         },
         "revenue": {
@@ -1002,7 +1002,7 @@
           "total_30d_usd": 0,
           "total_7d_usd": 0,
           "total_24h_usd": 0,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/morpho?dataType=dailyRevenue"
         },
         "holders_revenue": {
@@ -1011,7 +1011,7 @@
           "total_30d_usd": 0,
           "total_7d_usd": 0,
           "total_24h_usd": 0,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/morpho?dataType=dailyHoldersRevenue"
         }
       }
@@ -1025,10 +1025,10 @@
         "coin_key": "coingecko:okb"
       },
       "market": {
-        "price_usd": 114.11671328636389,
-        "market_cap_usd": 2393281927.0852857,
+        "price_usd": 116.62519991062938,
+        "market_cap_usd": 2456693358.5067205,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:50.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "OKB",
         "circulating_supply_used": null,
@@ -1075,10 +1075,10 @@
         "coin_key": "coingecko:pancakeswap-token"
       },
       "market": {
-        "price_usd": 2.4798892351203508,
-        "market_cap_usd": 864946690.53943,
+        "price_usd": 2.412422533006031,
+        "market_cap_usd": 840525880.7615522,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:49:40.000Z",
+        "price_timestamp": "2026-09-19T04:41:40.000Z",
         "price_confidence": 0.99,
         "symbol": "CAKE",
         "circulating_supply_used": null,
@@ -1089,29 +1089,29 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 268157809.9499997,
-          "total_30d_usd": 22970073.400000002,
-          "total_7d_usd": 3937087.1000000006,
-          "total_24h_usd": 524836,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 267411432.83999968,
+          "total_30d_usd": 23126521.990000002,
+          "total_7d_usd": 3967598.6600000006,
+          "total_24h_usd": 782076.89,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/pancakeswap?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 89547694.53999999,
-          "total_30d_usd": 7481886.040000001,
-          "total_7d_usd": 1293490.02,
-          "total_24h_usd": 174368,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 89300186.33999999,
+          "total_30d_usd": 7533483.18,
+          "total_7d_usd": 1302946.64,
+          "total_24h_usd": 255990.8,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/pancakeswap?dataType=dailyRevenue"
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 58714777.38,
-          "total_30d_usd": 5059087.479999999,
-          "total_7d_usd": 862274.07,
-          "total_24h_usd": 116869,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 58551374.400000006,
+          "total_30d_usd": 5094394.979999999,
+          "total_7d_usd": 866465.75,
+          "total_24h_usd": 167957.02,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/pancakeswap?dataType=dailyHoldersRevenue"
         }
       }
@@ -1125,10 +1125,10 @@
         "coin_key": "coingecko:pendle"
       },
       "market": {
-        "price_usd": 2.54552782980853,
-        "market_cap_usd": 441747254.8520917,
+        "price_usd": 2.646271595502141,
+        "market_cap_usd": 468394182.5465772,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:40.000Z",
+        "price_timestamp": "2026-09-19T04:41:40.000Z",
         "price_confidence": 0.99,
         "symbol": "PENDLE",
         "circulating_supply_used": null,
@@ -1139,29 +1139,29 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 19185841,
-          "total_30d_usd": 635753,
-          "total_7d_usd": 76439,
-          "total_24h_usd": 10298,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 18964258,
+          "total_30d_usd": 628924,
+          "total_7d_usd": 72222,
+          "total_24h_usd": 9784,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/pendle?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 18652618,
-          "total_30d_usd": 625032,
-          "total_7d_usd": 74972,
-          "total_24h_usd": 9917,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 18441080,
+          "total_30d_usd": 618326,
+          "total_7d_usd": 70864,
+          "total_24h_usd": 9631,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/pendle?dataType=dailyRevenue"
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 14389109,
-          "total_30d_usd": 470075,
-          "total_7d_usd": 52299,
-          "total_24h_usd": 7338,
-          "latest_daily_at": "2026-09-17T00:00:00.000Z",
+          "total_1y_usd": 14220108,
+          "total_30d_usd": 465153,
+          "total_7d_usd": 48662,
+          "total_24h_usd": 6519,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/pendle?dataType=dailyHoldersRevenue"
         }
       }
@@ -1175,10 +1175,10 @@
         "coin_key": "coingecko:sky"
       },
       "market": {
-        "price_usd": 0.06127999811305704,
-        "market_cap_usd": 1441982200.1619844,
+        "price_usd": 0.06996001717820205,
+        "market_cap_usd": 1641920034.0074365,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:46:50.000Z",
+        "price_timestamp": "2026-09-19T04:31:40.000Z",
         "price_confidence": 0.99,
         "symbol": "SKY",
         "circulating_supply_used": null,
@@ -1189,28 +1189,28 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 398312738,
-          "total_30d_usd": 27070793,
-          "total_7d_usd": 6288053,
-          "total_24h_usd": 900013,
+          "total_1y_usd": 397990438,
+          "total_30d_usd": 27061515,
+          "total_7d_usd": 6294954,
+          "total_24h_usd": 903484,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/sky?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 210746636,
-          "total_30d_usd": 13455092,
-          "total_7d_usd": 3126929,
-          "total_24h_usd": 459458,
+          "total_1y_usd": 210253437,
+          "total_30d_usd": 13467174,
+          "total_7d_usd": 3131535,
+          "total_24h_usd": 457577,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/sky?dataType=dailyRevenue"
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 64344643,
-          "total_30d_usd": 4179352,
-          "total_7d_usd": 1204228,
-          "total_24h_usd": 195699,
+          "total_1y_usd": 64154414,
+          "total_30d_usd": 4251788,
+          "total_7d_usd": 1277941,
+          "total_24h_usd": 206991,
           "latest_daily_at": "2026-09-18T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/sky?dataType=dailyHoldersRevenue"
         }
@@ -1225,10 +1225,10 @@
         "coin_key": "coingecko:spark-2"
       },
       "market": {
-        "price_usd": 0.019935297562814182,
-        "market_cap_usd": 65899883.32241507,
+        "price_usd": 0.021061361331528753,
+        "market_cap_usd": 69102425.19654582,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:21:50.000Z",
+        "price_timestamp": "2026-09-19T04:21:40.000Z",
         "price_confidence": 0.99,
         "symbol": "SPK",
         "circulating_supply_used": null,
@@ -1239,29 +1239,29 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 182454406,
-          "total_30d_usd": 12306998,
-          "total_7d_usd": 3392020,
-          "total_24h_usd": 298980,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 181803127,
+          "total_30d_usd": 12232056,
+          "total_7d_usd": 3249449,
+          "total_24h_usd": 366147,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/spark?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 14185977.94,
-          "total_30d_usd": -24319,
-          "total_7d_usd": -29547,
-          "total_24h_usd": -37772,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 13870996.94,
+          "total_30d_usd": -22006,
+          "total_7d_usd": -35441,
+          "total_24h_usd": 24012,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/spark?dataType=dailyRevenue"
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 3396170,
-          "total_30d_usd": 1289158,
-          "total_7d_usd": 211622,
-          "total_24h_usd": 31016,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 3427151,
+          "total_30d_usd": 1254098,
+          "total_7d_usd": 211771,
+          "total_24h_usd": 30981,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/spark?dataType=dailyHoldersRevenue"
         }
       }
@@ -1275,10 +1275,10 @@
         "coin_key": "coingecko:uniswap"
       },
       "market": {
-        "price_usd": 8.591810469888733,
-        "market_cap_usd": 5360393717.582075,
+        "price_usd": 8.830071006369183,
+        "market_cap_usd": 5521119029.414234,
         "market_cap_method": "DEFILLAMA_PROTOCOL_MCAP",
-        "price_timestamp": "2026-09-18T04:49:40.000Z",
+        "price_timestamp": "2026-09-19T04:41:40.000Z",
         "price_confidence": 0.99,
         "symbol": "UNI",
         "circulating_supply_used": null,
@@ -1289,29 +1289,29 @@
       "financials": {
         "fees": {
           "state": "AVAILABLE",
-          "total_1y_usd": 918304892.9399996,
-          "total_30d_usd": 190814779.28000003,
-          "total_7d_usd": 39946579.67,
-          "total_24h_usd": 6668737.41,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 920510460.9399996,
+          "total_30d_usd": 193893984.28,
+          "total_7d_usd": 37764367.67,
+          "total_24h_usd": 5479946,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/uniswap?dataType=dailyFees"
         },
         "revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 47952604,
-          "total_30d_usd": 15639473,
-          "total_7d_usd": 3510376,
-          "total_24h_usd": 513823,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 48376384,
+          "total_30d_usd": 15879611,
+          "total_7d_usd": 3187557,
+          "total_24h_usd": 423780,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/uniswap?dataType=dailyRevenue"
         },
         "holders_revenue": {
           "state": "AVAILABLE",
-          "total_1y_usd": 47952604,
-          "total_30d_usd": 15639473,
-          "total_7d_usd": 3510376,
-          "total_24h_usd": 513823,
-          "latest_daily_at": "2026-09-18T00:00:00.000Z",
+          "total_1y_usd": 48376384,
+          "total_30d_usd": 15879611,
+          "total_7d_usd": 3187557,
+          "total_24h_usd": 423780,
+          "latest_daily_at": "2026-09-19T00:00:00.000Z",
           "source_url": "https://api.llama.fi/summary/fees/uniswap?dataType=dailyHoldersRevenue"
         }
       }
